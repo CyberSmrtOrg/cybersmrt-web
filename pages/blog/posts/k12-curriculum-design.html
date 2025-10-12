@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a K-12 Cybersecurity Curriculum That Actually Works | CyberSmrt Blog</title>
+    <meta name="description" content="After 15 years in Navy cybersecurity, here's how we're building a competency-based curriculum that empowers students and transforms communities.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Article Header */
+        .article-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .article-meta span {
+            margin: 0 1rem;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .author-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-details p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Article Content */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .article-content {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #d0d0d0;
+        }
+
+        .article-content h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 3rem 0 1.5rem;
+            font-weight: 700;
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content strong {
+            color: #fff;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 1.5rem 0 1.5rem 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.75rem;
+        }
+
+        .article-content blockquote {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .article-content code {
+            background: #1a1a1a;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+        }
+
+        .article-content pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .callout h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Share & Tags */
+        .article-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+
+        .tags {
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #667eea;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .share-section h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .share-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .share-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Related Posts */
+        .related-posts {
+            background: #111;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .related-posts h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .related-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .related-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .related-card h3 a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .related-card h3 a:hover {
+            color: #667eea;
+        }
+
+        .related-card p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        .footer-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .article-header h1 {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1.05rem;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="../../../index.html" class="nav-logo">CYBERSMRT</a>
+            <div class="nav-links">
+                <a href="../../../index.html">Home</a>
+                <a href="../../about/team.html">About</a>
+                <a href="../../../index.html#programs">Programs</a>
+                <a href="../index.html">Blog</a>
+                <a href="mailto:tony@cybersmrt.org">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="article-header">
+        <span class="article-category">K-12 Education</span>
+        <h1>Building a K-12 Cybersecurity Curriculum That Actually Works</h1>
+        <div class="article-meta">
+            <span>📅 January 15, 2025</span>
+            <span>⏱️ 8 min read</span>
+        </div>
+        <div class="author-info">
+            <div class="author-avatar">👨‍💼</div>
+            <div class="author-details">
+                <h3>Tony Thompson</h3>
+                <p>Founder & CEO, CyberSmrt | Retired Navy Cybersecurity Leader</p>
+            </div>
+        </div>
+    </header>
+
+    <article class="article-container">
+        <div class="article-content">
+            <p>
+                After spending 15 years protecting Navy networks and witnessing the massive cybersecurity
+                skills gap firsthand, I knew we had to start earlier. Much earlier. Not in college, not in
+                high school—we need to be reaching kids in <strong>elementary school</strong>.
+            </p>
+
+            <p>
+                But here's the challenge: most cybersecurity curriculum is either dumbed-down "don't talk
+                to strangers online" content, or it's overly technical material designed for adults. Neither
+                approach actually works for 5th graders.
+            </p>
+
+            <p>
+                So we partnered with NEAAAT, a STEM charter school, to build something different. Here's what
+                we learned in the process—and what we're building as a result.
+            </p>
+
+            <h2>The Problem with Most Cyber Ed for Kids</h2>
+
+            <p>
+                Walk into most schools teaching "cybersecurity" to elementary students and you'll see one of
+                two approaches:
+            </p>
+
+            <ol>
+                <li><strong>Fear-based safety talks:</strong> "The internet is dangerous. Don't click anything.
+                Never share personal information." This creates anxiety without empowerment.</li>
+
+                <li><strong>Watered-down technical content:</strong> Surface-level explanations that don't give
+                students real understanding or applicable skills.</li>
+            </ol>
+
+            <p>
+                Both miss the mark. Kids are <em>already online</em>. They're using apps, playing games,
+                watching videos, and messaging friends. We can't just tell them "be careful"—we need to give
+                them the <strong>knowledge and tools to navigate digital spaces safely and confidently</strong>.
+            </p>
+
+            <h2>What We Built Instead: Competency-Based, Hands-On Learning</h2>
+
+            <p>
+                Our curriculum is grounded in three core principles:
+            </p>
+
+            <div class="callout">
+                <h4>Our Design Principles</h4>
+                <ul>
+                    <li><strong>Competency-based mastery:</strong> Students demonstrate "I can" statements, not
+                    just recall facts on a test</li>
+                    <li><strong>Hands-on, kinesthetic learning:</strong> Act out packet routing, physically
+                    sort phishing emails, build network diagrams</li>
+                    <li><strong>Family engagement:</strong> Every lesson connects to home, teaching parents
+                    alongside students</li>
+                </ul>
+            </div>
+
+            <h3>Real Example: Teaching How the Internet Works</h3>
+
+            <p>
+                Instead of showing slides about packets and routers, we run a <strong>Packet Relay</strong>.
+                Students become the routers. Index cards become data packets. They physically pass "packets"
+                from client to server, experiencing delays, dropped packets, and out-of-order delivery.
+            </p>
+
+            <blockquote>
+                "When we added a 'network delay' where one router had to wait 5 seconds, the kids instantly
+                understood why videos buffer. That's learning you can't get from a textbook."
+            </blockquote>
+
+            <p>
+                After the activity, students can explain—in their own words—how data travels across the
+                internet. That's mastery.
+            </p>
+
+            <h2>Why Competency-Based Assessment Matters</h2>
+
+            <p>
+                Traditional testing asks: "What is a strong password?" and kids check a multiple-choice box.
+                Our approach says: <strong>"I can create a 4-word passphrase that takes 100+ years to crack."</strong>
+            </p>
+
+            <p>
+                Students then actually create one using our diceware activity, test it on HowSecureIsMyPassword.net,
+                and screenshot the results as evidence. That artifact goes in their portfolio. At the end of the
+                quarter, they present their portfolio to demonstrate growth.
+            </p>
+
+            <p>This approach:</p>
+            <ul>
+                <li>Shows <em>transfer of learning</em> (can they apply the skill in real life?)</li>
+                <li>Builds student ownership and metacognition</li>
+                <li>Creates tangible evidence for parents, teachers, and future employers</li>
+                <li>Aligns with Carnegie's competency-based model (our pilot partner's framework)</li>
+            </ul>
+
+            <h2>The Missing Piece: Family Engagement</h2>
+
+            <p>
+                Here's what we realized early: if we teach kids about strong passwords but their parents use
+                "password123," nothing changes at home. Digital safety can't be siloed to the classroom.
+            </p>
+
+            <p>
+                So every unit includes a <strong>Family Challenge</strong>:
+            </p>
+
+            <ul>
+                <li><strong>Week 3 (Passwords):</strong> "With your parent/guardian, enable 2FA on one account
+                you both use."</li>
+                <li><strong>Week 7 (Smart Sharing):</strong> "Complete the Family Wi-Fi Safety Checklist together."</li>
+                <li><strong>Week 15 (Home Networks):</strong> "Find your router, locate the password sticker,
+                and check when it was last updated."</li>
+            </ul>
+
+            <p>
+                Parents sign off that they completed the activity. We're not just educating kids—we're
+                <strong>educating entire families</strong>.
+            </p>
+
+            <h2>What's Next: Scaling Beyond Our Pilot</h2>
+
+            <p>
+                We're currently piloting Quarters 1 and 2 with 200+ 5th graders at NEAAAT. The feedback has been
+                incredible—both from students ("This is the coolest class!") and educators ("Finally, cyber content
+                that actually works for this age group").
+            </p>
+
+            <p>
+                Our goal for 2025:
+            </p>
+
+            <ol>
+                <li>Complete the full K-12 curriculum (Quarters 3-4, then expand to other grade levels)</li>
+                <li>License the curriculum to 10+ schools nationwide</li>
+                <li>Build a Train-the-Trainer program so educators can deliver this content confidently</li>
+                <li>Create an open-access resource library for under-resourced schools</li>
+            </ol>
+
+            <h2>Why This Matters for Equity</h2>
+
+            <p>
+                The cybersecurity talent gap is real—there are hundreds of thousands of unfilled cyber jobs.
+                But the pipeline is broken. Most kids from underserved communities never even know these careers
+                exist, let alone have access to the education that prepares them for it.
+            </p>
+
+            <p>
+                By starting in elementary school, in under-resourced charter schools and public schools, we're
+                <strong>creating pathways where none existed before</strong>.
+            </p>
+
+            <p>
+                A 5th grader who learns about red team vs. blue team, who gets excited about ethical hacking,
+                who sees cybersecurity as accessible and interesting—that student now has a completely different
+                future trajectory.
+            </p>
+
+            <p>
+                That's the equity gap we're closing. One classroom at a time.
+            </p>
+        </div>
+
+        <div class="article-footer">
+            <div class="tags">
+                <span class="tag">K-12 Education</span>
+                <span class="tag">Curriculum Design</span>
+                <span class="tag">Competency-Based Learning</span>
+                <span class="tag">Family Engagement</span>
+                <span class="tag">Equity</span>
+            </div>
+
+            <div class="share-section">
+                <h3>Share This Post</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?url=https://cybersmrt.org/blog/k12-curriculum&text=Building%20a%20K-12%20Cybersecurity%20Curriculum%20That%20Actually%20Works" class="share-btn">𝕏 Twitter</a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cybersmrt.org/blog/k12-curriculum" class="share-btn">LinkedIn</a>
+                    <a href="mailto:?subject=Building%20a%20K-12%20Cybersecurity%20Curriculum&body=Check%20out%20this%20article%20from%20CyberSmrt:%20https://cybersmrt.org/blog/k12-curriculum" class="share-btn">Email</a>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <section class="related-posts">
+        <h2>Related Articles</h2>
+        <div class="related-grid">
+            <div class="related-card">
+                <span class="card-category">K-12 Education</span>
+                <h3><a href="packet-relay-activity.html">Teaching 5th Graders How the Internet Works (With a Relay Race)</a></h3>
+                <p>Packets, routers, and DNS servers aren't abstract when students physically act them out.</p>
+            </div>
+            <div class="related-card">
+                <span class="card-category">Community Impact</span>
+                <h3><a href="family-digital-safety.html">5 Digital Safety Conversations Every Family Should Have</a></h3>
+                <p>Essential cybersecurity discussions that protect your family online—no jargon required.</p>
+            </div>
+            <div class="related-card">
+                <span class="card-category">Workforce Development</span>
+                <h3><a href="career-pathways.html">From Underserved to Cyber Professional: Breaking Down Barriers</a></h3>
+                <p>Creating pathways for career changers from disadvantaged backgrounds to access high-paying cyber roles.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="../../../index.html">Home</a>
+            <a href="http://www.cybersmrt.org">www.cybersmrt.org</a>
+            <a href="mailto:tony@cybersmrt.org">tony@cybersmrt.org</a>
+            <a href="https://www.linkedin.com/company/cybersmrt">LinkedIn</a>
+        </div>
+        <p class="footer-text">
+            © 2025 CyberSmrt | Service-Disabled Veteran-Owned 501(c)(3) | EIN: 33-3117801<br>
+            Securing the underserved, one community at a time.
+        </p>
+    </footer>
+</body>
+</html>

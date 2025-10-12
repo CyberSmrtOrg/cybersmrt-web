@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - CyberSmrt | Securing the Underserved</title>
+    <meta name="description" content="Insights on cybersecurity education, equity, and protecting underserved communities from the CyberSmrt team.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero */
+        .blog-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .blog-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+        }
+
+        .blog-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            background: #111;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Blog Grid */
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .featured-post {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            transition: all 0.3s;
+        }
+
+        .featured-post:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .featured-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .featured-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .featured-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .post-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta span {
+            margin-right: 1.5rem;
+        }
+
+        .post-excerpt {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            background: #764ba2;
+            transform: translateX(5px);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .blog-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .card-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #fff;
+        }
+
+        .card-content h3 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .card-content h3 a:hover {
+            color: #667eea;
+        }
+
+        .card-excerpt {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .featured-content {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="../../index.html" class="nav-logo">CYBERSMRT</a>
+            <div class="nav-links">
+                <a href="../../index.html">Home</a>
+                <a href="../about/team.html">About</a>
+                <a href="../../index.html#programs">Programs</a>
+                <a href="index.html">Blog</a>
+                <a href="mailto:tony@cybersmrt.org">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="blog-hero">
+        <h1>CyberSmrt Blog</h1>
+        <p>Insights on cybersecurity education, equity, and protecting underserved communities</p>
+    </section>
+
+    <section class="category-filter">
+        <div class="filter-buttons">
+            <button class="filter-btn active">All Posts</button>
+            <button class="filter-btn">K-12 Education</button>
+            <button class="filter-btn">Community Impact</button>
+            <button class="filter-btn">Cybersecurity Tips</button>
+            <button class="filter-btn">Workforce Development</button>
+            <button class="filter-btn">Partner News</button>
+        </div>
+    </section>
+
+    <div class="blog-container">
+        <!-- Featured Post -->
+        <article class="featured-post">
+            <div class="featured-content">
+                <div class="featured-image">🎓</div>
+                <div class="featured-text">
+                    <h2>Building a K-12 Cybersecurity Curriculum That Actually Works</h2>
+                    <div class="post-meta">
+                        <span>📅 January 15, 2025</span>
+                        <span>👤 Tony Thompson</span>
+                        <span>⏱️ 8 min read</span>
+                    </div>
+                    <p class="post-excerpt">
+                        After 15 years in Navy cybersecurity and months of collaboration with NEAAAT Charter School,
+                        we've learned that teaching cyber to 5th graders requires more than just simplified lectures.
+                        Here's how we're building a competency-based curriculum that empowers students and transforms communities.
+                    </p>
+                    <a href="posts/k12-curriculum-design.html" class="read-more">Read Full Story →</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Blog Grid -->
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="card-image">🛡️</div>
+                <div class="card-content">
+                    <span class="card-category">Community Impact</span>
+                    <h3><a href="posts/nonprofit-security-gap.html">The Nonprofit Security Gap: Why 27% Experience Breaches</a></h3>
+                    <p class="card-excerpt">
+                        Nonprofits store some of the most sensitive data—donor information, beneficiary records,
+                        financial data—yet 47% have zero cybersecurity budget. Here's what we're doing about it.
+                    </p>
+                    <div class="card-footer">
+                        <span>January 10, 2025</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="card-image">👶</div>
+                <div class="card-content">
+                    <span class="card-category">Cybersecurity Tips</span>
+                    <h3><a href="posts/family-digital-safety.html">5 Digital Safety Conversations Every Family Should Have</a></h3>
+                    <p class="card-excerpt">
+                        From password managers to phishing awareness, here are the essential cybersecurity
+                        discussions that protect your family online—explained without the jargon.
+                    </p>
+                    <div class="card-footer">
+                        <span>January 8, 2025</span>
+                        <span>6 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="card-image">💼</div>
+                <div class="card-content">
+                    <span class="card-category">Workforce Development</span>
+                    <h3><a href="posts/career-pathways.html">From Underserved to Cyber Professional: Breaking Down Barriers</a></h3>
+                    <p class="card-excerpt">
+                        The cybersecurity field desperately needs diverse talent. We're creating pathways for
+                        career changers from disadvantaged backgrounds to access high-paying cyber roles.
+                    </p>
+                    <div class="card-footer">
+                        <span>January 5, 2025</span>
+                        <span>7 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="card-image">🤝</div>
+                <div class="card-content">
+                    <span class="card-category">Partner News</span>
+                    <h3><a href="posts/tenable-partnership.html">Partnering with Tenable: Enterprise Security for Underserved Orgs</a></h3>
+                    <p class="card-excerpt">
+                        How our partnership with Tenable enables us to bring enterprise-grade vulnerability
+                        management to nonprofits and small businesses at accessible price points.
+                    </p>
+                    <div class="card-footer">
+                        <span>January 3, 2025</span>
+                        <span>4 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="card-image">🏫</div>
+                <div class="card-content">
+                    <span class="card-category">K-12 Education</span>
+                    <h3><a href="posts/packet-relay-activity.html">Teaching 5th Graders How the Internet Works (With a Relay Race)</a></h3>
+                    <p class="card-excerpt">
+                        Packets, routers, and DNS servers aren't abstract concepts when students physically
+                        act them out. Here's our kinesthetic approach to teaching networking fundamentals.
+                    </p>
+                    <div class="card-footer">
+                        <span>December 28, 2024</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="card-image">👵</div>
+                <div class="card-content">
+                    <span class="card-category">Community Impact</span>
+                    <h3><a href="posts/senior-scam-protection.html">Protecting Seniors from Digital Scams: An Age-Inclusive Approach</a></h3>
+                    <p class="card-excerpt">
+                        Older adults are disproportionately targeted by cybercriminals. Our digital literacy
+                        program meets seniors where they are with patient, respectful education.
+                    </p>
+                    <div class="card-footer">
+                        <span>December 22, 2024</span>
+                        <span>6 min read</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="../../index.html">Home</a>
+            <a href="http://www.cybersmrt.org">www.cybersmrt.org</a>
+            <a href="mailto:tony@cybersmrt.org">tony@cybersmrt.org</a>
+            <a href="https://www.linkedin.com/company/cybersmrt">LinkedIn</a>
+        </div>
+        <p class="footer-text">
+            © 2025 CyberSmrt | Service-Disabled Veteran-Owned 501(c)(3) | EIN: 33-3117801<br>
+            Securing the underserved, one community at a time.
+        </p>
+    </footer>
+
+    <script>
+        // Simple category filter (client-side for now)
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const blogCards = document.querySelectorAll('.blog-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.textContent;
+
+                // Filter cards
+                blogCards.forEach(card => {
+                    const cardCategory = card.querySelector('.card-category').textContent;
+
+                    if (category === 'All Posts' || cardCategory === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
