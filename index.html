@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSmrt - Securing the Underserved</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .logo-shield {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mission {
+            background: #111;
+        }
+
+        .mission {
+            background: #111;
+        }
+
+        .equity-focus {
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
+            position: relative;
+        }
+
+        .equity-focus::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .equity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .equity-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .equity-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(102, 126, 234, 0.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .equity-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            filter: grayscale(20%);
+        }
+
+        .equity-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .equity-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .equity-callout {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .equity-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .equity-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .equity-stat strong {
+            font-size: 3rem;
+            color: #667eea;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .equity-stat span {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            max-width: 200px;
+        }
+
+        .mission-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            color: #d0d0d0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.5rem;
+        }
+
+        .stats {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 5rem 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .partners {
+            background: #111;
+            overflow: hidden;
+        }
+
+        .partners-scroll {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .partners-track {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+        }
+
+        .partners-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .partner-logo {
+            flex: 0 0 auto;
+            margin: 0 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 2rem 3rem;
+            min-width: 180px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            transition: all 0.3s ease;
+            margin-bottom: 0.75rem;
+        }
+
+        .logo-box:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .partner-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin: 0;
+        }
+
+        .programs {
+            background: #0a0a0a;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .program-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .program-description {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .program-highlight {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .funding-ask {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .funding-ask h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.4rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo-container">
+                <svg class="logo-shield" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M100 10 L180 40 L180 100 Q180 150 100 190 Q20 150 20 100 L20 40 Z"
+                          fill="none" stroke="white" stroke-width="8"/>
+                    <circle cx="70" cy="60" r="8" fill="white"/>
+                    <circle cx="70" cy="90" r="8" fill="white"/>
+                    <circle cx="70" cy="120" r="8" fill="white"/>
+                    <line x1="70" y1="60" x2="90" y2="75" stroke="white" stroke-width="6"/>
+                    <line x1="70" y1="90" x2="90" y2="90" stroke="white" stroke-width="6"/>
+                    <line x1="70" y1="120" x2="90" y2="105" stroke="white" stroke-width="6"/>
+                    <path d="M110 50 Q130 50 130 70 Q130 85 120 95 L120 110 Q120 115 115 115 L105 115 Q100 115 100 110 L100 95 Q90 85 90 70 Q90 50 110 50 M110 60 Q105 60 105 70 Q105 77 110 82 Q115 77 115 70 Q115 60 110 60"
+                          fill="white"/>
+                </svg>
+                <h1 class="logo">CYBERSMRT</h1>
+            </div>
+            <p class="tagline">Securing the Underserved</p>
+            <p class="subtitle">A Service-Disabled Veteran-Owned 501(c)(3) Cybersecurity Nonprofit</p>
+            <div class="cta-buttons">
+                <a href="mailto:tony@cybersmrt.org" class="btn btn-primary">Get Involved</a>
+                <a href="#programs" class="btn btn-secondary">Our Programs</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission section">
+        <h2 class="section-title">Our Mission</h2>
+        <p class="mission-text">
+            CyberSmrt bridges the cybersecurity equity gap by delivering accessible, high-quality education
+            and affordable cybersecurity services to nonprofits, schools, and small businesses. We envision
+            a future where every community—regardless of size or resources—has the knowledge and protection
+            to thrive in an increasingly digital world.
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+            <span class="badge">Service-Disabled Veteran-Owned</span>
+            <span class="badge">501(c)(3) Nonprofit</span>
+            <span class="badge">EIN: 33-3117801</span>
+        </div>
+    </section>
+
+    <section class="equity-focus section">
+        <h2 class="section-title">Who We Serve</h2>
+        <p style="text-align: center; color: #d0d0d0; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; line-height: 1.8;">
+            Cybersecurity shouldn't be a privilege—it's a necessity. We focus on communities
+            that have been left behind in the digital revolution.
+        </p>
+
+        <div class="equity-grid">
+            <div class="equity-card">
+                <div class="equity-icon">🏫</div>
+                <h3>Under-Resourced Schools</h3>
+                <p>Inner-city and rural schools that lack cybersecurity education programs and can't afford enterprise security solutions.</p>
+            </div>
+
+            <div class="equity-card">
+                <div class="equity-icon">🤝</div>
+                <h3>Community Nonprofits</h3>
+                <p>Mission-driven organizations protecting sensitive donor and beneficiary data without the budget for dedicated security staff.</p>
+            </div>
+
+            <div class="equity-card">
+                <div class="equity-icon">🏪</div>
+                <h3>Small Businesses</h3>
+                <p>Local businesses that keep communities alive but face 350% more cyberattacks than larger firms—with no security budget.</p>
+            </div>
+
+            <div class="equity-card">
+                <div class="equity-icon">👶</div>
+                <h3>Youth & Families</h3>
+                <p>Young people from underserved communities who deserve pathways to high-paying cybersecurity careers, not just awareness of threats.</p>
+            </div>
+
+            <div class="equity-card">
+                <div class="equity-icon">👵</div>
+                <h3>Seniors & Elderly</h3>
+                <p>Older adults who are disproportionately targeted by scams and need age-appropriate digital safety education.</p>
+            </div>
+
+            <div class="equity-card">
+                <div class="equity-icon">🌾</div>
+                <h3>Rural Communities</h3>
+                <p>Remote areas where broadband is just arriving but cybersecurity education and support are still years behind.</p>
+            </div>
+        </div>
+
+        <div class="equity-callout">
+            <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">The Equity Gap is Real</h3>
+            <div class="equity-stats">
+                <div class="equity-stat">
+                    <strong>47%</strong>
+                    <span>of companies with fewer than 50 employees have NO cybersecurity budget</span>
+                </div>
+                <div class="equity-stat">
+                    <strong>27%</strong>
+                    <span>of nonprofits report experiencing a cyber breach due to limited awareness</span>
+                </div>
+                <div class="equity-stat">
+                    <strong>41%</strong>
+                    <span>of small businesses experienced a cyberattack in the last 12 months</span>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; font-size: 1.1rem; opacity: 0.9;">
+                <strong>We meet communities where they are.</strong> Our volunteer-driven, mission-first approach
+                enables flexible pricing, sliding-scale services, and free resources for those who need them most.
+            </p>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Students in Pilot Program</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5-10</div>
+                <div class="stat-label">MSSP-lite Pilot Organizations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">K-12</div>
+                <div class="stat-label">Curriculum Development</div>
+            </div>
+            <div class="stat
