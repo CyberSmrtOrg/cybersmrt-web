@@ -1,0 +1,42 @@
+# OS files
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if you add any later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Blog Generator - KEEP PRIVATE, LOCAL ONLY
+blog-generator.html
+
+# Optional: Keep these local too if you want
+add-post.js
+build-blog.js
+
+# Temporary files
+*.tmp
+temp/
+.cache/
