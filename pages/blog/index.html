@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - CyberSmrt | Securing the Underserved</title>
     <meta name="description" content="Insights on cybersecurity education, equity, and protecting underserved communities from the CyberSmrt team.">
+    <!-- Orbitron font for header + page -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,43 +21,6 @@
             background: #0a0a0a;
             color: #ffffff;
             line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #333;
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .nav-links a {
-            color: #b0b0b0;
-            text-decoration: none;
-            margin-left: 2rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #667eea;
         }
 
         /* Hero */
@@ -315,8 +282,22 @@
     </style>
 </head>
 <body>
-  <!-- Shared header partial (injected at runtime) -->
-  <script src="/assets/js/header-init.js" defer></script>
+   <!-- Shared header mount + loader -->
+  <div id="header-mount"></div>
+  <script defer src="/assets/js/header-loader.js"></script>
+  <script defer src="/assets/js/header-init.js"></script>
+
+  <!-- No-JS header fallback -->
+  <noscript>
+    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+      <a href="/index.html" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+      <a href="/index.html" style="color:#cbd5e1;margin-right:1rem">Home</a>
+      <a href="/index.html#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+      <a href="/pages/blog/index.html" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/pages/about/index.html" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+    </nav>
+  </noscript>
 
     <section class="blog-hero">
         <h1>CyberSmrt Blog</h1>
@@ -456,43 +437,8 @@
         </div>
     </div>
 
-    <footer>
-        // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
-
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
-
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      }catch{}
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      }catch{}
-    }
-
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
-
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
-  <noscript>
+  <!-- Footer -->
+    <noscript>
         <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
         © 2025 CyberSmrt • <a href="/index.html" style="color:#8ab4ff">Home</a> ·
         <a href="/index.html#programs" style="color:#8ab4ff">Programs</a> ·
@@ -502,10 +448,12 @@
         </footer>
     </noscript>
 
+    <!-- Optional anchor if you really want #top to exist -->
+    <div id="top"></div>
+
     <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
     <div id="footer-mount"></div>
     <script defer src="/assets/js/footer-loader.js"></script>
-    </footer>
 
     <script>
         // Simple category filter (client-side for now)
