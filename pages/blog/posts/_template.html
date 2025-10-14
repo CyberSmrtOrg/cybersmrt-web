@@ -25,106 +25,92 @@
             line-height: 1.7;
         }
 
-        /* Navigation */
-        nav {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #333;
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .nav-links a {
-            color: #b0b0b0;
-            text-decoration: none;
-            margin-left: 2rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #667eea;
-        }
-
-        /* Article Header */
-        .article-header {
+        /* Blog Post Hero - Compact Version */
+        .post-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 6rem 2rem 4rem;
+            padding: 3rem 2rem 2.5rem; /* Reduced from likely 5-6rem */
             text-align: center;
         }
 
-        .article-category {
+        .category {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.4rem 1rem;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem; /* Reduced spacing */
         }
 
-        .article-header h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        .post-hero h1 {
+            font-family: "Orbitron", system-ui, sans-serif; /* Added Orbitron */
+            font-size: 2.5rem; /* Reduced from 3-4rem */
             font-weight: 900;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            line-height: 1.2;
+            margin-bottom: 1rem; /* Reduced spacing */
+            letter-spacing: 0.02em;
         }
 
-        .article-meta {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
+        .post-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem; /* Reduced spacing */
         }
 
-        .article-meta span {
-            margin: 0 1rem;
-        }
-
-        .author-info {
+        .author {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 0.75rem;
+            margin-top: 1rem; /* Reduced spacing */
         }
 
         .author-avatar {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
+            font-size: 2rem; /* Reduced from likely 2.5-3rem */
+            background: rgba(255, 255, 255, 0.15);
+            width: 50px; /* Reduced from likely 60-70px */
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            border-radius: 50%;
         }
 
-        .author-details h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
+        .author-info {
+            text-align: left;
         }
 
-        .author-details p {
-            font-size: 0.9rem;
-            opacity: 0.8;
+        .author-name {
+            font-weight: 700;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .author-title {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .post-hero {
+                padding: 2rem 1.5rem; /* Even more compact on mobile */
+            }
+
+            .post-hero h1 {
+                font-size: 1.8rem; /* Smaller on mobile */
+            }
+
+            .author-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
         }
 
         /* Article Content */
@@ -283,10 +269,6 @@
             .share-buttons {
                 flex-direction: column;
             }
-
-            .nav-links {
-                display: none;
-            }
         }
     </style>
 </head>
@@ -308,22 +290,26 @@
         </nav>
       </noscript>
 
-    <header class="article-header">
+      <section class="post-hero">
         <!-- Options: K-12 Education, Community Impact, Cybersecurity Tips, Workforce Development, Partner News -->
-        <span class="article-category">[CATEGORY]</span>
+        <span class="category">[CATEGORY]</span>
+
         <h1>[POST TITLE GOES HERE]</h1>
-        <div class="article-meta">
+
+        <div class="post-meta">
             <span>📅 [Month Day, Year]</span>
+            <span>•</span>
             <span>⏱️ [X] min read</span>
         </div>
-        <div class="author-info">
-            <div class="author-avatar">[EMOJI]</div>
-            <div class="author-details">
-                <h3>[Author Name]</h3>
-                <p>[Author Title/Bio]</p>
+
+        <div class="author">
+            <div class="author-avatar">👨‍💻</div>
+            <div class="author-info">
+                <span class="author-name">[Author Name]</span>
+                <span class="author-title">[Author Title/Bio]</span>
             </div>
         </div>
-    </header>
+    </section>
 
     <article class="article-container">
         <div class="article-content">
@@ -402,42 +388,6 @@
         </div>
     </article>
 
-    <footer>
-        // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
-
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
-
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      }catch{}
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      }catch{}
-    }
-
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
-
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
     <noscript>
         <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
         © 2025 CyberSmrt • <a href="/index.html" style="color:#8ab4ff">Home</a> ·

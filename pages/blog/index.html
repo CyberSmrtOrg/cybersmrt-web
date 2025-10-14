@@ -26,21 +26,60 @@
         /* Hero */
         .blog-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 6rem 2rem 4rem;
-            text-align: center;
+            padding: 4rem 2rem;
         }
 
-        .blog-hero h1 {
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .hero-logo img {
+            display: block;
+            border-radius: 20px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-family: "Orbitron", system-ui, sans-serif;
             font-size: 3.5rem;
             margin-bottom: 1rem;
             font-weight: 900;
+            letter-spacing: 0.02em;
         }
 
-        .blog-hero p {
+        .hero-text p {
             font-size: 1.3rem;
             opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-logo img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
         }
 
         /* Category Filter */
@@ -300,8 +339,20 @@
   </noscript>
 
     <section class="blog-hero">
-        <h1>CyberSmrt Blog</h1>
-        <p>Insights on cybersecurity education, equity, and protecting underserved communities</p>
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img
+                    src="/assets/logos/cybersmrt-logo-only.png"
+                    alt="CyberSmrt logo"
+                    width="200"
+                    height="200"
+                />
+            </div>
+            <div class="hero-text">
+                <h1>CYBERSMRT Blog</h1>
+                <p>Insights on cybersecurity education, equity, and protecting underserved communities</p>
+            </div>
+        </div>
     </section>
 
     <section class="category-filter">
