@@ -6,11 +6,6 @@ permissions:
 on:
   push:
     branches: [ main ]
-    paths:
-      - '**/*.html'
-      - '!**/_*.html'
-      - '!**/404.html'
-      - '!admin/**'
   workflow_dispatch:
 
 jobs:
