@@ -8,6 +8,7 @@ on:
       - '!**/_*.html'            # Except templates
       - '!**/404.html'           # Except 404 page
       - '!admin/**'              # Except admin folder
+  workflow_dispatch:
 
 jobs:
   update-sitemap:
