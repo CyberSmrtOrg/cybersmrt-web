@@ -1,0 +1,15 @@
+{
+  "posts": [
+    {
+      "title": "Building a K-12 Cybersecurity Curriculum That Actually Works",
+      "slug": "k12-curriculum-design",
+      "url": "/pages/blog/posts/k12-curriculum-design",
+      "date": "2025-01-15",
+      "category": "K-12 Education",
+      "excerpt": "After 15 years in Navy cybersecurity...",
+      "readTime": 8,
+      "author": "Tony Rossi",
+      "status": "published"
+    }
+  ]
+}

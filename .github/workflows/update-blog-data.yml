@@ -1,0 +1,35 @@
+name: Update Blog Data
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'pages/blog/posts/*.html'
+      - '!pages/blog/posts/_*.html'  # Ignore templates
+
+jobs:
+  update-blog-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update blog-data.json
+        run: |
+          node .github/scripts/update-blog-data.js
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add blog-data.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update blog-data.json"
+          git push
