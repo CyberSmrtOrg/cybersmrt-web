@@ -315,18 +315,8 @@
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-content">
-            <a href="../../index.html" class="nav-logo">CYBERSMRT</a>
-            <div class="nav-links">
-                <a href="../../index.html">Home</a>
-                <a href="../about/team.html">About</a>
-                <a href="../../index.html#programs">Programs</a>
-                <a href="index.html">Blog</a>
-                <a href="mailto:tony@cybersmrt.org">Contact</a>
-            </div>
-        </div>
-    </nav>
+  <!-- Shared header partial (injected at runtime) -->
+  <script src="/assets/js/header-init.js" defer></script>
 
     <section class="blog-hero">
         <h1>CyberSmrt Blog</h1>
@@ -467,16 +457,54 @@
     </div>
 
     <footer>
-        <div class="footer-links">
-            <a href="../../index.html">Home</a>
-            <a href="http://www.cybersmrt.org">www.cybersmrt.org</a>
-            <a href="mailto:tony@cybersmrt.org">tony@cybersmrt.org</a>
-            <a href="https://www.linkedin.com/company/cybersmrt">LinkedIn</a>
-        </div>
-        <p class="footer-text">
-            © 2025 CyberSmrt | Service-Disabled Veteran-Owned 501(c)(3) | EIN: 33-3117801<br>
-            Securing the underserved, one community at a time.
-        </p>
+        // Auto-year for the simple footer
+    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+
+    /**
+     * OPTIONAL asset loader — only injects CSS/JS if they exist,
+     * so you don’t get 404s while the page is unfinished.
+     * Update these when the real assets are ready.
+     */
+    const OPTIONAL_CSS = '/assets/css/this-page.css';
+    const OPTIONAL_JS  = '/assets/js/this-page.js';
+
+    async function injectOptionalCSS(href){
+      try{
+        const res = await fetch(href, { method:'HEAD' });
+        if(!res.ok) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet'; link.href = href;
+        document.head.appendChild(link);
+      }catch{}
+    }
+    async function injectOptionalModule(src){
+      try{
+        const res = await fetch(src, { method:'HEAD' });
+        if(!res.ok) return;
+        await import(src);
+      }catch{}
+    }
+
+    injectOptionalCSS(OPTIONAL_CSS);
+    injectOptionalModule(OPTIONAL_JS);
+
+    // No-op hook your future module can override
+    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
+    window.Page.ready();
+  </script>
+  <noscript>
+        <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
+        © 2025 CyberSmrt • <a href="/index.html" style="color:#8ab4ff">Home</a> ·
+        <a href="/index.html#programs" style="color:#8ab4ff">Programs</a> ·
+        <a href="/pages/blog/index.html" style="color:#8ab4ff">Blog</a> ·
+        <a href="/pages/about/index.html" style="color:#8ab4ff">About</a> ·
+        <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
+        </footer>
+    </noscript>
+
+    <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+    <div id="footer-mount"></div>
+    <script defer src="/assets/js/footer-loader.js"></script>
     </footer>
 
     <script>

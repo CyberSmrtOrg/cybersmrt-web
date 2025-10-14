@@ -1,18 +1,22 @@
-// Cloudflare Pages Function for /admin/* routes
-// This provides proper server-side authentication
+    // Cloudflare Pages Function for /admin/* routes
+    // This provides proper server-side authentication
+    // ⚠️ Credentials must be provided via Cloudflare Pages environment variables:
+    // ADMIN_USERNAME and ADMIN_PASSWORD (set for both Production and Preview).
+    // No hard-coded defaults in code.
 
-// ⚠️ IMPORTANT: Store these in Cloudflare Pages Environment Variables!
-// Go to: Dashboard → Pages → Your Project → Settings → Environment Variables
-// Add: ADMIN_USERNAME and ADMIN_PASSWORD
-const ADMIN_USERNAME = 'tony'; // Fallback - use env vars in production!
-const ADMIN_PASSWORD = 'CyberSmrt2025!'; // CHANGE THIS! Use env vars!
-
-export async function onRequest(context) {
+    export async function onRequest(context) {
     const { request, env } = context;
 
+
+
     // Get credentials from environment variables (more secure)
-    const validUsername = env.ADMIN_USERNAME || ADMIN_USERNAME;
-    const validPassword = env.ADMIN_PASSWORD || ADMIN_PASSWORD;
+    const validUsername = env.ADMIN_USERNAME;
+      const validPassword = env.ADMIN_PASSWORD;
+      if (!validUsername || !validPassword) {
+        return new Response('Server misconfigured: missing ADMIN_USERNAME/ADMIN_PASSWORD', {
+          status: 500
+        });
+      }
 
     // Check for Authorization header
     const authorization = request.headers.get('Authorization');
