@@ -48,9 +48,8 @@
     }
     .footer-right a:hover { color: #ffffff; opacity: 1; }
 
-    /* NEW: full-width row for the Back to top link */
     .footer-back {
-      grid-column: 1 / -1;      /* span both columns */
+      grid-column: 1 / -1;
       text-align: center;
       margin-top: .25rem;
     }
@@ -72,57 +71,20 @@
   <div class="footer-inner">
     <div class="footer-left">
       <strong class="brand">CYBERSMRT</strong> • Service-Disabled Veteran-Owned 501(c)(3) • EIN: 33-3117801<br/>
-      © <span id="year"></span> CyberSmrt — Securing the underserved, one community at a time.
+      © <span id="year">2025</span> CyberSmrt — Securing the underserved, one community at a time.
     </div>
 
     <nav class="footer-right" aria-label="Footer">
-      <a href="/index.html">Home</a>
-      <a href="/index.html#programs">Programs</a>
-      <a href="/pages/blog/index.html">Blog</a>
-      <a href="/pages/about/index.html">About</a>
+      <a href="/">Home</a>
+      <a href="/#programs">Programs</a>
+      <a href="/pages/blog">Blog</a>
+      <a href="/pages/about">About</a>
       <a href="mailto:tony@cybersmrt.org">Contact</a>
       <a href="https://www.linkedin.com/company/cybersmrt" target="_blank" rel="noopener">LinkedIn ↗</a>
     </nav>
 
-    <!-- NEW: centered on its own line -->
     <div class="footer-back">
       <a class="to-top" href="#top" aria-label="Back to top">Back to top ↑</a>
     </div>
   </div>
-
-  <script>
-  // Auto-year + quick "Back to top" (respects reduced motion)
-  (function () {
-    var y = document.getElementById('year');
-    if (y) y.textContent = new Date().getFullYear();
-
-    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function quickToTop(ms = 250) {        // ~0.25s sprint
-      if (prefersReduced) { window.scrollTo(0, 0); return; }
-
-      var startY = window.scrollY || window.pageYOffset;
-      if (startY <= 0) return;
-
-      var startT = performance.now();
-      // easeInOutQuad
-      var ease = function (t) { return t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2; };
-
-      function step(now) {
-        var t = Math.min(1, (now - startT) / ms);
-        var y = Math.round(startY * (1 - ease(t)));
-        window.scrollTo(0, y);
-        if (t < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    document.querySelectorAll('a[href="#top"]').forEach(function(a){
-      a.addEventListener('click', function(e){
-        e.preventDefault();
-        quickToTop(220); // tweak duration here (in ms)
-      });
-    });
-  })();
-</script>
 </footer>
