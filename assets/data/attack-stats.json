@@ -1,0 +1,27 @@
+{
+  "category_share": {
+    "nonprofit": 0.32,
+    "school": 0.28,
+    "smb": 0.27,
+    "underserved": 0.13
+  },
+  "origin_region_share": {
+    "na": 0.36,
+    "eu": 0.25,
+    "apac": 0.26,
+    "latam": 0.07,
+    "africa": 0.06
+  },
+  "dest_region_bias": {
+    "nonprofit": { "africa": 1.2, "latam": 1.1 },
+    "school":    { "apac": 1.1, "africa": 1.15 },
+    "smb":       { "apac": 1.1, "latam": 1.05 },
+    "underserved": { "africa": 1.25, "apac": 1.05 }
+  },
+  "vectors": {
+    "nonprofit": ["Credential stuffing", "BEC", "Ransomware", "Web exploit"],
+    "school":    ["Phishing", "Malware", "Account takeover", "RAT"],
+    "smb":       ["Phishing", "Ransomware", "SQLi", "Vishing"],
+    "underserved":["Phishing", "Malware", "Smishing", "Web exploit"]
+  }
+}

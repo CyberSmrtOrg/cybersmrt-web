@@ -1,0 +1,87 @@
+<!-- /partials/header.html -->
+<header class="site-header" role="banner">
+  <style>
+    :root {
+      --hdr-bg: rgba(6, 10, 22, 0.82);
+      --hdr-border: rgba(148,163,184,.18);
+      --brand: #8ab4ff;
+    }
+
+    /* Orbitron is loaded in the page <head> */
+    .nav-logo, .site-brand, .logo-wordmark, .nav-brand span {
+      font-family: "Orbitron", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--hdr-border);
+      background: var(--hdr-bg);
+    }
+
+    .site-header .site-nav {
+      max-width: 1200px; margin: 0 auto; padding: .65rem 1rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+
+    .site-header .nav-brand {
+      display: inline-flex; align-items: center; gap: .6rem;
+      color: var(--brand); text-decoration: none;
+    }
+    .site-header .nav-brand img { display:block; border-radius:6px; }
+
+    .site-header .nav-links { display:flex; gap:1.25rem; align-items:center; }
+    .site-header .nav-links a {
+      color:#cbd5e1; text-decoration:none; font-weight:600; opacity:.9;
+      padding-bottom: 2px;
+    }
+    .site-header .nav-links a:hover { color:#ffffff; opacity:1; }
+    .site-header .nav-links a.is-active,
+    .site-header .nav-links a[aria-current="page"] {
+      color:#fff; border-bottom:2px solid #60a5fa;
+    }
+
+    .site-header .nav-toggle{
+      display:none; width:40px; height:40px; border:0; background:transparent; position:relative;
+    }
+    .site-header .nav-toggle span{
+      position:absolute; left:9px; right:9px; height:2px; background:#e5e7eb; transition:.2s;
+    }
+    .site-header .nav-toggle span:nth-child(1){ top:12px; }
+    .site-header .nav-toggle span:nth-child(2){ top:19px; }
+    .site-header .nav-toggle span:nth-child(3){ top:26px; }
+
+    @media (max-width: 900px){
+      .site-header .nav-toggle{ display:block; }
+      .site-header .nav-links{
+        position:absolute; top:100%; right:0; left:0;
+        background: rgba(6,10,22,.96);
+        border-bottom:1px solid var(--hdr-border);
+        display:none; flex-direction:column; padding:.75rem 1rem; gap:.9rem;
+      }
+      .site-header .nav-links.show{ display:flex; }
+    }
+  </style>
+
+  <nav class="site-nav">
+    <a class="nav-brand" href="/index.html" aria-label="CyberSmrt home">
+      <img src="/assets/logos/cybersmrt-logo-only.png" alt="" width="36" height="36" />
+      <span>CYBERSMRT</span>
+    </a>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" role="navigation" aria-label="Primary">
+      <a href="/index.html">Home</a>
+      <a href="/index.html#programs">Programs</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about/index.html">About</a>
+      <a href="mailto:tony@cybersmrt.org">Contact</a>
+    </div>
+  </nav>
+</header>

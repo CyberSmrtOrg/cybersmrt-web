@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page Title • CyberSmrt</title>
+  <meta name="description" content="Coming soon." />
+
+  <!-- Orbitron font for header + page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Base minimal styles so the placeholder looks OK -->
+  <style>
+    :root{
+      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
+      --card:#0f1424; --stroke:rgba(148,163,184,.18);
+      --accent:#60a5fa; --accent2:#a78bfa;
+    }
+    *{box-sizing:border-box}
+    html{scrollbar-gutter:stable both-edges}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
+    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
+    .wrap{width:min(1100px,92vw);margin-inline:auto}
+    .placeholder{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
+      border-radius:16px; padding:clamp(20px,3vw,28px);
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    .placeholder h1{
+      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
+      font-size:clamp(1.4rem,3.6vw,2.2rem);
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .placeholder p{margin:.25rem 0; color:var(--muted)}
+    .dots{display:inline-flex;gap:6px;margin-left:6px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
+    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
+    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
+    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
+    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
+    .btn{
+      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
+      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+    }
+    .btn:hover{border-color:rgba(96,165,250,.45)}
+    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <a id="top"></a>
+
+  <!-- Shared header mount + loader -->
+  <div id="header-mount"></div>
+  <script defer src="/assets/js/header-loader.js"></script>
+  <script defer src="/assets/js/header-init.js"></script>
+
+  <!-- No-JS header fallback -->
+  <noscript>
+    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+      <a href="/index.html" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+      <a href="/index.html" style="color:#cbd5e1;margin-right:1rem">Home</a>
+      <a href="/index.html#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+      <a href="/blog/index.html" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/about/index.html" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+    </nav>
+  </noscript>
+
+  <main>
+    <div class="wrap">
+      <section class="placeholder" aria-live="polite">
+        <h1>
+          Coming soon
+          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+        </h1>
+        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
+        <div class="links">
+          <a class="btn" href="/index.html">← Back to home</a>
+          <a class="btn" href="/blog/index.html">Visit the blog</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
+  </footer>
+
+  <script>
+    // Auto-year for the simple footer
+    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+
+    /**
+     * OPTIONAL asset loader — only injects CSS/JS if they exist,
+     * so you don’t get 404s while the page is unfinished.
+     * Update these when the real assets are ready.
+     */
+    const OPTIONAL_CSS = '/assets/css/this-page.css';
+    const OPTIONAL_JS  = '/assets/js/this-page.js';
+
+    async function injectOptionalCSS(href){
+      try{
+        const res = await fetch(href, { method:'HEAD' });
+        if(!res.ok) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet'; link.href = href;
+        document.head.appendChild(link);
+      }catch{}
+    }
+    async function injectOptionalModule(src){
+      try{
+        const res = await fetch(src, { method:'HEAD' });
+        if(!res.ok) return;
+        await import(src);
+      }catch{}
+    }
+
+    injectOptionalCSS(OPTIONAL_CSS);
+    injectOptionalModule(OPTIONAL_JS);
+
+    // No-op hook your future module can override
+    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
+    window.Page.ready();
+  </script>
+  <noscript>
+    <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
+      © 2025 CyberSmrt • <a href="/index.html" style="color:#8ab4ff">Home</a> ·
+      <a href="/index.html#programs" style="color:#8ab4ff">Programs</a> ·
+      <a href="/blog/index.html" style="color:#8ab4ff">Blog</a> ·
+      <a href="/about/index.html" style="color:#8ab4ff">About</a> ·
+      <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
+    </footer>
+  </noscript>
+
+  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+  <div id="footer-mount"></div>
+  <script defer src="/assets/js/footer-loader.js"></script>
+</body>
+</html>
