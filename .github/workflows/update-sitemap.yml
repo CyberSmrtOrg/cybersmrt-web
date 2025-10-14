@@ -7,10 +7,10 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '**/*.html'              # Any HTML file anywhere
-      - '!**/_*.html'            # Except templates
-      - '!**/404.html'           # Except 404 page
-      - '!admin/**'              # Except admin folder
+      - '**/*.html'
+      - '!**/_*.html'
+      - '!**/404.html'
+      - '!admin/**'
   workflow_dispatch:
 
 jobs:
@@ -22,6 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Fetch full history
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -32,10 +33,31 @@ jobs:
         run: |
           node .github/scripts/generate-sitemap.js
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add sitemap.xml
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-update sitemap.xml"
-          git push
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "🤖 Auto-update sitemap.xml"
+
+          # Try to push with retry logic
+          max_attempts=3
+          attempt=1
+          while [ $attempt -le $max_attempts ]; do
+            echo "Push attempt $attempt of $max_attempts"
+            git pull --rebase origin main && git push && break
+            attempt=$((attempt + 1))
+            sleep 2
+          done
+
+          if [ $attempt -gt $max_attempts ]; then
+            echo "Failed to push after $max_attempts attempts"
+            exit 1
+          fi
