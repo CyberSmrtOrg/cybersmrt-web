@@ -6,6 +6,7 @@ on:
     paths:
       - 'pages/blog/posts/*.html'
       - '!pages/blog/posts/_*.html'  # Ignore templates
+  workflow_dispatch:
 
 jobs:
   update-blog-data:
