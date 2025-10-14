@@ -3,57 +3,284 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
+  <title>About CyberSmrt • Securing the Underserved</title>
+  <meta name="description" content="Learn about CyberSmrt's mission to close the cybersecurity equity gap and empower underserved communities." />
 
-  <!-- Orbitron font for header + page -->
+  <!-- Orbitron font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
-  <!-- Base minimal styles so the placeholder looks OK -->
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      line-height: 1.6;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    /* Hero */
+    .page-hero {
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .page-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .page-hero p {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      background: linear-gradient(135deg, #9240e4 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: #d0d0d0;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    /* About Cards Grid */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .about-card {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .about-card:hover {
+      transform: translateY(-8px);
+      border-color: #9240e4;
+      box-shadow: 0 20px 40px rgba(146, 64, 228, 0.3);
+      background: linear-gradient(135deg, rgba(146, 64, 228, 0.1), rgba(96, 165, 250, 0.05));
+    }
+
+    .card-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      filter: grayscale(20%);
+    }
+
+    .about-card:hover .card-icon {
+      filter: none;
+      transform: scale(1.1);
+      transition: all 0.3s;
+    }
+
+    .about-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #9240e4;
+    }
+
+    .about-card p {
+      color: #b0b0b0;
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-arrow {
+      color: #9240e4;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* Overview Section */
+    .overview {
+      background: linear-gradient(135deg, rgba(146, 64, 228, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+      border: 2px solid rgba(146, 64, 228, 0.3);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .overview h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #9240e4;
+      text-align: center;
+    }
+
+    .overview p {
+      color: #d0d0d0;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #9240e4;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* Values Section */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .value-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(146, 64, 228, 0.2);
+      border-radius: 15px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .value-card:hover {
+      border-color: #9240e4;
+      background: rgba(146, 64, 228, 0.05);
+      transform: translateY(-3px);
+    }
+
+    .value-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .value-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: #9240e4;
+    }
+
+    .value-card p {
+      color: #b0b0b0;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      border-radius: 20px;
+      padding: 4rem 3rem;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .btn-white {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: white;
+      color: #9240e4;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: all 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .page-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .page-hero p {
+        font-size: 1.1rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-section {
+        padding: 3rem 2rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <a id="top"></a>
-
-  <!-- Shared header mount + loader -->
+  <!-- Shared header -->
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
   <script defer src="/assets/js/header-init.js"></script>
@@ -70,65 +297,154 @@
     </nav>
   </noscript>
 
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="hero-content">
+      <h1>About CyberSmrt</h1>
+      <p>
+        A Service-Disabled Veteran-Owned 501(c)(3) nonprofit bridging the cybersecurity equity gap
+        through accessible education and affordable services for underserved communities.
+      </p>
     </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- Overview -->
+    <section class="overview">
+      <h2>Who We Are</h2>
+      <p>
+        CyberSmrt was founded on the belief that cybersecurity shouldn't be a privilege reserved
+        for well-funded organizations and affluent communities. With 15+ years of Navy cybersecurity
+        experience, we saw firsthand how the digital divide leaves vulnerable populations exposed
+        to increasingly sophisticated cyber threats.
+      </p>
+      <p>
+        We're changing that by delivering high-quality cybersecurity education to K-12 students in
+        underserved schools, providing affordable managed security services to nonprofits and small
+        businesses, and creating workforce development pathways for adults from disadvantaged backgrounds.
+      </p>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number">200+</span>
+          <span class="stat-label">Students Served</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">501(c)(3)</span>
+          <span class="stat-label">Nonprofit Status</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">SDVOSB</span>
+          <span class="stat-label">Veteran-Owned</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Cards -->
+    <section class="section">
+      <h2 class="section-title">Learn More About Us</h2>
+      <p class="section-subtitle">
+        Explore our mission, impact, and the team working to secure the underserved.
+      </p>
+
+      <div class="about-grid">
+        <!-- Mission Card -->
+        <a href="/pages/about/mission" class="about-card">
+          <div class="card-icon">🎯</div>
+          <h3>Our Mission</h3>
+          <p>
+            Discover how we're closing the cybersecurity equity gap through education,
+            accessible services, and community empowerment.
+          </p>
+          <span class="card-arrow">Learn More →</span>
+        </a>
+
+        <!-- Impact Card -->
+        <a href="/pages/about/impact" class="about-card">
+          <div class="card-icon">📈</div>
+          <h3>Our Impact</h3>
+          <p>
+            See the real-world results of our programs and how we're transforming
+            communities through cybersecurity education.
+          </p>
+          <span class="card-arrow">View Impact →</span>
+        </a>
+
+        <!-- Team Card -->
+        <a href="/pages/about/team" class="about-card">
+          <div class="card-icon">👥</div>
+          <h3>Our Team</h3>
+          <p>
+            Meet the veterans, educators, and cybersecurity professionals dedicated
+            to securing the underserved.
+          </p>
+          <span class="card-arrow">Meet the Team →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="section">
+      <h2 class="section-title">Our Values</h2>
+      <p class="section-subtitle">
+        The principles that guide everything we do.
+      </p>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h4>Equity First</h4>
+          <p>
+            Cybersecurity shouldn't be a privilege. We prioritize those who need it most
+            and can afford it least.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">🎓</div>
+          <h4>Education-Focused</h4>
+          <p>
+            Knowledge is power. We empower communities through hands-on, practical
+            cybersecurity education.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">🛡️</div>
+          <h4>Quality Standards</h4>
+          <p>
+            Enterprise-grade protection for everyone. We never compromise on security
+            quality, only on pricing.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-icon">🌟</div>
+          <h4>Service-Driven</h4>
+          <p>
+            Veteran-owned and mission-first. We measure success by communities protected,
+            not profits earned.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>Join Our Mission</h2>
+      <p>Help us close the cybersecurity equity gap and protect underserved communities.</p>
+      <a href="/pages/get-involved/volunteer" class="btn-white">Get Involved →</a>
+    </section>
+
   </main>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
-
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
-
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
-
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      }catch{}
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      }catch{}
-    }
-
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
-
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
+  <!-- Shared footer -->
   <noscript>
     <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
+      © 2025 CyberSmrt •
+      <a href="/" style="color:#8ab4ff">Home</a> ·
       <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
       <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
       <a href="/pages/about" style="color:#8ab4ff">About</a> ·
@@ -136,7 +452,6 @@
     </footer>
   </noscript>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
 </body>

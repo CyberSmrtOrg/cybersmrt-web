@@ -3,57 +3,248 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
+  <title>Our Team • CyberSmrt</title>
+  <meta name="description" content="Meet the veterans, educators, and cybersecurity professionals working to close the digital security gap." />
 
-  <!-- Orbitron font for header + page -->
+  <!-- Orbitron font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
-  <!-- Base minimal styles so the placeholder looks OK -->
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      line-height: 1.6;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    /* Hero with your new gradient */
+    .page-hero {
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .page-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .page-hero p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #9240e4 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    /* Leadership Card */
+    .leadership-card {
+      background: linear-gradient(135deg, rgba(146, 64, 228, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+      border: 2px solid rgba(146, 64, 228, 0.3);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .leadership-content {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .leader-avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      box-shadow: 0 10px 40px rgba(146, 64, 228, 0.3);
+    }
+
+    .leader-info h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #9240e4;
+    }
+
+    .leader-info h4 {
+      font-size: 1.2rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .leader-info p {
+      color: #d0d0d0;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    /* Team Grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .team-card {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+      border-color: #9240e4;
+      box-shadow: 0 20px 40px rgba(146, 64, 228, 0.2);
+    }
+
+    .team-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .team-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #9240e4;
+    }
+
+    .team-title {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .team-bio {
+      color: #b0b0b0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .team-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(146, 64, 228, 0.2);
+      color: #9240e4;
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Join CTA */
+    .join-cta {
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .join-cta h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .join-cta p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: white;
+      color: #9240e4;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      .leadership-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .leader-avatar {
+        margin: 0 auto;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <a id="top"></a>
-
-  <!-- Shared header mount + loader -->
+  <!-- Shared header -->
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
   <script defer src="/assets/js/header-init.js"></script>
@@ -70,65 +261,140 @@
     </nav>
   </noscript>
 
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="hero-content">
+      <h1>Our Team</h1>
+      <p>Meet the veterans, educators, and cybersecurity professionals working to close the digital security gap</p>
     </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Leadership Section -->
+    <section class="section">
+      <h2 class="section-title">Leadership</h2>
+
+      <div class="leadership-card">
+        <div class="leadership-content">
+          <div class="leader-avatar">👨‍💻</div>
+          <div class="leader-info">
+            <h3>Tony Rossi</h3>
+            <h4>Founder & Executive Director</h4>
+            <p>
+              Tony brings 15+ years of Navy cybersecurity experience and a passion for educational equity.
+              After witnessing the stark digital divide firsthand, he founded CyberSmrt to ensure every
+              community—regardless of resources—has access to cybersecurity knowledge and protection.
+            </p>
+            <div class="team-badges">
+              <span class="badge">Navy Veteran</span>
+              <span class="badge">CISSP</span>
+              <span class="badge">CEH</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Team -->
+    <section class="section">
+      <h2 class="section-title">Core Team</h2>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">🛡️</div>
+          <h3 class="team-name">Security Operations Lead</h3>
+          <p class="team-title">MSSP Services</p>
+          <p class="team-bio">
+            Leading our managed security service offerings for nonprofits and small businesses,
+            bringing enterprise-grade protection to underserved organizations.
+          </p>
+          <div class="team-badges">
+            <span class="badge">Security+</span>
+            <span class="badge">GIAC</span>
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">🎓</div>
+          <h3 class="team-name">Curriculum Director</h3>
+          <p class="team-title">K-12 Education Programs</p>
+          <p class="team-bio">
+            Developing age-appropriate, hands-on cybersecurity curriculum for grades 5-12
+            in partnership with NEAAAT Charter School.
+          </p>
+          <div class="team-badges">
+            <span class="badge">Ed.M</span>
+            <span class="badge">CompTIA</span>
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">💼</div>
+          <h3 class="team-name">Workforce Development Lead</h3>
+          <p class="team-title">Adult Training Programs</p>
+          <p class="team-bio">
+            Creating career pathways for underserved adults to enter high-paying cybersecurity roles
+            through certification-aligned training.
+          </p>
+          <div class="team-badges">
+            <span class="badge">ISC²</span>
+            <span class="badge">Career Coach</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Advisors -->
+    <section class="section">
+      <h2 class="section-title">Advisory Board</h2>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">🤝</div>
+          <h3 class="team-name">Industry Advisor</h3>
+          <p class="team-title">Corporate Partnerships</p>
+          <p class="team-bio">
+            Guiding strategic partnerships with industry leaders like Tenable, ISC², and CompTIA
+            to ensure curriculum alignment and certification pathways.
+          </p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">🏫</div>
+          <h3 class="team-name">Education Advisor</h3>
+          <p class="team-title">Curriculum Development</p>
+          <p class="team-bio">
+            20+ years in K-12 education, specializing in STEM curriculum design and
+            competency-based learning frameworks.
+          </p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">⚖️</div>
+          <h3 class="team-name">Nonprofit Advisor</h3>
+          <p class="team-title">501(c)(3) Operations</p>
+          <p class="team-bio">
+            Providing guidance on nonprofit governance, fundraising strategy, and
+            mission-driven organizational growth.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Team CTA -->
+    <section class="join-cta">
+      <h2>Join Our Mission</h2>
+      <p>We're always looking for passionate volunteers, instructors, and partners who share our commitment to cybersecurity equity.</p>
+      <a href="/pages/get-involved/volunteer" class="btn">Get Involved →</a>
+    </section>
   </main>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
-
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
-
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
-
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      }catch{}
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      }catch{}
-    }
-
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
-
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
+  <!-- Shared footer -->
   <noscript>
     <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
+      © 2025 CyberSmrt •
+      <a href="/" style="color:#8ab4ff">Home</a> ·
       <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
       <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
       <a href="/pages/about" style="color:#8ab4ff">About</a> ·
@@ -136,7 +402,6 @@
     </footer>
   </noscript>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
 </body>
