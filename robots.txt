@@ -1,0 +1,16 @@
+# robots.txt for cybersmrt.org
+
+User-agent: *
+Allow: /
+
+# Block admin pages
+Disallow: /admin/
+
+# Block template files
+Disallow: /*/_*
+
+# Block function files
+Disallow: /functions/
+
+# Sitemap location
+Sitemap: https://cybersmrt.org/sitemap.xml
