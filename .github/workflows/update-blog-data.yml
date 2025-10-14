@@ -6,9 +6,6 @@ permissions:
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'pages/blog/posts/*.html'
-      - '!pages/blog/posts/_*.html'
   workflow_dispatch:
 
 jobs:
