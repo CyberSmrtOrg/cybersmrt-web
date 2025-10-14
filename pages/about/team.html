@@ -21,7 +21,7 @@
       line-height: 1.6;
     }
 
-    /* Hero with your new gradient */
+    /* Hero */
     .page-hero {
       background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
       padding: 4rem 2rem 3rem;
@@ -69,7 +69,7 @@
       color: transparent;
     }
 
-    /* Leadership Card */
+    /* Leadership Card with Headshot */
     .leadership-card {
       background: linear-gradient(135deg, rgba(146, 64, 228, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
       border: 2px solid rgba(146, 64, 228, 0.3);
@@ -82,10 +82,20 @@
       display: grid;
       grid-template-columns: 200px 1fr;
       gap: 2rem;
-      align-items: center;
+      align-items: start;
     }
 
-    .leader-avatar {
+    .leader-headshot {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #9240e4;
+      box-shadow: 0 10px 40px rgba(146, 64, 228, 0.4);
+    }
+
+    /* Placeholder for when no image exists */
+    .leader-headshot-placeholder {
       width: 200px;
       height: 200px;
       border-radius: 50%;
@@ -94,7 +104,8 @@
       align-items: center;
       justify-content: center;
       font-size: 5rem;
-      box-shadow: 0 10px 40px rgba(146, 64, 228, 0.3);
+      border: 4px solid #9240e4;
+      box-shadow: 0 10px 40px rgba(146, 64, 228, 0.4);
     }
 
     .leader-info h3 {
@@ -138,7 +149,16 @@
       box-shadow: 0 20px 40px rgba(146, 64, 228, 0.2);
     }
 
-    .team-avatar {
+    .team-headshot {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      object-fit: cover;
+      border: 3px solid #9240e4;
+    }
+
+    .team-headshot-placeholder {
       width: 150px;
       height: 150px;
       border-radius: 50%;
@@ -148,6 +168,7 @@
       align-items: center;
       justify-content: center;
       font-size: 4rem;
+      border: 3px solid #9240e4;
     }
 
     .team-name {
@@ -233,8 +254,9 @@
         text-align: center;
       }
 
-      .leader-avatar {
-        margin: 0 auto;
+      .leader-headshot,
+      .leader-headshot-placeholder {
+        margin: 0 auto 1.5rem;
       }
 
       .team-grid {
@@ -244,6 +266,8 @@
   </style>
 </head>
 <body>
+  <a id="top"></a>
+
   <!-- Shared header -->
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
@@ -277,19 +301,115 @@
 
       <div class="leadership-card">
         <div class="leadership-content">
-          <div class="leader-avatar">👨‍💻</div>
+          <img src="/assets/team/tony-rossi.jpg" alt="Tony Rossi" class="leader-headshot">
+
           <div class="leader-info">
             <h3>Tony Rossi</h3>
             <h4>Founder & Executive Director</h4>
             <p>
-              Tony brings 15+ years of Navy cybersecurity experience and a passion for educational equity.
-              After witnessing the stark digital divide firsthand, he founded CyberSmrt to ensure every
-              community—regardless of resources—has access to cybersecurity knowledge and protection.
+              Tony Rossi is a Service-Disabled Veteran with 15+ years of distinguished Navy cybersecurity experience,
+              specializing in critical infrastructure protection, threat analysis, and security operations. Throughout
+              his military career, he led teams responsible for securing classified networks and defending against
+              nation-state adversaries in high-stakes operational environments. His technical expertise encompasses
+              network security architecture, penetration testing, security monitoring (SIEM), and compliance frameworks
+              including NIST 800-53, DoD RMF, and CMMC.
+              <br>
+              After witnessing the stark digital divide between well-resourced institutions and underserved communities,
+              Tony founded CyberSmrt as a 501(c)(3) nonprofit with a clear mission: make enterprise-grade cybersecurity
+              education and protection accessible to those who need it most. He recognized that low-income schools,
+              small nonprofits, and disadvantaged communities face the same cyber threats as Fortune 500 companies but
+              lack the resources to defend themselves effectively. This inequity drove him to create programs that bridge
+              the gap through hands-on K-12 curriculum, affordable managed security services (MSSP Lite), and workforce
+              development pathways for adults from underserved backgrounds.
+              <br>
+              Tony's approach combines technical rigor with educational equity, ensuring that students and organizations
+              receive the same caliber of training and protection that he provided in defense environments—adapted for
+              resource-constrained settings. He holds industry-recognized certifications including CISSP and CEH, and
+              brings a veteran's commitment to service, translating military discipline and mission focus into tangible
+              community impact. His vision is a future where ZIP code doesn't determine cybersecurity access, and every
+              community has the knowledge and tools to defend against digital threats.
             </p>
             <div class="team-badges">
+              <span class="badge">Father</span>
+              <span class="badge">CEO</span>
+              <span class="badge">M.S. Cyber</span>
+              <span class="badge">PhD Candidate</span>
               <span class="badge">Navy Veteran</span>
               <span class="badge">CISSP</span>
+              <span class="badge">CISM</span>
               <span class="badge">CEH</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="leadership-card">
+        <div class="leadership-content">
+          <img src="/assets/team/charles-heinen.png" alt="Charles Heinen" class="leader-headshot">
+
+          <div class="leader-info">
+            <h3>Charles Heinen</h3>
+            <h4>Chief Information Security Officer</h4>
+            <p>
+              Dr. Charles Heinen is a distinguished cybersecurity professional with a Doctorate in Information Assurance
+              and multiple advanced degrees in technology and management. Over the course of 15+ years, he has built a
+              proven track record of securing mission-critical systems in federal, defense, and intelligence environments.
+              His technical expertise spans threat intelligence, incident response, SIEM/IDS/IPS platforms, vulnerability management,
+              and cloud security architecture across AWS, Azure, and Google Cloud.
+              <br>
+              In addition to his operational leadership, Dr. Heinen has made a significant impact in academia, serving as an adjunct
+              professor at multiple universities. He has designed and taught more than 40 advanced courses in cybersecurity,
+              digital forensics, and cyber operations, blending hands-on labs with industry frameworks such as NIST, MITRE ATT&CK,
+              and RMF. His instructional approach has prepared hundreds of students for certifications and successful careers in
+              the cybersecurity field.
+              <br>
+              Passionate about bridging the gap between academic theory and real-world practice, Dr. Heinen is committed to
+              developing the next generation of cybersecurity professionals with the technical proficiency and strategic
+              insight needed to excel in an evolving threat landscape.
+            </p>
+            <div class="team-badges">
+              <span class="badge">Father</span>
+              <span class="badge">CISO</span>
+              <span class="badge">D.IA.</span>
+              <span class="badge">Navy Veteran</span>
+              <span class="badge">CISSP</span>
+              <span class="badge">C-CISO</span>
+              <span class="badge">CEH</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="leadership-card">
+        <div class="leadership-content">
+          <img src="/assets/team/melissa-hall.png" alt="Melissa Hall" class="leader-headshot">
+
+          <div class="leader-info">
+            <h3>Melissa Hall</h3>
+            <h4>Chief Development Officer</h4>
+            <p>
+              Melissa Hall brings over eight years of strategic leadership experience in development, grant management, and
+              organizational growth across nonprofit, educational, and private sectors. As Chief Development Officer, she
+              leverages her expertise in securing and managing over $200 million in federal funding while building sustainable
+              partnerships that drive mission-critical outcomes. Her nonprofit development experience includes administering
+              multi-million dollar federal grants with zero audit findings and providing consulting services to community
+              organizations, designing specialized training programs and managing complex partnership agreements.
+              <br>
+              As a former business owner/broker of a mortgage company, Melissa brings valuable private sector perspective
+              to nonprofit leadership, understanding both revenue generation and operational sustainability. She holds a
+              Master's degree in Family & Human Development from Arizona State University with advanced certifications in
+              Digital Inclusion Leadership and Grant Management. Her transformational leadership approach has consistently
+              delivered measurable impact, including establishing strategic partnerships with tribal governments and educational
+              institutions while maintaining exceptional compliance records across diverse, multicultural environments. Melissa is
+              passionate about building sustainable funding strategies that advance organizational missions and create lasting
+              community impact.
+            </p>
+            <div class="team-badges">
+              <span class="badge">Mother</span>
+              <span class="badge">CDO</span>
+              <span class="badge">M.S. ASU</span>
+              <span class="badge">$200M+ Secured</span>
+              <span class="badge">Grant Management Certified</span>
+              <span class="badge">Digital Inclusion Leader</span>
+              <span class="badge">Zero Audit Findings</span>
             </div>
           </div>
         </div>
@@ -302,21 +422,24 @@
 
       <div class="team-grid">
         <div class="team-card">
-          <div class="team-avatar">🛡️</div>
-          <h3 class="team-name">Security Operations Lead</h3>
-          <p class="team-title">MSSP Services</p>
+        <img src="/assets/team/emma-pennington.jpg" alt="Lead Developer" class="team-headshot">
+
+          <h3 class="team-name">Lead Developer</h3>
+          <p class="team-title">Engineering</p>
           <p class="team-bio">
             Leading our managed security service offerings for nonprofits and small businesses,
             bringing enterprise-grade protection to underserved organizations.
           </p>
           <div class="team-badges">
-            <span class="badge">Security+</span>
-            <span class="badge">GIAC</span>
+            <span class="badge">B.S.</span>
+            <span class="badge">Computer Science</span>
           </div>
         </div>
 
         <div class="team-card">
-          <div class="team-avatar">🎓</div>
+          <!-- Replace with actual headshot: <img src="/assets/team/curriculum-director.jpg" alt="Curriculum Director" class="team-headshot"> -->
+          <div class="team-headshot-placeholder">🎓</div>
+
           <h3 class="team-name">Curriculum Director</h3>
           <p class="team-title">K-12 Education Programs</p>
           <p class="team-bio">
@@ -330,7 +453,9 @@
         </div>
 
         <div class="team-card">
-          <div class="team-avatar">💼</div>
+          <!-- Replace with actual headshot: <img src="/assets/team/workforce-lead.jpg" alt="Workforce Development Lead" class="team-headshot"> -->
+          <div class="team-headshot-placeholder">💼</div>
+
           <h3 class="team-name">Workforce Development Lead</h3>
           <p class="team-title">Adult Training Programs</p>
           <p class="team-bio">
@@ -351,7 +476,9 @@
 
       <div class="team-grid">
         <div class="team-card">
-          <div class="team-avatar">🤝</div>
+          <!-- Replace with actual headshot: <img src="/assets/team/industry-advisor.jpg" alt="Industry Advisor" class="team-headshot"> -->
+          <div class="team-headshot-placeholder">🤝</div>
+
           <h3 class="team-name">Industry Advisor</h3>
           <p class="team-title">Corporate Partnerships</p>
           <p class="team-bio">
@@ -361,7 +488,9 @@
         </div>
 
         <div class="team-card">
-          <div class="team-avatar">🏫</div>
+          <!-- Replace with actual headshot: <img src="/assets/team/education-advisor.jpg" alt="Education Advisor" class="team-headshot"> -->
+          <div class="team-headshot-placeholder">🏫</div>
+
           <h3 class="team-name">Education Advisor</h3>
           <p class="team-title">Curriculum Development</p>
           <p class="team-bio">
@@ -371,7 +500,9 @@
         </div>
 
         <div class="team-card">
-          <div class="team-avatar">⚖️</div>
+          <!-- Replace with actual headshot: <img src="/assets/team/nonprofit-advisor.jpg" alt="Nonprofit Advisor" class="team-headshot"> -->
+          <div class="team-headshot-placeholder">⚖️</div>
+
           <h3 class="team-name">Nonprofit Advisor</h3>
           <p class="team-title">501(c)(3) Operations</p>
           <p class="team-bio">
@@ -404,6 +535,6 @@
 
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 </body>
 </html>
