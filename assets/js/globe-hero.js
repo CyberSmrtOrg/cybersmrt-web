@@ -192,12 +192,42 @@ let attacks = [];                 // active only
 const tickerRowById = new Map();  // id -> DOM element
 let nextId = 1;
 
-function resize(){
-  if(!renderer||!camera) return;
-  const w=mountEl.clientWidth||1, h=mountEl.clientHeight||1;
-  camera.aspect=w/h; camera.updateProjectionMatrix();
-  renderer.setSize(w,h); renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-}
+  function resize(){
+    if(!renderer||!camera) return;
+
+    let w = mountEl.clientWidth || 1;
+    let h = mountEl.clientHeight || 1;
+
+    // Mobile: ensure minimum height
+    if (window.innerWidth <= 900) {
+      h = Math.max(h, 400);
+      w = Math.min(w, window.innerWidth - 20);
+    }
+
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    console.log(`Globe resized: ${w}x${h}`);
+  }
+
+  // Add this after resize function
+  function forceResize() {
+    resize();
+    if (globe) {
+      // Force globe to recalculate
+      setTimeout(resize, 100);
+      setTimeout(resize, 500);
+    }
+  }
+
+  // Call on orientation change
+  window.addEventListener('orientationchange', forceResize);
+  window.addEventListener('resize', resize);
+
+  // Initial resize after load
+  window.addEventListener('load', forceResize);
 
 async function loadCountries(){
   const res = await fetch(WORLD_TOPO_URL, { cache:'force-cache' });
