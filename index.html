@@ -1291,17 +1291,5 @@
       });
     })();
     </script>
-    <script>
-  // Diagnostic check
-  setTimeout(() => {
-    const canvas = document.querySelector('#globe-hero canvas');
-    if (!canvas) {
-      alert('Globe canvas not created! Check console.');
-      console.error('Globe failed to initialize');
-    } else {
-      console.log('✅ Globe canvas found:', canvas.width, 'x', canvas.height);
-    }
-  }, 3000);
-</script>
 </body>
 </html>

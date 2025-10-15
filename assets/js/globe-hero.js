@@ -195,25 +195,35 @@ let nextId = 1;
   let resizeAttempts = 0;
 const MAX_RESIZE_ATTEMPTS = 10;
 
+function isMobileViewport() {
+  // Use matchMedia for reliable mobile detection
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 function resize(){
   if(!renderer||!camera) return;
 
-    const isMobile = window.innerWidth < 768;
+    const isMobile = isMobileViewport();
     const container = document.querySelector('.globe-viewport');
 
     let w, h;
 
     if (isMobile) {
-      // Force dimensions on mobile
-      w = Math.min(window.innerWidth - 32, 400);
+      // Force dimensions on mobile - use actual viewport width
+      const viewportWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
+      w = Math.max(300, Math.min(viewportWidth - 32, 400));
       h = 400;
-      console.log(`Mobile globe resize (forced): ${w}x${h}`);
+      console.log(`Mobile globe resize (forced): ${w}x${h}, viewport: ${viewportWidth}`);
     } else {
       // Use container dimensions on desktop
       w = container?.clientWidth || mountEl.clientWidth || 400;
       h = container?.clientHeight || mountEl.clientHeight || 400;
       console.log(`Desktop globe resize: ${w}x${h}`);
     }
+
+    // Ensure minimum valid size
+    w = Math.max(w, 300);
+    h = Math.max(h, 300);
 
     camera.aspect = w/h;
     camera.updateProjectionMatrix();
@@ -246,27 +256,41 @@ async function loadCountries(){
 }
 
 async function init(){
-try{
+  try{
     const r = await fetch('/assets/data/attack-stats.json', { cache:'no-cache' });
-      if (r.ok) SIM = Object.assign({}, DEFAULT_STATS, await r.json());
-    }catch{}
+    if (r.ok) SIM = Object.assign({}, DEFAULT_STATS, await r.json());
+  }catch{}
 
-    scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x050816, 120, 400);
-    camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-    camera.position.z = 250;
+  scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x050816, 120, 400);
+  camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+  camera.position.z = 250;
 
-    renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-    mountEl.appendChild(renderer.domElement);
+  renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+  mountEl.appendChild(renderer.domElement);
 
-    // Wait for container to be properly sized before setting up ResizeObserver
-    await new Promise(resolve => setTimeout(resolve, 100));
+  // Wait for layout to settle before initial resize
+  await new Promise(resolve => {
+    if (document.readyState === 'complete') {
+      setTimeout(resolve, 100);
+    } else {
+      window.addEventListener('load', () => setTimeout(resolve, 100));
+    }
+  });
 
-    ro = new ResizeObserver(resize);
-    ro.observe(mountEl);
-    window.addEventListener('resize', resize);
+  ro = new ResizeObserver(() => {
+    // Debounce rapid resizes
+    clearTimeout(window.globeResizeTimeout);
+    window.globeResizeTimeout = setTimeout(resize, 50);
+  });
+  ro.observe(mountEl);
 
-    resize(); // Initial resize (will now wait for proper dimensions)
+  window.addEventListener('resize', () => {
+    clearTimeout(window.globeResizeTimeout);
+    window.globeResizeTimeout = setTimeout(resize, 50);
+  });
+
+  resize(); // Initial resize after layout settles
 
   const globeInstance = new ThreeGlobe({ waitForGlobeReady:true, animateIn:true })
     .globeImageUrl(null).bumpImageUrl(null).showAtmosphere(true)
