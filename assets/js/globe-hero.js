@@ -82,6 +82,8 @@ const ARC_TRAVEL_MAX_MS = 4200;
 const ARC_DASH_LENGTH = 0.22;
 const ARC_DASH_GAP_SAFE = 0.78;
 const AXIAL_TILT_DEG = 23.4;
+// Reduce star count on mobile
+const STAR_COUNT = window.matchMedia('(max-width: 768px)').matches ? 500 : 1000;
 
 // ===== Attack Categories =====
 const CATS = {
@@ -396,6 +398,24 @@ async function loadCountries() {
 
 // ===== Initialize Globe =====
 async function init() {
+  // Check if WebGL is available
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+  if (!gl) {
+    console.warn('WebGL not supported');
+    mountEl.innerHTML = '<div style="padding:2rem;color:#cbd5e1;text-align:center;">3D visualization requires WebGL support</div>';
+    return;
+  }
+
+  // Check if we're in a constrained environment (low memory)
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+
+  if (isMobile && lowMemory) {
+    console.warn('Low memory detected, using simplified visualization');
+    // You could reduce star count, attack frequency, etc.
+  }
   // Load custom attack stats if available
   try {
     const r = await fetch('/assets/data/attack-stats.json', { cache: 'no-cache' });
@@ -477,7 +497,7 @@ async function init() {
     .polygonStrokeColor(() => 'rgba(203,213,225,0.8)');
 
   // Add stars
-  const starCount = 1000;
+  const starCount = STAR_COUNT;
   const pos = new Float32Array(starCount * 3);
   for (let i = 0; i < starCount; i++) {
     const j = i * 3;
@@ -718,14 +738,19 @@ function startWeightedTraffic() {
     window.CyberGlobe.addAttack({ category, origin, dest, vector });
   };
 
-  // Initial burst
-  for (let i = 0; i < 6; i++) {
+  // Detect mobile
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // Initial burst - fewer on mobile
+  const burstCount = isMobile ? 3 : 6;
+  for (let i = 0; i < burstCount; i++) {
     setTimeout(spawn, i * 150);
   }
 
-  // Continuous spawning
+  // Continuous spawning - slower on mobile
+  const spawnInterval = isMobile ? 1200 : 600;
   clearInterval(trafficTimer);
-  trafficTimer = setInterval(spawn, 600);
+  trafficTimer = setInterval(spawn, spawnInterval);
 }
 
 // ===== Cleanup =====
