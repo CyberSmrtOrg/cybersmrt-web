@@ -734,6 +734,7 @@
       }
 
       .ticker-overlay {
+        display: block !important;
         position: relative !important;
         order: 2;
         top: auto !important;
@@ -742,8 +743,9 @@
         transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 1rem;
+        margin: 1rem 0 0 0 !important;
+        padding: 0 1rem !important;
+        z-index: 10;
       }
 
       .logo-shield {
@@ -846,13 +848,6 @@
 
       .ticker-body {
         max-height: 100px;
-      }
-    }
-
-    /* Extremely small */
-    @media (max-width: 380px) {
-      .ticker-overlay {
-        display: none;
       }
     }
   </style>
@@ -1227,6 +1222,10 @@
     (function() {
       const ticker = document.querySelector('.ticker-overlay');
       if (!ticker) return;
+
+      // Don't make it draggable on mobile
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      if (isMobile) return; // Exit early on mobile
 
       let isDragging = false;
       let currentX, currentY, initialX, initialY;
