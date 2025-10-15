@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet"/>
 
+<!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <!-- Silence favicon 404 locally -->
   <link rel="icon" href="data:,"/>
 
@@ -1100,10 +1103,8 @@
   <script defer src="/assets/js/footer-loader.js"></script>
 <script defer src="/assets/js/footer-init.js"></script>
 
-<!-- Three.js and Globe.gl are loaded by the module via ESM, so we don't need them here -->
-
-<!-- Your globe module (the one that's already working) -->
-<script type="module" src="/assets/js/globe-hero.js?v=5"></script>
+<!-- Globe module (handles everything) -->
+  <script type="module" src="/assets/js/globe-hero.js?v=5"></script>
 
 
   <!-- Footer -->
