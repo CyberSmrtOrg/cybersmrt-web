@@ -192,35 +192,44 @@ let attacks = [];                 // active only
 const tickerRowById = new Map();  // id -> DOM element
 let nextId = 1;
 
-  function resize(){
-    if(!renderer||!camera) return;
+  let resizeAttempts = 0;
+const MAX_RESIZE_ATTEMPTS = 10;
 
-    let w = mountEl.clientWidth || 1;
-    let h = mountEl.clientHeight || 1;
+function resize(){
+  if(!renderer||!camera) return;
 
-    // Mobile: ensure minimum height
-    if (window.innerWidth <= 900) {
-      h = Math.max(h, 400);
-      w = Math.min(w, window.innerWidth - 20);
+    const isMobile = window.innerWidth < 768;
+    const container = document.querySelector('.globe-viewport');
+
+    let w, h;
+
+    if (isMobile) {
+      // Force dimensions on mobile
+      w = Math.min(window.innerWidth - 32, 400);
+      h = 400;
+      console.log(`Mobile globe resize (forced): ${w}x${h}`);
+    } else {
+      // Use container dimensions on desktop
+      w = container?.clientWidth || mountEl.clientWidth || 400;
+      h = container?.clientHeight || mountEl.clientHeight || 400;
+      console.log(`Desktop globe resize: ${w}x${h}`);
     }
 
-    camera.aspect = w / h;
+    camera.aspect = w/h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-    console.log(`Globe resized: ${w}x${h}`);
   }
 
-  // Add this after resize function
-  function forceResize() {
-    resize();
-    if (globe) {
-      // Force globe to recalculate
-      setTimeout(resize, 100);
-      setTimeout(resize, 500);
+    // Add this after resize function
+    function forceResize() {
+      resize();
+      if (globe) {
+        // Force globe to recalculate
+        setTimeout(resize, 100);
+        setTimeout(resize, 500);
+      }
     }
-  }
 
   // Call on orientation change
   window.addEventListener('orientationchange', forceResize);
@@ -237,19 +246,27 @@ async function loadCountries(){
 }
 
 async function init(){
-  try{
+try{
     const r = await fetch('/assets/data/attack-stats.json', { cache:'no-cache' });
-    if (r.ok) SIM = Object.assign({}, DEFAULT_STATS, await r.json());
-  }catch{}
+      if (r.ok) SIM = Object.assign({}, DEFAULT_STATS, await r.json());
+    }catch{}
 
-  scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x050816, 120, 400);
-  camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000); camera.position.z = 250;
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x050816, 120, 400);
+    camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+    camera.position.z = 250;
 
-  renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-  mountEl.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    mountEl.appendChild(renderer.domElement);
 
-  ro = new ResizeObserver(resize); ro.observe(mountEl);
-  window.addEventListener('resize', resize); resize();
+    // Wait for container to be properly sized before setting up ResizeObserver
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    ro = new ResizeObserver(resize);
+    ro.observe(mountEl);
+    window.addEventListener('resize', resize);
+
+    resize(); // Initial resize (will now wait for proper dimensions)
 
   const globeInstance = new ThreeGlobe({ waitForGlobeReady:true, animateIn:true })
     .globeImageUrl(null).bumpImageUrl(null).showAtmosphere(true)
