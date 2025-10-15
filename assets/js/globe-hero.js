@@ -77,8 +77,8 @@ scheduleMidnightReset();
 const STROKE = 0.65;
 const MIN_ALT = 0.10;
 const MAX_ALT = 0.35;
-const ARC_TRAVEL_MIN_MS = 1800;
-const ARC_TRAVEL_MAX_MS = 4200;
+const ARC_TRAVEL_MIN_MS = 1200;
+const ARC_TRAVEL_MAX_MS = 2800;
 const ARC_DASH_LENGTH = 0.22;
 const ARC_DASH_GAP_SAFE = 0.78;
 const AXIAL_TILT_DEG = 23.4;
@@ -429,7 +429,7 @@ async function init() {
   scene.fog = new THREE.Fog(0x050816, 120, 400);
 
   camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-  camera.position.z = 250;
+  camera.position.z = 280;
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   mountEl.appendChild(renderer.domElement);
@@ -472,7 +472,7 @@ async function init() {
     .bumpImageUrl(null)
     .showAtmosphere(true)
     .atmosphereColor('#4f46e5')
-    .atmosphereAltitude(0.18)
+    .atmosphereAltitude(0.25)
     .arcsTransitionDuration(300);
 
   globe = globeInstance;

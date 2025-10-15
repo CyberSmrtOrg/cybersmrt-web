@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.jsdelivr.net https://challenges.cloudflare.com https://cdnjs.cloudflare.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
+    script-src 'self' 'unsafe-inline' https:;
+    style-src 'self' 'unsafe-inline' https:;
+    font-src 'self' https: data:;
     img-src 'self' data: https:;
-    connect-src 'self' https://cdn.jsdelivr.net https://challenges.cloudflare.com;
-    frame-src https://challenges.cloudflare.com;
+    connect-src 'self' https:;
+    frame-src https:;
+    worker-src 'self' blob:;
   ">
   <title>CyberSmrt - Securing the Underserved</title>
 
@@ -173,11 +174,13 @@
       height: auto;
       max-height: clamp(420px, 58vh, 700px);
       position: relative;
+      padding: 2rem;
     }
 
     #globe-hero {
       position: absolute;
       inset: 0;
+      padding: 1rem;
     }
 
     /* Overlay ticker */
@@ -1227,6 +1230,70 @@
           }, 50);
         }, 500);
       };
+    })();
+  </script>
+  <script>
+  // Make ticker draggable
+    (function() {
+      const ticker = document.querySelector('.ticker-overlay');
+      if (!ticker) return;
+
+      let isDragging = false;
+      let currentX, currentY, initialX, initialY;
+      let xOffset = 0, yOffset = 0;
+
+      ticker.style.cursor = 'move';
+      ticker.style.position = 'absolute';
+
+      function dragStart(e) {
+        if (e.type === 'touchstart') {
+          initialX = e.touches[0].clientX - xOffset;
+          initialY = e.touches[0].clientY - yOffset;
+        } else {
+          initialX = e.clientX - xOffset;
+          initialY = e.clientY - yOffset;
+        }
+
+        if (e.target.closest('.ticker-overlay')) {
+          isDragging = true;
+        }
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+
+        e.preventDefault();
+
+        if (e.type === 'touchmove') {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, ticker);
+      }
+
+      function dragEnd() {
+        isDragging = false;
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+      }
+
+      ticker.addEventListener('mousedown', dragStart);
+      ticker.addEventListener('touchstart', dragStart);
+
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag, { passive: false });
+
+      document.addEventListener('mouseup', dragEnd);
+      document.addEventListener('touchend', dragEnd);
     })();
   </script>
 </body>
