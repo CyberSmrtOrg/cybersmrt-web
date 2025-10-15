@@ -1,0 +1,202 @@
+<!-- Turnstile Gate Overlay -->
+<div id="turnstile-gate-overlay" class="turnstile-overlay">
+  <div class="turnstile-gate-content">
+    <img src="/assets/logos/cybersmrt-logo-only.png" alt="CyberSmrt" class="gate-logo">
+    <h1>Welcome to CyberSmrt</h1>
+    <p>Quick security verification to protect our community</p>
+
+    <div class="cf-turnstile"
+         data-sitekey="0x4AAAAAAB6oJXRLsymxDd45"
+         data-callback="onTurnstileVerified"
+         data-error-callback="onTurnstileError"
+         data-theme="dark"
+         data-size="normal">
+    </div>
+
+    <p class="gate-note">This helps us protect against bots and ensure our resources reach real people in underserved communities.</p>
+  </div>
+</div>
+
+<style>
+.turnstile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0f23 0%, #090d1c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.turnstile-overlay.verified {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.turnstile-gate-content {
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, rgba(102,126,234,.1) 0%, rgba(118,75,162,.1) 100%);
+  border: 2px solid rgba(102,126,234,.3);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+
+.gate-logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  display: block;
+}
+
+.turnstile-gate-content h1 {
+  font-family: "Orbitron", system-ui, sans-serif;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #667eea;
+}
+
+.turnstile-gate-content p {
+  color: #d0d0d0;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.turnstile-gate-content .cf-turnstile {
+  margin: 2rem auto;
+  display: inline-block;
+}
+
+.gate-note {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+.turnstile-error {
+  color: #ff6b6b;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 10px;
+  margin-top: 1rem;
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .gate-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .turnstile-gate-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .turnstile-gate-content {
+    padding: 2rem 1.5rem;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  const VERIFICATION_KEY = 'cybersmrt_verified';
+  const VERIFICATION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+  // Check if already verified
+  function isVerified() {
+    const stored = localStorage.getItem(VERIFICATION_KEY);
+    if (!stored) return false;
+
+    try {
+      const { timestamp } = JSON.parse(stored);
+      const age = Date.now() - timestamp;
+      return age < VERIFICATION_DURATION;
+    } catch {
+      return false;
+    }
+  }
+
+  // Mark as verified
+  function markVerified() {
+    localStorage.setItem(VERIFICATION_KEY, JSON.stringify({
+      timestamp: Date.now(),
+      verified: true
+    }));
+  }
+
+  // Show/hide gate
+  const overlay = document.getElementById('turnstile-gate-overlay');
+  if (!overlay) return;
+
+  if (isVerified()) {
+    // Already verified, hide immediately
+    overlay.style.display = 'none';
+  } else {
+    // Show gate
+    overlay.style.display = 'flex';
+  }
+
+  // Global callback for Turnstile
+  window.onTurnstileVerified = function(token) {
+    console.log('✅ Turnstile verified');
+
+    // Verify token on backend (optional but recommended)
+    fetch('/api/verify-turnstile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        markVerified();
+
+        // Fade out gate
+        overlay.classList.add('verified');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 500);
+      } else {
+        showError('Verification failed. Please try again.');
+      }
+    })
+    .catch(err => {
+      console.error('Verification error:', err);
+      // Even if backend fails, allow access (optional)
+      markVerified();
+      overlay.classList.add('verified');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 500);
+    });
+  };
+
+  // Error callback
+  window.onTurnstileError = function(error) {
+    console.error('Turnstile error:', error);
+    showError('Verification error. Please refresh the page.');
+  };
+
+  function showError(message) {
+    let errorDiv = document.querySelector('.turnstile-error');
+    if (!errorDiv) {
+      errorDiv = document.createElement('div');
+      errorDiv.className = 'turnstile-error';
+      document.querySelector('.turnstile-gate-content').appendChild(errorDiv);
+    }
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+  }
+})();
+</script>
