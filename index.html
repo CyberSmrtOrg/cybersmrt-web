@@ -1,26 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Cloudflare Turnstile API -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-  <!-- Turnstile Gate Loader -->
-  <script src="/assets/js/turnstile-gate-loader.js"></script>
-
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CyberSmrt - Securing the Underserved</title>
-
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet"/>
 
-<!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
   <!-- Silence favicon 404 locally -->
   <link rel="icon" href="data:,"/>
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
  <style>
     /* ============ Reset & base ============ */
@@ -410,13 +399,13 @@
 
 /* Tablets and medium screens */
 @media (max-width: 900px) {
-  .hero__grid { 
-    grid-template-columns: 1fr; 
-    height: auto; 
+  .hero__grid {
+    grid-template-columns: 1fr;
+    height: auto;
   }
-  
-  .globe-viewport { 
-    max-height: clamp(340px, 48vh, 560px); 
+
+  .globe-viewport {
+    max-height: clamp(340px, 48vh, 560px);
   }
 
   /* Center ticker on tablets */
@@ -503,37 +492,37 @@
   .ticker-card {
     width: 100%;
   }
-  
+
   .ticker-head {
     font-size: 0.85rem;
     padding: 0.4rem 0.6rem;
     flex-wrap: wrap;
   }
-  
+
   .ticker-chip {
     font-size: 0.7rem;
     padding: 0.15rem 0.4rem;
   }
-  
+
   .ticker-body {
     max-height: 140px;
     font-size: 0.8rem;
   }
-  
+
   .attack-item {
     padding: 0.3rem 0.15rem;
     grid-template-columns: 1fr;
     gap: 0.25rem;
   }
-  
+
   .attack-item__line {
     font-size: 0.8rem;
   }
-  
+
   .attack-item__meta {
     font-size: 0.7rem;
   }
-  
+
   .attack-badge {
     font-size: 0.65rem;
     padding: 0.2rem 0.35rem;
@@ -548,17 +537,17 @@
     align-items: flex-start;
     gap: 0.3rem;
   }
-  
+
   .ticker-metrics {
     width: 100%;
     justify-content: flex-start;
   }
-  
+
   /* Optionally hide ticker on very small screens */
   .ticker-overlay {
     max-height: 180px;
   }
-  
+
   .ticker-body {
     max-height: 100px;
   }
@@ -568,6 +557,49 @@
 @media (max-width: 380px) {
   .ticker-overlay {
     display: none;
+  }
+}
+/* Hero Turnstile Styling */
+.hero-turnstile {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.hero-turnstile-box {
+  background: linear-gradient(135deg, rgba(102,126,234,.12) 0%, rgba(118,75,162,.08) 100%);
+  border: 1px solid rgba(102,126,234,.25);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+
+.hero-turnstile-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #667eea;
+  font-weight: 700;
+}
+
+.hero-turnstile-box p {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.hero-turnstile-box .cf-turnstile {
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .hero-turnstile {
+    max-width: 100%;
+  }
+
+  .hero-turnstile-box {
+    padding: 1.25rem;
   }
 }
 </style>
@@ -606,6 +638,19 @@
         <h1 class="logo">CYBERSMRT</h1>
         <p class="tagline">Securing the Underserved</p>
         <p class="subtitle">A Service-Disabled Veteran-Owned 501(c)(3) Cybersecurity Nonprofit</p>
+
+        <div id="hero-turnstile-gate" class="hero-turnstile" style="display: none;">
+          <div class="hero-turnstile-box">
+            <h3>🔒 Quick Security Check</h3>
+            <p>Verify to access our resources</p>
+            <div class="cf-turnstile"
+                data-sitekey="0x4AAAAAAB6oJXRLsymxDd45"
+                data-callback="onHeroTurnstileVerified"
+                data-theme="dark"
+                data-size="normal">
+            </div>
+          </div>
+        </div>
 
         <div class="cta-buttons">
           <a href="mailto:tony@cybersmrt.org" class="btn btn-primary">Get Involved</a>
@@ -1107,11 +1152,55 @@
   <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 
 <!-- Globe module (handles everything) -->
   <script type="module" src="/assets/js/globe-hero.js?v=5"></script>
+  <script>
+    (function() {
+      const VERIFICATION_KEY = 'cybersmrt_verified';
+      const gate = document.getElementById('hero-turnstile-gate');
+      const ctaButtons = document.getElementById('hero-cta-buttons');
 
+      function isVerified() {
+        const stored = localStorage.getItem(VERIFICATION_KEY);
+        if (!stored) return false;
+        const { timestamp } = JSON.parse(stored);
+        return (Date.now() - timestamp) < 24 * 60 * 60 * 1000;
+      }
+
+      if (!isVerified()) {
+        // Show gate, hide CTAs
+        gate.style.display = 'block';
+        ctaButtons.style.display = 'none';
+      } else {
+        // Hide gate, show CTAs
+        gate.style.display = 'none';
+        ctaButtons.style.display = 'flex';
+      }
+
+      window.onHeroTurnstileVerified = function(token) {
+        localStorage.setItem(VERIFICATION_KEY, JSON.stringify({
+          timestamp: Date.now(),
+          verified: true
+        }));
+
+        // Fade out gate, fade in CTAs
+        gate.style.transition = 'opacity 0.5s';
+        gate.style.opacity = '0';
+
+        setTimeout(() => {
+          gate.style.display = 'none';
+          ctaButtons.style.display = 'flex';
+          ctaButtons.style.opacity = '0';
+          setTimeout(() => {
+            ctaButtons.style.transition = 'opacity 0.5s';
+            ctaButtons.style.opacity = '1';
+          }, 50);
+        }, 500);
+      };
+    })();
+    </script>
 
   <!-- Footer -->
   <div id="footer-mount"></div>

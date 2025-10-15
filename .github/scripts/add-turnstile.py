@@ -8,7 +8,7 @@ TURNSTILE_SCRIPTS = '''  <!-- Cloudflare Turnstile API -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <!-- Turnstile Gate Loader -->
-  <script src="/assets/js/turnstile-gate-loader.js"></script>
+
 '''
 
 def should_skip_file(filepath):

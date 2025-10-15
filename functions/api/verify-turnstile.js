@@ -21,7 +21,7 @@ export async function onRequestPost(context) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          secret: env.TURNSTILE_SECRET_KEY,
+          secret: env.TURNSTILE_KEY,
           response: token,
           remoteip: request.headers.get('CF-Connecting-IP')
         })
