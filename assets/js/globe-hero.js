@@ -12,6 +12,13 @@ const tickerEl = document.getElementById('attack-ticker');
 const countEl = document.getElementById('attack-count');
 const todayEl = document.getElementById('attack-today');
 
+// ===== UI Update Functions =====
+const updateCount = () => {
+  if (countEl) {
+    countEl.textContent = `${attacks.length} active`;
+  }
+};
+
 // ===== Today's Attack Counter =====
 const TODAY_KEY = 'cybersmrt_attacks_today';
 
