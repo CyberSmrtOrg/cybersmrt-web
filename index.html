@@ -313,6 +313,21 @@
       z-index: 1;
     }
 
+    @media (min-width: 900px) {
+      .equity-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (min-width: 600px) and (max-width: 899px) {
+      .equity-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     .equity-card {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(102,126,234,0.2);
@@ -320,6 +335,9 @@
       padding: 2rem;
       text-align: center;
       transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .equity-card:hover {
@@ -329,7 +347,54 @@
       box-shadow: 0 10px 30px rgba(102,126,234,0.2);
     }
 
-    .equity-icon { font-size: 3.5rem; margin-bottom: 1rem; filter: grayscale(20%); }
+    .equity-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      filter: grayscale(20%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100px; /* Prevents layout shift while loading */
+    }
+
+    .equity-icon img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
+      transition: transform 0.3s ease;
+    }
+    /* Fallback if image fails to load */
+    .equity-icon img[alt]:not([src]),
+    .equity-icon img[alt][src=""] {
+      display: none;
+    }
+
+    .equity-icon img[alt]:not([src])::before,
+    .equity-icon img[alt][src=""]::before {
+      content: "🔒";
+      font-size: 3.5rem;
+      display: block;
+    }
+    /* Loading state */
+    .equity-icon img[loading] {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+    .equity-card:hover .equity-icon img {
+      transform: scale(1.1) translateY(-5px);
+      filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.5));
+    }
+
     .equity-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: #667eea; }
     .equity-card p { color: #b0b0b0; line-height: 1.6; font-size: 0.95rem; }
 
@@ -354,7 +419,10 @@
     .equity-stat strong { font-size: 3rem; color: #667eea; font-weight: 900; margin-bottom: 0.5rem; display: block; }
     .equity-stat span { font-size: 0.9rem; color: #b0b0b0; max-width: 200px; }
 
-    .stats { background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%); }
+    .stats {
+      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      padding: 2rem 2rem;
+    }
 
     .stats-grid {
       display: grid;
@@ -459,13 +527,28 @@
       transition: 0.3s;
     }
 
-    .program-card:hover {
-      transform: translateY(-5px);
-      border-color: #667eea;
-      box-shadow: 0 20px 40px rgba(102,126,234,0.2);
+    .program-card:hover .program-icon img {
+      transform: scale(1.1) translateY(-5px);
+      filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.5));
     }
 
-    .program-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+    .program-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90px;
+    }
+
+    .program-icon img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
+      transition: all 0.3s ease;
+    }
+
     .program-title { font-size: 1.5rem; margin-bottom: 1rem; color: #667eea; }
     .program-description { color: #b0b0b0; line-height: 1.6; margin-bottom: 1rem; }
     .program-highlight { background: rgba(102,126,234,0.1); padding: 0.75rem; border-radius: 10px; font-size: 0.9rem; color: #a0a0a0; }
@@ -798,6 +881,48 @@
       .hero-turnstile-box {
         padding: 1.25rem;
       }
+      .equity-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        min-height: 80px;
+      }
+
+      .equity-icon img {
+        width: 90px;
+        height: 90px;
+      }
+      .program-icon {
+          min-height: 70px;
+        }
+
+        .program-icon img {
+          width: 70px;
+          height: 70px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .program-icon {
+          min-height: 60px;
+        }
+
+        .program-icon img {
+          width: 60px;
+          height: 60px;
+        }
+      }
+
+    @media (max-width: 480px) {
+      .equity-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+        min-height: 70px;
+      }
+
+      .equity-icon img {
+        width: 80px;
+        height: 80px;
+      }
     }
 
     /* Extra small screens */
@@ -981,7 +1106,7 @@
     <p class="mission-text">
       CyberSmrt bridges the cybersecurity equity gap by delivering accessible, high-quality education
       and affordable cybersecurity services to nonprofits, schools, and small businesses. We envision
-      a future where every community—regardless of size or resources—has the knowledge and protection
+      a future where every community, regardless of size or resources, has the knowledge and protection
       to thrive in an increasingly digital world.
     </p>
     <div style="text-align: center; margin-top: 2rem;">
@@ -995,38 +1120,55 @@
   <section class="equity-focus section">
     <h2 class="section-title">Who We Serve</h2>
     <p style="text-align: center; color: #d0d0d0; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; line-height: 1.8;">
-      Cybersecurity shouldn't be a privilege—it's a necessity. We focus on communities
+      Cybersecurity shouldn't be a privilege, it's a necessity. We focus on communities
       that have been left behind in the digital revolution.
     </p>
 
     <div class="equity-grid">
       <div class="equity-card">
-        <div class="equity-icon">🏫</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/under-resourced-schools.png" alt="School building icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Under-Resourced Schools</h3>
         <p>Inner-city and rural schools that lack cybersecurity education programs and can't afford enterprise security solutions.</p>
       </div>
+
       <div class="equity-card">
-        <div class="equity-icon">🤝</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/community-nonprofits.png" alt="Community hands icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Community Nonprofits</h3>
         <p>Mission-driven organizations protecting sensitive donor and beneficiary data without the budget for dedicated security staff.</p>
       </div>
+
       <div class="equity-card">
-        <div class="equity-icon">🏪</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/small-business.png" alt="Small business icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Small Businesses</h3>
-        <p>Local businesses that keep communities alive but face 350% more cyberattacks than larger firms—with no security budget.</p>
+        <p>Local businesses that keep communities alive but face 350% more cyberattacks than larger firms, with no security budget.</p>
       </div>
+
       <div class="equity-card">
-        <div class="equity-icon">👶</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/youth-families.png" alt="Youth and families icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Youth & Families</h3>
         <p>Young people from underserved communities who deserve pathways to high-paying cybersecurity careers, not just awareness of threats.</p>
       </div>
+
       <div class="equity-card">
-        <div class="equity-icon">👵</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/seniors-elderly.png" alt="Seniors icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Seniors & Elderly</h3>
         <p>Older adults who are disproportionately targeted by scams and need age-appropriate digital safety education.</p>
       </div>
+
       <div class="equity-card">
-        <div class="equity-icon">🌾</div>
+        <div class="equity-icon">
+          <img src="/assets/images/icons/rural-communities.png" alt="Rural communities icon" loading="lazy" width="90" height="90">
+        </div>
         <h3>Rural Communities</h3>
         <p>Remote areas where broadband is just arriving but cybersecurity education and support are still years behind.</p>
       </div>
@@ -1128,7 +1270,9 @@
     <h2 class="section-title">Our Programs</h2>
     <div class="program-grid">
       <div class="program-card">
-        <div class="program-icon">🎓</div>
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/k12-curriculum.png" alt="K-12 Curriculum icon" width="90" height="90">
+        </div>
         <h3 class="program-title">K-12 Cybersecurity Curriculum</h3>
         <p class="program-description">
           Modular, competency-based cybersecurity education for grades 5-12, co-developed with
@@ -1140,7 +1284,9 @@
       </div>
 
       <div class="program-card">
-        <div class="program-icon">🛡️</div>
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/mssp-services.png" alt="MSSP Services icon" width="90" height="90">
+        </div>
         <h3 class="program-title">MSSP-lite Services</h3>
         <p class="program-description">
           Affordable managed security services for nonprofits and small businesses, including
@@ -1152,7 +1298,9 @@
       </div>
 
       <div class="program-card">
-        <div class="program-icon">💼</div>
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/workforce-development.png" alt="Workforce Development icon" width="90" height="90">
+        </div>
         <h3 class="program-title">Workforce Development</h3>
         <p class="program-description">
           Adult training programs aligned with industry certifications across three tracks:
@@ -1164,7 +1312,9 @@
       </div>
 
       <div class="program-card">
-        <div class="program-icon">🌐</div>
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/community-outreach.png" alt="Community Outreach icon" width="90" height="90">
+        </div>
         <h3 class="program-title">Community Outreach</h3>
         <p class="program-description">
           Targeted programs for underserved populations: digital literacy for seniors,
@@ -1184,18 +1334,36 @@
 
     <div class="funding-ask">
       <h3>Current Funding Goal</h3>
-      <div class="stat-number" style="font-size: 2.5rem; margin: 1rem 0;">$400,000</div>
+      <div class="stat-number" style="font-size: 2.5rem; margin: 1rem 0;">$1,000,000</div>
       <p style="margin-bottom: 1rem;">18-24 Month Growth Phase</p>
-      <p style="font-size: 0.95rem; opacity: 0.9;">
-        This investment will complete our K-12 curriculum v1.0, expand MSSP-lite services to
-        underserved nonprofits and small businesses, launch adult training tracks, and scale
-        our infrastructure for nationwide impact.
-      </p>
-    </div>
 
-    <div class="cta-buttons">
-      <a href="mailto:tony@cybersmrt.org" class="btn btn-primary">Partner With Us</a>
-      <a href="mailto:tony@cybersmrt.org" class="btn btn-secondary">Learn More</a>
+      <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 2rem;">
+        This investment will train 2,000 students across 10 schools, protect 100 nonprofits
+        and small businesses with enterprise-grade security, certify 100 adults for $70K-120K
+        cybersecurity careers, and scale our proven model nationwide.
+      </p>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <a href="https://givebutter.com/MndETS" target="_blank" rel="noopener noreferrer"
+          class="btn btn-primary" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+          Donate Now
+        </a>
+      </div>
+
+      <!-- QR Code Section -->
+      <div style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
+          Or scan to donate from your phone
+        </p>
+        <img src="/assets/images/qr-code-donate.svg"
+            alt="Scan QR code to donate to CyberSmrt campaign"
+            width="200"
+            height="200"
+            style="border-radius: 15px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem;">
+          givebutter.com/MndETS
+        </p>
+      </div>
     </div>
   </section>
 
