@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Security • CyberSmrt</title>
+
+  <!-- Cloudflare Turnstile API -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Phase 1: "Hacked" Screen */
+    .hack-screen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    .hack-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .glitch-text {
+      font-family: "Orbitron", monospace;
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: 900;
+      color: #ff3333;
+      text-align: center;
+      padding: 2rem;
+      animation: glitch 1s infinite;
+      text-shadow:
+        2px 2px 0 #00ffff,
+        -2px -2px 0 #ff00ff;
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(2px, 2px); }
+    }
+
+    .loading-bar {
+      width: 80%;
+      max-width: 500px;
+      height: 30px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    .loading-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff3333, #ff6666);
+      width: 0%;
+      animation: load 3s ease-out forwards;
+      border-radius: 15px;
+    }
+
+    @keyframes load {
+      to { width: 100%; }
+    }
+
+    .loading-text {
+      margin-top: 1rem;
+      font-family: monospace;
+      font-size: 1.2rem;
+      color: #ff6666;
+      animation: blink 0.5s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.5; }
+    }
+
+    /* Phase 2: Reveal */
+    .reveal-screen {
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: radial-gradient(circle at center, #0a0f23 0%, #090d1c 100%);
+      text-align: center;
+    }
+
+    .reveal-screen.active {
+      display: flex;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .big-emoji {
+      font-size: clamp(4rem, 15vw, 8rem);
+      margin-bottom: 2rem;
+      animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .jk-text {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      color: #667eea;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: #d0d0d0;
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+
+    /* Education Section */
+    .education-box {
+      background: linear-gradient(135deg, rgba(102,126,234,.1) 0%, rgba(118,75,162,.08) 100%);
+      border: 2px solid rgba(102,126,234,.3);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      max-width: 800px;
+      margin: 3rem auto;
+      text-align: left;
+    }
+
+    .education-box h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #667eea;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .warning-list {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0;
+    }
+
+    .warning-list li {
+      padding: 1rem 1rem 1rem 3rem;
+      margin-bottom: 1rem;
+      background: rgba(255,107,107,0.1);
+      border-left: 4px solid #ff6b6b;
+      border-radius: 8px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .warning-list li::before {
+      content: '⚠️';
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+    }
+
+    .tips-list {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0;
+    }
+
+    .tips-list li {
+      padding: 1rem 1rem 1rem 3rem;
+      margin-bottom: 1rem;
+      background: rgba(34,211,238,0.1);
+      border-left: 4px solid #22d3ee;
+      border-radius: 8px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .tips-list li::before {
+      content: '✅';
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+    }
+
+    .cta-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      margin: 0.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102,126,234,0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #667eea;
+      color: #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(102,126,234,0.1);
+    }
+
+    /* Share Section */
+    .share-section {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(102,126,234,.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 3rem auto;
+      max-width: 800px;
+    }
+
+    .share-section h3 {
+      font-size: 1.5rem;
+      color: #667eea;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .share-section p {
+      text-align: center;
+      color: #b0b0b0;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: white;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .share-btn span {
+      font-size: 1.2rem;
+    }
+
+    .share-linkedin {
+      background: #0077b5;
+    }
+
+    .share-facebook {
+      background: #1877f2;
+    }
+
+    .share-messenger {
+      background: linear-gradient(135deg, #00b2ff 0%, #006aff 100%);
+    }
+
+    .share-email {
+      background: #667eea;
+    }
+
+    .share-sms {
+      background: #25d366;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: linear-gradient(135deg, rgba(102,126,234,.08) 0%, rgba(118,75,162,.05) 100%);
+      border: 1px solid rgba(102,126,234,.25);
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .contact-section h3 {
+      font-size: 1.3rem;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-section .name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-section .title {
+      color: #b0b0b0;
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .contact-link {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: opacity 0.3s;
+    }
+
+    .contact-link:hover {
+      opacity: 0.7;
+    }
+
+    .footer-note {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #888;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 1rem;
+      transition: opacity 0.3s;
+    }
+
+    .logo-link:hover {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .education-box {
+        padding: 2rem 1.5rem;
+      }
+
+      .warning-list li,
+      .tips-list li {
+        padding: 1rem 1rem 1rem 2.5rem;
+        font-size: 0.95rem;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        margin: 0.5rem auto;
+      }
+
+      .share-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .share-btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Phase 1: Fake "Hacking" Screen -->
+  <div class="hack-screen" id="hackScreen">
+    <div class="glitch-text">ACCESS GRANTED</div>
+    <div class="glitch-text" style="font-size: 1.5rem; margin-top: 1rem;">
+      Extracting your data...
+    </div>
+    <div class="loading-bar">
+      <div class="loading-fill"></div>
+    </div>
+    <div class="loading-text">████████████ 100%</div>
+  </div>
+
+  <!-- Phase 2: The Reveal -->
+  <div class="reveal-screen" id="revealScreen">
+    <div class="big-emoji">😂</div>
+
+    <h1 class="jk-text">jk lol</h1>
+    <p class="subtitle">
+      I didn't steal your information... but someone else could have!
+    </p>
+
+    <div class="education-box">
+      <h2>🚨 QR Codes Can Be Dangerous</h2>
+
+      <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+        You just scanned a QR code from my business card and it brought you here, a safe,
+        educational page. But what if this code had been malicious? QR codes can hide dangerous
+        links that steal data, install malware, or trick you into entering passwords on fake websites.
+      </p>
+
+      <h3 style="color: #ff6b6b; margin-bottom: 1rem;">⚠️ Common QR Code Scams:</h3>
+      <ul class="warning-list">
+        <li><strong>Phishing attacks:</strong> QR codes that lead to fake login pages designed to steal your credentials</li>
+        <li><strong>Malware downloads:</strong> Codes that automatically download harmful apps or software</li>
+        <li><strong>Payment scams:</strong> Fake QR codes on parking meters, restaurant tables, or donation boxes</li>
+        <li><strong>Wi-Fi hijacking:</strong> Malicious codes that connect you to fake networks to intercept your data</li>
+      </ul>
+
+      <h3 style="color: #22d3ee; margin-top: 2rem; margin-bottom: 1rem;">✅ Stay Safe:</h3>
+      <ul class="tips-list">
+        <li><strong>Check the URL:</strong> before opening, make sure it looks legitimate</li>
+        <li><strong>Don't scan unknown codes:</strong> in public places (especially on stickers that could cover legitimate ones)</li>
+        <li><strong>Use your phone's built-in scanner:</strong> which often shows a preview of the URL</li>
+        <li><strong>Never enter passwords:</strong> or payment info after scanning an unsolicited QR code</li>
+        <li><strong>Be suspicious of urgent requests:</strong> scammers create fake urgency to make you act without thinking</li>
+      </ul>
+
+      <div style="background: rgba(102,126,234,0.1); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+        <p style="font-size: 1.05rem; line-height: 1.7;">
+          <strong>💡 Pro tip:</strong> This is exactly the kind of security awareness training we provide
+          to underserved communities, nonprofits, schools, and small businesses. Everyone deserves to know how to stay safe online!
+        </p>
+      </div>
+    </div>
+
+    <!-- Share Section -->
+    <div class="share-section">
+      <h3>📢 Spread Security Awareness</h3>
+      <p>Help others stay safe by sharing this QR code security lesson</p>
+
+      <div class="share-buttons">
+        <a href="#" class="share-btn share-linkedin" id="shareLinkedIn">
+          <span>💼</span>
+          <span>LinkedIn</span>
+        </a>
+
+        <a href="#" class="share-btn share-facebook" id="shareFacebook">
+          <span>📘</span>
+          <span>Facebook</span>
+        </a>
+
+        <a href="#" class="share-btn share-messenger" id="shareMessenger">
+          <span>💬</span>
+          <span>Messenger</span>
+        </a>
+
+        <a href="#" class="share-btn share-sms" id="shareSMS">
+          <span>📱</span>
+          <span>Text</span>
+        </a>
+
+        <a href="#" class="share-btn share-email" id="shareEmail">
+          <span>📧</span>
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+      <h3>This demo was brought to you by:</h3>
+      <div class="name">Tony</div>
+      <div class="title">Founder, CyberSmrt</div>
+
+      <div class="contact-links">
+        <a href="mailto:tony@cybersmrt.org" class="contact-link">
+          <span>📧</span>
+          <span>tony@cybersmrt.org</span>
+        </a>
+        <a href="https://cybersmrt.org" class="contact-link" target="_blank">
+          <span>🌐</span>
+          <span>cybersmrt.org</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="cta-section">
+      <a href="/" class="btn">Learn More About CyberSmrt</a>
+      <a href="/pages/get-involved/volunteer.html" class="btn btn-secondary">Get Involved</a>
+    </div>
+
+    <div class="footer-note">
+      <p>A Service-Disabled Veteran-Owned 501(c)(3) Cybersecurity Nonprofit</p>
+      <a href="/" class="logo-link">
+        <span>🛡️</span>
+        <span>CyberSmrt • Securing the Underserved</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Timing for the reveal
+    setTimeout(() => {
+      document.getElementById('hackScreen').classList.add('hidden');
+      document.getElementById('revealScreen').classList.add('active');
+    }, 3500); // 3.5 seconds of "hacking"
+
+    // Share functionality
+    const shareUrl = 'https://cybersmrt.org/pages/qr-gotcha.html';
+    const shareTitle = 'QR Code Security Warning';
+    const shareText = 'I just learned about QR code security risks! 🚨 Check out this eye-opening demo from CyberSmrt that shows how easy it is to be tricked by malicious QR codes.';
+
+    // LinkedIn
+    document.getElementById('shareLinkedIn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+      window.open(url, '_blank', 'width=600,height=600');
+    });
+
+    // Facebook
+    document.getElementById('shareFacebook').addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      window.open(url, '_blank', 'width=600,height=600');
+    });
+
+    // Facebook Messenger
+    document.getElementById('shareMessenger').addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = `fb-messenger://share/?link=${encodeURIComponent(shareUrl)}`;
+      // Fallback for desktop
+      if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}&app_id=YOUR_APP_ID&redirect_uri=${encodeURIComponent(shareUrl)}`, '_blank');
+      } else {
+        window.location.href = url;
+      }
+    });
+
+    // SMS
+    document.getElementById('shareSMS').addEventListener('click', (e) => {
+      e.preventDefault();
+      const message = `${shareText} ${shareUrl}`;
+      const smsUrl = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+        ? `sms:&body=${encodeURIComponent(message)}`
+        : `sms:?body=${encodeURIComponent(message)}`;
+      window.location.href = smsUrl;
+    });
+
+    // Email
+    document.getElementById('shareEmail').addEventListener('click', (e) => {
+      e.preventDefault();
+      const subject = encodeURIComponent(shareTitle);
+      const body = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
