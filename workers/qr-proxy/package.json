@@ -1,0 +1,33 @@
+{
+  "name": "cybersmrt-qr-proxy",
+  "version": "2.0.0",
+  "description": "Cloudflare Worker for CyberSmrt QR Code Security Tester",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:prod": "wrangler deploy --env production",
+    "deploy:dev": "wrangler deploy --env development",
+    "tail": "wrangler tail",
+    "kv:create": "wrangler kv namespace create BLOCKED_DOMAINS",
+    "kv:list": "wrangler kv key list --namespace-id=f25bbd7dd5fb4ef98d44f1f60ee3d0c2",
+    "secret:put": "wrangler secret put",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "qr-code",
+    "security",
+    "proxy",
+    "cybersecurity"
+  ],
+  "author": "CyberSmrt",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.78.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

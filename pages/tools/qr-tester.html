@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Security Tester • CyberSmrt</title>
+    <meta name="description" content="Scan or upload QR codes to check for malicious links and threats. Free cybersecurity tool from CyberSmrt.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet"/>
+
+    <link rel="icon" href="/assets/logos/cybersmrt-logo-only.png" type="image/png"/>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scrollbar-gutter: stable both-edges; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(102,126,234,0.2);
+            color: #667eea;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .scanner-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 1rem;
+            background: rgba(102,126,234,0.1);
+            border: 2px solid rgba(102,126,234,0.3);
+            border-radius: 12px;
+            color: #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(102,126,234,0.2);
+            border-color: rgba(102,126,234,0.5);
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .scanner-section {
+            display: none;
+        }
+
+        .scanner-section.active {
+            display: block;
+        }
+
+        .upload-zone {
+            border: 3px dashed rgba(102,126,234,0.3);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(102,126,234,0.05);
+        }
+
+        .upload-zone:hover {
+            border-color: rgba(102,126,234,0.6);
+            background: rgba(102,126,234,0.1);
+        }
+
+        .upload-zone.dragover {
+            border-color: #667eea;
+            background: rgba(102,126,234,0.2);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .camera-container {
+            position: relative;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(102,126,234,0.2);
+            color: #667eea;
+            border: 2px solid rgba(102,126,234,0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102,126,234,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-card {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            border: 2px solid rgba(102,126,234,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-card.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(102,126,234,0.2);
+        }
+
+        .status-icon {
+            font-size: 3rem;
+        }
+
+        .qr-data {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            word-wrap: break-word;
+        }
+
+        .threat-score-section {
+            background: rgba(102,126,234,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .threat-score-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .threat-score-value {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .progress-bar {
+            background: rgba(0,0,0,0.3);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .risk-low { border-left: 4px solid #10b981; }
+        .risk-medium { border-left: 4px solid #f59e0b; }
+        .risk-high { border-left: 4px solid #ef4444; }
+
+        .vt-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .vt-link:hover {
+            text-decoration: underline;
+        }
+
+        .preview-btn-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .sandbox-section {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(102,126,234,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .sandbox-section.show {
+            display: block;
+        }
+
+        .sandbox-warning {
+            background: rgba(239,68,68,0.1);
+            border: 2px solid rgba(239,68,68,0.4);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sandbox-warning h4 {
+            color: #ef4444;
+            margin-bottom: 0.75rem;
+        }
+
+        .sandbox-warning ul {
+            margin-left: 1.5rem;
+            color: #fca5a5;
+        }
+
+        #sandboxFrame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #b0b0b0;
+        }
+
+        .info-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 3px solid rgba(102,126,234,0.3);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .mode-tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                min-width: 100%;
+            }
+
+            .result-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Shared header -->
+    <div id="header-mount"></div>
+    <script defer src="/assets/js/header-loader.js"></script>
+    <script defer src="/assets/js/header-init.js"></script>
+
+    <div class="container">
+        <div class="header">
+            <h1>🔍 QR Code Security Tester</h1>
+            <p class="subtitle">Scan or upload QR codes to check for malicious links</p>
+            <span class="badge">CyberSmrt Security Tool</span>
+        </div>
+
+        <div class="scanner-card">
+            <div class="mode-tabs">
+                <button class="tab-btn active" data-mode="camera">
+                    📷 Camera Scanner
+                </button>
+                <button class="tab-btn" data-mode="upload">
+                    📤 Upload Image
+                </button>
+            </div>
+
+            <!-- Camera Scanner -->
+            <div class="scanner-section active" id="camera-section">
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas"></canvas>
+                </div>
+                <div class="camera-controls">
+                    <button class="btn btn-primary" id="startCamera">Start Camera</button>
+                    <button class="btn btn-secondary" id="stopCamera" disabled>Stop Camera</button>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="scanner-section" id="upload-section">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📸</div>
+                    <p style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #667eea; font-weight: 600;">
+                        Drop QR code image here
+                    </p>
+                    <p style="color: #888;">or click to browse</p>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-card" id="results">
+            <div class="result-header">
+                <span class="status-icon" id="statusIcon"></span>
+                <div>
+                    <h2 id="statusTitle"></h2>
+                    <p id="statusSubtitle" style="color: #b0b0b0;"></p>
+                </div>
+            </div>
+
+            <div class="result-content">
+                <h3 style="color: #667eea; margin-bottom: 0.5rem;">Decoded Data:</h3>
+                <div class="qr-data" id="qrData"></div>
+
+                <div id="threatIntelSection"></div>
+
+                <div id="previewControls" class="preview-btn-container" style="display: none;">
+                    <button class="btn btn-primary" id="loadPreviewBtn">
+                        🔍 Load Sandboxed Preview
+                    </button>
+                    <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">
+                        View the site in a safe, isolated environment
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sandbox Preview -->
+        <div class="sandbox-section" id="sandboxSection">
+            <div class="sandbox-warning">
+                <h4>⚠️ CyberSmrt Secure Preview</h4>
+                <p style="color: #fca5a5; margin-bottom: 0.5rem;">
+                    This preview loads through CyberSmrt's secure proxy with protections:
+                </p>
+                <ul>
+                    <li>JavaScript disabled</li>
+                    <li>Forms blocked</li>
+                    <li>Downloads prevented</li>
+                    <li>All requests logged</li>
+                </ul>
+                <p style="color: #fca5a5; margin-top: 1rem; font-weight: 600;">
+                    ⚠️ Never enter personal information, even in preview mode
+                </p>
+            </div>
+
+            <iframe id="sandboxFrame" sandbox="allow-same-origin"></iframe>
+
+            <div style="margin-top: 1rem; text-align: center;">
+                <button class="btn btn-secondary" id="closePreview">Close Preview</button>
+            </div>
+        </div>
+
+        <!-- Educational Info -->
+        <div class="info-section">
+            <h3>🛡️ QR Code Safety Best Practices</h3>
+            <ul>
+                <li>Always inspect the URL before visiting a QR code link</li>
+                <li>Be wary of QR codes in unsolicited emails or texts</li>
+                <li>Check for misspellings in domain names (common phishing tactic)</li>
+                <li>Avoid QR codes that ask for personal information immediately</li>
+                <li>Use this tool to verify QR codes before scanning with your phone</li>
+                <li>When in doubt, contact the organization directly through official channels</li>
+                <li>Never scan QR codes from unknown sources in public areas</li>
+                <li>Seniors: Be extra cautious of QR codes claiming urgent account issues</li>
+            </ul>
+
+            <div style="background: rgba(102,126,234,0.1); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                <p style="font-size: 1.05rem; line-height: 1.7;">
+                    <strong>💡 About this tool:</strong> This is exactly the kind of security awareness training we provide
+                    to underserved communities, nonprofits, schools, and small businesses at CyberSmrt. Everyone deserves
+                    to know how to stay safe online!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared footer -->
+    <div id="footer-mount"></div>
+    <script defer src="/assets/js/footer-loader.js"></script>
+    <script defer src="/assets/js/footer-init.js"></script>
+
+    <!-- QR Scanner Library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+    <!-- QR Tester Logic -->
+    <script>
+        let currentURL = null;
+
+        // Mode switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const sections = document.querySelectorAll('.scanner-section');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(`${mode}-section`).classList.add('active');
+
+                if (mode === 'upload') {
+                    stopCameraStream();
+                }
+            });
+        });
+
+        // Camera Scanner
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('startCamera');
+        const stopBtn = document.getElementById('stopCamera');
+        let stream = null;
+        let scanning = false;
+
+        startBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = stream;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                scanning = true;
+                requestAnimationFrame(tick);
+            } catch (err) {
+                alert('Camera access denied or not available: ' + err.message);
+            }
+        });
+
+        stopBtn.addEventListener('click', stopCameraStream);
+
+        function stopCameraStream() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                stream = null;
+                scanning = false;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        function tick() {
+            if (!scanning) return;
+
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                if (code) {
+                    scanning = false;
+                    stopCameraStream();
+                    analyzeURL(code.data);
+                    return;
+                }
+            }
+
+            requestAnimationFrame(tick);
+        }
+
+        // File Upload
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                processImageFile(file);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                processImageFile(file);
+            }
+        });
+
+        function processImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                    if (code) {
+                        analyzeURL(code.data);
+                    } else {
+                        alert('No QR code detected in this image. Please try another image.');
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Analyze URL using the worker
+        async function analyzeURL(url) {
+            currentURL = url;
+
+            const resultsCard = document.getElementById('results');
+            resultsCard.classList.add('show');
+            resultsCard.scrollIntoView({ behavior: 'smooth' });
+
+            // Show loading state
+            document.getElementById('threatIntelSection').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing URL security...</p>
+                </div>
+            `;
+
+            try {
+                const encodedURL = encodeURIComponent(url);
+                const response = await fetch(`/tools/qr_proxy?url=${encodedURL}&analysis_only=true`);
+                const data = await response.json();
+
+                displayResults(data);
+            } catch (error) {
+                console.error('Analysis failed:', error);
+                document.getElementById('threatIntelSection').innerHTML = `
+                    <div style="color: #ef4444; padding: 1rem; text-align: center;">
+                        ❌ Analysis failed. Please try again.
+                    </div>
+                `;
+            }
+        }
+
+        function displayResults(data) {
+            const { url, security } = data;
+
+            // Update header
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusSubtitle = document.getElementById('statusSubtitle');
+            const qrData = document.getElementById('qrData');
+
+            qrData.textContent = url;
+
+            const score = security.threatScore;
+            let icon, title, subtitle;
+
+            if (score > 70) {
+                icon = '🚨';
+                title = 'High Risk Detected';
+                subtitle = 'This QR code shows multiple warning signs';
+            } else if (score > 40) {
+                icon = '⚠️';
+                title = 'Caution Advised';
+                subtitle = 'Some suspicious patterns detected';
+            } else if (score > 0) {
+                icon = '⚡';
+                title = 'Low Risk';
+                subtitle = 'Minor concerns identified';
+            } else {
+                icon = '✅';
+                title = 'No Threats Detected';
+                subtitle = 'This URL appears safe';
+            }
+
+            statusIcon.textContent = icon;
+            statusTitle.textContent = title;
+            statusSubtitle.textContent = subtitle;
+
+            // Display threat intelligence
+            displayThreatIntelligence(security);
+
+            // Show preview button for URLs
+            if (url.startsWith('http')) {
+                document.getElementById('previewControls').style.display = 'block';
+            }
+        }
+
+        function displayThreatIntelligence(security) {
+            const container = document.getElementById('threatIntelSection');
+            const score = security.threatScore;
+            const color = getThreatColor(score);
+
+            let html = `
+                <div class="threat-score-section">
+                    <div class="threat-score-bar">
+                        <span style="font-weight: 600;">Threat Score:</span>
+                        <span class="threat-score-value" style="color: ${color};">${score}/100</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="background: ${color}; width: ${score}%;"></div>
+                    </div>
+                </div>
+
+                <h3 style="color: #667eea; margin: 2rem 0 1rem 0;">Security Analysis:</h3>
+            `;
+
+            // Display checks
+            security.checks.forEach(check => {
+                const icon = check.status === 'danger' ? '🚨' :
+                            check.status === 'warning' ? '⚠️' : '✓';
+                const riskClass = check.status === 'danger' ? 'risk-high' :
+                                 check.status === 'warning' ? 'risk-medium' : 'risk-low';
+
+                html += `
+                    <div class="security-item ${riskClass}">
+                        <span style="font-size: 1.5rem;">${icon}</span>
+                        <div>
+                            <strong>${check.name}</strong><br>
+                            <span style="color: #b0b0b0; font-size: 0.9rem;">${check.details}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // VirusTotal link if available
+            if (security.threatIntel && security.threatIntel.permalink) {
+                html += `
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(102,126,234,0.1); border-radius: 8px;">
+                        <a href="${security.threatIntel.permalink}" target="_blank" class="vt-link">
+                            📊 View full VirusTotal report →
+                        </a>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function getThreatColor(score) {
+            if (score > 70) return '#ef4444';
+            if (score > 40) return '#f59e0b';
+            return '#10b981';
+        }
+
+        // Preview functionality
+        const loadPreviewBtn = document.getElementById('loadPreviewBtn');
+        const sandboxSection = document.getElementById('sandboxSection');
+        const sandboxFrame = document.getElementById('sandboxFrame');
+        const closePreview = document.getElementById('closePreview');
+
+        loadPreviewBtn.addEventListener('click', async () => {
+            if (!currentURL) return;
+
+            const encodedURL = encodeURIComponent(currentURL);
+            sandboxFrame.src = `/tools/qr_proxy?url=${encodedURL}`;
+            sandboxSection.classList.add('show');
+            sandboxSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        closePreview.addEventListener('click', () => {
+            sandboxFrame.src = 'about:blank';
+            sandboxSection.classList.remove('show');
+        });
+    </script>
+</body>
+</html>

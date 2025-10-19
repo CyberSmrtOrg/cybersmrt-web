@@ -32,6 +32,14 @@ build/
 # Blog Generator - KEEP PRIVATE, LOCAL ONLY
 blog-generator.html
 
+# Workers
+workers/**/node_modules/
+workers/**/.wrangler/
+workers/**/dist/
+workers/**/.env
+workers/**/.dev.vars
+workers/**/wrangler.toml.local
+
 # Optional: Keep these local too if you want
 add-post.js
 build-blog.js

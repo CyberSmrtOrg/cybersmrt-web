@@ -1,0 +1,58 @@
+name: Deploy QR Proxy Worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/qr-proxy/**'
+      - '.github/workflows/deploy-qr-worker.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy QR Proxy Worker
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'workers/qr-proxy/package.json'
+
+      - name: Install dependencies
+        working-directory: workers/qr-proxy
+        run: npm ci
+
+      - name: Run tests (if any)
+        working-directory: workers/qr-proxy
+        run: npm test --if-present
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'workers/qr-proxy'
+          command: deploy
+          secrets: |
+            VIRUSTOTAL_API_KEY
+            ADMIN_TOKEN
+        env:
+          VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+
+      - name: Health check
+        run: |
+          sleep 5
+          curl -f https://cybersmrt.org/tools/qr_proxy/health || exit 1
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ QR Proxy Worker deployed successfully!"
+          echo "🔗 Endpoint: https://cybersmrt.org/tools/qr_proxy"

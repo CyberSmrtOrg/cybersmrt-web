@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Wrangler files
+.wrangler/
+.dev.vars
+worker-configuration.d.ts
+
+# Environment files (secrets should be set via wrangler secret put)
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+.cache/
