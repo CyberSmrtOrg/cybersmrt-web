@@ -26,7 +26,6 @@ id = "f25bbd7dd5fb4ef98d44f1f60ee3d0c2"
 binding = "RATE_LIMIT_KV"
 id = "a069251c3a3d48af985e181c581e8d35"
 
-
 # Analytics Engine for logging
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"
@@ -56,10 +55,6 @@ id = "dev_namespace_id_here"  # Create with: wrangler kv:namespace create BLOCKE
 
 [env.development.vars]
 ENVIRONMENT = "development"
-
-# Resource limits
-[limits]
-cpu_ms = 50  # 50ms CPU time per request
 
 # Observability
 [observability]

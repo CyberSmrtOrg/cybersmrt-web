@@ -236,7 +236,7 @@ async function handleProxy(request, env, corsHeaders) {
  * Rate limiting using KV
  */
 async function checkRateLimit(request, env) {
-  if (!env.BLOCKED_DOMAINS) {
+  if (!env.RATE_LIMIT_KV) {
     return { limited: false };
   }
 
@@ -244,7 +244,7 @@ async function checkRateLimit(request, env) {
   const key = `ratelimit:${ip}`;
 
   try {
-    const current = await env.BLOCKED_DOMAINS.get(key);
+    const current = await env.RATE_LIMIT_KV.get(key);
     const count = current ? parseInt(current) : 0;
 
     if (count >= SECURITY_CONFIG.RATE_LIMIT_REQUESTS) {
@@ -255,7 +255,7 @@ async function checkRateLimit(request, env) {
     }
 
     // Increment counter with TTL
-    await env.BLOCKED_DOMAINS.put(
+    await env.RATE_LIMIT_KV.put(
       key,
       (count + 1).toString(),
       { expirationTtl: SECURITY_CONFIG.RATE_LIMIT_WINDOW }
