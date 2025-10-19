@@ -1,7 +1,4 @@
-## Enhanced Cloudflare Pages Security Headers
-## This is your UPDATED _headers file
-
-# Global headers - Apply to all pages
+# Global headers - Apply to all pages (COMBINED SECTION)
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh https://cdn.jsdelivr.net https://challenges.cloudflare.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://esm.sh https://cdn.jsdelivr.net https://challenges.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com; frame-src https://challenges.cloudflare.com; worker-src 'self' blob:;
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
@@ -12,14 +9,11 @@
   Cross-Origin-Resource-Policy: same-origin
   X-Frame-Options: DENY
   X-XSS-Protection: 1; mode=block
+  Cache-Control: public, max-age=300
 
 # Static assets - Aggressive caching
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
-
-# HTML pages - Short cache so edits show quickly
-/*
-  Cache-Control: public, max-age=300
 
 # API endpoints - No caching, extra security
 /api/*

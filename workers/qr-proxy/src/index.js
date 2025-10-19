@@ -72,6 +72,9 @@ export default {
       'Access-Control-Allow-Origin': 'https://cybersmrt.org',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer',
+      'X-Frame-Options': 'DENY',
     };
 
     // Handle CORS preflight
