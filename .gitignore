@@ -48,3 +48,9 @@ build-blog.js
 *.tmp
 temp/
 .cache/
+
+# Load test results
+tests/results/
+tests/HISTORY.md
+tests/*.json
+tests/*.bak
