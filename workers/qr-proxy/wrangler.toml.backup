@@ -1,0 +1,49 @@
+name = "cybersmrt-qr-proxy"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Your Cloudflare account ID
+account_id = "39819a9c82ee4fd1e7bb0522a57ef16c"
+workers_dev = false
+
+# Route this worker to your domain
+[[routes]]
+pattern = "cybersmrt.org/tools/qr_proxy*"
+zone_name = "cybersmrt.org"
+
+# KV namespace for blocked domains
+# Create with: wrangler kv namespace create BLOCKED_DOMAINS
+[[kv_namespaces]]
+binding = "BLOCKED_DOMAINS"
+id = "f25bbd7dd5fb4ef98d44f1f60ee3d0c2"
+
+# Analytics Engine for logging
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+# Environment variables (non-sensitive)
+[vars]
+SERVICE_NAME = "CyberSmrt QR Proxy"
+VERSION = "2.0"
+ENVIRONMENT = "production"
+
+# Secrets (set via CLI, not in this file):
+# wrangler secret put VIRUSTOTAL_API_KEY
+# wrangler secret put ADMIN_TOKEN
+
+# Development configuration
+[env.development]
+name = "cybersmrt-qr-proxy-dev"
+workers_dev = true
+
+[[env.development.kv_namespaces]]
+binding = "BLOCKED_DOMAINS"
+id = "preview_id_here"  # Create separate dev namespace
+
+# Observability settings
+[observability]
+enabled = true
+
+# Limits
+[limits]
+cpu_ms = 50

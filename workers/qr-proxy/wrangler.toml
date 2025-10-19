@@ -1,18 +1,23 @@
+# CyberSmrt QR Proxy - Production Configuration
+# Security Hardened Edition v2.1.0
+
 name = "cybersmrt-qr-proxy"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
-# Your Cloudflare account ID
+# Cloudflare account ID
 account_id = "39819a9c82ee4fd1e7bb0522a57ef16c"
 workers_dev = false
 
-# Route this worker to your domain
+# Production route
 [[routes]]
 pattern = "cybersmrt.org/tools/qr_proxy*"
 zone_name = "cybersmrt.org"
 
-# KV namespace for blocked domains
-# Create with: wrangler kv namespace create BLOCKED_DOMAINS
+# KV namespace for blocked domains AND rate limiting
+# This single KV namespace handles both:
+# - blocked:domain.com -> {reason, addedAt}
+# - ratelimit:IP -> request count
 [[kv_namespaces]]
 binding = "BLOCKED_DOMAINS"
 id = "f25bbd7dd5fb4ef98d44f1f60ee3d0c2"
@@ -21,29 +26,184 @@ id = "f25bbd7dd5fb4ef98d44f1f60ee3d0c2"
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"
 
-# Environment variables (non-sensitive)
+# Environment variables (non-sensitive only)
 [vars]
 SERVICE_NAME = "CyberSmrt QR Proxy"
-VERSION = "2.0"
+VERSION = "2.1.0-secure"
 ENVIRONMENT = "production"
 
-# Secrets (set via CLI, not in this file):
-# wrangler secret put VIRUSTOTAL_API_KEY
-# wrangler secret put ADMIN_TOKEN
+# SECURITY: Secrets must be set via CLI, NEVER in this file
+# Set secrets with:
+#   wrangler secret put VIRUSTOTAL_API_KEY
+#   wrangler secret put ADMIN_TOKEN
+#
+# To generate a secure admin token:
+#   openssl rand -base64 32 | wrangler secret put ADMIN_TOKEN
 
-# Development configuration
+# Development environment
 [env.development]
 name = "cybersmrt-qr-proxy-dev"
 workers_dev = true
 
 [[env.development.kv_namespaces]]
 binding = "BLOCKED_DOMAINS"
-id = "preview_id_here"  # Create separate dev namespace
+id = "dev_namespace_id_here"  # Create with: wrangler kv:namespace create BLOCKED_DOMAINS --preview
 
-# Observability settings
+[env.development.vars]
+ENVIRONMENT = "development"
+
+# Resource limits
+[limits]
+cpu_ms = 50  # 50ms CPU time per request
+
+# Observability
 [observability]
 enabled = true
 
-# Limits
-[limits]
-cpu_ms = 50
+# Scheduled tasks for cleanup (data retention compliance)
+# Runs daily at 2 AM UTC
+[triggers]
+crons = ["0 2 * * *"]
+
+# Placement configuration
+[placement]
+mode = "smart"
+
+# Tail consumers for monitoring
+# [[tail_consumers]]
+# service = "cybersmrt-logs"
+
+# Build configuration
+[build]
+command = ""
+
+# ============================================
+# DEPLOYMENT CHECKLIST
+# ============================================
+#
+# Before deploying to production:
+#
+# 1. SET SECRETS (CRITICAL):
+#    wrangler secret put VIRUSTOTAL_API_KEY
+#    wrangler secret put ADMIN_TOKEN
+#
+# 2. VERIFY KV NAMESPACE EXISTS:
+#    wrangler kv:namespace list
+#
+# 3. TEST LOCALLY:
+#    wrangler dev
+#
+# 4. DEPLOY:
+#    wrangler deploy
+#
+# 5. VERIFY DEPLOYMENT:
+#    curl https://cybersmrt.org/tools/qr_proxy/health
+#
+# 6. CONFIGURE CLOUDFLARE DASHBOARD:
+#    - Security > WAF > Rate Limiting Rules
+#      * Path: /tools/qr_proxy*
+#      * Limit: 20 requests per minute per IP
+#      * Action: Block for 60 seconds
+#
+# 7. ENABLE MONITORING:
+#    - Workers > cybersmrt-qr-proxy > Metrics
+#    - Set up alerts for error rate > 5%
+#
+# 8. SECURITY HEADERS (Already in code, verify):
+#    - CSP: script-src 'none'
+#    - X-Frame-Options: DENY
+#    - X-Content-Type-Options: nosniff
+#
+# ============================================
+# MAINTENANCE
+# ============================================
+#
+# ROTATE ADMIN TOKEN (Monthly):
+#   openssl rand -base64 32 | wrangler secret put ADMIN_TOKEN
+#
+# CHECK RATE LIMITING:
+#   wrangler kv:key list --namespace-id=f25bbd7dd5fb4ef98d44f1f60ee3d0c2 --prefix=ratelimit
+#
+# VIEW BLOCKED DOMAINS:
+#   wrangler kv:key list --namespace-id=f25bbd7dd5fb4ef98d44f1f60ee3d0c2 --prefix=blocked
+#
+# MONITOR LOGS:
+#   wrangler tail
+#
+# QUERY ANALYTICS:
+#   Go to dashboard.cloudflare.com > Workers > Analytics
+#
+# ============================================
+# SECURITY FEATURES
+# ============================================
+#
+# ✅ SSRF Protection
+#    - DNS resolution checks
+#    - Private IP blocking
+#    - Cloud metadata IP blocking
+#    - Redirect validation
+#
+# ✅ Rate Limiting
+#    - KV-based rate limiting
+#    - 20 requests per minute per IP
+#    - Configurable via SECURITY_CONFIG
+#
+# ✅ Response Size Limits
+#    - Maximum 5MB per response
+#    - Streaming with size validation
+#
+# ✅ Admin Security
+#    - Token-based authentication
+#    - Audit logging
+#    - Separate admin endpoint
+#
+# ✅ Input Validation
+#    - URL format validation
+#    - Protocol whitelisting (HTTP/HTTPS only)
+#    - Length limits
+#
+# ✅ Content Security
+#    - CSP headers
+#    - Sandbox attributes
+#    - XSS prevention
+#
+# ============================================
+# COMPLIANCE
+# ============================================
+#
+# Data Retention:
+#   - Rate limit data: 60 seconds (automatic via TTL)
+#   - Analytics: 90 days (manual cleanup via scheduled task)
+#   - Blocked domains: Indefinite (security requirement)
+#
+# Privacy:
+#   - Privacy policy required at /privacy-policy.html
+#   - Log IP addresses (required for rate limiting)
+#   - No personal data stored beyond IP
+#
+# GDPR Compliance:
+#   - Right to access: Via analytics query
+#   - Right to deletion: Via KV key deletion
+#   - Data minimization: Only essential data logged
+#
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+#
+# Worker not responding:
+#   wrangler tail --format pretty
+#
+# Rate limiting not working:
+#   - Check KV namespace binding
+#   - Verify keys with: wrangler kv:key list
+#
+# SSRF bypass attempt:
+#   - Check security logs in analytics
+#   - Review blocked IP list
+#
+# High error rate:
+#   - Check worker logs
+#   - Verify external API availability (VirusTotal)
+#   - Check timeout settings
+#
+# ============================================

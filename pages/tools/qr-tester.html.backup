@@ -404,38 +404,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .error-box {
-            background: rgba(239,68,68,0.1);
-            border: 2px solid rgba(239,68,68,0.3);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .error-box h4 {
-            color: #ef4444;
-            margin-bottom: 0.5rem;
-        }
-
-        .privacy-notice {
-            text-align: center;
-            color: #888;
-            font-size: 0.9rem;
-            margin-top: 2rem;
-            padding: 1rem;
-            border-top: 1px solid rgba(102,126,234,0.2);
-        }
-
-        .privacy-notice a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .privacy-notice a:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 768px) {
             .mode-tabs {
                 flex-direction: column;
@@ -539,17 +507,13 @@
                     <li>Forms blocked</li>
                     <li>Downloads prevented</li>
                     <li>All requests logged</li>
-                    <li>Maximum isolation (no access to parent page)</li>
                 </ul>
                 <p style="color: #fca5a5; margin-top: 1rem; font-weight: 600;">
                     ⚠️ Never enter personal information, even in preview mode
                 </p>
             </div>
 
-            <!-- SECURITY FIX: Removed allow-same-origin -->
-            <iframe id="sandboxFrame"
-                    sandbox=""
-                    referrerpolicy="no-referrer"></iframe>
+            <iframe id="sandboxFrame" sandbox="allow-same-origin"></iframe>
 
             <div style="margin-top: 1rem; text-align: center;">
                 <button class="btn btn-secondary" id="closePreview">Close Preview</button>
@@ -577,11 +541,6 @@
                     to know how to stay safe online!
                 </p>
             </div>
-
-            <div class="privacy-notice">
-                By using this tool, you agree to our
-                <a href="/privacy-policy.html">Privacy Policy</a>
-            </div>
         </div>
     </div>
 
@@ -596,13 +555,6 @@
     <!-- QR Tester Logic -->
     <script>
         let currentURL = null;
-
-        // HTML escape utility
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
 
         // Mode switching
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -739,147 +691,34 @@
 
         // Analyze URL using the worker
         async function analyzeURL(url) {
+            currentURL = url;
+
+            const resultsCard = document.getElementById('results');
+            resultsCard.classList.add('show');
+            resultsCard.scrollIntoView({ behavior: 'smooth' });
+
+            // Show loading state
+            document.getElementById('threatIntelSection').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing URL security...</p>
+                </div>
+            `;
+
             try {
-                // === INPUT VALIDATION (SECURITY FIX) ===
-                if (!url || typeof url !== 'string') {
-                    alert('Invalid QR code data');
-                    return;
-                }
-
-                // Check for dangerous protocols
-                const dangerousProtocols = ['javascript:', 'data:', 'file:', 'vbscript:'];
-                const lowerURL = url.toLowerCase();
-                if (dangerousProtocols.some(proto => lowerURL.startsWith(proto))) {
-                    showDangerousContentWarning(url);
-                    return;
-                }
-
-                // Check if it's a valid URL
-                let isURL = false;
-                try {
-                    const parsed = new URL(url);
-                    if (!['http:', 'https:'].includes(parsed.protocol)) {
-                        alert(`Unsupported protocol: ${parsed.protocol}\n\nOnly HTTP and HTTPS are supported.`);
-                        return;
-                    }
-                    isURL = true;
-                } catch (e) {
-                    // Not a URL, might be plain text
-                    displayPlainTextResult(url);
-                    return;
-                }
-
-                if (!isURL) return;
-
-                currentURL = url;
-
-                const resultsCard = document.getElementById('results');
-                resultsCard.classList.add('show');
-                resultsCard.scrollIntoView({ behavior: 'smooth' });
-
-                // Show loading state
-                document.getElementById('threatIntelSection').innerHTML = `
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Analyzing URL security...</p>
-                    </div>
-                `;
-
                 const encodedURL = encodeURIComponent(url);
-                const response = await fetch(
-                    `/tools/qr_proxy?url=${encodedURL}&analysis_only=true`,
-                    {
-                        signal: AbortSignal.timeout(15000) // 15 second timeout
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    throw new Error('Invalid response from server');
-                }
-
+                const response = await fetch(`/tools/qr_proxy?url=${encodedURL}&analysis_only=true`);
                 const data = await response.json();
 
-                // Validate response structure
-                if (!data.url || !data.security) {
-                    throw new Error('Invalid response format');
-                }
-
                 displayResults(data);
-
             } catch (error) {
                 console.error('Analysis failed:', error);
-                showError(url, error.message);
+                document.getElementById('threatIntelSection').innerHTML = `
+                    <div style="color: #ef4444; padding: 1rem; text-align: center;">
+                        ❌ Analysis failed. Please try again.
+                    </div>
+                `;
             }
-        }
-
-        function showDangerousContentWarning(content) {
-            const resultsCard = document.getElementById('results');
-            resultsCard.classList.add('show');
-            resultsCard.scrollIntoView({ behavior: 'smooth' });
-
-            document.getElementById('statusIcon').textContent = '⛔';
-            document.getElementById('statusTitle').textContent = 'DANGEROUS QR CODE DETECTED';
-            document.getElementById('statusSubtitle').textContent = 'This QR code contains malicious content';
-            document.getElementById('qrData').textContent = content.substring(0, 100) + '...';
-            document.getElementById('previewControls').style.display = 'none';
-
-            document.getElementById('threatIntelSection').innerHTML = `
-                <div class="error-box">
-                    <h4>🚨 CRITICAL SECURITY WARNING</h4>
-                    <p style="color: #fca5a5; margin: 1rem 0;">
-                        This QR code contains a dangerous protocol that could execute malicious code
-                        on your device. DO NOT proceed.
-                    </p>
-                    <p style="color: #fca5a5; font-weight: 600;">
-                        Common in: Phishing attacks, malware distribution
-                    </p>
-                </div>
-            `;
-        }
-
-        function displayPlainTextResult(text) {
-            const resultsCard = document.getElementById('results');
-            resultsCard.classList.add('show');
-            resultsCard.scrollIntoView({ behavior: 'smooth' });
-
-            document.getElementById('statusIcon').textContent = 'ℹ️';
-            document.getElementById('statusTitle').textContent = 'Plain Text QR Code';
-            document.getElementById('statusSubtitle').textContent = 'This QR code contains text, not a URL';
-            document.getElementById('qrData').textContent = text;
-            document.getElementById('threatIntelSection').innerHTML = `
-                <div style="padding: 1rem; background: rgba(102,126,234,0.1); border-radius: 8px;">
-                    <p style="color: #b0b0b0;">
-                        This QR code contains plain text data. It does not link to a website.
-                    </p>
-                </div>
-            `;
-            document.getElementById('previewControls').style.display = 'none';
-        }
-
-        function showError(url, errorMessage) {
-            const resultsCard = document.getElementById('results');
-            resultsCard.classList.add('show');
-
-            document.getElementById('statusIcon').textContent = '❌';
-            document.getElementById('statusTitle').textContent = 'Analysis Failed';
-            document.getElementById('statusSubtitle').textContent = 'Unable to analyze this QR code';
-            document.getElementById('qrData').textContent = url || 'Unknown';
-
-            document.getElementById('threatIntelSection').innerHTML = `
-                <div class="error-box">
-                    <h4>⚠️ Error</h4>
-                    <p style="color: #fca5a5;">${escapeHtml(errorMessage)}</p>
-                    <button class="btn btn-secondary" onclick="location.reload()"
-                            style="margin-top: 1rem;">
-                        Try Again
-                    </button>
-                </div>
-            `;
         }
 
         function displayResults(data) {
@@ -947,40 +786,28 @@
             `;
 
             // Display checks
-            if (security.checks && security.checks.length > 0) {
-                security.checks.forEach(check => {
-                    const icon = check.status === 'danger' ? '🚨' :
-                                check.status === 'warning' ? '⚠️' : '✓';
-                    const riskClass = check.status === 'danger' ? 'risk-high' :
-                                     check.status === 'warning' ? 'risk-medium' : 'risk-low';
+            security.checks.forEach(check => {
+                const icon = check.status === 'danger' ? '🚨' :
+                            check.status === 'warning' ? '⚠️' : '✓';
+                const riskClass = check.status === 'danger' ? 'risk-high' :
+                                 check.status === 'warning' ? 'risk-medium' : 'risk-low';
 
-                    html += `
-                        <div class="security-item ${riskClass}">
-                            <span style="font-size: 1.5rem;">${icon}</span>
-                            <div>
-                                <strong>${escapeHtml(check.name)}</strong><br>
-                                <span style="color: #b0b0b0; font-size: 0.9rem;">${escapeHtml(check.details)}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
                 html += `
-                    <div class="security-item risk-low">
-                        <span style="font-size: 1.5rem;">✓</span>
+                    <div class="security-item ${riskClass}">
+                        <span style="font-size: 1.5rem;">${icon}</span>
                         <div>
-                            <strong>No Suspicious Patterns</strong><br>
-                            <span style="color: #b0b0b0; font-size: 0.9rem;">No red flags detected in this URL</span>
+                            <strong>${check.name}</strong><br>
+                            <span style="color: #b0b0b0; font-size: 0.9rem;">${check.details}</span>
                         </div>
                     </div>
                 `;
-            }
+            });
 
             // VirusTotal link if available
             if (security.threatIntel && security.threatIntel.permalink) {
                 html += `
                     <div style="margin-top: 1rem; padding: 1rem; background: rgba(102,126,234,0.1); border-radius: 8px;">
-                        <a href="${escapeHtml(security.threatIntel.permalink)}" target="_blank" rel="noopener noreferrer" class="vt-link">
+                        <a href="${security.threatIntel.permalink}" target="_blank" class="vt-link">
                             📊 View full VirusTotal report →
                         </a>
                     </div>

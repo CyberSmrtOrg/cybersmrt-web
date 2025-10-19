@@ -1,73 +1,20 @@
 /**
- * CyberSmrt QR Code Proxy - Security Hardened Edition
+ * CyberSmrt QR Code Proxy - Enhanced Edition
  * Cloudflare Worker with Full Security Suite
  *
- * SECURITY PATCHES APPLIED:
- * - SSRF protection with DNS resolution
- * - Rate limiting via KV
- * - Response size limits
- * - Cloud metadata IP blocking
- * - Redirect security checks
- * - Admin audit logging
- * - Input validation
- *
- * @version 2.1.0-secure
+ * Features:
+ * - VirusTotal threat intelligence
+ * - Analytics logging
+ * - Blocked domain database (KV)
+ * - Heuristic analysis
+ * - Comprehensive security analysis
  */
-
-// ============== SECURITY CONSTANTS ==============
-const SECURITY_CONFIG = {
-  // Rate limiting
-  RATE_LIMIT_REQUESTS: 20,
-  RATE_LIMIT_WINDOW: 60, // seconds
-
-  // Response limits
-  MAX_RESPONSE_SIZE: 5 * 1024 * 1024, // 5MB
-  FETCH_TIMEOUT: 10000, // 10 seconds
-
-  // Threat scoring
-  THREAT_SCORES: {
-    SUSPICIOUS_TLD: 20,
-    PHISHING_KEYWORD: 10,
-    IP_ADDRESS: 30,
-    EXCESSIVE_HYPHENS: 15,
-    LONG_DOMAIN: 10,
-    URL_SHORTENER: 25,
-    MALICIOUS_DETECTION: 10,
-  },
-
-  THREAT_THRESHOLDS: {
-    HIGH: 70,
-    MEDIUM: 40,
-    LOW: 20,
-  },
-
-  // Blocked IPs and ranges
-  BLOCKED_IPS: [
-    '127.0.0.1',
-    '0.0.0.0',
-    '::1',
-    'localhost',
-    '169.254.169.254', // AWS/Azure/GCP metadata
-    'fd00:ec2::254', // AWS IPv6 metadata
-    '100.100.100.200', // Alibaba Cloud metadata
-  ],
-
-  PRIVATE_IP_RANGES: [
-    /^127\./,
-    /^10\./,
-    /^172\.(1[6-9]|2[0-9]|3[0-1])\./,
-    /^192\.168\./,
-    /^169\.254\./, // Link-local
-    /^fc00:/, // IPv6 private
-    /^fe80:/, // IPv6 link-local
-  ],
-};
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // CORS headers
+    // CORS headers for API endpoints
     const corsHeaders = {
       'Access-Control-Allow-Origin': 'https://cybersmrt.org',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -83,20 +30,20 @@ export default {
     if (url.pathname === '/tools/qr_proxy/health') {
       return new Response(JSON.stringify({
         status: 'ok',
-        service: 'qr-proxy-secure',
-        version: '2.1.0',
+        service: 'qr-proxy-enhanced',
         edge: request.cf?.colo || 'unknown',
+        version: '2.0'
       }), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       });
     }
 
-    // Admin block endpoint (with audit logging)
+    // Blocked domains management endpoint (admin only)
     if (url.pathname === '/tools/qr_proxy/block') {
       return handleBlockDomain(request, env, corsHeaders);
     }
 
-    // Main proxy endpoint (rate limited)
+    // Main proxy endpoint
     if (url.pathname === '/tools/qr_proxy') {
       return handleProxy(request, env, corsHeaders);
     }
@@ -106,32 +53,17 @@ export default {
 };
 
 /**
- * Main proxy handler with comprehensive security
+ * Main proxy handler with full security analysis
  */
 async function handleProxy(request, env, corsHeaders) {
   const url = new URL(request.url);
   const targetURL = url.searchParams.get('url');
 
-  // === INPUT VALIDATION ===
   if (!targetURL) {
     return jsonResponse({ error: 'Missing URL parameter' }, 400, corsHeaders);
   }
 
-  // Check URL length (prevent DoS)
-  if (targetURL.length > 2048) {
-    return jsonResponse({ error: 'URL too long (max 2048 chars)' }, 400, corsHeaders);
-  }
-
-  // === RATE LIMITING ===
-  const rateLimitResult = await checkRateLimit(request, env);
-  if (rateLimitResult.limited) {
-    return jsonResponse({
-      error: 'Rate limit exceeded',
-      retryAfter: rateLimitResult.retryAfter
-    }, 429, corsHeaders);
-  }
-
-  // === URL VALIDATION ===
+  // Validate URL format
   let parsedURL;
   try {
     parsedURL = new URL(targetURL);
@@ -139,35 +71,10 @@ async function handleProxy(request, env, corsHeaders) {
     return jsonResponse({ error: 'Invalid URL format' }, 400, corsHeaders);
   }
 
-  // Only allow HTTP/HTTPS
-  if (!['http:', 'https:'].includes(parsedURL.protocol)) {
-    return jsonResponse({
-      error: 'Invalid protocol. Only HTTP and HTTPS are allowed'
-    }, 400, corsHeaders);
-  }
-
-  // === SSRF PROTECTION ===
-  const ssrfCheck = await checkSSRF(parsedURL);
-  if (ssrfCheck.blocked) {
-    await logSecurityEvent(env, request, 'ssrf_blocked', {
-      url: targetURL,
-      reason: ssrfCheck.reason
-    });
-    return jsonResponse({
-      error: 'Access forbidden',
-      reason: ssrfCheck.reason
-    }, 403, corsHeaders);
-  }
-
-  // === SECURITY ANALYSIS ===
+  // Security checks
   const securityChecks = await performSecurityChecks(parsedURL, env);
 
   if (securityChecks.blocked) {
-    await logSecurityEvent(env, request, 'threat_blocked', {
-      url: targetURL,
-      reason: securityChecks.reason,
-      score: securityChecks.threatScore
-    });
     return jsonResponse({
       error: 'URL blocked',
       reason: securityChecks.reason,
@@ -175,10 +82,10 @@ async function handleProxy(request, env, corsHeaders) {
     }, 403, corsHeaders);
   }
 
-  // Log request
+  // Log request to analytics
   await logRequest(request, targetURL, securityChecks, env);
 
-  // Analysis only mode (don't fetch content)
+  // Check if user wants analysis only (no fetch)
   const analysisOnly = url.searchParams.get('analysis_only') === 'true';
   if (analysisOnly) {
     return jsonResponse({
@@ -188,16 +95,20 @@ async function handleProxy(request, env, corsHeaders) {
     }, 200, corsHeaders);
   }
 
-  // === FETCH WITH SECURITY ===
   try {
-    const response = await fetchWithSecurity(targetURL, parsedURL, env);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    // Fetch the target URL
+    const response = await fetch(targetURL, {
+      headers: {
+        'User-Agent': 'CyberSmrt-QR-Scanner/2.0 (+https://cybersmrt.org)'
+      },
+      cf: {
+        timeout: 10000,
+        cacheTtl: 0,
+      }
+    });
 
     const contentType = response.headers.get('Content-Type') || 'text/html';
-    let content = response.content;
+    let content = await response.text();
 
     // Inject security measures for HTML
     if (contentType.includes('text/html')) {
@@ -205,10 +116,10 @@ async function handleProxy(request, env, corsHeaders) {
     }
 
     return new Response(content, {
-      status: 200,
+      status: response.status,
       headers: {
         'Content-Type': contentType,
-        'X-Proxied-By': 'CyberSmrt-Secure',
+        'X-Proxied-By': 'CyberSmrt-Enhanced',
         'X-Target-URL': targetURL,
         'X-Threat-Score': securityChecks.threatScore.toString(),
         'Content-Security-Policy': "default-src 'self'; script-src 'none'; form-action 'none';",
@@ -224,193 +135,9 @@ async function handleProxy(request, env, corsHeaders) {
     await logError(error, targetURL, request, env);
     return jsonResponse({
       error: 'Proxy error',
-      message: 'Failed to fetch URL'
+      message: error.message
     }, 500, corsHeaders);
   }
-}
-
-/**
- * Rate limiting using KV
- */
-async function checkRateLimit(request, env) {
-  if (!env.BLOCKED_DOMAINS) {
-    return { limited: false };
-  }
-
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const key = `ratelimit:${ip}`;
-
-  try {
-    const current = await env.BLOCKED_DOMAINS.get(key);
-    const count = current ? parseInt(current) : 0;
-
-    if (count >= SECURITY_CONFIG.RATE_LIMIT_REQUESTS) {
-      return {
-        limited: true,
-        retryAfter: SECURITY_CONFIG.RATE_LIMIT_WINDOW
-      };
-    }
-
-    // Increment counter with TTL
-    await env.BLOCKED_DOMAINS.put(
-      key,
-      (count + 1).toString(),
-      { expirationTtl: SECURITY_CONFIG.RATE_LIMIT_WINDOW }
-    );
-
-    return { limited: false };
-  } catch (error) {
-    console.error('Rate limit check failed:', error);
-    return { limited: false }; // Fail open
-  }
-}
-
-/**
- * SSRF Protection - Check for internal/private IPs and cloud metadata
- */
-async function checkSSRF(parsedURL) {
-  const hostname = parsedURL.hostname.toLowerCase();
-
-  // Check direct IP blocks
-  if (SECURITY_CONFIG.BLOCKED_IPS.includes(hostname)) {
-    return {
-      blocked: true,
-      reason: 'Access to internal IPs forbidden'
-    };
-  }
-
-  // Check private IP ranges
-  if (SECURITY_CONFIG.PRIVATE_IP_RANGES.some(pattern => pattern.test(hostname))) {
-    return {
-      blocked: true,
-      reason: 'Access to private IP ranges forbidden'
-    };
-  }
-
-  // Try DNS resolution for domain names (best effort)
-  if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) {
-    try {
-      const resolvedIP = await resolveDNS(hostname);
-      if (resolvedIP) {
-        // Check resolved IP
-        if (SECURITY_CONFIG.BLOCKED_IPS.includes(resolvedIP)) {
-          return {
-            blocked: true,
-            reason: 'Domain resolves to blocked IP address'
-          };
-        }
-
-        if (SECURITY_CONFIG.PRIVATE_IP_RANGES.some(pattern => pattern.test(resolvedIP))) {
-          return {
-            blocked: true,
-            reason: 'Domain resolves to private IP range'
-          };
-        }
-      }
-    } catch (error) {
-      console.error('DNS resolution failed:', error);
-      // Continue anyway - don't block on DNS failure
-    }
-  }
-
-  return { blocked: false };
-}
-
-/**
- * DNS Resolution using Cloudflare DNS over HTTPS
- */
-async function resolveDNS(hostname) {
-  try {
-    const response = await fetch(
-      `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(hostname)}&type=A`,
-      {
-        headers: { 'Accept': 'application/dns-json' },
-        cf: { cacheTtl: 300 }
-      }
-    );
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-    return data.Answer?.[0]?.data || null;
-  } catch (error) {
-    console.error('DNS resolution error:', error);
-    return null;
-  }
-}
-
-/**
- * Fetch with security controls and size limits
- */
-async function fetchWithSecurity(targetURL, parsedURL, env) {
-  // First fetch with manual redirect
-  const response = await fetch(targetURL, {
-    headers: {
-      'User-Agent': 'CyberSmrt-QR-Scanner/2.1 (+https://cybersmrt.org)'
-    },
-    redirect: 'manual',
-    cf: {
-      timeout: SECURITY_CONFIG.FETCH_TIMEOUT,
-      cacheTtl: 0
-    }
-  });
-
-  // Check for redirects and validate them
-  if (response.status >= 300 && response.status < 400) {
-    const location = response.headers.get('location');
-    if (location) {
-      const redirectURL = new URL(location, targetURL);
-
-      // Check redirect for SSRF
-      const ssrfCheck = await checkSSRF(redirectURL);
-      if (ssrfCheck.blocked) {
-        throw new Error('Redirect to blocked destination: ' + ssrfCheck.reason);
-      }
-
-      // Follow redirect (one level only)
-      return await fetchWithSecurity(redirectURL.href, redirectURL, env);
-    }
-  }
-
-  // Check content length
-  const contentLength = response.headers.get('content-length');
-  if (contentLength && parseInt(contentLength) > SECURITY_CONFIG.MAX_RESPONSE_SIZE) {
-    throw new Error('Content too large (max 5MB)');
-  }
-
-  // Stream response with size limit
-  const reader = response.body.getReader();
-  const chunks = [];
-  let receivedLength = 0;
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    chunks.push(value);
-    receivedLength += value.length;
-
-    if (receivedLength > SECURITY_CONFIG.MAX_RESPONSE_SIZE) {
-      throw new Error('Content too large (max 5MB)');
-    }
-  }
-
-  // Reconstruct content
-  const chunksAll = new Uint8Array(receivedLength);
-  let position = 0;
-  for (let chunk of chunks) {
-    chunksAll.set(chunk, position);
-    position += chunk.length;
-  }
-
-  const content = new TextDecoder('utf-8').decode(chunksAll);
-
-  return {
-    ok: response.ok,
-    status: response.status,
-    headers: response.headers,
-    content: content
-  };
 }
 
 /**
@@ -435,7 +162,16 @@ async function performSecurityChecks(parsedURL, env) {
     return checks;
   }
 
-  // 2. VirusTotal check (if API key available)
+  // 2. Check private/internal IPs
+  const privateCheck = checkPrivateIP(hostname);
+  if (privateCheck.blocked) {
+    checks.blocked = true;
+    checks.reason = 'Access to internal/private IPs forbidden';
+    checks.threatScore = 100;
+    return checks;
+  }
+
+  // 3. VirusTotal check (if API key available)
   if (env.VIRUSTOTAL_API_KEY) {
     const vtCheck = await checkVirusTotal(parsedURL.href, env.VIRUSTOTAL_API_KEY);
     checks.threatIntel = vtCheck;
@@ -447,7 +183,7 @@ async function performSecurityChecks(parsedURL, env) {
       return checks;
     }
 
-    checks.threatScore += vtCheck.malicious * SECURITY_CONFIG.THREAT_SCORES.MALICIOUS_DETECTION;
+    checks.threatScore += vtCheck.malicious * 10;
     checks.checks.push({
       name: 'VirusTotal',
       status: vtCheck.malicious > 0 ? 'warning' : 'clean',
@@ -455,7 +191,7 @@ async function performSecurityChecks(parsedURL, env) {
     });
   }
 
-  // 3. Pattern-based heuristics
+  // 4. Pattern-based heuristics
   const heuristics = analyzeHeuristics(parsedURL);
   checks.threatScore += heuristics.score;
   checks.checks.push(...heuristics.checks);
@@ -472,7 +208,7 @@ async function checkBlockedDomain(hostname, env) {
   }
 
   try {
-    const blocked = await env.BLOCKED_DOMAINS.get(`blocked:${hostname}`);
+    const blocked = await env.BLOCKED_DOMAINS.get(hostname);
     if (blocked) {
       const data = JSON.parse(blocked);
       return {
@@ -489,6 +225,30 @@ async function checkBlockedDomain(hostname, env) {
 }
 
 /**
+ * Check for private/internal IPs
+ */
+function checkPrivateIP(hostname) {
+  const blockedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '::1'];
+
+  const privateRanges = [
+    /^127\./,
+    /^10\./,
+    /^172\.(1[6-9]|2[0-9]|3[0-1])\./,
+    /^192\.168\./,
+    /^169\.254\./,
+    /^fc00:/,
+    /^fe80:/
+  ];
+
+  if (blockedHosts.includes(hostname) ||
+      privateRanges.some(pattern => pattern.test(hostname))) {
+    return { blocked: true };
+  }
+
+  return { blocked: false };
+}
+
+/**
  * VirusTotal API integration
  */
 async function checkVirusTotal(url, apiKey) {
@@ -498,12 +258,15 @@ async function checkVirusTotal(url, apiKey) {
     const response = await fetch(
       `https://www.virustotal.com/api/v3/urls/${urlId}`,
       {
-        headers: { 'x-apikey': apiKey },
-        cf: { cacheTtl: 3600 }
+        headers: {
+          'x-apikey': apiKey
+        },
+        cf: { cacheTtl: 3600 } // Cache for 1 hour
       }
     );
 
     if (response.status === 404) {
+      // URL not in VT database, submit for analysis
       await submitToVirusTotal(url, apiKey);
       return { malicious: 0, total: 0, status: 'pending' };
     }
@@ -560,7 +323,7 @@ function analyzeHeuristics(parsedURL) {
   // Suspicious TLDs
   const suspiciousTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top'];
   if (suspiciousTLDs.some(tld => hostname.endsWith(tld))) {
-    score += SECURITY_CONFIG.THREAT_SCORES.SUSPICIOUS_TLD;
+    score += 20;
     checks.push({
       name: 'TLD Check',
       status: 'warning',
@@ -577,7 +340,7 @@ function analyzeHeuristics(parsedURL) {
   const keywordMatches = phishingKeywords.filter(kw => urlString.includes(kw));
 
   if (keywordMatches.length > 0) {
-    score += keywordMatches.length * SECURITY_CONFIG.THREAT_SCORES.PHISHING_KEYWORD;
+    score += keywordMatches.length * 10;
     checks.push({
       name: 'Keyword Analysis',
       status: keywordMatches.length > 2 ? 'danger' : 'warning',
@@ -587,7 +350,7 @@ function analyzeHeuristics(parsedURL) {
 
   // IP address instead of domain
   if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) {
-    score += SECURITY_CONFIG.THREAT_SCORES.IP_ADDRESS;
+    score += 30;
     checks.push({
       name: 'Domain Type',
       status: 'warning',
@@ -597,7 +360,7 @@ function analyzeHeuristics(parsedURL) {
 
   // Excessive hyphens
   if ((hostname.match(/-/g) || []).length > 3) {
-    score += SECURITY_CONFIG.THREAT_SCORES.EXCESSIVE_HYPHENS;
+    score += 15;
     checks.push({
       name: 'Domain Structure',
       status: 'warning',
@@ -607,7 +370,7 @@ function analyzeHeuristics(parsedURL) {
 
   // Very long domain
   if (hostname.length > 30) {
-    score += SECURITY_CONFIG.THREAT_SCORES.LONG_DOMAIN;
+    score += 10;
     checks.push({
       name: 'Domain Length',
       status: 'info',
@@ -618,7 +381,7 @@ function analyzeHeuristics(parsedURL) {
   // URL shortener domains
   const shorteners = ['bit.ly', 'tinyurl.com', 'goo.gl', 'ow.ly', 't.co', 'is.gd'];
   if (shorteners.some(s => hostname.includes(s))) {
-    score += SECURITY_CONFIG.THREAT_SCORES.URL_SHORTENER;
+    score += 25;
     checks.push({
       name: 'URL Shortener',
       status: 'warning',
@@ -647,10 +410,10 @@ function injectSecurityMeasures(content, targetURL, securityChecks) {
   content = content.replace(/<head>/i, `<head>${cspMeta}`);
 
   // Enhanced watermark with threat score
-  const threatLevel = securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.HIGH ? 'HIGH' :
-                      securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.MEDIUM ? 'MEDIUM' : 'LOW';
-  const threatColor = securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.HIGH ? '#ef4444' :
-                       securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.MEDIUM ? '#f59e0b' : '#10b981';
+  const threatLevel = securityChecks.threatScore > 50 ? 'HIGH' :
+                      securityChecks.threatScore > 20 ? 'MEDIUM' : 'LOW';
+  const threatColor = securityChecks.threatScore > 50 ? '#ef4444' :
+                       securityChecks.threatScore > 20 ? '#f59e0b' : '#10b981';
 
   const watermark = `
     <div style="position: fixed; top: 0; left: 0; right: 0;
@@ -677,21 +440,12 @@ function injectSecurityMeasures(content, targetURL, securityChecks) {
 }
 
 /**
- * Block domain handler (admin only with audit logging)
+ * Block domain handler (admin only)
  */
 async function handleBlockDomain(request, env, corsHeaders) {
   // Verify admin token
   const authHeader = request.headers.get('Authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    await logAdminAttempt(env, request, 'missing_token');
-    return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders);
-  }
-
-  const token = authHeader.substring(7);
-
-  // Compare tokens securely (timing-safe)
-  if (token !== env.ADMIN_TOKEN) {
-    await logAdminAttempt(env, request, 'invalid_token');
+  if (!authHeader || authHeader !== `Bearer ${env.ADMIN_TOKEN}`) {
     return jsonResponse({ error: 'Unauthorized' }, 401, corsHeaders);
   }
 
@@ -706,56 +460,17 @@ async function handleBlockDomain(request, env, corsHeaders) {
     return jsonResponse({ error: 'Missing domain' }, 400, corsHeaders);
   }
 
-  await env.BLOCKED_DOMAINS.put(`blocked:${domain}`, JSON.stringify({
+  await env.BLOCKED_DOMAINS.put(domain, JSON.stringify({
     reason: reason || 'Manually blocked',
     addedAt: new Date().toISOString(),
     addedBy: 'admin'
   }));
-
-  // Log admin action
-  await logAdminAttempt(env, request, 'domain_blocked', { domain, reason });
 
   return jsonResponse({
     success: true,
     domain,
     message: 'Domain blocked successfully'
   }, 200, corsHeaders);
-}
-
-/**
- * Log admin access attempts
- */
-async function logAdminAttempt(env, request, action, metadata = {}) {
-  if (!env.ANALYTICS) return;
-
-  try {
-    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-    await env.ANALYTICS.writeDataPoint({
-      indexes: [`admin:${action}`],
-      blobs: [ip, JSON.stringify(metadata)],
-      doubles: [Date.now()]
-    });
-  } catch (error) {
-    console.error('Admin logging failed:', error);
-  }
-}
-
-/**
- * Log security events
- */
-async function logSecurityEvent(env, request, eventType, metadata) {
-  if (!env.ANALYTICS) return;
-
-  try {
-    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-    await env.ANALYTICS.writeDataPoint({
-      indexes: [`security:${eventType}`],
-      blobs: [ip, JSON.stringify(metadata)],
-      doubles: [Date.now()]
-    });
-  } catch (error) {
-    console.error('Security logging failed:', error);
-  }
 }
 
 /**
@@ -791,18 +506,6 @@ async function logError(error, targetURL, request, env) {
     ip: request.headers.get('CF-Connecting-IP'),
     userAgent: request.headers.get('User-Agent')
   });
-
-  if (env.ANALYTICS) {
-    try {
-      await env.ANALYTICS.writeDataPoint({
-        indexes: ['error'],
-        blobs: [error.message, targetURL],
-        doubles: [Date.now()]
-      });
-    } catch (e) {
-      console.error('Error logging failed:', e);
-    }
-  }
 }
 
 /**
