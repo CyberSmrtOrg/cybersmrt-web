@@ -7,7 +7,7 @@ import { getGoogleAuthUrl, handleGoogleCallback } from './providers/google.js';
 import { getGitHubAuthUrl, handleGitHubCallback } from './providers/github.js';
 import { getMicrosoftAuthUrl, handleMicrosoftCallback } from './providers/microsoft.js';
 import { getAppleAuthUrl, handleAppleCallback } from './providers/apple.js';
-// import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
+import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
 import { createSession, getSession, deleteSession, getUserSessions } from './utils/session.js';
 import { checkOAuthRateLimit } from './utils/rateLimit.js';
 import { logLogin, logLogout, logOAuthLink } from './utils/security.js';
