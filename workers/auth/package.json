@@ -16,6 +16,7 @@
   "author": "CyberSmrt",
   "license": "PRIVATE",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "jose": "^5.2.0"
   },
   "devDependencies": {

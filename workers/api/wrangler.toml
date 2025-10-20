@@ -1,0 +1,24 @@
+name = "cybersmrt-api"
+main = "src/index.js"
+compatibility_date = "2025-10-20"
+compatibility_flags = ["nodejs_compat"]
+
+routes = [
+  { pattern = "cybersmrt.org/api/*", zone_name = "cybersmrt.org" }
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cybersmrt-users"
+database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "a069251c3a3d48af985e181c581e8d35"
+
+[vars]
+CLOUDFLARE_ACCOUNT_ID = "39819a9c82ee4fd1e7bb0522a57ef16c"
+MAX_PHOTO_SIZE = 5242880
+ALLOWED_PHOTO_TYPES = "image/jpeg,image/png,image/webp"
+RATE_LIMIT_REQUESTS = 100
+RATE_LIMIT_WINDOW = 3600

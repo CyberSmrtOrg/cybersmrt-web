@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CyberSmrt</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        body {
+            background: #f5f7fa;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-info h1 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+
+        .profile-info p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            margin: 0 0 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .provider-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f8f9ff;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            margin: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .provider-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+
+        .btn-danger {
+            background: #fee;
+            color: #c33;
+            border: 2px solid #fcc;
+        }
+
+        .btn-danger:hover {
+            background: #fdd;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading your dashboard...</p>
+    </div>
+
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <div class="dashboard-header">
+            <img id="avatar" class="profile-avatar" src="" alt="Profile">
+            <div class="profile-info">
+                <h1 id="displayName"></h1>
+                <p id="email"></p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Account Information</h2>
+                <div class="info-row">
+                    <span class="info-label">Email Status</span>
+                    <span id="emailVerified"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Role</span>
+                    <span id="role" class="info-value"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Member Since</span>
+                    <span id="memberSince" class="info-value"></span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Connected Accounts</h2>
+                <div id="providers"></div>
+            </div>
+
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <a href="/" class="btn btn-primary">Browse Resources</a>
+                    <a href="/tools" class="btn btn-secondary">Security Tools</a>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="logout()" class="btn btn-danger">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        async function loadDashboard() {
+            try {
+                // Check if user is logged in
+                const accessToken = localStorage.getItem('access_token');
+                if (!accessToken) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                // Fetch user data from API
+                const response = await fetch('/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const data = await response.json();
+                const user = data.user;
+
+                // Update UI with user data
+                document.getElementById('avatar').src = user.avatar_url || '/images/default-avatar.png';
+                document.getElementById('displayName').textContent = user.display_name;
+                document.getElementById('email').textContent = user.email;
+                document.getElementById('role').textContent = user.role.toUpperCase();
+
+                // Email verification status
+                const verifiedBadge = user.email_verified
+                    ? '<span class="verified-badge">✓ Verified</span>'
+                    : '<span style="color: #c33;">Not Verified</span>';
+                document.getElementById('emailVerified').innerHTML = verifiedBadge;
+
+                // Member since
+                const memberDate = new Date(user.created_at * 1000);
+                document.getElementById('memberSince').textContent = memberDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Connected providers
+                const providersHtml = user.connectedProviders.map(p => {
+                    const icons = {
+                        google: '<svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>',
+                        github: '<svg viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
+                        microsoft: '<svg viewBox="0 0 24 24"><path d="M11.4 11.4H2V2h9.4v9.4z" fill="#f25022"/><path d="M22 11.4h-9.4V2H22v9.4z" fill="#7fba00"/><path d="M11.4 22H2v-9.4h9.4V22z" fill="#00a4ef"/><path d="M22 22h-9.4v-9.4H22V22z" fill="#ffb900"/></svg>'
+                    };
+                    return `<div class="provider-badge">${icons[p.provider]} ${p.provider.charAt(0).toUpperCase() + p.provider.slice(1)}</div>`;
+                }).join('');
+                document.getElementById('providers').innerHTML = providersHtml;
+
+                // Show dashboard, hide loading
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+
+            } catch (err) {
+                console.error('Dashboard error:', err);
+                alert('Failed to load dashboard. Please try logging in again.');
+                logout();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('session_id');
+            window.location.href = '/';
+        }
+
+        // Load on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

@@ -7,6 +7,13 @@ import { getGoogleAuthUrl, handleGoogleCallback } from './providers/google.js';
 import { getGitHubAuthUrl, handleGitHubCallback } from './providers/github.js';
 import { getMicrosoftAuthUrl, handleMicrosoftCallback } from './providers/microsoft.js';
 import { getAppleAuthUrl, handleAppleCallback } from './providers/apple.js';
+import {
+  registerWithPassword,
+  loginWithPassword,
+  changePassword,
+  requestPasswordReset,
+  resetPassword
+} from './providers/password.js';
 import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
 import { createSession, getSession, deleteSession, getUserSessions } from './utils/session.js';
 import { checkOAuthRateLimit } from './utils/rateLimit.js';
@@ -239,6 +246,170 @@ export class AuthRouter {
         'Content-Type': 'application/json',
         'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
       },
+    });
+  }
+
+  /**
+   * Handle user registration with email/password
+   */
+  async handleRegister() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { email, password, displayName } = body;
+
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+
+    // Register user
+    const user = await registerWithPassword(email, password, displayName, this.request, this.env);
+
+    // Create session
+    const session = await createSession(user.userId, this.request, this.env);
+
+    // Generate tokens
+    const accessToken = await generateAccessToken(user.userId, user.email, this.env);
+    const refreshToken = await generateRefreshToken(user.userId, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      user: {
+        id: user.userId,
+        email: user.email,
+        displayName: user.displayName,
+        role: 'user',
+      },
+      session: {
+        id: session.sessionId,
+        expiresAt: session.expiresAt,
+      },
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
+      },
+    });
+  }
+
+  /**
+   * Handle user login with email/password
+   */
+  async handleLogin() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { email, password } = body;
+
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+
+    // Login user
+    const user = await loginWithPassword(email, password, this.request, this.env);
+
+    // Create session
+    const session = await createSession(user.id, this.request, this.env);
+
+    // Generate tokens
+    const accessToken = await generateAccessToken(user.id, user.email, this.env);
+    const refreshToken = await generateRefreshToken(user.id, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.display_name,
+        avatarUrl: user.avatar_url,
+        role: user.role,
+      },
+      session: {
+        id: session.sessionId,
+        expiresAt: session.expiresAt,
+      },
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
+      },
+    });
+  }
+
+  /**
+   * Handle password change
+   */
+  async handleChangePassword() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { currentPassword, newPassword } = body;
+
+    if (!currentPassword || !newPassword) {
+      throw new Error('Current password and new password are required');
+    }
+
+    await changePassword(userId, currentPassword, newPassword, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Password changed successfully',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Handle forgot password request
+   */
+  async handleForgotPassword() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { email } = body;
+
+    if (!email) {
+      throw new Error('Email is required');
+    }
+
+    await requestPasswordReset(email, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'If an account exists with this email, a password reset link has been sent',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Handle password reset
+   */
+  async handleResetPassword() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { token, newPassword } = body;
+
+    if (!token || !newPassword) {
+      throw new Error('Token and new password are required');
+    }
+
+    await resetPassword(token, newPassword, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Password reset successfully',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 

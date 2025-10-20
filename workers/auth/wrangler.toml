@@ -43,6 +43,10 @@ SESSION_EXPIRY = 604800  # 7 days in seconds
 RATE_LIMIT_WINDOW = 900  # 15 minutes in seconds
 RATE_LIMIT_MAX_ATTEMPTS = 5
 
+# Resend password reset
+FRONTEND_URL = "https://cybersmrt.org"
+RESEND_FROM_EMAIL = "noreply@cybersmrt.org"
+
 # OAuth callback URLs (update with your domain)
 GOOGLE_REDIRECT_URI = "https://cybersmrt.org/auth/callback/google"
 GITHUB_REDIRECT_URI = "https://cybersmrt.org/auth/callback/github"

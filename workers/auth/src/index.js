@@ -5,6 +5,7 @@
 
 import { AuthRouter } from './router.js';
 import { cleanupExpiredSessions } from './utils/session.js';
+import { cleanupExpiredTokens } from './utils/password.js';
 
 /**
  * CORS headers for development
@@ -97,6 +98,23 @@ export default {
         return await router.handleOAuthCallback('apple');
       }
 
+      // Email/Password authentication
+      if (path === '/auth/register' && request.method === 'POST') {
+        return await router.handleRegister();
+      }
+      if (path === '/auth/login' && request.method === 'POST') {
+        return await router.handleLogin();
+      }
+      if (path === '/auth/change-password' && request.method === 'POST') {
+        return await router.handleChangePassword();
+      }
+      if (path === '/auth/forgot-password' && request.method === 'POST') {
+        return await router.handleForgotPassword();
+      }
+      if (path === '/auth/reset-password' && request.method === 'POST') {
+        return await router.handleResetPassword();
+      }
+
       // Token management
       if (path === '/auth/refresh' && request.method === 'POST') {
         return await router.handleRefresh();
@@ -130,7 +148,7 @@ export default {
       if (path === '/auth' || path === '/auth/') {
         return jsonResponse({
           name: 'CyberSmrt OAuth Authentication API',
-          version: '1.0.0',
+          version: '2.0.0',
           endpoints: {
             oauth: {
               google: '/auth/google',
@@ -143,6 +161,13 @@ export default {
               github: '/auth/callback/github',
               microsoft: '/auth/callback/microsoft',
               apple: '/auth/callback/apple',
+            },
+            password: {
+              register: 'POST /auth/register',
+              login: 'POST /auth/login',
+              changePassword: 'POST /auth/change-password',
+              forgotPassword: 'POST /auth/forgot-password',
+              resetPassword: 'POST /auth/reset-password',
             },
             tokens: {
               refresh: 'POST /auth/refresh',
@@ -177,7 +202,11 @@ export default {
    */
   async scheduled(event, env, ctx) {
     // Clean up expired sessions daily
-    const deleted = await cleanupExpiredSessions(env);
-    console.log(`Cleaned up ${deleted} expired sessions`);
+    const deletedSessions = await cleanupExpiredSessions(env);
+    console.log(`Cleaned up ${deletedSessions} expired sessions`);
+
+    // Clean up expired password reset tokens
+    const deletedTokens = await cleanupExpiredTokens(env);
+    console.log(`Cleaned up ${deletedTokens} expired password reset tokens`);
   },
 };
