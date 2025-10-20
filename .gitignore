@@ -69,3 +69,6 @@ tests/*.json
 # Database
 *.db
 *.sqlite.dev.vars
+.dev.vars
+.env
+.env.*
