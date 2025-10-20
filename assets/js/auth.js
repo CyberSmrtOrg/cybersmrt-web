@@ -79,6 +79,19 @@ function logout() {
 }
 
 /**
+ * Handle successful login - redirect to dashboard
+ */
+function handleLoginSuccess(userData) {
+  console.log('Login successful, redirecting to dashboard...');
+
+  // Get user ID from the user data
+  const userId = userData.id;
+
+  // Redirect to dashboard with user ID in URL
+  window.location.href = `/dashboard/${userId}`;
+}
+
+/**
  * Update UI elements based on auth status
  * Call this on page load to show/hide login/logout buttons
  */
@@ -114,6 +127,35 @@ function updateAuthUI() {
       el.src = user.avatarUrl || '/assets/logos/cybersmrt-logo-only.png';
     });
   }
+}
+
+/**
+ * Require authentication - redirect if not logged in
+ * This waits for auth.js to be fully loaded before checking
+ */
+function requireAuth() {
+  if (!isAuthenticated()) {
+    console.log('Not authenticated, redirecting to login...');
+    window.location.href = '/?login=required';
+    return false;
+  }
+
+  // Check if URL has correct user ID
+  const user = getCurrentUser();
+  if (user) {
+    const pathParts = window.location.pathname.split('/');
+    const urlUserId = pathParts[pathParts.length - 1];
+
+    // If URL doesn't have user ID, redirect to add it
+    if (!urlUserId || urlUserId.length < 30) {
+      const currentPage = pathParts[1] || 'dashboard';
+      console.log('Adding user ID to URL...');
+      window.location.href = `/${currentPage}/${user.id}`;
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -180,6 +222,8 @@ window.logout = logout;
 window.updateAuthUI = updateAuthUI;
 window.apiRequest = apiRequest;
 window.getUserProfile = getUserProfile;
+window.requireAuth = requireAuth;
+window.handleLoginSuccess = handleLoginSuccess;
 
 // Auto-update UI when page loads
 if (document.readyState === 'loading') {
