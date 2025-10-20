@@ -170,84 +170,96 @@ export class AuthRouter {
   }
 
   /**
-   * Handle OAuth callback
-   */
-  async handleOAuthCallback(provider) {
-    await checkOAuthRateLimit(this.request, this.env);
+     * Handle OAuth callback
+     */
+    async handleOAuthCallback(provider) {
+      await checkOAuthRateLimit(this.request, this.env);
 
-    // Get code and state from query params
-    const code = this.url.searchParams.get('code');
-    const state = this.url.searchParams.get('state');
+      // Get code and state from query params
+      const code = this.url.searchParams.get('code');
+      const state = this.url.searchParams.get('state');
 
-    if (!code || !state) {
-      throw new Error('Missing code or state parameter');
+      if (!code || !state) {
+        throw new Error('Missing code or state parameter');
+      }
+
+      // Verify state (CSRF protection)
+      await verifyState(state, this.env);
+
+      // Exchange code for tokens and get user profile
+      let result;
+      switch (provider) {
+        case 'google':
+          result = await handleGoogleCallback(code, this.env);
+          break;
+        case 'github':
+          result = await handleGitHubCallback(code, this.env);
+          break;
+        case 'microsoft':
+          result = await handleMicrosoftCallback(code, this.env);
+          break;
+        case 'apple':
+          // For Apple, check if there's user data in POST body
+          const userData = this.request.method === 'POST'
+            ? await this.request.formData().then(fd => fd.get('user'))
+            : null;
+          result = await handleAppleCallback(code, this.env, userData);
+          break;
+        default:
+          throw new Error(`Unknown provider: ${provider}`);
+      }
+
+      // Find or create user
+      const user = await findOrCreateUser(result.profile, this.env);
+
+      // Create session
+      const session = await createSession(user.id, this.request, this.env);
+
+      // Generate JWT tokens
+      const accessToken = await generateAccessToken(user.id, user.email, this.env);
+      const refreshToken = await generateRefreshToken(user.id, this.env);
+
+      // Log successful login
+      await logLogin(user.id, this.request, this.env, provider);
+      await logOAuthLink(user.id, provider, this.request, this.env);
+
+      // Prepare user data for frontend
+      const userData = {
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          displayName: user.display_name,
+          avatarUrl: user.avatar_url,
+          role: user.role,
+        },
+        session: {
+          id: session.sessionId,
+          expiresAt: session.expiresAt,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+      };
+
+      // Encode data for URL (base64 to avoid URL length issues)
+      const dataString = JSON.stringify(userData);
+      const encodedData = btoa(dataString);
+
+      // Redirect to frontend callback page with data in hash
+      const callbackUrl = new URL('https://cybersmrt.org/callback.html');
+      callbackUrl.hash = encodedData;
+
+      // Set session cookie
+      const cookieHeader = `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`;
+
+      return Response.redirect(callbackUrl.toString(), 302, {
+        headers: {
+          'Set-Cookie': cookieHeader,
+        },
+      });
     }
-
-    // Verify state (CSRF protection)
-    await verifyState(state, this.env);
-
-    // Exchange code for tokens and get user profile
-    let result;
-    switch (provider) {
-      case 'google':
-        result = await handleGoogleCallback(code, this.env);
-        break;
-      case 'github':
-        result = await handleGitHubCallback(code, this.env);
-        break;
-      case 'microsoft':
-        result = await handleMicrosoftCallback(code, this.env);
-        break;
-      case 'apple':
-        // For Apple, check if there's user data in POST body
-        const userData = this.request.method === 'POST'
-          ? await this.request.formData().then(fd => fd.get('user'))
-          : null;
-        result = await handleAppleCallback(code, this.env, userData);
-        break;
-      default:
-        throw new Error(`Unknown provider: ${provider}`);
-    }
-
-    // Find or create user
-    const user = await findOrCreateUser(result.profile, this.env);
-
-    // Create session
-    const session = await createSession(user.id, this.request, this.env);
-
-    // Generate JWT tokens
-    const accessToken = await generateAccessToken(user.id, user.email, this.env);
-    const refreshToken = await generateRefreshToken(user.id, this.env);
-
-    // Log successful login
-    await logLogin(user.id, this.request, this.env, provider);
-    await logOAuthLink(user.id, provider, this.request, this.env);
-
-    // Return tokens and user info
-    return new Response(JSON.stringify({
-      success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        displayName: user.display_name,
-        avatarUrl: user.avatar_url,
-        role: user.role,
-      },
-      session: {
-        id: session.sessionId,
-        expiresAt: session.expiresAt,
-      },
-      tokens: {
-        accessToken,
-        refreshToken,
-      },
-    }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
-      },
-    });
-  }
 
   /**
    * Handle user registration with email/password
