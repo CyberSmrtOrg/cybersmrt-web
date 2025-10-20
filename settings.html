@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - CyberSmrt</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .settings-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .settings-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .settings-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .section-header svg {
+      width: 24px;
+      height: 24px;
+      color: #60a5fa;
+    }
+
+    .section-header h2 {
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info {
+      flex: 1;
+      margin-right: 1rem;
+    }
+
+    .setting-info h3 {
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .setting-info p {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(100, 116, 139, 0.3);
+      border: 2px solid rgba(100, 116, 139, 0.5);
+      transition: 0.3s;
+      border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #64748b;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: rgba(96, 165, 250, 0.3);
+      border-color: #60a5fa;
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+      background-color: #60a5fa;
+      transform: translateX(24px);
+    }
+
+    /* Select Dropdown */
+    select {
+      padding: 0.625rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      color: white;
+      font-size: 0.95rem;
+      cursor: pointer;
+      min-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #60a5fa;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    select option {
+      background: #1e293b;
+      color: white;
+    }
+
+    .btn {
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(96, 165, 250, 0.3);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .danger-zone {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .danger-zone h3 {
+      color: #f87171;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .danger-zone h3 svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .danger-zone p {
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .info-box {
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .info-box svg {
+      width: 20px;
+      height: 20px;
+      color: #60a5fa;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-box p {
+      color: #cbd5e1;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header will be injected here -->
+  <script defer src="/assets/js/header-loader.js"></script>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Settings</h1>
+      <p>Manage your account preferences and security settings</p>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="settings-card">
+      <div class="settings-section">
+        <div class="section-header">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+          <h2>Account Settings</h2>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Language</h3>
+            <p>Choose your preferred language for the interface</p>
+          </div>
+          <select id="language">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Timezone</h3>
+            <p>Set your local timezone for accurate scheduling</p>
+          </div>
+          <select id="timezone">
+            <option value="America/Los_Angeles">Pacific Time (PT)</option>
+            <option value="America/Denver">Mountain Time (MT)</option>
+            <option value="America/Chicago">Central Time (CT)</option>
+            <option value="America/New_York">Eastern Time (ET)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="settings-section">
+        <div class="section-header">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          <h2>Notifications</h2>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Email Notifications</h3>
+            <p>Receive updates and announcements via email</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="email-notifications" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Course Reminders</h3>
+            <p>Get reminders about incomplete courses and deadlines</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="course-reminders" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Marketing Communications</h3>
+            <p>Receive news about new courses and special offers</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="marketing">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="settings-section">
+        <div class="section-header">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <h2>Privacy & Security</h2>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Profile Visibility</h3>
+            <p>Control who can see your profile and progress</p>
+          </div>
+          <select id="profile-visibility">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="connections">Connections Only</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Two-Factor Authentication</h3>
+            <p>Add an extra layer of security to your account</p>
+          </div>
+          <button class="btn btn-primary" onclick="alert('Two-factor authentication setup coming soon!')">
+            Enable 2FA
+          </button>
+        </div>
+
+        <div class="info-box">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p>We recommend enabling two-factor authentication to keep your account secure. You'll need your phone to log in.</p>
+        </div>
+      </div>
+
+      <!-- Appearance -->
+      <div class="settings-section">
+        <div class="section-header">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+          </svg>
+          <h2>Appearance</h2>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Theme</h3>
+            <p>Choose how CyberSmrt looks to you</p>
+          </div>
+          <select id="theme">
+            <option value="dark">Dark Mode</option>
+            <option value="light">Light Mode</option>
+            <option value="auto">System Default</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <h3>Reduce Motion</h3>
+            <p>Minimize animations and transitions</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="reduce-motion">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="settings-card danger-zone">
+      <h3>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        Danger Zone
+      </h3>
+      <p>These actions are permanent and cannot be undone. Please be careful.</p>
+      <button class="btn btn-danger" onclick="confirmDeleteAccount()">
+        Delete Account
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Check authentication
+    if (!window.isAuthenticated || !window.isAuthenticated()) {
+      window.location.href = '/?login=required';
+    }
+
+    // Save settings when changed
+    function saveSettings() {
+      const settings = {
+        language: document.getElementById('language').value,
+        timezone: document.getElementById('timezone').value,
+        emailNotifications: document.getElementById('email-notifications').checked,
+        courseReminders: document.getElementById('course-reminders').checked,
+        marketing: document.getElementById('marketing').checked,
+        profileVisibility: document.getElementById('profile-visibility').value,
+        theme: document.getElementById('theme').value,
+        reduceMotion: document.getElementById('reduce-motion').checked
+      };
+
+      // Save to localStorage (you would send to API in production)
+      const savedSettings = JSON.stringify(settings);
+      console.log('Saving settings:', savedSettings);
+
+      // Show feedback
+      showNotification('Settings saved successfully!');
+    }
+
+    // Add event listeners to all settings
+    document.querySelectorAll('select, input[type="checkbox"]').forEach(element => {
+      element.addEventListener('change', saveSettings);
+    });
+
+    // Load saved settings
+    window.addEventListener('load', () => {
+      // You would load from API in production
+      console.log('Loading user settings...');
+    });
+
+    function showNotification(message) {
+      // Simple notification (you could make this fancier)
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+      `;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    function confirmDeleteAccount() {
+      const confirmed = confirm(
+        'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.'
+      );
+
+      if (confirmed) {
+        const doubleConfirm = confirm(
+          'This is your last chance. Are you absolutely sure you want to delete your account?'
+        );
+
+        if (doubleConfirm) {
+          console.log('Account deletion requested');
+          alert('Account deletion request submitted. You will receive a confirmation email.');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
