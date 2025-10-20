@@ -62,7 +62,12 @@
       box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
     }
 
-    /* User Menu (shown when logged in) */
+    /* User Menu Dropdown Container */
+    .user-menu-container {
+      position: relative;
+    }
+
+    /* User Menu Button */
     .user-menu {
       display: flex;
       align-items: center;
@@ -73,9 +78,9 @@
       cursor: pointer;
       transition: all 0.3s ease;
       color: white;
-      text-decoration: none !important;
-      opacity: 1 !important;
-      border-bottom: none !important;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
     }
     .user-menu:hover {
       background: rgba(255, 255, 255, 0.3);
@@ -88,6 +93,86 @@
     }
     .user-name {
       font-weight: 600;
+    }
+
+    /* Dropdown Arrow */
+    .user-menu-arrow {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+    .user-menu-container.open .user-menu-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* User Dropdown Menu */
+    .user-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      background: rgba(6, 10, 22, 0.95);
+      border: 1px solid var(--hdr-border);
+      border-radius: 12px;
+      min-width: 200px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .user-menu-container.open .user-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .user-dropdown a,
+    .user-dropdown button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .user-dropdown a:last-child,
+    .user-dropdown button:last-child {
+      border-bottom: none;
+    }
+
+    .user-dropdown a:hover,
+    .user-dropdown button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .user-dropdown button.logout-btn {
+      color: #f87171;
+    }
+
+    .user-dropdown button.logout-btn:hover {
+      background: rgba(248, 113, 113, 0.1);
+      color: #fca5a5;
+    }
+
+    .user-dropdown svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
     }
 
     .site-header .nav-toggle{
@@ -112,6 +197,9 @@
       .header-signin-btn {
         width: 100%;
         max-width: 250px;
+      }
+      .user-dropdown {
+        right: 1rem;
       }
     }
   </style>
@@ -138,11 +226,67 @@
         Sign In
       </button>
 
-      <!-- User Menu (shown when logged in) -->
-      <a href="/dashboard.html" class="user-menu" data-auth-show style="display: none;">
-        <img data-user-avatar src="/assets/logos/cybersmrt-logo-only.png" alt="Profile" class="user-avatar">
-        <span data-user-name class="user-name">User</span>
-      </a>
+      <!-- User Menu Dropdown (shown when logged in) -->
+      <div class="user-menu-container" data-auth-show style="display: none;">
+        <button class="user-menu" onclick="toggleUserMenu(event)" aria-haspopup="true" aria-expanded="false">
+          <img data-user-avatar src="/assets/logos/cybersmrt-logo-only.png" alt="Profile" class="user-avatar">
+          <span data-user-name class="user-name">User</span>
+          <svg class="user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <div class="user-dropdown">
+          <a href="/dashboard.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            Dashboard
+          </a>
+          <a href="/profile.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            Profile
+          </a>
+          <a href="/settings.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            Settings
+          </a>
+          <button onclick="logout()" class="logout-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   </nav>
+
+  <script>
+    // Toggle user dropdown menu
+    function toggleUserMenu(event) {
+      event.stopPropagation();
+      const container = event.currentTarget.closest('.user-menu-container');
+      const isOpen = container.classList.toggle('open');
+      event.currentTarget.setAttribute('aria-expanded', isOpen);
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const container = document.querySelector('.user-menu-container');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('open');
+        const menuBtn = container.querySelector('.user-menu');
+        if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Make globally available
+    window.toggleUserMenu = toggleUserMenu;
+  </script>
 </header>
