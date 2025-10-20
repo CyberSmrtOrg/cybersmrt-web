@@ -7,13 +7,7 @@
       --brand: #8ab4ff;
     }
 
-    /* Orbitron is loaded in the page <head>
-  <!-- Cloudflare Turnstile API -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-  <!-- Turnstile Gate Loader -->
-
- */
+    /* Orbitron is loaded in the page <head> */
     .nav-logo, .site-brand, .logo-wordmark, .nav-brand span {
       font-family: "Orbitron", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
       font-weight: 900;
@@ -50,6 +44,52 @@
       color:#fff; border-bottom:2px solid #60a5fa;
     }
 
+    /* Sign In Button */
+    .header-signin-btn {
+      background: white;
+      color: #667eea;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .header-signin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    }
+
+    /* User Menu (shown when logged in) */
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none !important;
+      opacity: 1 !important;
+      border-bottom: none !important;
+    }
+    .user-menu:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .user-name {
+      font-weight: 600;
+    }
+
     .site-header .nav-toggle{
       display:none; width:40px; height:40px; border:0; background:transparent; position:relative;
     }
@@ -69,6 +109,10 @@
         display:none; flex-direction:column; padding:.75rem 1rem; gap:.9rem;
       }
       .site-header .nav-links.show{ display:flex; }
+      .header-signin-btn {
+        width: 100%;
+        max-width: 250px;
+      }
     }
   </style>
 
@@ -78,7 +122,7 @@
       <span>CYBERSMRT</span>
     </a>
 
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleHeaderMenu(this)">
       <span></span><span></span><span></span>
     </button>
 
@@ -88,6 +132,27 @@
       <a href="/pages/blog/">Blog</a>
       <a href="/pages/about/">About</a>
       <a href="mailto:tony@cybersmrt.org">Contact</a>
+
+      <!-- Sign In Button (shown when NOT logged in) -->
+      <button class="header-signin-btn" onclick="openLoginModal()" data-auth-hide>
+        Sign In
+      </button>
+
+      <!-- User Menu (shown when logged in) -->
+      <a href="/dashboard.html" class="user-menu" data-auth-show style="display: none;">
+        <img data-user-avatar src="/assets/logos/cybersmrt-logo-only.png" alt="Profile" class="user-avatar">
+        <span data-user-name class="user-name">User</span>
+      </a>
     </div>
   </nav>
+
+  <script>
+    function toggleHeaderMenu(btn) {
+      const navLinks = document.querySelector('.site-header .nav-links');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+      navLinks.classList.toggle('show');
+      btn.setAttribute('aria-expanded', !isExpanded);
+    }
+  </script>
 </header>

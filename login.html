@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CyberSmrt</title>
+    <meta name="description" content="Sign in to your CyberSmrt account">
+
+    <!-- Orbitron Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+        }
+
+        .loading h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+        <h1>CyberSmrt</h1>
+        <p>Opening sign in...</p>
+    </div>
+
+    <script>
+        // Load header and footer
+        Promise.all([
+            fetch('/partials/header.html').then(r => r.text()),
+            fetch('/partials/footer.html').then(r => r.text())
+        ]).then(([header, footer]) => {
+            // Hide loading, add header/footer
+            document.body.innerHTML = header + footer;
+
+            // Wait a moment for scripts to load, then open modal
+            setTimeout(() => {
+                if (window.openLoginModal) {
+                    window.openLoginModal();
+                }
+            }, 100);
+        }).catch(err => {
+            console.error('Failed to load:', err);
+            // Fallback: redirect to homepage
+            window.location.href = '/';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page - CyberSmrt</title>
+
+    <!-- Your existing CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- ORBITRON FONT (required for modal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Your existing page styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Sign In Button in Header */
+        .sign-in-btn {
+            background: white;
+            color: #667eea;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sign-in-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        /* User menu when logged in */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing header -->
+    <header>
+        <div class="logo">
+            <h1>CyberSmrt</h1>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/tools">Tools</a>
+            <a href="/resources">Resources</a>
+
+            <!-- OPTION 1: Show sign in button when logged out -->
+            <button class="sign-in-btn" onclick="openLoginModal()" data-auth-hide>
+                Sign In
+            </button>
+
+            <!-- OPTION 2: Show user menu when logged in -->
+            <div class="user-menu" data-auth-show style="display: none;">
+                <img data-user-avatar src="/images/default-avatar.png" alt="Profile" class="user-avatar">
+                <span data-user-name>User</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Your existing page content -->
+    <main>
+        <h1>Welcome to Our Page</h1>
+        <p>This is your existing content...</p>
+
+        <!-- Example: CTA that requires login -->
+        <div class="cta-section">
+            <h2>Ready to Start Learning?</h2>
+            <p>Sign in to access exclusive cybersecurity resources</p>
+
+            <!-- This button opens the login modal -->
+            <button class="cta-button" onclick="openLoginModal()">
+                Get Started Free
+            </button>
+        </div>
+
+        <!-- Example: Content only for logged-in users -->
+        <section data-auth-show style="display: none;">
+            <h2>Welcome back, <span data-user-name></span>!</h2>
+            <p>Here's your personalized content...</p>
+        </section>
+
+        <!-- Example: Inline sign in prompt -->
+        <div data-auth-hide>
+            <p>Want to save your progress? <a href="#" onclick="openLoginModal(); return false;" style="color: #667eea; font-weight: 600;">Sign in here</a></p>
+        </div>
+    </main>
+
+    <!-- ============================================ -->
+    <!-- STEP 1: Include the Login Modal -->
+    <!-- ============================================ -->
+    <div id="login-modal-root"></div>
+    <script>
+        // Load the login modal component
+        fetch('/components/login-modal.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('login-modal-root').innerHTML = html;
+            });
+    </script>
+
+    <!-- ============================================ -->
+    <!-- STEP 2: Include Auth Helper (optional) -->
+    <!-- ============================================ -->
+    <script src="/js/auth.js"></script>
+
+    <!-- Your existing page scripts -->
+    <script>
+        // Example: Check if user is logged in and do something
+        if (typeof isAuthenticated === 'function' && isAuthenticated()) {
+            console.log('User is logged in!');
+            // Do something for logged-in users
+        }
+
+        // Example: Require auth for certain actions
+        function viewPremiumContent() {
+            if (!isAuthenticated()) {
+                openLoginModal();
+                return;
+            }
+            // Show premium content
+            alert('Here is your premium content!');
+        }
+    </script>
+</body>
+</html>
