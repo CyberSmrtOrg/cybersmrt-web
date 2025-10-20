@@ -30,6 +30,12 @@ id = "a069251c3a3d48af985e181c581e8d35"
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"
 
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "cybersmrt-users"
+database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
+
 # Environment variables (non-sensitive only)
 [vars]
 SERVICE_NAME = "CyberSmrt QR Proxy"

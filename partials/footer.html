@@ -34,6 +34,21 @@
       letter-spacing: .02em;
       color: var(--ft-link);
     }
+    .footer-legal {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      color: var(--ft-text);
+    }
+    .footer-legal a {
+      color: var(--ft-link);
+      text-decoration: none;
+    }
+    .footer-legal a:hover {
+      text-decoration: underline;
+    }
     .footer-right {
       display: flex;
       gap: 1rem;
@@ -146,6 +161,12 @@
           Learn More
         </a>
       </div>
+    </div>
+
+    <!-- Legal Links -->
+    <div class="footer-legal">
+      <a href="/pages/legal/privacy-policy.html">Privacy Policy</a> •
+      <a href="/pages/legal/terms-of-service.html">Terms of Service</a>
     </div>
 
     <div class="footer-back">

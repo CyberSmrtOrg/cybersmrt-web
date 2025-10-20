@@ -49,8 +49,23 @@ build-blog.js
 temp/
 .cache/
 
-# Load test results
+# Sensitive files
+.env
+.env.local
+.dev.vars
+wrangler.toml.local
+
+# Local development
+.wrangler/
+node_modules/
+.DS_Store
+
+# Test results
 tests/results/
 tests/HISTORY.md
 tests/*.json
-tests/*.bak
+*.log
+
+# Database
+*.db
+*.sqlite.dev.vars

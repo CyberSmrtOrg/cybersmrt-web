@@ -1,0 +1,24 @@
+{
+  "name": "cybersmrt-auth",
+  "version": "1.0.0",
+  "description": "CyberSmrt OAuth Authentication Worker",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "wrangler dev --test-scheduled"
+  },
+  "keywords": [
+    "oauth",
+    "authentication",
+    "cloudflare-workers"
+  ],
+  "author": "CyberSmrt",
+  "license": "PRIVATE",
+  "dependencies": {
+    "jose": "^5.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.43.0"
+  }
+}

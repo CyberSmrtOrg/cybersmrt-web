@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Cloudflare Turnstile API -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy • CyberSmrt</title>
+    <meta name="description" content="CyberSmrt Privacy Policy - Learn how we collect, use, and protect your information.">
+
+    <!-- Orbitron font for header + page -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Use site's actual CSS path -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <style>
+        /* Ensure dark theme consistency */
+        body {
+            background: #0a0d18;
+            color: #e5e7eb;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+
+        main {
+            min-height: 70vh;
+        }
+
+        /* Minimal styles specific to legal pages */
+        .privacy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .privacy-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .privacy-header p {
+            color: #94a3b8;
+        }
+
+        .last-updated {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .privacy-toc {
+            background: rgba(102, 126, 234, 0.08);
+            border-left: 4px solid #667eea;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .privacy-toc h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .privacy-toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .privacy-toc li {
+            margin: 10px 0;
+        }
+
+        .privacy-toc a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .privacy-toc a:hover {
+            color: #667eea;
+        }
+
+        .privacy-section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .privacy-section:last-child {
+            border-bottom: none;
+        }
+
+        .privacy-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .privacy-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #764ba2;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .privacy-section p {
+            color: #cbd5e0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .privacy-section ul, .privacy-section ol {
+            color: #cbd5e0;
+            line-height: 1.8;
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        .privacy-section li {
+            margin: 8px 0;
+        }
+
+        .privacy-section a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .privacy-section a:hover {
+            text-decoration: underline;
+        }
+
+        .privacy-section strong {
+            color: #e5e7eb;
+        }
+
+        .highlight-box {
+            background: rgba(118, 75, 162, 0.1);
+            border-left: 4px solid #764ba2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .highlight-box strong {
+            color: #a78bfa;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(15, 20, 36, 0.6);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            color: #cbd5e0;
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .data-table a {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .contact-box p {
+            color: #cbd5e0;
+        }
+
+        .contact-box a {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-toc {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a id="top"></a>
+
+    <!-- Shared header mount + loader -->
+    <div id="header-mount"></div>
+    <script defer src="/assets/js/header-loader.js"></script>
+    <script defer src="/assets/js/header-init.js"></script>
+
+    <!-- No-JS header fallback -->
+    <noscript>
+        <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+            <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+            <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
+            <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+            <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+            <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
+            <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+        </nav>
+    </noscript>
+
+    <main class="privacy-container">
+        <div class="privacy-header">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: October 19, 2025</p>
+            <p style="color: #a0aec0; margin-top: 20px;">
+                CyberSmrt is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.
+            </p>
+        </div>
+
+        <div class="privacy-toc">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#information-we-collect">1. Information We Collect</a></li>
+                <li><a href="#how-we-use">2. How We Use Your Information</a></li>
+                <li><a href="#data-sharing">3. Data Sharing and Disclosure</a></li>
+                <li><a href="#data-security">4. Data Security</a></li>
+                <li><a href="#your-rights">5. Your Privacy Rights</a></li>
+                <li><a href="#cookies">6. Cookies and Tracking</a></li>
+                <li><a href="#children">7. Children's Privacy</a></li>
+                <li><a href="#changes">8. Changes to This Policy</a></li>
+                <li><a href="#contact">9. Contact Us</a></li>
+            </ul>
+        </div>
+
+        <section id="information-we-collect" class="privacy-section">
+            <h2>1. Information We Collect</h2>
+
+            <h3>Information You Provide</h3>
+            <p>We collect information you voluntarily provide when you:</p>
+            <ul>
+                <li>Subscribe to our newsletter</li>
+                <li>Contact us via email or forms</li>
+                <li>Register for educational programs</li>
+                <li>Make donations</li>
+                <li>Participate in surveys or feedback</li>
+            </ul>
+
+            <h3>Automatically Collected Information</h3>
+            <p>When you visit our website or use our tools, we automatically collect:</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IP Address</td>
+                        <td>Security, analytics, and rate limiting</td>
+                    </tr>
+                    <tr>
+                        <td>Browser Type</td>
+                        <td>Optimize user experience</td>
+                    </tr>
+                    <tr>
+                        <td>Device Information</td>
+                        <td>Ensure compatibility</td>
+                    </tr>
+                    <tr>
+                        <td>Usage Data</td>
+                        <td>Improve services and detect issues</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>QR Code Scanner Tool</h3>
+            <p>When you use our QR Code Security Scanner:</p>
+            <ul>
+                <li><strong>QR code images are NOT stored</strong> - Images are processed in real-time and immediately discarded</li>
+                <li><strong>URLs are analyzed temporarily</strong> - URLs from QR codes are sent to third-party security services (VirusTotal) for threat analysis</li>
+                <li><strong>No personal data collected</strong> - We do not link scans to individual users</li>
+                <li><strong>Aggregate statistics only</strong> - We track total scans and threat detections for service improvement</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Privacy First:</strong> Our QR scanner is designed with privacy by default. Images and URLs are never permanently stored, and we cannot identify individual users.
+            </div>
+        </section>
+
+        <section id="how-we-use" class="privacy-section">
+            <h2>2. How We Use Your Information</h2>
+            <p>We use collected information for the following purposes:</p>
+            <ul>
+                <li><strong>Service Delivery:</strong> Provide educational resources, tools, and support</li>
+                <li><strong>Communications:</strong> Send newsletters, updates, and respond to inquiries</li>
+                <li><strong>Security:</strong> Protect against fraud, abuse, and malicious activity</li>
+                <li><strong>Analytics:</strong> Understand usage patterns to improve our services</li>
+                <li><strong>Compliance:</strong> Meet legal and regulatory requirements</li>
+                <li><strong>Mission Advancement:</strong> Support our nonprofit mission and report to stakeholders</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Nonprofit Commitment:</strong> As a 501(c)(3) nonprofit, we never sell your personal information. All data usage supports our mission to serve underserved communities.
+            </div>
+        </section>
+
+        <section id="data-sharing" class="privacy-section">
+            <h2>3. Data Sharing and Disclosure</h2>
+
+            <h3>We Share Information With:</h3>
+            <ul>
+                <li><strong>Service Providers:</strong> Trusted third parties that help us operate our services (hosting, email, analytics)</li>
+                <li><strong>Security Services:</strong> VirusTotal and other security APIs for threat detection</li>
+                <li><strong>Legal Requirements:</strong> When required by law or to protect rights and safety</li>
+                <li><strong>Partner Organizations:</strong> With your explicit consent for specific programs</li>
+            </ul>
+
+            <h3>Third-Party Services We Use:</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Purpose</th>
+                        <th>Privacy Policy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cloudflare</td>
+                        <td>Hosting, CDN, security</td>
+                        <td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank">View Policy</a></td>
+                    </tr>
+                    <tr>
+                        <td>VirusTotal</td>
+                        <td>URL/file threat analysis</td>
+                        <td><a href="https://support.virustotal.com/hc/en-us/articles/115002168385-Privacy-Policy" target="_blank">View Policy</a></td>
+                    </tr>
+                    <tr>
+                        <td>Google Analytics</td>
+                        <td>Website analytics</td>
+                        <td><a href="https://policies.google.com/privacy" target="_blank">View Policy</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>We Never:</strong> Sell, rent, or trade your personal information to third parties for marketing purposes.
+            </div>
+        </section>
+
+        <section id="data-security" class="privacy-section">
+            <h2>4. Data Security</h2>
+            <p>We implement industry-standard security measures to protect your information:</p>
+            <ul>
+                <li><strong>Encryption:</strong> All data transmitted to our servers uses TLS/SSL encryption</li>
+                <li><strong>Access Controls:</strong> Strict limitations on who can access personal data</li>
+                <li><strong>Regular Audits:</strong> Ongoing security assessments and vulnerability testing</li>
+                <li><strong>Incident Response:</strong> Procedures to address and notify users of any breaches</li>
+                <li><strong>Data Minimization:</strong> We only collect and retain necessary information</li>
+            </ul>
+
+            <p>While we strive to protect your information, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.</p>
+        </section>
+
+        <section id="your-rights" class="privacy-section">
+            <h2>5. Your Privacy Rights</h2>
+            <p>Depending on your location, you may have the following rights:</p>
+
+            <h3>Access and Control</h3>
+            <ul>
+                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                <li><strong>Correction:</strong> Update inaccurate or incomplete information</li>
+                <li><strong>Deletion:</strong> Request deletion of your personal data</li>
+                <li><strong>Portability:</strong> Receive your data in a portable format</li>
+                <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications</li>
+                <li><strong>Object:</strong> Object to certain data processing activities</li>
+            </ul>
+
+            <h3>How to Exercise Your Rights</h3>
+            <p>To exercise any of these rights, please contact us at: <a href="mailto:privacy@cybersmrt.org">privacy@cybersmrt.org</a></p>
+            <p>We will respond to your request within 30 days.</p>
+
+            <div class="highlight-box">
+                <strong>California Residents (CCPA):</strong> You have additional rights under the California Consumer Privacy Act. We do not sell personal information.
+            </div>
+        </section>
+
+        <section id="cookies" class="privacy-section">
+            <h2>6. Cookies and Tracking</h2>
+            <p>We use cookies and similar technologies to enhance your experience:</p>
+
+            <h3>Types of Cookies We Use:</h3>
+            <ul>
+                <li><strong>Essential Cookies:</strong> Required for website functionality</li>
+                <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
+                <li><strong>Performance Cookies:</strong> Improve site speed and user experience</li>
+            </ul>
+
+            <h3>Managing Cookies</h3>
+            <p>You can control cookies through your browser settings. Note that disabling cookies may affect site functionality.</p>
+            <p>Most browsers accept cookies by default. Visit your browser's help section to learn how to modify cookie settings.</p>
+        </section>
+
+        <section id="children" class="privacy-section">
+            <h2>7. Children's Privacy</h2>
+            <p>We are committed to protecting children's privacy online:</p>
+            <ul>
+                <li>Our K-12 educational programs comply with FERPA and COPPA requirements</li>
+                <li>We do not knowingly collect personal information from children under 13 without parental consent</li>
+                <li>Parents and schools can request access to or deletion of student data</li>
+                <li>Student data is used solely for educational purposes</li>
+            </ul>
+
+            <p>If you believe we have collected information from a child under 13 without consent, please contact us immediately at <a href="mailto:privacy@cybersmrt.org">privacy@cybersmrt.org</a>.</p>
+        </section>
+
+        <section id="changes" class="privacy-section">
+            <h2>8. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy periodically to reflect:</p>
+            <ul>
+                <li>Changes in our practices</li>
+                <li>New legal requirements</li>
+                <li>Technology updates</li>
+                <li>Service improvements</li>
+            </ul>
+
+            <p>We will notify you of significant changes by:</p>
+            <ul>
+                <li>Posting a notice on our website</li>
+                <li>Updating the "Last Updated" date</li>
+                <li>Sending an email to registered users (for material changes)</li>
+            </ul>
+
+            <p>Your continued use of our services after changes take effect constitutes acceptance of the updated policy.</p>
+        </section>
+
+        <section id="contact" class="privacy-section">
+            <h2>9. Contact Us</h2>
+            <p>If you have questions or concerns about this Privacy Policy or our data practices:</p>
+
+            <div class="contact-box">
+                <h3>Privacy Officer</h3>
+                <p style="color: #cbd5e0; margin: 15px 0;">
+                    Email: <a href="mailto:privacy@cybersmrt.org">privacy@cybersmrt.org</a><br>
+                    General Inquiries: <a href="mailto:info@cybersmrt.org">info@cybersmrt.org</a><br>
+                    Website: <a href="https://www.cybersmrt.org">www.cybersmrt.org</a>
+                </p>
+                <p style="color: #a0aec0; font-size: 0.9rem; margin-top: 20px;">
+                    <strong>CyberSmrt</strong><br>
+                    A Service-Disabled Veteran-Owned 501(c)(3) Nonprofit<br>
+                    EIN: 33-3117801
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- No-JS footer fallback -->
+    <noscript>
+        <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
+            © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
+            <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
+            <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
+            <a href="/pages/about" style="color:#8ab4ff">About</a> ·
+            <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
+        </footer>
+    </noscript>
+
+    <!-- Shared footer mount + loader -->
+    <div id="footer-mount"></div>
+    <script defer src="/assets/js/footer-loader.js"></script>
+    <script defer src="/assets/js/footer-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+name = "cybersmrt-test"
+compatibility_date = "2025-10-19"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cybersmrt-users"
+database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"

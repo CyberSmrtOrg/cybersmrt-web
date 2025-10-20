@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Cloudflare Turnstile API -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service • CyberSmrt</title>
+    <meta name="description" content="CyberSmrt Terms of Service - Usage rules and legal agreements for our services.">
+
+    <!-- Orbitron font for header + page -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Use site's actual CSS path -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <style>
+        /* Ensure dark theme consistency */
+        body {
+            background: #0a0d18;
+            color: #e5e7eb;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+
+        main {
+            min-height: 70vh;
+        }
+
+        /* Minimal styles specific to legal pages */
+        .terms-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .terms-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .terms-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .terms-header p {
+            color: #94a3b8;
+        }
+
+        .last-updated {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .terms-toc {
+            background: rgba(102, 126, 234, 0.08);
+            border-left: 4px solid #667eea;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .terms-toc h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .terms-toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .terms-toc li {
+            margin: 10px 0;
+        }
+
+        .terms-toc a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .terms-toc a:hover {
+            color: #667eea;
+        }
+
+        .terms-section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .terms-section:last-child {
+            border-bottom: none;
+        }
+
+        .terms-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .terms-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #764ba2;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .terms-section p {
+            color: #cbd5e0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .terms-section ul, .terms-section ol {
+            color: #cbd5e0;
+            line-height: 1.8;
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        .terms-section li {
+            margin: 8px 0;
+        }
+
+        .terms-section a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .terms-section a:hover {
+            text-decoration: underline;
+        }
+
+        .terms-section strong {
+            color: #e5e7eb;
+        }
+
+        .highlight-box {
+            background: rgba(118, 75, 162, 0.1);
+            border-left: 4px solid #764ba2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .highlight-box strong {
+            color: #a78bfa;
+        }
+
+        .warning-box {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .warning-box strong {
+            color: #ff6b6b;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .contact-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .contact-box p {
+            color: #cbd5e0;
+        }
+
+        .contact-box a {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .terms-toc {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a id="top"></a>
+
+    <!-- Shared header mount + loader -->
+    <div id="header-mount"></div>
+    <script defer src="/assets/js/header-loader.js"></script>
+    <script defer src="/assets/js/header-init.js"></script>
+
+    <!-- No-JS header fallback -->
+    <noscript>
+        <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+            <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+            <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
+            <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+            <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+            <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
+            <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+        </nav>
+    </noscript>
+
+    <main class="terms-container">
+        <div class="terms-header">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last Updated: October 19, 2025</p>
+            <p style="color: #a0aec0; margin-top: 20px;">
+                Please read these Terms of Service carefully before using CyberSmrt's website and services.
+            </p>
+        </div>
+
+        <div class="terms-toc">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#acceptance">1. Acceptance of Terms</a></li>
+                <li><a href="#services">2. Our Services</a></li>
+                <li><a href="#user-responsibilities">3. User Responsibilities</a></li>
+                <li><a href="#acceptable-use">4. Acceptable Use Policy</a></li>
+                <li><a href="#intellectual-property">5. Intellectual Property</a></li>
+                <li><a href="#disclaimers">6. Disclaimers and Limitations</a></li>
+                <li><a href="#indemnification">7. Indemnification</a></li>
+                <li><a href="#termination">8. Termination</a></li>
+                <li><a href="#changes">9. Changes to Terms</a></li>
+                <li><a href="#contact">10. Contact Information</a></li>
+            </ul>
+        </div>
+
+        <section id="acceptance" class="terms-section">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using CyberSmrt's website (cybersmrt.org) and services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our services.</p>
+
+            <div class="highlight-box">
+                <strong>Agreement:</strong> Your continued use of our services constitutes acceptance of these terms and any future modifications.
+            </div>
+
+            <p>These terms apply to all users, including:</p>
+            <ul>
+                <li>Website visitors</li>
+                <li>Newsletter subscribers</li>
+                <li>Program participants</li>
+                <li>Donors and supporters</li>
+                <li>Partner organizations</li>
+            </ul>
+        </section>
+
+        <section id="services" class="terms-section">
+            <h2>2. Our Services</h2>
+            <p>CyberSmrt provides the following services:</p>
+
+            <h3>Educational Resources</h3>
+            <ul>
+                <li>Free cybersecurity training materials</li>
+                <li>K-12 curriculum and lesson plans</li>
+                <li>Online courses and workshops</li>
+                <li>Blog posts and educational content</li>
+            </ul>
+
+            <h3>Security Tools</h3>
+            <ul>
+                <li>QR Code Security Scanner</li>
+                <li>Password strength checker</li>
+                <li>Phishing detection resources</li>
+                <li>Other free security utilities</li>
+            </ul>
+
+            <h3>Community Programs</h3>
+            <ul>
+                <li>MSSP-lite services for qualifying organizations</li>
+                <li>Workforce development training</li>
+                <li>Cybersecurity awareness campaigns</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Important:</strong> Our security tools are provided for educational purposes. While we strive for accuracy, they should not be your sole security measure. Always use multiple layers of protection.
+            </div>
+        </section>
+
+        <section id="user-responsibilities" class="terms-section">
+            <h2>3. User Responsibilities</h2>
+            <p>When using CyberSmrt services, you agree to:</p>
+
+            <h3>Account Security</h3>
+            <ul>
+                <li>Provide accurate information when registering</li>
+                <li>Maintain the confidentiality of account credentials</li>
+                <li>Notify us immediately of unauthorized access</li>
+                <li>Be responsible for all activities under your account</li>
+            </ul>
+
+            <h3>Appropriate Use</h3>
+            <ul>
+                <li>Use services only for lawful purposes</li>
+                <li>Respect the rights of others</li>
+                <li>Not interfere with service operation</li>
+                <li>Not attempt to gain unauthorized access</li>
+            </ul>
+
+            <h3>Content Submission</h3>
+            <p>If you submit content (comments, feedback, etc.), you agree that:</p>
+            <ul>
+                <li>You own or have rights to the content</li>
+                <li>Content does not violate laws or third-party rights</li>
+                <li>We may use submitted content to improve services</li>
+                <li>We may remove content at our discretion</li>
+            </ul>
+        </section>
+
+        <section id="acceptable-use" class="terms-section">
+            <h2>4. Acceptable Use Policy</h2>
+            <p>You may NOT use our services to:</p>
+
+            <h3>Prohibited Activities</h3>
+            <ul>
+                <li>Engage in illegal activities or promote harm</li>
+                <li>Distribute malware, viruses, or malicious code</li>
+                <li>Attempt to breach security measures</li>
+                <li>Scrape or harvest data without permission</li>
+                <li>Interfere with other users' access</li>
+                <li>Impersonate others or misrepresent affiliation</li>
+                <li>Spam or send unsolicited communications</li>
+                <li>Violate intellectual property rights</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Violation Consequences:</strong> Misuse of our services may result in immediate termination of access and potential legal action.
+            </div>
+
+            <h3>Rate Limiting</h3>
+            <p>To ensure fair access and prevent abuse:</p>
+            <ul>
+                <li>Services are subject to rate limiting</li>
+                <li>Excessive automated requests may be blocked</li>
+                <li>Commercial use requires prior written permission</li>
+            </ul>
+        </section>
+
+        <section id="intellectual-property" class="terms-section">
+            <h2>5. Intellectual Property</h2>
+
+            <h3>Our Content</h3>
+            <p>All content on cybersmrt.org is protected by copyright and other intellectual property laws:</p>
+            <ul>
+                <li>Website design, layout, and graphics</li>
+                <li>Educational materials and curriculum</li>
+                <li>Blog posts and articles</li>
+                <li>Software and tools</li>
+                <li>Trademarks and logos</li>
+            </ul>
+
+            <h3>Your Use Rights</h3>
+            <p>Unless otherwise noted, you may:</p>
+            <ul>
+                <li><strong>Educational Use:</strong> Use materials for personal learning and non-commercial educational purposes</li>
+                <li><strong>Attribution:</strong> Share content with proper attribution to CyberSmrt</li>
+                <li><strong>Nonprofit Use:</strong> Qualifying nonprofits may use materials with permission</li>
+            </ul>
+
+            <p>You may NOT:</p>
+            <ul>
+                <li>Sell or commercialize our materials</li>
+                <li>Remove copyright notices or attribution</li>
+                <li>Modify content without permission</li>
+                <li>Use our trademarks without authorization</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Open Source:</strong> Some of our tools are open source. See individual project licenses for specific terms.
+            </div>
+        </section>
+
+        <section id="disclaimers" class="terms-section">
+            <h2>6. Disclaimers and Limitations</h2>
+
+            <h3>Service Availability</h3>
+            <p>CyberSmrt services are provided "as is" and "as available":</p>
+            <ul>
+                <li>We do not guarantee uninterrupted or error-free service</li>
+                <li>Services may be modified or discontinued at any time</li>
+                <li>We are not liable for service interruptions</li>
+            </ul>
+
+            <h3>Educational Purpose</h3>
+            <div class="warning-box">
+                <strong>Not Professional Advice:</strong> Our content is for educational purposes only and does not constitute professional cybersecurity advice. For specific security needs, consult qualified professionals.
+            </div>
+
+            <h3>Tool Accuracy</h3>
+            <p>Regarding our security tools:</p>
+            <ul>
+                <li>Results are not guaranteed to be 100% accurate</li>
+                <li>False positives and false negatives may occur</li>
+                <li>Tools should be used as one component of a broader security strategy</li>
+                <li>We are not liable for damages from tool use or reliance</li>
+            </ul>
+
+            <h3>External Links</h3>
+            <p>Our website may contain links to third-party sites:</p>
+            <ul>
+                <li>We do not control or endorse linked sites</li>
+                <li>We are not responsible for their content or practices</li>
+                <li>Use of third-party sites is at your own risk</li>
+            </ul>
+
+            <h3>Limitation of Liability</h3>
+            <p>To the fullest extent permitted by law:</p>
+            <ul>
+                <li>CyberSmrt is not liable for indirect, incidental, or consequential damages</li>
+                <li>Our liability is limited to the amount you paid for services (if any)</li>
+                <li>Some jurisdictions do not allow liability limitations, so these may not apply to you</li>
+            </ul>
+        </section>
+
+        <section id="indemnification" class="terms-section">
+            <h2>7. Indemnification</h2>
+            <p>You agree to indemnify, defend, and hold harmless CyberSmrt, its directors, officers, employees, and partners from any claims, damages, losses, or expenses arising from:</p>
+            <ul>
+                <li>Your use of our services</li>
+                <li>Your violation of these terms</li>
+                <li>Your violation of any rights of others</li>
+                <li>Your submission of content</li>
+            </ul>
+        </section>
+
+        <section id="termination" class="terms-section">
+            <h2>8. Termination</h2>
+
+            <h3>By You</h3>
+            <p>You may stop using our services at any time by:</p>
+            <ul>
+                <li>Unsubscribing from communications</li>
+                <li>Ceasing to access our website</li>
+                <li>Contacting us to delete your account</li>
+            </ul>
+
+            <h3>By Us</h3>
+            <p>We reserve the right to:</p>
+            <ul>
+                <li>Suspend or terminate access for terms violations</li>
+                <li>Remove content that violates our policies</li>
+                <li>Modify or discontinue services</li>
+                <li>Refuse service to anyone for any reason</li>
+            </ul>
+
+            <h3>Effect of Termination</h3>
+            <p>Upon termination:</p>
+            <ul>
+                <li>Your right to use services ceases immediately</li>
+                <li>Sections of these terms that should survive will remain in effect</li>
+                <li>We may retain certain data as required by law</li>
+            </ul>
+        </section>
+
+        <section id="changes" class="terms-section">
+            <h2>9. Changes to Terms</h2>
+            <p>We may update these Terms of Service to reflect:</p>
+            <ul>
+                <li>Changes in our services</li>
+                <li>Legal or regulatory requirements</li>
+                <li>Best practices and industry standards</li>
+            </ul>
+
+            <h3>Notification</h3>
+            <p>We will notify you of material changes by:</p>
+            <ul>
+                <li>Updating the "Last Updated" date</li>
+                <li>Posting a notice on our website</li>
+                <li>Sending email notifications for significant changes</li>
+            </ul>
+
+            <p>Your continued use after changes constitutes acceptance of the updated terms.</p>
+
+            <div class="highlight-box">
+                <strong>Review Regularly:</strong> We encourage you to review these terms periodically to stay informed of your rights and responsibilities.
+            </div>
+        </section>
+
+        <section id="contact" class="terms-section">
+            <h2>10. Contact Information</h2>
+            <p>Questions about these Terms of Service? Contact us:</p>
+
+            <div class="contact-box">
+                <h3>CyberSmrt Legal</h3>
+                <p style="color: #cbd5e0; margin: 15px 0;">
+                    Email: <a href="mailto:legal@cybersmrt.org">legal@cybersmrt.org</a><br>
+                    General Inquiries: <a href="mailto:info@cybersmrt.org">info@cybersmrt.org</a><br>
+                    Website: <a href="https://www.cybersmrt.org">www.cybersmrt.org</a>
+                </p>
+                <p style="color: #a0aec0; font-size: 0.9rem; margin-top: 20px;">
+                    <strong>CyberSmrt</strong><br>
+                    A Service-Disabled Veteran-Owned 501(c)(3) Nonprofit<br>
+                    EIN: 33-3117801
+                </p>
+            </div>
+
+            <h3 style="color: #667eea; margin-top: 40px;">Governing Law</h3>
+            <p>These Terms of Service are governed by the laws of the United States and the State of Washington, without regard to conflict of law provisions.</p>
+
+            <h3 style="color: #667eea; margin-top: 30px;">Entire Agreement</h3>
+            <p>These terms, together with our Privacy Policy, constitute the entire agreement between you and CyberSmrt regarding use of our services.</p>
+        </section>
+    </main>
+
+    <!-- No-JS footer fallback -->
+    <noscript>
+        <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
+            © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
+            <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
+            <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
+            <a href="/pages/about" style="color:#8ab4ff">About</a> ·
+            <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
+        </footer>
+    </noscript>
+
+    <!-- Shared footer mount + loader -->
+    <div id="footer-mount"></div>
+    <script defer src="/assets/js/footer-loader.js"></script>
+    <script defer src="/assets/js/footer-init.js"></script>
+</body>
+</html>
