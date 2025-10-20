@@ -186,9 +186,9 @@ function waitForAuthAndUpdate() {
   }
 }
 
-// ============================================
+// ===========================================
 // Auth Helper - Load auth.js
-// ============================================
+// ===========================================
 (function loadAuthHelper() {
   const script = document.createElement('script');
   script.src = '/assets/js/auth.js';
