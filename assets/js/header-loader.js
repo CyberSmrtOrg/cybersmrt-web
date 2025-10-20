@@ -1,9 +1,11 @@
 /* /assets/js/header-loader.js */
 
 // ============================================
-// Auth Modal Functions - Define First
+// Auth & UI Functions - Define First
 // ============================================
-(function setupAuthFunctions() {
+(function setupGlobalFunctions() {
+  'use strict';
+
   // Toggle mobile menu in header
   window.toggleHeaderMenu = function(btn) {
     const navLinks = document.querySelector('.site-header .nav-links');
@@ -18,11 +20,17 @@
   window.toggleUserMenu = function(event) {
     event.stopPropagation();
     const container = event.currentTarget.closest('.user-menu-container');
+    if (!container) return;
+
     const isOpen = container.classList.contains('open');
 
-    // Close all other open menus
+    // Close all other open menus first
     document.querySelectorAll('.user-menu-container.open').forEach(el => {
-      if (el !== container) el.classList.remove('open');
+      if (el !== container) {
+        el.classList.remove('open');
+        const btn = el.querySelector('.user-menu');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      }
     });
 
     // Toggle this menu
@@ -46,16 +54,14 @@
     const overlay = document.getElementById('auth-modal-overlay');
 
     if (overlay) {
-      // Modal exists, open it
       overlay.classList.add('active');
       document.body.classList.add('modal-open');
     } else {
-      // Modal doesn't exist yet, wait and retry
       setTimeout(window.openLoginModalSafe, 100);
     }
   };
 
-  // Open login modal (direct - use after modal is loaded)
+  // Open login modal (direct)
   window.openLoginModal = function() {
     const overlay = document.getElementById('auth-modal-overlay');
     if (overlay) {
@@ -90,7 +96,7 @@
     }
   });
 
-  console.log('✅ Auth modal functions loaded');
+  console.log('✅ Global functions loaded (including toggleUserMenu)');
 })();
 
 // ============================================
@@ -99,7 +105,10 @@
 (async function mountSharedHeader(){
   try {
     // If a header is already present, don't duplicate
-    if (document.querySelector('.site-header')) return;
+    if (document.querySelector('.site-header')) {
+      console.log('⚠️ Header already exists, skipping load');
+      return;
+    }
 
     // Fetch the partial and inject it at the top of <body>
     const res = await fetch('/partials/header.html', { cache: 'reload' });
@@ -118,6 +127,14 @@
         const open = links.classList.toggle('show');
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
+
+      // Close on link click (mobile)
+      links.addEventListener('click', (e) => {
+        if (e.target.matches('a') && links.classList.contains('show')) {
+          links.classList.remove('show');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
 
     // Active link highlight
@@ -126,52 +143,64 @@
       const href = a.getAttribute('href');
       if (!href) return;
       const path = href.replace(/\/+$/, '');
-      // treat / and /index.html as same
       const isHome = (here === '/' || here === '/index.html') && (path === '/index.html' || path === '/');
       if (isHome || (path !== '/' && here === path)) {
         a.classList.add('is-active');
+        a.setAttribute('aria-current', 'page');
       }
     });
 
     console.log('✅ Header loaded and mounted');
 
-    // IMPORTANT: Now that header is loaded, update auth UI
-    // Wait for auth.js to load if it hasn't already
-    if (window.updateAuthUI) {
-      window.updateAuthUI();
-    } else {
-      // Wait for auth.js to load, then update UI
-      const checkAuth = setInterval(() => {
-        if (window.updateAuthUI) {
-          clearInterval(checkAuth);
-          window.updateAuthUI();
-          console.log('✅ Auth UI updated after header load');
-        }
-      }, 50);
-
-      // Safety timeout after 3 seconds
-      setTimeout(() => clearInterval(checkAuth), 3000);
-    }
+    // Update auth UI after header is ready
+    waitForAuthAndUpdate();
 
   } catch (err) {
-    // Fail silently; page still works without header
-    console.warn('[header-loader] ', err);
+    console.warn('[header-loader] Failed to load header:', err);
   }
 })();
 
 // ============================================
-// Auth Helper - Auto-load after header
+// Auth UI Update - Wait for auth.js
+// ============================================
+function waitForAuthAndUpdate() {
+  if (window.updateAuthUI) {
+    window.updateAuthUI();
+    console.log('✅ Auth UI updated immediately');
+  } else {
+    // Wait for auth.js to load
+    let attempts = 0;
+    const maxAttempts = 60; // 3 seconds max
+
+    const checkAuth = setInterval(() => {
+      attempts++;
+      if (window.updateAuthUI) {
+        clearInterval(checkAuth);
+        window.updateAuthUI();
+        console.log('✅ Auth UI updated after waiting');
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkAuth);
+        console.warn('⚠️ Auth helper not loaded after 3 seconds');
+      }
+    }, 50);
+  }
+}
+
+// ============================================
+// Auth Helper - Load auth.js
 // ============================================
 (function loadAuthHelper() {
-  // Create and load auth.js script
   const script = document.createElement('script');
   script.src = '/assets/js/auth.js';
   script.async = true;
+
+  script.onload = function() {
+    console.log('✅ Auth helper loaded successfully');
+  };
 
   script.onerror = function() {
     console.warn('[header-loader] Failed to load auth.js');
   };
 
   document.head.appendChild(script);
-  console.log('✅ Auth helper queued for loading');
 })();
