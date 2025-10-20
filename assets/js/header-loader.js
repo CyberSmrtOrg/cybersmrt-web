@@ -111,3 +111,20 @@
     console.warn('[header-loader] ', err);
   }
 })();
+
+// ============================================
+// Auth Helper - Auto-load after header
+// ============================================
+(function loadAuthHelper() {
+  // Create and load auth.js script
+  const script = document.createElement('script');
+  script.src = '/assets/js/auth.js';
+  script.async = true;
+
+  script.onerror = function() {
+    console.warn('[header-loader] Failed to load auth.js');
+  };
+
+  document.head.appendChild(script);
+  console.log('✅ Auth helper queued for loading');
+})();
