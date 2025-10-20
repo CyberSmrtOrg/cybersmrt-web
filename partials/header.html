@@ -134,7 +134,7 @@
       <a href="mailto:tony@cybersmrt.org">Contact</a>
 
       <!-- Sign In Button (shown when NOT logged in) -->
-      <button class="header-signin-btn" onclick="openLoginModal()" data-auth-hide>
+      <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide>
         Sign In
       </button>
 
@@ -153,6 +153,18 @@
 
       navLinks.classList.toggle('show');
       btn.setAttribute('aria-expanded', !isExpanded);
+    }
+
+    // Safe wrapper for opening login modal
+    function openLoginModalSafe() {
+      // Check if function exists (footer loaded)
+      if (typeof window.openLoginModal === 'function') {
+        window.openLoginModal();
+      } else {
+        // Footer not loaded yet, wait and try again
+        console.log('Waiting for modal to load...');
+        setTimeout(openLoginModalSafe, 100);
+      }
     }
   </script>
 </header>
