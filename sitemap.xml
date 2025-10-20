@@ -115,12 +115,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://cybersmrt.org/pages/login</loc>
-    <lastmod>2025-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://cybersmrt.org/pages/qr-gotcha</loc>
     <lastmod>2025-10-20</lastmod>
     <changefreq>monthly</changefreq>
