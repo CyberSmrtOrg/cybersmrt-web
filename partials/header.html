@@ -266,27 +266,4 @@
       </div>
     </div>
   </nav>
-
-  <script>
-    // Toggle user dropdown menu
-    function toggleUserMenu(event) {
-      event.stopPropagation();
-      const container = event.currentTarget.closest('.user-menu-container');
-      const isOpen = container.classList.toggle('open');
-      event.currentTarget.setAttribute('aria-expanded', isOpen);
-    }
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-      const container = document.querySelector('.user-menu-container');
-      if (container && !container.contains(event.target)) {
-        container.classList.remove('open');
-        const menuBtn = container.querySelector('.user-menu');
-        if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Make globally available
-    window.toggleUserMenu = toggleUserMenu;
-  </script>
 </header>
