@@ -14,6 +14,33 @@
     btn.setAttribute('aria-expanded', !isExpanded);
   };
 
+  // Toggle user dropdown menu
+  window.toggleUserMenu = function(event) {
+    event.stopPropagation();
+    const container = event.currentTarget.closest('.user-menu-container');
+    const isOpen = container.classList.contains('open');
+
+    // Close all other open menus
+    document.querySelectorAll('.user-menu-container.open').forEach(el => {
+      if (el !== container) el.classList.remove('open');
+    });
+
+    // Toggle this menu
+    container.classList.toggle('open');
+    event.currentTarget.setAttribute('aria-expanded', !isOpen);
+  };
+
+  // Close user menu when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.user-menu-container')) {
+      document.querySelectorAll('.user-menu-container.open').forEach(el => {
+        el.classList.remove('open');
+        const btn = el.querySelector('.user-menu');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
   // Open login modal (safe - waits for modal to exist)
   window.openLoginModalSafe = function() {
     const overlay = document.getElementById('auth-modal-overlay');
@@ -105,6 +132,26 @@
         a.classList.add('is-active');
       }
     });
+
+    console.log('✅ Header loaded and mounted');
+
+    // IMPORTANT: Now that header is loaded, update auth UI
+    // Wait for auth.js to load if it hasn't already
+    if (window.updateAuthUI) {
+      window.updateAuthUI();
+    } else {
+      // Wait for auth.js to load, then update UI
+      const checkAuth = setInterval(() => {
+        if (window.updateAuthUI) {
+          clearInterval(checkAuth);
+          window.updateAuthUI();
+          console.log('✅ Auth UI updated after header load');
+        }
+      }, 50);
+
+      // Safety timeout after 3 seconds
+      setTimeout(() => clearInterval(checkAuth), 3000);
+    }
 
   } catch (err) {
     // Fail silently; page still works without header
