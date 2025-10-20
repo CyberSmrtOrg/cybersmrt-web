@@ -139,7 +139,7 @@
   <div class="footer-inner">
     <div class="footer-left">
       <strong class="brand">CYBERSMRT</strong> • Service-Disabled Veteran-Owned 501(c)(3) • EIN: 33-3117801<br/>
-      © <span id="year">2025</span> CyberSmrt — Securing the underserved, one community at a time.
+      © <span id="footer-year">2025</span> CyberSmrt — Securing the underserved, one community at a time.
     </div>
 
     <nav class="footer-right" aria-label="Footer">
@@ -436,9 +436,9 @@
 </style>
 
 <!-- Modal HTML -->
-<div id="auth-modal-overlay" class="auth-modal-overlay" onclick="if(event.target.id === 'auth-modal-overlay') window.closeLoginModal()">
+<div id="auth-modal-overlay" class="auth-modal-overlay" onclick="closeLoginModalOnOverlay(event)">
   <div class="auth-modal" onclick="event.stopPropagation()">
-    <button class="auth-modal-close" onclick="window.closeLoginModal()" aria-label="Close">
+    <button class="auth-modal-close" onclick="closeLoginModal()" aria-label="Close">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
       </svg>
@@ -513,35 +513,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  // Update year dynamically
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Login Modal Functions - Available Globally
-  window.openLoginModal = function() {
-    const overlay = document.getElementById('auth-modal-overlay');
-    if (overlay) {
-      overlay.classList.add('active');
-      document.body.classList.add('modal-open');
-    }
-  };
-
-  window.closeLoginModal = function() {
-    const overlay = document.getElementById('auth-modal-overlay');
-    if (overlay) {
-      overlay.classList.remove('active');
-      document.body.classList.remove('modal-open');
-    }
-  };
-
-  // Close on Escape key
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      const overlay = document.getElementById('auth-modal-overlay');
-      if (overlay && overlay.classList.contains('active')) {
-        window.closeLoginModal();
-      }
-    }
-  });
-</script>

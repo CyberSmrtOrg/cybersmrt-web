@@ -122,7 +122,7 @@
       <span>CYBERSMRT</span>
     </a>
 
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleHeaderMenu(this)">
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
 
@@ -145,26 +145,4 @@
       </a>
     </div>
   </nav>
-
-  <script>
-    function toggleHeaderMenu(btn) {
-      const navLinks = document.querySelector('.site-header .nav-links');
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-
-      navLinks.classList.toggle('show');
-      btn.setAttribute('aria-expanded', !isExpanded);
-    }
-
-    // Safe wrapper for opening login modal
-    function openLoginModalSafe() {
-      // Check if function exists (footer loaded)
-      if (typeof window.openLoginModal === 'function') {
-        window.openLoginModal();
-      } else {
-        // Footer not loaded yet, wait and try again
-        console.log('Waiting for modal to load...');
-        setTimeout(openLoginModalSafe, 100);
-      }
-    }
-  </script>
 </header>
