@@ -472,16 +472,19 @@
   </div>
 
   <script>
-    // Wait for auth.js to load, then check authentication
-    function checkAuth() {
-      if (window.requireAuth) {
-        window.requireAuth();
+    // Simple auth check - wait 1 second for auth.js to load
+    setTimeout(function() {
+      if (typeof window.isAuthenticated === 'function') {
+        if (!window.isAuthenticated()) {
+          console.log('Not authenticated, redirecting to home...');
+          window.location.href = '/?login=required';
+        } else {
+          console.log('✅ User authenticated');
+        }
       } else {
-        // Auth.js not loaded yet, wait and retry
-        setTimeout(checkAuth, 100);
+        console.warn('⚠️ Auth functions not loaded');
       }
-    }
-    checkAuth();
+    }, 1000);
 
     // Save settings when changed
     function saveSettings() {
