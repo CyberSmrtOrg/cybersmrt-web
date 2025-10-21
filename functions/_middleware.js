@@ -65,7 +65,35 @@ export async function onRequest(context) {
     return Response.redirect(url.origin + cleanPath, 301);
   }
 
-  // 3. Handle directory URLs (trailing slash)
+  // 3. Handle user-specific routes (NEW)
+  // UUID pattern for user IDs
+  const uuidPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+
+  // Route: /dashboard/{userId} -> dashboard.html
+  if (path.startsWith('/dashboard/')) {
+    const userId = path.split('/')[2];
+    if (userId && uuidPattern.test(userId)) {
+      return context.env.ASSETS.fetch(new Request(url.origin + '/dashboard.html', context.request));
+    }
+  }
+
+  // Route: /profile/{userId} -> profile.html
+  if (path.startsWith('/profile/')) {
+    const userId = path.split('/')[2];
+    if (userId && uuidPattern.test(userId)) {
+      return context.env.ASSETS.fetch(new Request(url.origin + '/profile.html', context.request));
+    }
+  }
+
+  // Route: /settings/{userId} -> settings.html
+  if (path.startsWith('/settings/')) {
+    const userId = path.split('/')[2];
+    if (userId && uuidPattern.test(userId)) {
+      return context.env.ASSETS.fetch(new Request(url.origin + '/settings.html', context.request));
+    }
+  }
+
+  // 4. Handle directory URLs (trailing slash)
   if (path.endsWith('/') && path !== '/') {
     const indexPath = path + 'index.html';
     try {
@@ -76,7 +104,7 @@ export async function onRequest(context) {
     }
   }
 
-  // 4. Try to serve .html file for clean URLs
+  // 5. Try to serve .html file for clean URLs
   if (!path.includes('.') && !path.endsWith('/')) {
     try {
       const htmlPath = path + '.html';
