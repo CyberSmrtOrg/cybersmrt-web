@@ -393,16 +393,21 @@
             <div class="activity-title">Earned "Security Fundamentals" badge</div>
             <div class="activity-time">3 days ago</div>
           </div>
-        </li>
+        </li>s
       </ul>
     </div>
   </div>
 
   <script>
-    // Check authentication
-    if (!window.isAuthenticated || !window.isAuthenticated()) {
-      window.location.href = '/?login=required';
-    }
+    // Wait for auth.js to load before checking
+    setTimeout(function() {
+      if (!window.isAuthenticated || !window.isAuthenticated()) {
+        console.log('Not authenticated, redirecting...');
+        window.location.href = '/?login=required';
+      } else {
+        console.log('✅ Authenticated as:', window.getCurrentUser());
+      }
+    }, 1000);
   </script>
 </body>
 </html>
