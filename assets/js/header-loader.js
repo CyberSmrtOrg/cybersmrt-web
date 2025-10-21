@@ -49,6 +49,16 @@
     }
   });
 
+  // Navigate to user-specific pages
+  window.goToUserPage = function(page) {
+    const user = window.getCurrentUser ? window.getCurrentUser() : null;
+    if (user && user.id) {
+      window.location.href = `/${page}/${user.id}`;
+    } else {
+      window.location.href = `/${page}.html`;
+    }
+  };
+
   // Open login modal (safe - waits for modal to exist)
   window.openLoginModalSafe = function() {
     const overlay = document.getElementById('auth-modal-overlay');
@@ -186,9 +196,9 @@ function waitForAuthAndUpdate() {
   }
 }
 
-// ===========================================
+// ============================================
 // Auth Helper - Load auth.js
-// ===========================================
+// ============================================
 (function loadAuthHelper() {
   const script = document.createElement('script');
   script.src = '/assets/js/auth.js';
