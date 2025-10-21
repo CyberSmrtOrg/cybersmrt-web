@@ -22,7 +22,7 @@
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #e2e8f0;
       min-height: 100vh;
-      padding-top: 80px;
+      padding-top: 90px;
     }
 
     .container {
@@ -393,21 +393,22 @@
             <div class="activity-title">Earned "Security Fundamentals" badge</div>
             <div class="activity-time">3 days ago</div>
           </div>
-        </li>s
+        </li>
       </ul>
     </div>
   </div>
 
   <script>
-    // Wait for auth.js to load before checking
-    setTimeout(function() {
-      if (!window.isAuthenticated || !window.isAuthenticated()) {
-        console.log('Not authenticated, redirecting...');
-        window.location.href = '/?login=required';
+    // Wait for auth.js to load, then check authentication
+    function checkAuth() {
+      if (window.requireAuth) {
+        window.requireAuth();
       } else {
-        console.log('✅ Authenticated as:', window.getCurrentUser());
+        // Auth.js not loaded yet, wait and retry
+        setTimeout(checkAuth, 100);
       }
-    }, 1000);
+    }
+    checkAuth();
   </script>
 </body>
 </html>

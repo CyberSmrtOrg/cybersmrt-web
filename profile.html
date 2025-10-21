@@ -22,7 +22,7 @@
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #e2e8f0;
       min-height: 100vh;
-      padding-top: 80px;
+      padding-top: 90px;
     }
 
     .container {
@@ -378,6 +378,16 @@
   </div>
 
   <script>
+    // Wait for auth.js to load, then check authentication
+    function checkAuth() {
+      if (window.requireAuth) {
+        window.requireAuth();
+      } else {
+        // Auth.js not loaded yet, wait and retry
+        setTimeout(checkAuth, 100);
+      }
+    }
+    checkAuth();
 
     // Load user data
     window.addEventListener('load', () => {
