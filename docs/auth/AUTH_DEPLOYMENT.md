@@ -102,8 +102,8 @@ npx wrangler deploy
 5. Configure consent screen if needed
 6. Application type: **Web application**
 7. Add authorized redirect URIs:
-   - Development: `http://localhost:8787/auth/callback/google`
-   - Production: `https://cybersmrt.org/auth/callback/google`
+   - Development: `https://auth.localhost:8787/callback/google`
+   - Production: `https://auth.cybersmrt.org/callback/google`
 8. Save **Client ID** and **Client Secret**
 
 ### **GitHub OAuth Setup**
@@ -113,9 +113,9 @@ npx wrangler deploy
 3. Fill in details:
    - **Application name**: CyberSmrt
    - **Homepage URL**: `https://cybersmrt.org`
-   - **Authorization callback URL**: `https://cybersmrt.org/auth/callback/github`
+   - **Authorization callback URL**: `https://auth.cybersmrt.org/callback/github`
 4. For development, create another app with:
-   - **Authorization callback URL**: `http://localhost:8787/auth/callback/github`
+   - **Authorization callback URL**: `https://auth.localhost:8787/callback/github`
 5. Save **Client ID** and **Client Secret**
 
 ### **Microsoft OAuth Setup**
@@ -126,7 +126,7 @@ npx wrangler deploy
 4. Fill in details:
    - **Name**: CyberSmrt
    - **Supported account types**: Accounts in any organizational directory and personal Microsoft accounts
-   - **Redirect URI**: Web - `https://cybersmrt.org/auth/callback/microsoft`
+   - **Redirect URI**: Web - `https://auth.cybersmrt.org/callback/microsoft`
 5. Go to **Certificates & secrets** → **New client secret**
 6. Save **Application (client) ID** and **Client secret value**
 7. Go to **API permissions** → Add:
@@ -145,7 +145,7 @@ npx wrangler deploy
 9. Create a Services ID (this is your Client ID)
 10. Configure domains and redirect URLs:
     - Domains: `cybersmrt.org`
-    - Return URLs: `https://cybersmrt.org/auth/callback/apple`
+    - Return URLs: `https://auth.cybersmrt.org/callback/apple`
 11. Convert `.p8` key to proper format:
     ```bash
     # The .p8 file content should be set as APPLE_PRIVATE_KEY secret

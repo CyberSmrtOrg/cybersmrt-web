@@ -1,7 +1,13 @@
 /**
  * CyberSmrt Authentication Helper
  * Handles JWT tokens, API calls, and UI updates
+ *
+ * File path: assets/js/auth.js
+ * Auth Subdomain: auth.cybersmrt.org
  */
+
+const AUTH_BASE = 'https://auth.cybersmrt.org/auth';
+const API_BASE = 'https://api.cybersmrt.org';
 
 /**
  * Check if user is authenticated
@@ -159,7 +165,41 @@ function requireAuth() {
 }
 
 /**
- * Make authenticated API request
+ * Make authenticated API request to auth subdomain
+ */
+async function authRequest(endpoint, options = {}) {
+  const token = getAccessToken();
+
+  if (!token) {
+    throw new Error('Not authenticated');
+  }
+
+  const defaultOptions = {
+    credentials: 'include',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
+  };
+
+  const response = await fetch(`${AUTH_BASE}${endpoint}`, {
+    ...options,
+    ...defaultOptions,
+    headers: defaultOptions.headers
+  });
+
+  // Handle token expiration
+  if (response.status === 401) {
+    logout();
+    throw new Error('Session expired');
+  }
+
+  return response;
+}
+
+/**
+ * Make authenticated API request to API subdomain
  */
 async function apiRequest(endpoint, options = {}) {
   const token = getAccessToken();
@@ -169,6 +209,7 @@ async function apiRequest(endpoint, options = {}) {
   }
 
   const defaultOptions = {
+    credentials: 'include',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -176,7 +217,7 @@ async function apiRequest(endpoint, options = {}) {
     }
   };
 
-  const response = await fetch(`https://cybersmrt.org${endpoint}`, {
+  const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     ...defaultOptions,
     headers: defaultOptions.headers
@@ -184,7 +225,6 @@ async function apiRequest(endpoint, options = {}) {
 
   // Handle token expiration
   if (response.status === 401) {
-    // Token expired, logout
     logout();
     throw new Error('Session expired');
   }
@@ -197,7 +237,7 @@ async function apiRequest(endpoint, options = {}) {
  */
 async function getUserProfile() {
   try {
-    const response = await apiRequest('/auth/me');
+    const response = await authRequest('/me');
     const data = await response.json();
 
     if (data.success && data.user) {
@@ -220,10 +260,13 @@ window.getAccessToken = getAccessToken;
 window.getRefreshToken = getRefreshToken;
 window.logout = logout;
 window.updateAuthUI = updateAuthUI;
+window.authRequest = authRequest;
 window.apiRequest = apiRequest;
 window.getUserProfile = getUserProfile;
 window.requireAuth = requireAuth;
 window.handleLoginSuccess = handleLoginSuccess;
+window.AUTH_BASE = AUTH_BASE;
+window.API_BASE = API_BASE;
 
 // Auto-update UI when page loads
 if (document.readyState === 'loading') {
@@ -236,4 +279,4 @@ if (document.readyState === 'loading') {
 // Also update UI after header/footer load (with slight delay)
 setTimeout(updateAuthUI, 500);
 
-console.log('✅ Auth helper loaded');
+console.log('✅ Auth helper loaded (subdomains: auth.cybersmrt.org, api.cybersmrt.org)');

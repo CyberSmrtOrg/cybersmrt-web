@@ -1,12 +1,13 @@
+# Cloudflare Workers Configuration for CyberSmrt Auth
+# File path: workers/auth/wrangler.toml
+
 name = "cybersmrt-auth"
 main = "src/index.js"
-compatibility_date = "2025-10-19"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2024-10-01"
 
-# Production routes
+# Worker routes - using subdomain
 routes = [
-  { pattern = "cybersmrt.org/auth/*", zone_name = "cybersmrt.org" },
-  { pattern = "*.cybersmrt.org/auth/*", zone_name = "cybersmrt.org" }
+  { pattern = "auth.cybersmrt.org/*", zone_name = "cybersmrt.org" }
 ]
 
 # D1 Database binding
@@ -15,40 +16,42 @@ binding = "DB"
 database_name = "cybersmrt-users"
 database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 
-# KV for rate limiting
-[[kv_namespaces]]
-binding = "RATE_LIMIT_KV"
-id = "a069251c3a3d48af985e181c581e8d35"  # Create with: wrangler kv:namespace create "RATE_LIMIT_KV"
+# Environment variables
+[vars]
+FRONTEND_URL = "https://cybersmrt.org"
 
-# Environment variables (use: wrangler secret put <NAME>)
-# DO NOT commit secrets to git - use wrangler secrets
-#
-# Required secrets (set with wrangler secret put):
+# Secrets (set with: wrangler secret put SECRET_NAME)
 # - JWT_SECRET
 # - GOOGLE_CLIENT_ID
 # - GOOGLE_CLIENT_SECRET
 # - GITHUB_CLIENT_ID
 # - GITHUB_CLIENT_SECRET
-# - APPLE_CLIENT_ID
-# - APPLE_TEAM_ID
-# - APPLE_KEY_ID
-# - APPLE_PRIVATE_KEY
 # - MICROSOFT_CLIENT_ID
 # - MICROSOFT_CLIENT_SECRET
+# - APPLE_CLIENT_ID
+# - APPLE_PRIVATE_KEY
+# - RESEND_API_KEY
 
-[vars]
-# Public configuration (safe to commit)
-JWT_EXPIRY = "7d"
-SESSION_EXPIRY = 604800  # 7 days in seconds
-RATE_LIMIT_WINDOW = 900  # 15 minutes in seconds
-RATE_LIMIT_MAX_ATTEMPTS = 5
+# OAuth Callback URLs (update in OAuth provider dashboards):
+# Google: https://auth.cybersmrt.org/callback/google
+# GitHub: https://auth.cybersmrt.org/callback/github
+# Microsoft: https://auth.cybersmrt.org/callback/microsoft
+# Apple: https://auth.cybersmrt.org/callback/apple
 
-# Resend password reset
-FRONTEND_URL = "https://cybersmrt.org"
-RESEND_FROM_EMAIL = "noreply@cybersmrt.org"
+# Scheduled events for cleanup
+[triggers]
+crons = ["0 2 * * *"]  # Run cleanup daily at 2 AM UTC
 
-# OAuth callback URLs (update with your domain)
-GOOGLE_REDIRECT_URI = "https://cybersmrt.org/auth/callback/google"
-GITHUB_REDIRECT_URI = "https://cybersmrt.org/auth/callback/github"
-APPLE_REDIRECT_URI = "https://cybersmrt.org/auth/callback/apple"
-MICROSOFT_REDIRECT_URI = "https://cybersmrt.org/auth/callback/microsoft"
+# Local development
+[env.development]
+name = "cybersmrt-auth-dev"
+
+[env.development.vars]
+FRONTEND_URL = "http://localhost:8788"
+
+# Preview environment
+[env.preview]
+name = "cybersmrt-auth-preview"
+
+# Production environment (default)
+# Uses the settings above

@@ -118,7 +118,6 @@
       line-height: 1.5;
     }
 
-    /* Toggle Switch */
     .toggle-switch {
       position: relative;
       width: 52px;
@@ -166,7 +165,6 @@
       transform: translateX(24px);
     }
 
-    /* Select Dropdown */
     select {
       padding: 0.625rem 1rem;
       background: rgba(15, 23, 42, 0.6);
@@ -212,6 +210,16 @@
       box-shadow: 0 8px 16px rgba(96, 165, 250, 0.3);
     }
 
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
     .btn-danger {
       background: rgba(239, 68, 68, 0.2);
       color: #f87171;
@@ -223,32 +231,156 @@
       transform: translateY(-2px);
     }
 
-    .danger-zone {
-      background: rgba(239, 68, 68, 0.05);
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      border-radius: 12px;
-      padding: 1.5rem;
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
     }
 
-    .danger-zone h3 {
-      color: #f87171;
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
+    .status-badge {
+      display: inline-block;
+      padding: 0.375rem 0.875rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .status-badge.enabled {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+
+    .status-badge.disabled {
+      background: rgba(100, 116, 139, 0.2);
+      color: #94a3b8;
+    }
+
+    /* 2FA Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
 
-    .danger-zone h3 svg {
-      width: 20px;
-      height: 20px;
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
-    .danger-zone p {
-      color: #cbd5e1;
+    .modal {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal h3 {
+      color: white;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
+    }
+
+    .modal p {
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .qr-code {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .qr-code img {
+      max-width: 250px;
+      width: 100%;
+    }
+
+    .secret-code {
+      background: rgba(15, 23, 42, 0.6);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      color: #60a5fa;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+      word-break: break-all;
+    }
+
+    .input-group {
+      margin: 1.5rem 0;
+    }
+
+    .input-group label {
+      display: block;
+      color: #cbd5e1;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 0.5em;
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #60a5fa;
+    }
+
+    .backup-codes {
+      background: rgba(15, 23, 42, 0.6);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .backup-codes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .backup-code {
+      background: rgba(96, 165, 250, 0.1);
+      padding: 0.5rem;
+      border-radius: 4px;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      color: #60a5fa;
       font-size: 0.9rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
     }
 
     .info-box {
@@ -274,6 +406,7 @@
       color: #cbd5e1;
       font-size: 0.875rem;
       line-height: 1.5;
+      margin: 0;
     }
 
     @media (max-width: 768px) {
@@ -289,6 +422,10 @@
 
       select {
         width: 100%;
+      }
+
+      .backup-codes-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -318,7 +455,7 @@
             <h3>Language</h3>
             <p>Choose your preferred language for the interface</p>
           </div>
-          <select id="language">
+          <select id="language" onchange="saveSettings()">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
@@ -331,7 +468,7 @@
             <h3>Timezone</h3>
             <p>Set your local timezone for accurate scheduling</p>
           </div>
-          <select id="timezone">
+          <select id="timezone" onchange="saveSettings()">
             <option value="America/Los_Angeles">Pacific Time (PT)</option>
             <option value="America/Denver">Mountain Time (MT)</option>
             <option value="America/Chicago">Central Time (CT)</option>
@@ -355,7 +492,7 @@
             <p>Receive updates and announcements via email</p>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" id="email-notifications" checked>
+            <input type="checkbox" id="email-notifications" onchange="saveSettings()">
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -366,7 +503,7 @@
             <p>Get reminders about incomplete courses and deadlines</p>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" id="course-reminders" checked>
+            <input type="checkbox" id="course-reminders" onchange="saveSettings()">
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -377,13 +514,13 @@
             <p>Receive news about new courses and special offers</p>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" id="marketing">
+            <input type="checkbox" id="marketing" onchange="saveSettings()">
             <span class="toggle-slider"></span>
           </label>
         </div>
       </div>
 
-      <!-- Privacy -->
+      <!-- Privacy & Security -->
       <div class="settings-section">
         <div class="section-header">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,7 +534,7 @@
             <h3>Profile Visibility</h3>
             <p>Control who can see your profile and progress</p>
           </div>
-          <select id="profile-visibility">
+          <select id="profile-visibility" onchange="saveSettings()">
             <option value="public">Public</option>
             <option value="private">Private</option>
             <option value="connections">Connections Only</option>
@@ -407,9 +544,10 @@
         <div class="setting-item">
           <div class="setting-info">
             <h3>Two-Factor Authentication</h3>
-            <p>Add an extra layer of security to your account</p>
+            <p id="2fa-description">Add an extra layer of security to your account</p>
+            <span id="2fa-status" class="status-badge disabled">Disabled</span>
           </div>
-          <button class="btn btn-primary" onclick="alert('Two-factor authentication setup coming soon!')">
+          <button id="2fa-button" class="btn btn-primary" onclick="toggle2FA()">
             Enable 2FA
           </button>
         </div>
@@ -436,7 +574,7 @@
             <h3>Theme</h3>
             <p>Choose how CyberSmrt looks to you</p>
           </div>
-          <select id="theme">
+          <select id="theme" onchange="saveSettings()">
             <option value="dark">Dark Mode</option>
             <option value="light">Light Mode</option>
             <option value="auto">System Default</option>
@@ -449,45 +587,131 @@
             <p>Minimize animations and transitions</p>
           </div>
           <label class="toggle-switch">
-            <input type="checkbox" id="reduce-motion">
+            <input type="checkbox" id="reduce-motion" onchange="saveSettings()">
             <span class="toggle-slider"></span>
           </label>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Danger Zone -->
-    <div class="settings-card danger-zone">
-      <h3>
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-        </svg>
-        Danger Zone
-      </h3>
-      <p>These actions are permanent and cannot be undone. Please be careful.</p>
-      <button class="btn btn-danger" onclick="confirmDeleteAccount()">
-        Delete Account
-      </button>
+  <!-- 2FA Setup Modal -->
+  <div id="2fa-modal" class="modal-overlay">
+    <div class="modal">
+      <div id="2fa-setup-step">
+        <h3>Set Up Two-Factor Authentication</h3>
+        <p>Scan this QR code with your authenticator app (Google Authenticator, Authy, 1Password, etc.)</p>
+
+        <div id="qr-code" class="qr-code">
+          <!-- QR code will be inserted here -->
+        </div>
+
+        <p>Or enter this code manually:</p>
+        <div id="secret-code" class="secret-code"></div>
+
+        <div class="input-group">
+          <label for="verification-code">Enter the 6-digit code from your app:</label>
+          <input type="text" id="verification-code" maxlength="6" placeholder="000000" />
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" onclick="verify2FACode()">Verify & Enable</button>
+          <button class="btn btn-secondary" onclick="close2FAModal()">Cancel</button>
+        </div>
+      </div>
+
+      <div id="2fa-backup-codes" style="display: none;">
+        <h3>Save Your Backup Codes</h3>
+        <p>Store these backup codes in a safe place. You can use them to access your account if you lose your phone.</p>
+
+        <div class="backup-codes">
+          <strong style="color: #cbd5e1;">Backup Codes:</strong>
+          <div id="backup-codes-list" class="backup-codes-grid">
+            <!-- Backup codes will be inserted here -->
+          </div>
+        </div>
+
+        <div class="info-box">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <p><strong>Important:</strong> Each backup code can only be used once. Download or print these codes now.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" onclick="finishSetup2FA()">I've Saved My Codes</button>
+        </div>
+      </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <script>
-    // Simple auth check - wait 1 second for auth.js to load
+    // Wait for auth.js to load before doing anything
+    let authReady = false;
+
+    function waitForAuth(callback) {
+      if (window.apiRequest && window.isAuthenticated) {
+        authReady = true;
+        callback();
+      } else {
+        setTimeout(() => waitForAuth(callback), 100);
+      }
+    }
+
+    // Simple auth check
     setTimeout(function() {
       if (typeof window.isAuthenticated === 'function') {
         if (!window.isAuthenticated()) {
-          console.log('Not authenticated, redirecting to home...');
           window.location.href = '/?login=required';
         } else {
           console.log('✅ User authenticated');
         }
-      } else {
-        console.warn('⚠️ Auth functions not loaded');
       }
     }, 1000);
 
-    // Save settings when changed
-    function saveSettings() {
+    let current2FASecret = null;
+
+    // Load settings on page load
+    window.addEventListener('load', () => {
+      waitForAuth(async () => {
+        await loadSettings();
+        await load2FAStatus();
+      });
+    });
+
+    async function loadSettings() {
+      if (!authReady) {
+        console.warn('Auth not ready yet');
+        return;
+      }
+
+      try {
+        const response = await window.apiRequest('/api/settings');
+        const data = await response.json();
+
+        if (data.success) {
+          const settings = data.settings;
+          document.getElementById('language').value = settings.language || 'en';
+          document.getElementById('timezone').value = settings.timezone || 'America/Los_Angeles';
+          document.getElementById('email-notifications').checked = settings.emailNotifications !== false;
+          document.getElementById('course-reminders').checked = settings.courseReminders !== false;
+          document.getElementById('marketing').checked = settings.marketing === true;
+          document.getElementById('profile-visibility').value = settings.profileVisibility || 'public';
+          document.getElementById('theme').value = settings.theme || 'dark';
+          document.getElementById('reduce-motion').checked = settings.reduceMotion === true;
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+      }
+    }
+
+    async function saveSettings() {
+      if (!authReady) {
+        console.warn('Auth not ready yet');
+        return;
+      }
+
       const settings = {
         language: document.getElementById('language').value,
         timezone: document.getElementById('timezone').value,
@@ -499,34 +723,165 @@
         reduceMotion: document.getElementById('reduce-motion').checked
       };
 
-      // Save to localStorage (you would send to API in production)
-      const savedSettings = JSON.stringify(settings);
-      console.log('Saving settings:', savedSettings);
+      try {
+        const response = await window.apiRequest('/api/settings', {
+          method: 'PUT',
+          body: JSON.stringify({ settings })
+        });
 
-      // Show feedback
-      showNotification('Settings saved successfully!');
+        const data = await response.json();
+        if (data.success) {
+          showNotification('Settings saved successfully!');
+        }
+      } catch (error) {
+        console.error('Failed to save settings:', error);
+        showNotification('Failed to save settings', 'error');
+      }
     }
 
-    // Add event listeners to all settings
-    document.querySelectorAll('select, input[type="checkbox"]').forEach(element => {
-      element.addEventListener('change', saveSettings);
-    });
+    async function load2FAStatus() {
+      if (!authReady) {
+        console.warn('Auth not ready yet');
+        return;
+      }
 
-    // Load saved settings
-    window.addEventListener('load', () => {
-      // You would load from API in production
-      console.log('Loading user settings...');
-    });
+      try {
+        const response = await window.apiRequest('/api/2fa/status');
+        const data = await response.json();
 
-    function showNotification(message) {
-      // Simple notification (you could make this fancier)
+        if (data.enabled) {
+          document.getElementById('2fa-status').textContent = 'Enabled';
+          document.getElementById('2fa-status').className = 'status-badge enabled';
+          document.getElementById('2fa-button').textContent = 'Disable 2FA';
+          document.getElementById('2fa-button').className = 'btn btn-danger';
+          document.getElementById('2fa-description').textContent =
+            `Two-factor authentication is enabled. ${data.backupCodesRemaining} backup codes remaining.`;
+        }
+      } catch (error) {
+        console.error('Failed to load 2FA status:', error);
+      }
+    }
+
+    async function toggle2FA() {
+      const button = document.getElementById('2fa-button');
+      const isEnabled = button.textContent === 'Disable 2FA';
+
+      if (isEnabled) {
+        if (confirm('Are you sure you want to disable two-factor authentication? This will make your account less secure.')) {
+          await disable2FA();
+        }
+      } else {
+        await setup2FA();
+      }
+    }
+
+    async function setup2FA() {
+      try {
+        const response = await window.apiRequest('/api/2fa/setup');
+        const data = await response.json();
+
+        if (data.success) {
+          current2FASecret = data.secret;
+
+          // Generate QR code
+          const qrContainer = document.getElementById('qr-code');
+          qrContainer.innerHTML = '';
+          QRCode.toCanvas(data.qrCodeUrl, { width: 250 }, (error, canvas) => {
+            if (error) console.error(error);
+            qrContainer.appendChild(canvas);
+          });
+
+          // Show secret
+          document.getElementById('secret-code').textContent = data.secret;
+
+          // Show modal
+          document.getElementById('2fa-setup-step').style.display = 'block';
+          document.getElementById('2fa-backup-codes').style.display = 'none';
+          document.getElementById('2fa-modal').classList.add('active');
+        }
+      } catch (error) {
+        console.error('Failed to setup 2FA:', error);
+        alert('Failed to setup 2FA. Please try again.');
+      }
+    }
+
+    async function verify2FACode() {
+      const code = document.getElementById('verification-code').value;
+
+      if (code.length !== 6) {
+        alert('Please enter a 6-digit code');
+        return;
+      }
+
+      try {
+        const response = await window.apiRequest('/api/2fa/enable', {
+          method: 'POST',
+          body: JSON.stringify({ code })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Show backup codes
+          const backupCodesList = document.getElementById('backup-codes-list');
+          backupCodesList.innerHTML = '';
+          data.backupCodes.forEach(code => {
+            const codeDiv = document.createElement('div');
+            codeDiv.className = 'backup-code';
+            codeDiv.textContent = code;
+            backupCodesList.appendChild(codeDiv);
+          });
+
+          document.getElementById('2fa-setup-step').style.display = 'none';
+          document.getElementById('2fa-backup-codes').style.display = 'block';
+        } else {
+          alert(data.message || 'Invalid code. Please try again.');
+        }
+      } catch (error) {
+        console.error('Failed to verify code:', error);
+        alert('Failed to verify code. Please try again.');
+      }
+    }
+
+    function finishSetup2FA() {
+      close2FAModal();
+      load2FAStatus();
+      showNotification('Two-factor authentication enabled successfully!');
+    }
+
+    async function disable2FA() {
+      // In production, you'd want to verify password and/or 2FA code here
+      try {
+        const response = await window.apiRequest('/api/2fa/disable', {
+          method: 'POST',
+          body: JSON.stringify({})
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showNotification('Two-factor authentication disabled');
+          load2FAStatus();
+        }
+      } catch (error) {
+        console.error('Failed to disable 2FA:', error);
+        alert('Failed to disable 2FA. Please try again.');
+      }
+    }
+
+    function close2FAModal() {
+      document.getElementById('2fa-modal').classList.remove('active');
+      document.getElementById('verification-code').value = '';
+    }
+
+    function showNotification(message, type = 'success') {
       const notification = document.createElement('div');
       notification.textContent = message;
       notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        background: ${type === 'success' ? 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)' : '#ef4444'};
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 8px;
@@ -539,23 +894,6 @@
       setTimeout(() => {
         notification.remove();
       }, 3000);
-    }
-
-    function confirmDeleteAccount() {
-      const confirmed = confirm(
-        'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.'
-      );
-
-      if (confirmed) {
-        const doubleConfirm = confirm(
-          'This is your last chance. Are you absolutely sure you want to delete your account?'
-        );
-
-        if (doubleConfirm) {
-          console.log('Account deletion requested');
-          alert('Account deletion request submitted. You will receive a confirmation email.');
-        }
-      }
     }
   </script>
 </body>

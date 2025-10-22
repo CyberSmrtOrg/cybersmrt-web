@@ -1,24 +1,39 @@
+# Cloudflare Workers Configuration for CyberSmrt API
+# File path: workers/api/wrangler.toml
+
 name = "cybersmrt-api"
 main = "src/index.js"
-compatibility_date = "2025-10-20"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2024-10-01"
 
+# Worker routes - using subdomain
 routes = [
-  { pattern = "cybersmrt.org/api/*", zone_name = "cybersmrt.org" }
+  { pattern = "api.cybersmrt.org/*", zone_name = "cybersmrt.org" }
 ]
 
+# D1 Database binding
 [[d1_databases]]
 binding = "DB"
 database_name = "cybersmrt-users"
 database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 
-[[kv_namespaces]]
-binding = "RATE_LIMIT_KV"
-id = "a069251c3a3d48af985e181c581e8d35"
-
+# Environment variables
 [vars]
-CLOUDFLARE_ACCOUNT_ID = "39819a9c82ee4fd1e7bb0522a57ef16c"
-MAX_PHOTO_SIZE = 5242880
+# Add your environment-specific variables here
 ALLOWED_PHOTO_TYPES = "image/jpeg,image/png,image/webp"
-RATE_LIMIT_REQUESTS = 100
-RATE_LIMIT_WINDOW = 3600
+MAX_PHOTO_SIZE = "5242880"  # 5MB in bytes
+
+# Secrets (set with: wrangler secret put SECRET_NAME)
+# - JWT_SECRET
+# - CLOUDFLARE_ACCOUNT_ID
+# - CLOUDFLARE_IMAGES_TOKEN
+
+# Local development
+[env.development]
+name = "cybersmrt-api-dev"
+
+# Preview environment
+[env.preview]
+name = "cybersmrt-api-preview"
+
+# Production environment (default)
+# Uses the settings above
