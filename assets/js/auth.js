@@ -4,7 +4,7 @@
  */
 
 // Only declare if not already declared by another script
-const AUTH_BASE = window.AUTH_BASE || 'https://auth.cybersmrt.org/auth';
+const AUTH_BASE = window.AUTH_BASE || 'https://auth.cybersmrt.org';
 const API_BASE = window.API_BASE || 'https://api.cybersmrt.org';
 
 /**
@@ -81,7 +81,7 @@ function logout() {
 
   // Call logout endpoint
   if (accessToken) {
-    fetch('https://auth.cybersmrt.org/auth/logout', {
+    fetch('https://auth.cybersmrt.org/logout', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -289,7 +289,7 @@ function setupTokenRefresh() {
 
   setInterval(async () => {
     try {
-      const response = await fetch('https://auth.cybersmrt.org/auth/refresh', {
+      const response = await fetch('https://auth.cybersmrt.org/refresh', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken })
