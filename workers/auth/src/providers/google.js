@@ -55,8 +55,8 @@ export async function exchangeGoogleCode(code, env) {
 /**
  * Get user profile from Google
  */
-export async function getGoogleUserInfo(accessToken) {
-  const config = getProviderConfig('google', {});  // Only need endpoints
+export async function getGoogleUserInfo(accessToken, env) {
+  const config = getProviderConfig('google', env || {});  // Only need endpoints
 
   const response = await fetch(config.userInfoEndpoint, {
     headers: {
@@ -119,7 +119,7 @@ export async function handleGoogleCallback(code, env) {
   const tokens = await exchangeGoogleCode(code, env);
 
   // Get user profile
-  const profile = await getGoogleUserInfo(tokens.access_token);
+  const profile = await getGoogleUserInfo(tokens.access_token, env);
 
   return {
     tokens,

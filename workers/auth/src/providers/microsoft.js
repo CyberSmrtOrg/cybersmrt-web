@@ -54,8 +54,8 @@ export async function exchangeMicrosoftCode(code, env) {
 /**
  * Get user profile from Microsoft Graph API
  */
-export async function getMicrosoftUserInfo(accessToken) {
-  const config = getProviderConfig('microsoft', {});
+export async function getMicrosoftUserInfo(accessToken, env) {
+  const config = getProviderConfig('microsoft', env || {});
 
   const response = await fetch(config.userInfoEndpoint, {
     headers: {
@@ -120,7 +120,7 @@ export async function handleMicrosoftCallback(code, env) {
   const tokens = await exchangeMicrosoftCode(code, env);
 
   // Get user profile
-  const profile = await getMicrosoftUserInfo(tokens.access_token);
+  const profile = await getMicrosoftUserInfo(tokens.access_token, env);
 
   return {
     tokens,
