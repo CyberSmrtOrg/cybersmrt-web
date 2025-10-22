@@ -1,11 +1,11 @@
 /**
  * CyberSmrt Authentication Helper - UNIFIED
- * Combines auth.js and dashboard-auth.js
  * File: auth.js (replace your existing auth.js with this)
  */
 
-const AUTH_BASE = 'https://auth.cybersmrt.org/auth';
-const API_BASE = 'https://api.cybersmrt.org';
+// Only declare if not already declared by another script
+const AUTH_BASE = window.AUTH_BASE || 'https://auth.cybersmrt.org/auth';
+const API_BASE = window.API_BASE || 'https://api.cybersmrt.org';
 
 /**
  * Check if user is authenticated
@@ -315,33 +315,37 @@ function handleLoginSuccess(userData) {
   window.location.href = `/dashboard/${userId}`;
 }
 
-// Export globally
-window.isAuthenticated = isAuthenticated;
-window.getCurrentUser = getCurrentUser;
-window.getAccessToken = getAccessToken;
-window.getRefreshToken = getRefreshToken;
-window.logout = logout;
-window.updateAuthUI = updateAuthUI;
-window.authRequest = authRequest;
-window.apiRequest = apiRequest;
-window.getUserProfile = getUserProfile;
-window.requireAuth = requireAuth;
-window.handleLoginSuccess = handleLoginSuccess;
-window.displayUserProfile = displayUserProfile;
-window.AUTH_BASE = AUTH_BASE;
-window.API_BASE = API_BASE;
+// Export globally (check if already exists first)
+if (!window.isAuthenticated) window.isAuthenticated = isAuthenticated;
+if (!window.getCurrentUser) window.getCurrentUser = getCurrentUser;
+if (!window.getAccessToken) window.getAccessToken = getAccessToken;
+if (!window.getRefreshToken) window.getRefreshToken = getRefreshToken;
+if (!window.logout) window.logout = logout;
+if (!window.updateAuthUI) window.updateAuthUI = updateAuthUI;
+if (!window.authRequest) window.authRequest = authRequest;
+if (!window.apiRequest) window.apiRequest = apiRequest;
+if (!window.getUserProfile) window.getUserProfile = getUserProfile;
+if (!window.requireAuth) window.requireAuth = requireAuth;
+if (!window.handleLoginSuccess) window.handleLoginSuccess = handleLoginSuccess;
+if (!window.displayUserProfile) window.displayUserProfile = displayUserProfile;
+if (!window.AUTH_BASE) window.AUTH_BASE = AUTH_BASE;
+if (!window.API_BASE) window.API_BASE = API_BASE;
 
-// Initialize
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
+// Initialize only if not already initialized
+if (!window._authInitialized) {
+  window._authInitialized = true;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAuthUI();
+      setupTokenRefresh();
+    });
+  } else {
     updateAuthUI();
     setupTokenRefresh();
-  });
-} else {
-  updateAuthUI();
-  setupTokenRefresh();
-}
+  }
 
-setTimeout(updateAuthUI, 500);
+  setTimeout(updateAuthUI, 500);
+}
 
 console.log('✅ Auth helper loaded (auth.cybersmrt.org, api.cybersmrt.org)');
