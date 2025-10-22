@@ -7,7 +7,7 @@
  * Send password reset email via Resend
  */
 export async function sendPasswordResetEmail(email, resetToken, env) {
-  const resetUrl = `https://cybersmrt.org/auth/reset-password?token=${resetToken}`;
+  const resetUrl = `https://cybersmrt.org/reset-password?token=${resetToken}`;
 
   const emailContent = {
     from: 'CyberSmrt <noreply@cybersmrt.org>',

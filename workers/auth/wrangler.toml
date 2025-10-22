@@ -1,5 +1,5 @@
 # Cloudflare Workers Configuration for CyberSmrt Auth
-# File path: workers/auth/wrangler.toml
+# File path: workers/wrangler.toml
 
 name = "cybersmrt-auth"
 main = "src/index.js"

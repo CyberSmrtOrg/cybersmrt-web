@@ -38,13 +38,13 @@ git push origin main
 Update your OAuth provider settings with the callback URL:
 
 **Google Cloud Console:**
-- Authorized redirect URIs: `https://cybersmrt.org/auth/google/callback`
+- Authorized redirect URIs: `https://cybersmrt.org/google/callback`
 
 **GitHub OAuth App:**
-- Authorization callback URL: `https://cybersmrt.org/auth/github/callback`
+- Authorization callback URL: `https://cybersmrt.org/github/callback`
 
 **Microsoft Azure AD:**
-- Redirect URI: `https://cybersmrt.org/auth/microsoft/callback`
+- Redirect URI: `https://cybersmrt.org/microsoft/callback`
 
 ### 3. Test the Flow
 
@@ -159,13 +159,13 @@ async function updateSettings(settings) {
 ```
 User clicks "Sign in with Google"
     ↓
-Redirect to /auth/google
+Redirect to /google
     ↓
 Auth worker redirects to Google OAuth
     ↓
 User approves on Google
     ↓
-Google redirects to /auth/google/callback?code=...
+Google redirects to /google/callback?code=...
     ↓
 Auth worker creates user, session, tokens
     ↓
@@ -239,7 +239,7 @@ window.location.href = '/courses.html';
 ### "Failed to fetch user data"
 - Check browser console for errors
 - Verify JWT token in localStorage
-- Test `/auth/me` endpoint directly
+- Test `/me` endpoint directly
 
 ### Token expired errors
 - Tokens should auto-refresh

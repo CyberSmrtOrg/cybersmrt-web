@@ -25,8 +25,8 @@ export const PROVIDERS = {
 
   apple: {
     name: 'Apple',
-    authorizationEndpoint: 'https://appleid.apple.com/auth/authorize',
-    tokenEndpoint: 'https://appleid.apple.com/auth/token',
+    authorizationEndpoint: 'https://appleid.apple.com/authorize',
+    tokenEndpoint: 'https://appleid.apple.com/token',
     scope: 'name email',
     responseType: 'code id_token',
     responseMode: 'form_post',

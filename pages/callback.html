@@ -130,7 +130,7 @@
                 if (path.includes('microsoft')) provider = 'microsoft';
 
                 // Exchange code for tokens via your auth worker
-                const response = await fetch(`/auth/${provider}/callback?code=${code}&state=${state}`);
+                const response = await fetch(`/${provider}/callback?code=${code}&state=${state}`);
                 const data = await response.json();
 
                 if (!response.ok || !data.success) {

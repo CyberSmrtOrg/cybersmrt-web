@@ -177,10 +177,10 @@ Before going to production:
 npx wrangler dev
 
 # Open browser:
-# http://localhost:8787/auth/google
-# http://localhost:8787/auth/github
-# http://localhost:8787/auth/microsoft
-# http://localhost:8787/auth/apple
+# http://localhost:8787/google
+# http://localhost:8787/github
+# http://localhost:8787/microsoft
+# http://localhost:8787/apple
 ```
 
 ### **Test Flow:**
@@ -206,15 +206,15 @@ npx wrangler dev
 ```bash
 # Get current user (use accessToken from login)
 curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-  http://localhost:8787/auth/me
+  http://localhost:8787/me
 
 # Refresh token
-curl -X POST http://localhost:8787/auth/refresh \
+curl -X POST http://localhost:8787/refresh \
   -H "Content-Type: application/json" \
   -d '{"refreshToken": "YOUR_REFRESH_TOKEN"}'
 
 # Logout
-curl -X POST http://localhost:8787/auth/logout \
+curl -X POST http://localhost:8787/logout \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
@@ -223,31 +223,31 @@ curl -X POST http://localhost:8787/auth/logout \
 ## 📊 **API Endpoints Reference**
 
 ### **OAuth Initiation (GET):**
-- `/auth/google` - Start Google OAuth flow
-- `/auth/github` - Start GitHub OAuth flow
-- `/auth/microsoft` - Start Microsoft OAuth flow
-- `/auth/apple` - Start Apple Sign In flow
+- `/google` - Start Google OAuth flow
+- `/github` - Start GitHub OAuth flow
+- `/microsoft` - Start Microsoft OAuth flow
+- `/apple` - Start Apple Sign In flow
 
 ### **OAuth Callbacks (GET/POST):**
-- `/auth/callback/google`
-- `/auth/callback/github`
-- `/auth/callback/microsoft`
-- `/auth/callback/apple`
+- `/callback/google`
+- `/callback/github`
+- `/callback/microsoft`
+- `/callback/apple`
 
 ### **Token Management (POST):**
-- `/auth/refresh` - Refresh access token
+- `/refresh` - Refresh access token
   ```json
   { "refreshToken": "..." }
   ```
 
 ### **User Endpoints:**
-- `GET /auth/me` - Get current user (requires auth)
-- `GET /auth/sessions` - Get active sessions (requires auth)
-- `POST /auth/logout` - Logout (requires auth)
+- `GET /me` - Get current user (requires auth)
+- `GET /sessions` - Get active sessions (requires auth)
+- `POST /logout` - Logout (requires auth)
 
 ### **Health:**
-- `GET /auth/health` - Health check
-- `GET /auth/` - API documentation
+- `GET /health` - Health check
+- `GET /` - API documentation
 
 ---
 
