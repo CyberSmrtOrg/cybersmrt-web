@@ -1,154 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Completing Sign In - CyberSmrt</title>
-
-    <!-- Orbitron Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0f23 0%, #090d1c 60%, #070b18 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .callback-container {
-            text-align: center;
-            max-width: 500px;
-            padding: 2rem;
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-            color: #667eea;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(102, 126, 234, 0.2);
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .status {
-            color: #94a3b8;
-            font-size: 1rem;
-            margin-top: 1rem;
-        }
-
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-top: 2rem;
-            display: none;
-        }
-
-        .error.show {
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Completing Sign In - CyberSmrt</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+    }
+    h2 { color: #333; margin-bottom: 20px; }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      margin: 20px auto;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div class="callback-container">
-        <img src="/assets/logos/cybersmrt-logo-only.png" alt="CyberSmrt" class="logo">
-        <h1>CyberSmrt</h1>
-        <div class="spinner"></div>
-        <p class="status" id="status">Completing sign in...</p>
-        <div class="error" id="error"></div>
-    </div>
-
-    <script>
-        function setStatus(message) {
-            document.getElementById('status').textContent = message;
+  <div class="container">
+    <h2>Completing sign in...</h2>
+    <div class="spinner"></div>
+    <div id="status">Please wait</div>
+  </div>
+  <script>
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      try {
+        const data = JSON.parse(atob(hash));
+        if (data.success) {
+          localStorage.setItem('accessToken', data.tokens.accessToken);
+          localStorage.setItem('refreshToken', data.tokens.refreshToken);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('sessionId', data.session.id);
+          setTimeout(() => window.location.href = '/dashboard', 500);
+        } else {
+          alert('Authentication failed: ' + (data.error || 'Unknown error'));
+          window.location.href = '/';
         }
-
-        function showError(message) {
-            const errorEl = document.getElementById('error');
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-            document.querySelector('.spinner').style.display = 'none';
-        }
-
-        function handleCallback() {
-            try {
-                // Get data from URL hash (encoded by auth worker)
-                const hash = window.location.hash.substring(1);
-
-                if (!hash) {
-                    throw new Error('No authentication data received');
-                }
-
-                setStatus('Processing authentication...');
-
-                // Decode data
-                const dataString = atob(hash);
-                const data = JSON.parse(dataString);
-
-                if (!data.success) {
-                    throw new Error(data.error || 'Authentication failed');
-                }
-
-                setStatus('Saving session...');
-
-                // Store tokens and user data
-                localStorage.setItem('access_token', data.tokens.accessToken);
-                localStorage.setItem('refresh_token', data.tokens.refreshToken);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                localStorage.setItem('session_id', data.session.id);
-
-                setStatus('Redirecting to dashboard...');
-
-                // Redirect to dashboard
-                setTimeout(() => {
-                    window.location.href = `/dashboard/${data.user.id}`;
-                }, 500);
-
-            } catch (error) {
-                console.error('Callback error:', error);
-                showError(`Sign in failed: ${error.message}`);
-
-                // Redirect to login after 3 seconds
-                setTimeout(() => {
-                    window.location.href = '/login.html';
-                }, 3000);
-            }
-        }
-
-        // Handle callback immediately
-        handleCallback();
-    </script>
+      } catch (error) {
+        console.error('Auth error:', error);
+        alert('Authentication error. Please try again.');
+        window.location.href = '/';
+      }
+    } else {
+      window.location.href = '/';
+    }
+  </script>
 </body>
 </html>

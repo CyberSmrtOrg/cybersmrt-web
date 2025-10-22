@@ -1,0 +1,42 @@
+/**
+ * Fix for Dark Blue Bar Above Header
+ */
+
+/* Reset body */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Remove fixed elements at top */
+body > div[style*="position: fixed"][style*="top: 0"],
+body > div[style*="position: absolute"][style*="top: 0"] {
+  display: none !important;
+}
+
+/* Remove iframe bars */
+body > iframe[style*="position: fixed"],
+body > iframe[style*="top: 0"] {
+  display: none !important;
+}
+
+/* Ensure header at top */
+header {
+  position: relative;
+  z-index: 1000;
+  margin-top: 0 !important;
+}
+
+/* Remove notification bars */
+.notification-bar,
+.top-banner,
+.announcement-bar,
+[class*="top-bar"] {
+  display: none !important;
+}
+
+/* Remove pseudo elements */
+body::before {
+  content: none !important;
+}
