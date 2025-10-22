@@ -1,9 +1,7 @@
 /**
- * CyberSmrt Authentication Helper
- * Handles JWT tokens, API calls, and UI updates
- *
- * File path: assets/js/auth.js
- * Auth Subdomain: auth.cybersmrt.org
+ * CyberSmrt Authentication Helper - UNIFIED
+ * Combines auth.js and dashboard-auth.js
+ * File: auth.js (replace your existing auth.js with this)
  */
 
 const AUTH_BASE = 'https://auth.cybersmrt.org/auth';
@@ -13,10 +11,9 @@ const API_BASE = 'https://api.cybersmrt.org';
  * Check if user is authenticated
  */
 function isAuthenticated() {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('accessToken');
   if (!token) return false;
 
-  // Check if token is expired
   try {
     const payload = parseJWT(token);
     const now = Math.floor(Date.now() / 1000);
@@ -27,7 +24,7 @@ function isAuthenticated() {
 }
 
 /**
- * Parse JWT token to get payload
+ * Parse JWT token
  */
 function parseJWT(token) {
   try {
@@ -44,7 +41,7 @@ function parseJWT(token) {
 }
 
 /**
- * Get current user data from localStorage
+ * Get current user
  */
 function getCurrentUser() {
   const userStr = localStorage.getItem('user');
@@ -60,46 +57,78 @@ function getCurrentUser() {
  * Get access token
  */
 function getAccessToken() {
-  return localStorage.getItem('access_token');
+  return localStorage.getItem('accessToken');
 }
 
 /**
  * Get refresh token
  */
 function getRefreshToken() {
-  return localStorage.getItem('refresh_token');
+  return localStorage.getItem('refreshToken');
 }
 
 /**
  * Logout user
  */
 function logout() {
-  // Clear all auth data
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
-  localStorage.removeItem('user');
-  localStorage.removeItem('session_id');
+  const accessToken = getAccessToken();
 
-  // Reload page to update UI
+  // Clear localStorage
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+  localStorage.removeItem('sessionId');
+
+  // Call logout endpoint
+  if (accessToken) {
+    fetch('https://auth.cybersmrt.org/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    }).catch(err => console.error('Logout error:', err));
+  }
+
+  // Redirect to home
   window.location.href = '/';
 }
 
 /**
- * Handle successful login - redirect to dashboard
+ * Display user profile in header (for dashboard)
  */
-function handleLoginSuccess(userData) {
-  console.log('Login successful, redirecting to dashboard...');
+function displayUserProfile(user) {
+  const signInBtn = document.querySelector('.sign-in-button') ||
+                    document.querySelector('a[href*="sign"]') ||
+                    document.querySelector('[href*="signin"]');
 
-  // Get user ID from the user data
-  const userId = userData.id;
+  if (signInBtn) {
+    const userMenu = document.createElement('div');
+    userMenu.className = 'user-menu';
+    userMenu.style.cssText = 'display: flex; align-items: center; gap: 10px;';
 
-  // Redirect to dashboard with user ID in URL
-  window.location.href = `/dashboard/${userId}`;
+    const initial = (user.displayName || user.email).charAt(0).toUpperCase();
+    const avatarHtml = user.avatarUrl ?
+      `<img src="${user.avatarUrl}" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />` :
+      `<div style="width: 32px; height: 32px; border-radius: 50%; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">${initial}</div>`;
+
+    userMenu.innerHTML = `
+      <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+        ${avatarHtml}
+        <span style="color: white; font-weight: 500;">${user.displayName || user.email}</span>
+        <button onclick="logout()" style="padding: 8px 16px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; cursor: pointer;">
+          Logout
+        </button>
+      </div>
+    `;
+
+    signInBtn.replaceWith(userMenu);
+  }
 }
 
 /**
- * Update UI elements based on auth status
- * Call this on page load to show/hide login/logout buttons
+ * Update UI based on auth status
  */
 function updateAuthUI() {
   const isLoggedIn = isAuthenticated();
@@ -110,7 +139,7 @@ function updateAuthUI() {
     console.log('User:', user);
   }
 
-  // Hide/show elements based on auth status
+  // Show/hide elements
   document.querySelectorAll('[data-auth-show]').forEach(el => {
     el.style.display = isLoggedIn ? '' : 'none';
   });
@@ -119,7 +148,7 @@ function updateAuthUI() {
     el.style.display = isLoggedIn ? 'none' : '';
   });
 
-  // Update user info elements
+  // Update user info
   if (isLoggedIn && user) {
     document.querySelectorAll('[data-user-name]').forEach(el => {
       el.textContent = user.displayName || user.email;
@@ -132,12 +161,14 @@ function updateAuthUI() {
     document.querySelectorAll('[data-user-avatar]').forEach(el => {
       el.src = user.avatarUrl || '/assets/logos/cybersmrt-logo-only.png';
     });
+
+    // Display profile in header (for dashboard)
+    displayUserProfile(user);
   }
 }
 
 /**
  * Require authentication - redirect if not logged in
- * This waits for auth.js to be fully loaded before checking
  */
 function requireAuth() {
   if (!isAuthenticated()) {
@@ -146,7 +177,6 @@ function requireAuth() {
     return false;
   }
 
-  // Check if URL has correct user ID
   const user = getCurrentUser();
   if (user) {
     const pathParts = window.location.pathname.split('/');
@@ -165,7 +195,7 @@ function requireAuth() {
 }
 
 /**
- * Make authenticated API request to auth subdomain
+ * Make authenticated request to auth subdomain
  */
 async function authRequest(endpoint, options = {}) {
   const token = getAccessToken();
@@ -189,7 +219,6 @@ async function authRequest(endpoint, options = {}) {
     headers: defaultOptions.headers
   });
 
-  // Handle token expiration
   if (response.status === 401) {
     logout();
     throw new Error('Session expired');
@@ -199,7 +228,7 @@ async function authRequest(endpoint, options = {}) {
 }
 
 /**
- * Make authenticated API request to API subdomain
+ * Make authenticated request to API subdomain
  */
 async function apiRequest(endpoint, options = {}) {
   const token = getAccessToken();
@@ -223,7 +252,6 @@ async function apiRequest(endpoint, options = {}) {
     headers: defaultOptions.headers
   });
 
-  // Handle token expiration
   if (response.status === 401) {
     logout();
     throw new Error('Session expired');
@@ -233,7 +261,7 @@ async function apiRequest(endpoint, options = {}) {
 }
 
 /**
- * Get current user profile from API
+ * Get user profile from API
  */
 async function getUserProfile() {
   try {
@@ -241,7 +269,6 @@ async function getUserProfile() {
     const data = await response.json();
 
     if (data.success && data.user) {
-      // Update localStorage with fresh data
       localStorage.setItem('user', JSON.stringify(data.user));
       return data.user;
     }
@@ -253,7 +280,42 @@ async function getUserProfile() {
   }
 }
 
-// Make functions globally available
+/**
+ * Auto-refresh tokens
+ */
+function setupTokenRefresh() {
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return;
+
+  setInterval(async () => {
+    try {
+      const response = await fetch('https://auth.cybersmrt.org/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('accessToken', data.accessToken);
+        console.log('Token refreshed');
+      }
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+    }
+  }, 6 * 60 * 60 * 1000);
+}
+
+/**
+ * Handle login success
+ */
+function handleLoginSuccess(userData) {
+  console.log('Login successful, redirecting to dashboard...');
+  const userId = userData.id;
+  window.location.href = `/dashboard/${userId}`;
+}
+
+// Export globally
 window.isAuthenticated = isAuthenticated;
 window.getCurrentUser = getCurrentUser;
 window.getAccessToken = getAccessToken;
@@ -265,18 +327,21 @@ window.apiRequest = apiRequest;
 window.getUserProfile = getUserProfile;
 window.requireAuth = requireAuth;
 window.handleLoginSuccess = handleLoginSuccess;
+window.displayUserProfile = displayUserProfile;
 window.AUTH_BASE = AUTH_BASE;
 window.API_BASE = API_BASE;
 
-// Auto-update UI when page loads
+// Initialize
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', updateAuthUI);
+  document.addEventListener('DOMContentLoaded', () => {
+    updateAuthUI();
+    setupTokenRefresh();
+  });
 } else {
-  // DOM already loaded
   updateAuthUI();
+  setupTokenRefresh();
 }
 
-// Also update UI after header/footer load (with slight delay)
 setTimeout(updateAuthUI, 500);
 
-console.log('✅ Auth helper loaded (subdomains: auth.cybersmrt.org, api.cybersmrt.org)');
+console.log('✅ Auth helper loaded (auth.cybersmrt.org, api.cybersmrt.org)');
