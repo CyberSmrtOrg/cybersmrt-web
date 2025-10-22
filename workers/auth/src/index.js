@@ -71,72 +71,72 @@ export default {
       const router = new AuthRouter(env, request);
 
       // OAuth initiation endpoints
-      if (path === '/auth/google') {
+      if (path === '/google') {
         return await router.handleOAuthInit('google');
       }
-      if (path === '/auth/github') {
+      if (path === '/github') {
         return await router.handleOAuthInit('github');
       }
-      if (path === '/auth/microsoft') {
+      if (path === '/microsoft') {
         return await router.handleOAuthInit('microsoft');
       }
-      if (path === '/auth/apple') {
+      if (path === '/apple') {
         return await router.handleOAuthInit('apple');
       }
 
       // OAuth callback endpoints
-      if (path === '/auth/callback/google') {
+      if (path === '/callback/google') {
         return await router.handleOAuthCallback('google');
       }
-      if (path === '/auth/callback/github') {
+      if (path === '/callback/github') {
         return await router.handleOAuthCallback('github');
       }
-      if (path === '/auth/callback/microsoft') {
+      if (path === '/callback/microsoft') {
         return await router.handleOAuthCallback('microsoft');
       }
-      if (path === '/auth/callback/apple') {
+      if (path === '/callback/apple') {
         return await router.handleOAuthCallback('apple');
       }
 
       // Email/Password authentication
-      if (path === '/auth/register' && request.method === 'POST') {
+      if (path === '/register' && request.method === 'POST') {
         return await router.handleRegister();
       }
-      if (path === '/auth/login' && request.method === 'POST') {
+      if (path === '/login' && request.method === 'POST') {
         return await router.handleLogin();
       }
-      if (path === '/auth/change-password' && request.method === 'POST') {
+      if (path === '/change-password' && request.method === 'POST') {
         return await router.handleChangePassword();
       }
-      if (path === '/auth/forgot-password' && request.method === 'POST') {
+      if (path === '/forgot-password' && request.method === 'POST') {
         return await router.handleForgotPassword();
       }
-      if (path === '/auth/reset-password' && request.method === 'POST') {
+      if (path === '/reset-password' && request.method === 'POST') {
         return await router.handleResetPassword();
       }
 
       // Token management
-      if (path === '/auth/refresh' && request.method === 'POST') {
+      if (path === '/refresh' && request.method === 'POST') {
         return await router.handleRefresh();
       }
 
       // Logout
-      if (path === '/auth/logout' && request.method === 'POST') {
+      if (path === '/logout' && request.method === 'POST') {
         return await router.handleLogout();
       }
 
       // Get current user
-      if (path === '/auth/me' && request.method === 'GET') {
+      if (path === '/me' && request.method === 'GET') {
         return await router.handleMe();
       }
 
       // Get user sessions
-      if (path === '/auth/sessions' && request.method === 'GET') {
+      if (path === '/sessions' && request.method === 'GET') {
         return await router.handleSessions();
       }
 
       // Health check
-      if (path === '/auth/health') {
+      if (path === '/health') {
         return jsonResponse({
           success: true,
           status: 'healthy',
@@ -145,39 +145,39 @@ export default {
       }
 
       // API documentation
-      if (path === '/auth' || path === '/auth/') {
+      if (path === '' || path === '/') {
         return jsonResponse({
           name: 'CyberSmrt OAuth Authentication API',
           version: '2.0.0',
           endpoints: {
             oauth: {
-              google: '/auth/google',
-              github: '/auth/github',
-              microsoft: '/auth/microsoft',
-              apple: '/auth/apple',
+              google: '/google',
+              github: '/github',
+              microsoft: '/microsoft',
+              apple: '/apple',
             },
             callbacks: {
-              google: '/auth/callback/google',
-              github: '/auth/callback/github',
-              microsoft: '/auth/callback/microsoft',
-              apple: '/auth/callback/apple',
+              google: '/callback/google',
+              github: '/callback/github',
+              microsoft: '/callback/microsoft',
+              apple: '/callback/apple',
             },
             password: {
-              register: 'POST /auth/register',
-              login: 'POST /auth/login',
-              changePassword: 'POST /auth/change-password',
-              forgotPassword: 'POST /auth/forgot-password',
-              resetPassword: 'POST /auth/reset-password',
+              register: 'POST /register',
+              login: 'POST /login',
+              changePassword: 'POST /change-password',
+              forgotPassword: 'POST /forgot-password',
+              resetPassword: 'POST /reset-password',
             },
             tokens: {
-              refresh: 'POST /auth/refresh',
+              refresh: 'POST /refresh',
             },
             user: {
-              me: 'GET /auth/me',
-              sessions: 'GET /auth/sessions',
-              logout: 'POST /auth/logout',
+              me: 'GET /me',
+              sessions: 'GET /sessions',
+              logout: 'POST /logout',
             },
-            health: '/auth/health',
+            health: '/health',
           },
         });
       }
