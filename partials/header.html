@@ -67,13 +67,13 @@
       position: relative;
     }
 
-    /* User Menu Button - LARGER */
+    /* User Menu Button - LARGER & BETTER QUALITY */
     .user-menu {
       display: flex;
       align-items: center;
-      gap: 0.875rem;
-      padding: 0.5rem 1.25rem;
-      background: rgba(255, 255, 255, 0.2);
+      gap: 1rem;
+      padding: 0.5rem 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -83,20 +83,37 @@
       font-size: inherit;
     }
     .user-menu:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
     }
 
-    /* Larger Avatar */
+    /* LARGER, BETTER QUALITY AVATAR */
     .user-avatar {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: 2px solid white;
+      border: 2.5px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       object-fit: cover;
+      /* Better image rendering */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: high-quality;
+      /* Smooth scaling */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
+
+    .user-avatar:hover {
+      border-color: white;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+    }
+
     .user-name {
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
     }
 
     /* Dropdown Arrow */
@@ -117,7 +134,7 @@
       background: rgba(6, 10, 22, 0.95);
       border: 1px solid var(--hdr-border);
       border-radius: 12px;
-      min-width: 200px;
+      min-width: 220px;
       backdrop-filter: blur(10px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       opacity: 0;
@@ -207,6 +224,11 @@
       }
       .user-name {
         display: none;
+      }
+      /* Keep avatar large on mobile */
+      .user-avatar {
+        width: 48px;
+        height: 48px;
       }
     }
   </style>
