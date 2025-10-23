@@ -7,11 +7,15 @@ import {
   verifyPassword,
   validatePasswordStrength,
   createResetToken,
-  verifyResetToken
+  verifyResetToken,
+  createVerificationToken,
+  verifyEmailToken
 } from '../utils/password.js';
 import {
   sendPasswordResetEmail,
-  sendPasswordChangedEmail
+  sendPasswordChangedEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail
 } from '../utils/email.js';
 import { logSecurityEvent } from '../utils/security.js';
 
@@ -69,6 +73,10 @@ export async function registerWithPassword(email, password, displayName, request
     method: 'password',
     action: 'account_created',
   });
+
+  // Create verification token and send email
+  const verificationToken = await createVerificationToken(userId, env);
+  await sendVerificationEmail(email.toLowerCase(), verificationToken, env);
 
   return {
     userId,
@@ -228,6 +236,71 @@ export async function resetPassword(token, newPassword, request, env) {
 
   // Send confirmation email
   await sendPasswordChangedEmail(user.email, env);
+
+  return true;
+}
+
+/**
+ * Verify email with token
+ */
+export async function verifyEmail(token, request, env) {
+  // Verify token and mark email as verified
+  const userId = await verifyEmailToken(token, env);
+
+  // Get user info
+  const user = await env.DB
+    .prepare('SELECT email, display_name FROM users WHERE id = ?')
+    .bind(userId)
+    .first();
+
+  // Log email verification
+  await logSecurityEvent(userId, 'email_verified', request, env);
+
+  // Send welcome email
+  await sendWelcomeEmail(user.email, user.display_name, env);
+
+  return {
+    userId,
+    email: user.email,
+    displayName: user.display_name,
+  };
+}
+
+/**
+ * Resend verification email
+ */
+export async function resendVerificationEmail(email, request, env) {
+  // Get user
+  const user = await env.DB
+    .prepare('SELECT * FROM users WHERE email = ?')
+    .bind(email.toLowerCase())
+    .first();
+
+  // Always return success to prevent email enumeration
+  if (!user) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return true;
+  }
+
+  // Check if already verified
+  if (user.email_verified === 1) {
+    return { alreadyVerified: true };
+  }
+
+  // Delete any existing verification tokens for this user
+  await env.DB
+    .prepare('DELETE FROM email_verification_tokens WHERE user_id = ?')
+    .bind(user.id)
+    .run();
+
+  // Create new verification token
+  const verificationToken = await createVerificationToken(user.id, env);
+
+  // Send verification email
+  await sendVerificationEmail(user.email, verificationToken, env);
+
+  // Log resend request (using 'email_verification_sent' since 'resent' is not in CHECK constraint)
+  await logSecurityEvent(user.id, 'email_verification_sent', request, env);
 
   return true;
 }

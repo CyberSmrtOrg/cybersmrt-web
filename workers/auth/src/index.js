@@ -5,31 +5,48 @@
 
 import { AuthRouter } from './router.js';
 import { cleanupExpiredSessions } from './utils/session.js';
-import { cleanupExpiredTokens } from './utils/password.js';
+import { cleanupExpiredTokens, cleanupExpiredVerificationTokens } from './utils/password.js';
 
 /**
- * CORS headers for development
+ * Build CORS headers dynamically.
+ * If includeCredentials is true, reflect the request Origin (or env.FRONTEND_ORIGIN)
+ * and add Access-Control-Allow-Credentials so browsers will accept Set-Cookie responses.
  */
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',  // TODO: Restrict to your domain in production
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Max-Age': '86400',
-};
+function buildCorsHeaders(request, env, includeCredentials = false) {
+  const origin = request.headers.get('Origin') || request.headers.get('origin') || null;
+  const allowedOrigin = env.FRONTEND_ORIGIN || null; // set this in production to your front-end URL
+
+  const headers = {};
+  if (includeCredentials) {
+    // When credentials are set, Access-Control-Allow-Origin must be a specific origin, not '*'
+    if (origin) headers['Access-Control-Allow-Origin'] = origin;
+    else if (allowedOrigin) headers['Access-Control-Allow-Origin'] = allowedOrigin;
+    else headers['Access-Control-Allow-Origin'] = '*'; // fallback (same-origin contexts only)
+    headers['Access-Control-Allow-Credentials'] = 'true';
+  } else {
+    headers['Access-Control-Allow-Origin'] = allowedOrigin || '*';
+  }
+
+  headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+  headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+  headers['Access-Control-Max-Age'] = '86400';
+
+  return headers;
+}
 
 /**
  * Handle CORS preflight
  */
-function handleOptions() {
+function handleOptions(request, env) {
   return new Response(null, {
-    headers: CORS_HEADERS,
+    headers: buildCorsHeaders(request, env, true),
   });
 }
 
 /**
  * Error response helper
  */
-function errorResponse(message, status = 400) {
+function errorResponse(request, env, message, status = 400, includeCredentials = false) {
   return new Response(JSON.stringify({
     success: false,
     error: message,
@@ -37,7 +54,7 @@ function errorResponse(message, status = 400) {
     status,
     headers: {
       'Content-Type': 'application/json',
-      ...CORS_HEADERS,
+      ...buildCorsHeaders(request, env, includeCredentials),
     },
   });
 }
@@ -45,12 +62,12 @@ function errorResponse(message, status = 400) {
 /**
  * Success response helper
  */
-function jsonResponse(data, status = 200) {
+function jsonResponse(request, env, data, status = 200, includeCredentials = false) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      ...CORS_HEADERS,
+      ...buildCorsHeaders(request, env, includeCredentials),
     },
   });
 }
@@ -62,7 +79,7 @@ export default {
   async fetch(request, env, _ctx) {
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
-      return handleOptions();
+      return handleOptions(request, env);
     }
 
     try {
@@ -135,9 +152,17 @@ export default {
         return await router.handleSessions();
       }
 
+      // Email verification
+      if (path === '/verify-email' && request.method === 'POST') {
+        return await router.handleVerifyEmail();
+      }
+      if (path === '/resend-verification' && request.method === 'POST') {
+        return await router.handleResendVerification();
+      }
+
       // Health check
       if (path === '/health') {
-        return jsonResponse({
+        return jsonResponse(request, env, {
           success: true,
           status: 'healthy',
           timestamp: new Date().toISOString(),
@@ -146,7 +171,7 @@ export default {
 
       // API documentation
       if (path === '' || path === '/') {
-        return jsonResponse({
+        return jsonResponse(request, env, {
           name: 'CyberSmrt OAuth Authentication API',
           version: '2.0.0',
           endpoints: {
@@ -177,13 +202,17 @@ export default {
               sessions: 'GET /sessions',
               logout: 'POST /logout',
             },
+            verification: {
+              verifyEmail: 'POST /verify-email',
+              resendVerification: 'POST /resend-verification',
+            },
             health: '/health',
           },
         });
       }
 
       // 404 Not Found
-      return errorResponse('Endpoint not found', 404);
+      return errorResponse(request, env, 'Endpoint not found', 404);
 
     } catch (error) {
       console.error('Auth error:', error);
@@ -193,7 +222,7 @@ export default {
         console.error(error.stack);
       }
 
-      return errorResponse(error.message, 500);
+      return errorResponse(request, env, error.message, 500);
     }
   },
 
@@ -208,5 +237,9 @@ export default {
     // Clean up expired password reset tokens
     const deletedTokens = await cleanupExpiredTokens(env);
     console.log(`Cleaned up ${deletedTokens} expired password reset tokens`);
+
+    // Clean up expired verification tokens
+    const deletedVerificationTokens = await cleanupExpiredVerificationTokens(env);
+    console.log(`Cleaned up ${deletedVerificationTokens} expired verification tokens`);
   },
 };

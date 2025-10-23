@@ -12,7 +12,9 @@ import {
   loginWithPassword,
   changePassword,
   requestPasswordReset,
-  resetPassword
+  resetPassword,
+  verifyEmail,
+  resendVerificationEmail
 } from './providers/password.js';
 import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
 import { createSession, deleteSession, getUserSessions } from './utils/session.js';
@@ -249,10 +251,11 @@ export class AuthRouter {
       const encodedData = btoa(dataString);
 
       // Redirect to frontend callback page with data in hash
-      const callbackUrl = new URL('https://cybersmrt.org/callback.html');
+      const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
+      const callbackUrl = new URL(frontend + '/callback.html');
       callbackUrl.hash = encodedData;
 
-      // Set session cookie
+      // Set session cookie (HttpOnly, Secure)
       const cookieHeader = `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`;
 
       return Response.redirect(callbackUrl.toString(), 302, {
@@ -518,6 +521,63 @@ export class AuthRouter {
     return new Response(JSON.stringify({
       success: true,
       sessions,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Verify email with token
+   */
+  async handleVerifyEmail() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { token } = body;
+
+    if (!token) {
+      throw new Error('Verification token is required');
+    }
+
+    const result = await verifyEmail(token, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Email verified successfully',
+      user: result,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Resend verification email
+   */
+  async handleResendVerification() {
+    await checkOAuthRateLimit(this.request, this.env);
+
+    const body = await this.request.json();
+    const { email } = body;
+
+    if (!email) {
+      throw new Error('Email is required');
+    }
+
+    const result = await resendVerificationEmail(email, this.request, this.env);
+
+    if (result.alreadyVerified) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Email is already verified',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'If an unverified account exists with this email, a verification link has been sent',
     }), {
       headers: { 'Content-Type': 'application/json' },
     });

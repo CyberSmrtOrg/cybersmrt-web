@@ -34,7 +34,8 @@ id = "a069251c3a3d48af985e181c581e8d35"
 
 # Environment variables
 [vars]
-FRONTEND_URL = "https://cybersmrt.org"
+FRONTEND_ORIGIN = "https://cybersmrt.org"
+SESSION_EXPIRY = 2592000
 
 # Secrets (set with: wrangler secret put SECRET_NAME)
 # - JWT_SECRET
@@ -63,7 +64,8 @@ crons = ["0 2 * * *"]  # Run cleanup daily at 2 AM UTC
 name = "cybersmrt-auth-dev"
 
 [env.development.vars]
-FRONTEND_URL = "http://localhost:8788"
+FRONTEND_ORIGIN = "http://localhost:8000"
+SESSION_EXPIRY = 2592000
 
 # Preview environment
 [env.preview]

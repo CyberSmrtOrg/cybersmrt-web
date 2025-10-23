@@ -129,3 +129,71 @@ export async function cleanupExpiredTokens(env) {
 
   return result.changes || 0;
 }
+
+/**
+ * Create email verification token
+ */
+export async function createVerificationToken(userId, env) {
+  const token = generateResetToken(); // Reuse secure token generator
+  const tokenId = crypto.randomUUID();
+  const now = Math.floor(Date.now() / 1000);
+  const expiresAt = now + 86400; // 24 hour expiry
+
+  await env.DB
+    .prepare(`
+      INSERT INTO email_verification_tokens (id, user_id, token, expires_at, created_at)
+      VALUES (?, ?, ?, ?, ?)
+    `)
+    .bind(tokenId, userId, token, expiresAt, now)
+    .run();
+
+  return token;
+}
+
+/**
+ * Verify and consume verification token
+ */
+export async function verifyEmailToken(token, env) {
+  const now = Math.floor(Date.now() / 1000);
+
+  // Get token from database
+  const verificationToken = await env.DB
+    .prepare(`
+      SELECT * FROM email_verification_tokens
+      WHERE token = ? AND expires_at > ?
+    `)
+    .bind(token, now)
+    .first();
+
+  if (!verificationToken) {
+    throw new Error('Invalid or expired verification token');
+  }
+
+  // Delete token after use (one-time use)
+  await env.DB
+    .prepare('DELETE FROM email_verification_tokens WHERE id = ?')
+    .bind(verificationToken.id)
+    .run();
+
+  // Mark user as verified
+  await env.DB
+    .prepare('UPDATE users SET email_verified = 1 WHERE id = ?')
+    .bind(verificationToken.user_id)
+    .run();
+
+  return verificationToken.user_id;
+}
+
+/**
+ * Clean up expired verification tokens (call periodically)
+ */
+export async function cleanupExpiredVerificationTokens(env) {
+  const now = Math.floor(Date.now() / 1000);
+
+  const result = await env.DB
+    .prepare('DELETE FROM email_verification_tokens WHERE expires_at < ?')
+    .bind(now)
+    .run();
+
+  return result.changes || 0;
+}
