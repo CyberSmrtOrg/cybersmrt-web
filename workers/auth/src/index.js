@@ -420,7 +420,23 @@ export default {
         }
         if (path === '/admin/security/user-threat-history' && request.method === 'GET') {
           return await router.handleAdminUserThreatHistory();
-// Admin Monitoring Endpoints        if (path === "/admin/monitoring/health" && request.method === "GET") {          return await router.handleAdminSystemHealth();        }        if (path === "/admin/monitoring/performance" && request.method === "GET") {          return await router.handleAdminPerformanceMetrics();        }        if (path === "/admin/monitoring/alerts" && request.method === "GET") {          return await router.handleAdminAlerts();        }        if (path === "/admin/monitoring/alerts/acknowledge" && request.method === "POST") {          return await router.handleAdminAcknowledgeAlert();        }        if (path === "/admin/monitoring/errors" && request.method === "GET") {          return await router.handleAdminErrorLogs();        }
+        }
+
+        // Admin Monitoring Endpoints
+        if (path === "/admin/monitoring/health" && request.method === "GET") {
+          return await router.handleAdminSystemHealth();
+        }
+        if (path === "/admin/monitoring/performance" && request.method === "GET") {
+          return await router.handleAdminPerformanceMetrics();
+        }
+        if (path === "/admin/monitoring/alerts" && request.method === "GET") {
+          return await router.handleAdminAlerts();
+        }
+        if (path === "/admin/monitoring/alerts/acknowledge" && request.method === "POST") {
+          return await router.handleAdminAcknowledgeAlert();
+        }
+        if (path === "/admin/monitoring/errors" && request.method === "GET") {
+          return await router.handleAdminErrorLogs();
         }
       }
 
