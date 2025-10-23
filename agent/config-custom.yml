@@ -1,0 +1,49 @@
+# Code Agent Configuration - Customized for Your Project
+
+# Your Anthropic API key
+anthropic_api_key: "sk-ant-..."
+
+# Path to your repository (relative to this config file)
+repo_path: ".."
+
+# Patterns to ignore during indexing (customized for your Cloudflare project)
+ignore_patterns:
+  - "node_modules"
+  - ".wrangler"
+  - "dist"
+  - "build"
+  - ".git"
+  - "coverage"
+  - "*.backup"
+  - "*.sqlite"
+  - "*.sqlite-shm"
+  - "*.sqlite-wal"
+  - "tests/results"
+  - "downloads"
+
+# File extensions to index (your project has these)
+file_extensions:
+  - ".js"
+  - ".html"
+  - ".mjs"
+  - ".cjs"
+  - ".json"  # Added for package.json, wrangler.toml, blog-data.json
+
+# Maximum number of files to include in a single query context
+max_files_per_query: 15
+
+# Maximum tokens per file to embed (truncate large files)
+max_tokens_per_file: 2000
+
+# Claude model to use
+model: "claude-sonnet-4.5-20250929"
+
+# Embedding settings
+embedding:
+  chunk_size: 1000
+  chunk_overlap: 200
+
+# Vector database settings
+vector_db:
+  persist_directory: "./agent_data/embeddings"
+  collection_name: "codebase"
