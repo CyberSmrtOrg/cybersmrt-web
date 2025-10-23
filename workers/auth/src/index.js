@@ -503,7 +503,13 @@ export default {
                 geographicDistribution: "GET /admin/security/geographic-distribution",
                 search: "GET /admin/security/search",
                 userThreatHistory: "GET /admin/security/user-threat-history"
-              monitoring: {                health: "GET /admin/monitoring/health",                performance: "GET /admin/monitoring/performance",                alerts: "GET /admin/monitoring/alerts",                acknowledgeAlert: "POST /admin/monitoring/alerts/acknowledge",                errors: "GET /admin/monitoring/errors"              },
+              },
+              monitoring: {
+                health: "GET /admin/monitoring/health",
+                performance: "GET /admin/monitoring/performance",
+                alerts: "GET /admin/monitoring/alerts",
+                acknowledgeAlert: "POST /admin/monitoring/alerts/acknowledge",
+                errors: "GET /admin/monitoring/errors"
               },
             },
             health: '/health',
