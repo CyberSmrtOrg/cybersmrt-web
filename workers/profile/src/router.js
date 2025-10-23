@@ -326,6 +326,133 @@ export class ProfileRouter {
   }
 
   /**
+   * Export security logs to CSV or JSON
+   */
+  async handleExportSecurityLogs() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const url = new URL(this.request.url);
+    const format = url.searchParams.get('format') || 'json'; // 'json' or 'csv'
+
+    // Get all security logs for the user
+    const logs = await this.env.DB
+      .prepare(`
+        SELECT
+          id, event_type, ip_address, user_agent, details, created_at
+        FROM security_logs
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+      `)
+      .bind(userId)
+      .all();
+
+    const logData = logs.results || [];
+
+    if (format === 'csv') {
+      // Convert to CSV
+      const csvRows = [];
+
+      // Header
+      csvRows.push([
+        'Timestamp',
+        'Event Type',
+        'IP Address',
+        'Browser',
+        'Operating System',
+        'Device Type',
+        'Location',
+        'Country',
+        'City',
+        'Risk Level',
+        'Security Flags',
+      ].join(','));
+
+      // Data rows
+      for (const log of logData) {
+        let details = {};
+        try {
+          details = JSON.parse(log.details || '{}');
+        } catch (e) {
+          // Skip invalid JSON
+        }
+
+        const timestamp = new Date(log.created_at * 1000).toISOString();
+        const eventType = log.event_type;
+        const ipAddress = log.ip_address || '';
+        const browser = details.device?.browser || '';
+        const os = details.device?.os || '';
+        const deviceType = details.device?.type || '';
+        const location = details.geolocation?.location || '';
+        const country = details.geolocation?.countryName || '';
+        const city = details.geolocation?.city || '';
+        const riskLevel = details.securityAnalysis?.riskLevel || '';
+        const flags = details.securityAnalysis?.flags?.join('; ') || '';
+
+        csvRows.push([
+          `"${timestamp}"`,
+          `"${eventType}"`,
+          `"${ipAddress}"`,
+          `"${browser}"`,
+          `"${os}"`,
+          `"${deviceType}"`,
+          `"${location}"`,
+          `"${country}"`,
+          `"${city}"`,
+          `"${riskLevel}"`,
+          `"${flags}"`,
+        ].join(','));
+      }
+
+      const csvContent = csvRows.join('\n');
+
+      return new Response(csvContent, {
+        headers: {
+          'Content-Type': 'text/csv',
+          'Content-Disposition': `attachment; filename="security-logs-${userId}-${Date.now()}.csv"`,
+        },
+      });
+    } else {
+      // JSON format (default)
+      const jsonData = {
+        exportDate: new Date().toISOString(),
+        userId,
+        totalLogs: logData.length,
+        logs: logData.map(log => {
+          let details = {};
+          try {
+            details = JSON.parse(log.details || '{}');
+          } catch (e) {
+            details = {};
+          }
+
+          return {
+            timestamp: new Date(log.created_at * 1000).toISOString(),
+            eventType: log.event_type,
+            ipAddress: log.ip_address,
+            userAgent: log.user_agent,
+            device: details.device || null,
+            geolocation: details.geolocation || null,
+            securityAnalysis: details.securityAnalysis || null,
+            otherDetails: Object.keys(details)
+              .filter(key => !['device', 'geolocation', 'securityAnalysis'].includes(key))
+              .reduce((obj, key) => {
+                obj[key] = details[key];
+                return obj;
+              }, {}),
+          };
+        }),
+      };
+
+      return new Response(JSON.stringify(jsonData, null, 2), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Disposition': `attachment; filename="security-logs-${userId}-${Date.now()}.json"`,
+        },
+      });
+    }
+  }
+
+  /**
    * Export user data (GDPR compliance)
    */
   async handleExportData() {

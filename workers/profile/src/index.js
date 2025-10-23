@@ -102,6 +102,9 @@ export default {
       if (path === '/security-logs' && request.method === 'GET') {
         return await router.handleGetSecurityLogs();
       }
+      if (path === '/security-logs/export' && request.method === 'GET') {
+        return await router.handleExportSecurityLogs();
+      }
 
       // Account management
       if (path === '/export' && request.method === 'GET') {

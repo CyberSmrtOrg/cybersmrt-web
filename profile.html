@@ -118,7 +118,16 @@
     </div>
 
     <div id="security-tab" class="tab-content">
-      <div class="card"><h2>Security Activity</h2><div id="security-logs" class="log-list">Loading...</div></div>
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="margin: 0;">Security Activity</h2>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="export-csv-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Export CSV</button>
+            <button id="export-json-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">Export JSON</button>
+          </div>
+        </div>
+        <div id="security-logs" class="log-list">Loading...</div>
+      </div>
     </div>
 
     <div id="data-tab" class="tab-content">
@@ -216,16 +225,94 @@
     fetch(`${API}/security-logs?limit=20`, { headers: { 'Authorization': `Bearer ${token()}` } })
       .then(r => r.json())
       .then(d => {
-        document.getElementById('security-logs').innerHTML = d.logs.length === 0 ? '<p style="color: #64748b;">No events</p>' : d.logs.map(l => `
+        if (d.logs.length === 0) {
+          document.getElementById('security-logs').innerHTML = '<p style="color: #64748b;">No events</p>';
+          return;
+        }
+
+        document.getElementById('security-logs').innerHTML = d.logs.map(l => {
+          let details = {};
+          try {
+            details = typeof l.details === 'string' ? JSON.parse(l.details) : l.details || {};
+          } catch (e) {
+            details = {};
+          }
+
+          const device = details.device || {};
+          const geo = details.geolocation || {};
+          const security = details.securityAnalysis || {};
+
+          const riskBadge = security.riskLevel ?
+            `<span class="badge ${security.riskLevel === 'critical' || security.riskLevel === 'high' ? 'danger' : security.riskLevel === 'medium' ? 'warning' : 'success'}" style="margin-left: 0.5rem;">${security.riskLevel.toUpperCase()}</span>` : '';
+
+          const deviceInfo = device.browser || device.os ?
+            `<div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem;">
+              ${device.browser ? `📱 ${device.browser}` : ''}
+              ${device.os ? `• ${device.os}` : ''}
+              ${device.type ? `• ${device.type}` : ''}
+            </div>` : '';
+
+          const locationInfo = geo.location ?
+            `<div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem;">
+              📍 ${geo.location}
+            </div>` : '';
+
+          const securityFlags = security.flags && security.flags.length > 0 ?
+            `<div style="margin-top: 0.5rem;">
+              ${security.flags.map(flag =>
+                `<span class="badge warning" style="font-size: 0.7rem; margin-right: 0.25rem;">⚠ ${flag.replace(/_/g, ' ')}</span>`
+              ).join('')}
+            </div>` : '';
+
+          return `
           <div class="log-item">
             <div class="log-header">
-              <span class="log-type">${l.event_type.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')}</span>
+              <span class="log-type">${l.event_type.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')}${riskBadge}</span>
               <span class="log-time">${new Date(l.created_at * 1000).toLocaleString()}</span>
             </div>
             <div style="color: #94a3b8; font-size: 0.875rem;">IP: ${l.ip_address}</div>
+            ${deviceInfo}
+            ${locationInfo}
+            ${securityFlags}
           </div>
-        `).join('');
+          `;
+        }).join('');
       });
+
+    // Security log export handlers
+    document.getElementById('export-csv-btn').addEventListener('click', () => {
+      const btn = document.getElementById('export-csv-btn');
+      btn.disabled = true;
+      fetch(`${API}/security-logs/export?format=csv`, { headers: { 'Authorization': `Bearer ${token()}` } })
+        .then(r => r.blob())
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `security-logs-${Date.now()}.csv`;
+          a.click();
+          showAlert('Security logs exported to CSV!');
+        })
+        .catch(e => showAlert(e.message, 'error'))
+        .finally(() => btn.disabled = false);
+    });
+
+    document.getElementById('export-json-btn').addEventListener('click', () => {
+      const btn = document.getElementById('export-json-btn');
+      btn.disabled = true;
+      fetch(`${API}/security-logs/export?format=json`, { headers: { 'Authorization': `Bearer ${token()}` } })
+        .then(r => r.blob())
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `security-logs-${Date.now()}.json`;
+          a.click();
+          showAlert('Security logs exported to JSON!');
+        })
+        .catch(e => showAlert(e.message, 'error'))
+        .finally(() => btn.disabled = false);
+    });
 
     document.getElementById('export-btn').addEventListener('click', () => {
       const btn = document.getElementById('export-btn');

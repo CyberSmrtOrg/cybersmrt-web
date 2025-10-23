@@ -3,10 +3,15 @@
  * Audit trail for all security-related events
  */
 
+import { getDeviceInfo, generateDeviceFingerprint } from './device.js';
+import { getGeolocation, getLocationString } from './geolocation.js';
+import { analyzeActivity } from './suspicious.js';
+import { shouldSendAlert, sendEventAlert } from './security-alerts.js';
+
 /**
- * Log security event to database
+ * Log security event to database with enhanced metadata
  */
-export async function logSecurityEvent(userId, eventType, request, env, details = null) {
+export async function logSecurityEvent(userId, eventType, request, env, details = null, options = {}) {
   const logId = crypto.randomUUID();
   const now = Math.floor(Date.now() / 1000);
 
@@ -14,6 +19,78 @@ export async function logSecurityEvent(userId, eventType, request, env, details 
                     request?.headers.get('X-Forwarded-For') ||
                     'unknown';
   const userAgent = request?.headers.get('User-Agent') || 'unknown';
+
+  // Enhanced logging with device, geolocation, and security analysis
+  const enrichedDetails = details || {};
+
+  try {
+    // Add device information
+    if (request && !options.skipDeviceInfo) {
+      const deviceInfo = await getDeviceInfo(request);
+      enrichedDetails.device = {
+        fingerprint: deviceInfo.fingerprint,
+        browser: deviceInfo.browser,
+        os: deviceInfo.os,
+        type: deviceInfo.device,
+        isMobile: deviceInfo.isMobile,
+      };
+    }
+
+    // Add geolocation information
+    if (request && !options.skipGeolocation) {
+      const geolocation = getGeolocation(request);
+      enrichedDetails.geolocation = {
+        country: geolocation.country,
+        countryName: geolocation.countryName,
+        region: geolocation.region,
+        city: geolocation.city,
+        timezone: geolocation.timezone,
+        latitude: geolocation.latitude,
+        longitude: geolocation.longitude,
+        location: getLocationString(geolocation),
+      };
+    }
+
+    // Perform suspicious activity analysis for certain event types
+    if (!options.skipSuspiciousCheck && userId && request) {
+      const checkEvents = [
+        'login_success',
+        'password_change',
+        '2fa_disabled',
+        'session_created'
+      ];
+
+      if (checkEvents.includes(eventType)) {
+        const deviceFingerprint = enrichedDetails.device?.fingerprint;
+        const geolocation = enrichedDetails.geolocation;
+
+        const analysis = await analyzeActivity(
+          userId,
+          ipAddress,
+          deviceFingerprint,
+          geolocation,
+          env,
+          {
+            checkFailedLogins: eventType === 'login_success',
+            checkEnumeration: false,
+          }
+        );
+
+        if (analysis.flags.length > 0) {
+          enrichedDetails.securityAnalysis = {
+            flags: analysis.flags,
+            riskScore: analysis.riskScore,
+            riskLevel: analysis.riskLevel,
+            details: analysis.details,
+          };
+        }
+      }
+    }
+  } catch (error) {
+    // Don't fail logging if enrichment fails
+    console.error('Error enriching security log:', error);
+    enrichedDetails.enrichmentError = error.message;
+  }
 
   await env.DB
     .prepare(`
@@ -26,10 +103,17 @@ export async function logSecurityEvent(userId, eventType, request, env, details 
       eventType,
       ipAddress,
       userAgent,
-      details ? JSON.stringify(details) : null,
+      JSON.stringify(enrichedDetails),
       now
     )
     .run();
+
+  // Send email alert if needed (async, don't wait)
+  if (!options.skipAlerts && userId && shouldSendAlert(eventType, enrichedDetails.securityAnalysis)) {
+    sendEventAlert(userId, eventType, enrichedDetails, env).catch(err => {
+      console.error('Failed to send security alert:', err);
+    });
+  }
 
   return logId;
 }
