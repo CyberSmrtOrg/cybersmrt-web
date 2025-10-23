@@ -273,6 +273,92 @@
             color: #8b9aff;
         }
 
+        .password-strength {
+            margin-top: 0.75rem;
+        }
+
+        .strength-meter {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-meter-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-meter-fill.weak {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-meter-fill.medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+
+        .strength-meter-fill.strong {
+            width: 100%;
+            background: #22c55e;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .strength-text.weak {
+            color: #fca5a5;
+        }
+
+        .strength-text.medium {
+            color: #fcd34d;
+        }
+
+        .strength-text.strong {
+            color: #86efac;
+        }
+
+        .password-requirements {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .req-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .requirement.met {
+            color: #86efac;
+        }
+
+        .requirement.met .req-icon {
+            color: #22c55e;
+        }
+
+        .requirement.met .req-icon::before {
+            content: '✓';
+        }
+
         @media (max-width: 480px) {
             .register-container {
                 padding: 2rem 1.5rem;
@@ -346,6 +432,30 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Create a strong password" required minlength="8" />
+                <div class="password-strength" id="password-strength">
+                    <div class="strength-meter">
+                        <div class="strength-meter-fill" id="strength-meter-fill"></div>
+                    </div>
+                    <div class="strength-text" id="strength-text"></div>
+                </div>
+                <div class="password-requirements">
+                    <div class="requirement" id="req-length">
+                        <span class="req-icon">○</span>
+                        <span>At least 8 characters</span>
+                    </div>
+                    <div class="requirement" id="req-uppercase">
+                        <span class="req-icon">○</span>
+                        <span>One uppercase letter</span>
+                    </div>
+                    <div class="requirement" id="req-number">
+                        <span class="req-icon">○</span>
+                        <span>One number</span>
+                    </div>
+                    <div class="requirement" id="req-special">
+                        <span class="req-icon">○</span>
+                        <span>One special character</span>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -379,6 +489,65 @@
         // Check if user is already logged in
         if (localStorage.getItem('accessToken')) {
             window.location.href = '/profile.html';
+        }
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthMeterFill = document.getElementById('strength-meter-fill');
+        const strengthText = document.getElementById('strength-text');
+        const reqLength = document.getElementById('req-length');
+        const reqUppercase = document.getElementById('req-uppercase');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+
+        passwordInput.addEventListener('input', (e) => {
+            const password = e.target.value;
+            checkPasswordStrength(password);
+        });
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[^A-Za-z0-9]/.test(password)
+            };
+
+            // Update requirement indicators
+            reqLength.classList.toggle('met', requirements.length);
+            reqUppercase.classList.toggle('met', requirements.uppercase);
+            reqNumber.classList.toggle('met', requirements.number);
+            reqSpecial.classList.toggle('met', requirements.special);
+
+            // Calculate strength
+            if (requirements.length) strength++;
+            if (requirements.uppercase) strength++;
+            if (requirements.number) strength++;
+            if (requirements.special) strength++;
+
+            // Update strength meter and text
+            strengthMeterFill.className = 'strength-meter-fill';
+            strengthText.className = 'strength-text';
+
+            if (password.length === 0) {
+                strengthText.textContent = '';
+                return;
+            }
+
+            if (strength <= 2) {
+                strengthMeterFill.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+            } else if (strength === 3) {
+                strengthMeterFill.classList.add('medium');
+                strengthText.classList.add('medium');
+                strengthText.textContent = 'Medium strength';
+            } else {
+                strengthMeterFill.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthText.textContent = 'Strong password';
+            }
         }
 
         form.addEventListener('submit', async (e) => {
