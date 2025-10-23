@@ -1,0 +1,27 @@
+name = "cybersmrt-profile"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Database bindings
+[[d1_databases]]
+binding = "DB"
+database_name = "cybersmrt-users"
+database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
+
+# Environment variables
+[vars]
+FRONTEND_ORIGIN = "https://cybersmrt.org"
+AUTH_API_URL = "https://auth.cybersmrt.org"
+
+# Triggers
+[triggers]
+crons = []
+
+# Routes
+[[routes]]
+pattern = "profile.cybersmrt.org/*"
+zone_name = "cybersmrt.org"
+
+# Development environment
+[env.development]
+vars = { FRONTEND_ORIGIN = "http://localhost:8000", AUTH_API_URL = "http://localhost:8787" }

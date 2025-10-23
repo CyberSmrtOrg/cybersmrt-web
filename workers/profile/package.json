@@ -1,0 +1,21 @@
+{
+  "name": "cybersmrt-profile-worker",
+  "version": "1.0.0",
+  "description": "CyberSmrt User Profile API Worker",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "profile",
+    "api"
+  ],
+  "author": "CyberSmrt",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
