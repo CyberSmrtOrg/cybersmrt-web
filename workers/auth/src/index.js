@@ -4,9 +4,11 @@
  */
 
 import { AuthRouter } from './router.js';
+import { AdminRouter } from './admin-router.js';
 import { cleanupExpiredSessions } from './utils/session.js';
 import { cleanupExpiredTokens, cleanupExpiredVerificationTokens } from './utils/password.js';
 import { withRateLimit, identifiers, createRateLimitResponse } from './utils/rate-limit.js';
+import { withAdminAuth, isMaintenanceMode, ROLES } from './utils/admin.js';
 
 /**
  * Build CORS headers dynamically.
@@ -230,6 +232,165 @@ export default {
         return await router.handle2FARegenerateBackupCodes();
       }
 
+      // Admin endpoints (protected by withAdminAuth middleware)
+      if (path.startsWith('/admin/')) {
+        // Admin: Get all users
+        if (path === '/admin/users' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetUsers();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Get single user
+        if (path.match(/^\/admin\/users\/[^/]+$/) && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetUser();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Update user
+        if (path.match(/^\/admin\/users\/[^/]+$/) && request.method === 'PUT') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleUpdateUser();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Delete user
+        if (path.match(/^\/admin\/users\/[^/]+$/) && request.method === 'DELETE') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleDeleteUser();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Toggle user status
+        if (path.match(/^\/admin\/users\/[^/]+\/toggle-status$/) && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleToggleUserStatus();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Promote user
+        if (path.match(/^\/admin\/users\/[^/]+\/promote$/) && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handlePromoteUser();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.SUPER_ADMIN // Only super admins can promote
+          );
+        }
+
+        // Admin: Demote user
+        if (path.match(/^\/admin\/users\/[^/]+\/demote$/) && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleDemoteUser();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.SUPER_ADMIN // Only super admins can demote
+          );
+        }
+
+        // Admin: Reset user password
+        if (path.match(/^\/admin\/users\/[^/]+\/reset-password$/) && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleResetUserPassword();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Get system stats
+        if (path === '/admin/stats' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetStats();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Get admin action logs
+        if (path === '/admin/logs' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetAdminLogs();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Get system settings
+        if (path === '/admin/settings' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetSettings();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        // Admin: Update system setting
+        if (path === '/admin/settings' && request.method === 'PUT') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleUpdateSetting();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.SUPER_ADMIN // Only super admins can change settings
+          );
+        }
+
+        // Admin: Terminate session
+        if (path.match(/^\/admin\/sessions\/[^/]+\/terminate$/) && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleTerminateSession();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+      }
+
       // Health check
       if (path === '/health') {
         return jsonResponse(request, env, {
@@ -283,6 +444,21 @@ export default {
               verify: 'POST /2fa/verify',
               status: 'GET /2fa/status',
               regenerateBackupCodes: 'POST /2fa/regenerate-backup-codes',
+            },
+            admin: {
+              users: 'GET /admin/users',
+              getUser: 'GET /admin/users/{id}',
+              updateUser: 'PUT /admin/users/{id}',
+              deleteUser: 'DELETE /admin/users/{id}',
+              toggleUserStatus: 'POST /admin/users/{id}/toggle-status',
+              promoteUser: 'POST /admin/users/{id}/promote',
+              demoteUser: 'POST /admin/users/{id}/demote',
+              resetUserPassword: 'POST /admin/users/{id}/reset-password',
+              stats: 'GET /admin/stats',
+              logs: 'GET /admin/logs',
+              settings: 'GET /admin/settings',
+              updateSetting: 'PUT /admin/settings',
+              terminateSession: 'POST /admin/sessions/{id}/terminate',
             },
             health: '/health',
           },

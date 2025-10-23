@@ -285,7 +285,7 @@ export const identifiers = {
       if (parts.length !== 3) return 'unknown';
 
       const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return payload.userId || 'unknown';
+      return payload.sub || 'unknown';
     } catch {
       return 'unknown';
     }
