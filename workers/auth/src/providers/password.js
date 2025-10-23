@@ -1,5 +1,6 @@
 /**
- * Email/Password Authentication Provider
+ * Email/Password Authentication Provider with Enhanced Security
+ * Includes threat detection, device tracking, and account lockout protection
  */
 
 import {
@@ -18,6 +19,21 @@ import {
   sendWelcomeEmail
 } from '../utils/email.js';
 import { logSecurityEvent } from '../utils/security.js';
+import {
+  checkAccountLockout,
+  lockAccount,
+  resetFailedLoginCount,
+  recordLoginAttempt,
+  recordDeviceActivity
+} from '../utils/device-manager.js';
+import {
+  analyzeThreat,
+  getRecommendedAction,
+  createThreatReport,
+  detectCredentialStuffing,
+  detectAccountEnumeration
+} from '../utils/threat-detection.js';
+import { getDeviceInfo } from '../utils/device.js';
 
 /**
  * Register new user with email and password
@@ -86,46 +102,157 @@ export async function registerWithPassword(email, password, displayName, request
 }
 
 /**
- * Login with email and password
+ * Login with email and password (Enhanced with threat detection)
  */
 export async function loginWithPassword(email, password, request, env) {
-  // Get user
+  const ipAddress = request.headers.get('CF-Connecting-IP') ||
+                    request.headers.get('X-Forwarded-For') ||
+                    'unknown';
+  const deviceInfo = await getDeviceInfo(request);
+  const deviceFingerprint = deviceInfo.fingerprint;
+
+  // 1. Check for account enumeration attack
+  const enumerationCheck = await detectAccountEnumeration(ipAddress, env);
+  if (enumerationCheck.detected) {
+    await logSecurityEvent(null, 'security_alert', request, env, {
+      alertType: 'account_enumeration',
+      details: enumerationCheck
+    });
+    // Don't reveal this to the attacker, just log it
+  }
+
+  // 2. Get user
   const user = await env.DB
     .prepare('SELECT * FROM users WHERE email = ?')
     .bind(email.toLowerCase())
     .first();
 
   if (!user) {
+    // Record failed attempt for enumeration detection
+    await recordLoginAttempt(email, ipAddress, deviceFingerprint, false, 'user_not_found', env);
     throw new Error('Invalid email or password');
   }
 
-  // Check if user has a password set
+  // 3. Check for account lockout
+  const lockoutCheck = await checkAccountLockout(email, env);
+  if (lockoutCheck.locked) {
+    const minutesRemaining = Math.ceil(lockoutCheck.remainingSeconds / 60);
+    throw new Error(`Account is locked. Please try again in ${minutesRemaining} minutes.`);
+  }
+
+  // 4. Check for credential stuffing attack
+  const stuffingCheck = await detectCredentialStuffing(email, env);
+  if (stuffingCheck.detected) {
+    await logSecurityEvent(user.id, 'security_alert', request, env, {
+      alertType: 'credential_stuffing',
+      details: stuffingCheck
+    });
+    // Lock the account for protection
+    await lockAccount(email, 30, env); // 30 minute lockout
+    throw new Error('Suspicious activity detected. Your account has been temporarily locked for security.');
+  }
+
+  // 5. Check if user has a password set
   if (!user.password_hash) {
+    await recordLoginAttempt(email, ipAddress, deviceFingerprint, false, 'oauth_only', env);
     throw new Error('This account uses OAuth login. Please sign in with Google, GitHub, or Microsoft.');
   }
 
-  // Verify password
+  // 6. Verify password
   const isValid = await verifyPassword(password, user.password_hash);
 
   if (!isValid) {
-    // Log failed attempt
+    // Record failed attempt
+    await recordLoginAttempt(email, ipAddress, deviceFingerprint, false, 'invalid_password', env);
+
     await logSecurityEvent(user.id, 'failed_login', request, env, {
       reason: 'invalid_password',
     });
+
+    // Check if we should lock the account
+    const recentFailures = lockoutCheck.recentFailureCount || 0;
+    if (recentFailures >= 4) {
+      // 5th failure - lock for 15 minutes
+      await lockAccount(email, 15, env);
+      throw new Error('Too many failed attempts. Account locked for 15 minutes.');
+    } else if (recentFailures >= 9) {
+      // 10th failure - lock for 1 hour
+      await lockAccount(email, 60, env);
+      throw new Error('Too many failed attempts. Account locked for 1 hour.');
+    }
+
     throw new Error('Invalid email or password');
   }
 
-  // Check if account is active
+  // 7. Check if account is active
   if (user.is_active === 0) {
+    await recordLoginAttempt(email, ipAddress, deviceFingerprint, false, 'account_disabled', env);
     throw new Error('Account is disabled');
   }
 
-  // Log successful login
+  // 8. Perform comprehensive threat analysis
+  const threatAnalysis = await analyzeThreat(user.id, email, request, env);
+  const recommendedAction = getRecommendedAction(threatAnalysis);
+
+  // 9. Log threat analysis
+  const threatReport = createThreatReport(threatAnalysis, recommendedAction);
+  await logSecurityEvent(user.id, 'threat_analysis', request, env, threatReport);
+
+  // 10. Take action based on threat level
+  if (recommendedAction.action === 'block') {
+    await recordLoginAttempt(email, ipAddress, deviceFingerprint, false, 'blocked_threat', env);
+    await logSecurityEvent(user.id, 'login_blocked', request, env, {
+      reason: recommendedAction.reason,
+      threatLevel: threatAnalysis.threatLevel,
+      riskScore: threatAnalysis.riskScore
+    });
+    throw new Error(recommendedAction.message);
+  }
+
+  if (recommendedAction.action === 'challenge') {
+    // For now, just log - we'll implement email verification challenge later
+    await logSecurityEvent(user.id, 'login_challenge_required', request, env, {
+      reason: recommendedAction.reason,
+      challengeType: recommendedAction.challengeType,
+      threatLevel: threatAnalysis.threatLevel,
+      riskScore: threatAnalysis.riskScore
+    });
+    // TODO: Implement device verification challenge flow
+    // For now, allow but log the warning
+  }
+
+  // 11. Record successful login
+  await recordLoginAttempt(email, ipAddress, deviceFingerprint, true, null, env);
+
+  // 12. Reset failed login count
+  await resetFailedLoginCount(email, env);
+
+  // 13. Record device activity
+  const deviceResult = await recordDeviceActivity(user.id, request, env);
+
+  // 14. Log successful login
   await logSecurityEvent(user.id, 'login', request, env, {
     method: 'password',
+    deviceId: deviceResult.deviceId,
+    isNewDevice: deviceResult.isNewDevice,
+    isTrusted: deviceResult.isTrusted,
+    threatLevel: threatAnalysis.threatLevel,
+    riskScore: threatAnalysis.riskScore
   });
 
-  return user;
+  // 15. Return user with additional security context
+  return {
+    ...user,
+    _securityContext: {
+      threatLevel: threatAnalysis.threatLevel,
+      riskScore: threatAnalysis.riskScore,
+      requiresChallenge: recommendedAction.action === 'challenge',
+      warningMessage: recommendedAction.message,
+      deviceId: deviceResult.deviceId,
+      isNewDevice: deviceResult.isNewDevice,
+      isTrusted: deviceResult.isTrusted
+    }
+  };
 }
 
 /**
