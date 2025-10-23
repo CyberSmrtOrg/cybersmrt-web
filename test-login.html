@@ -126,6 +126,10 @@
       alert('Auth cleared! You are now logged out.');
       window.location.href = '/';
     }
+    // Expose functions for inline handlers
+    window.testLogin = testLogin;
+    window.testAsCurrentUser = testAsCurrentUser;
+    window.clearAuth = clearAuth;
   </script>
 </body>
 </html>

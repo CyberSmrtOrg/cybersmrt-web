@@ -200,7 +200,7 @@ export default {
   /**
    * Scheduled handler for cleanup tasks
    */
-  async scheduled(event, env, ctx) {
+  async scheduled(event, env, _ctx) {
     // Clean up expired sessions daily
     const deletedSessions = await cleanupExpiredSessions(env);
     console.log(`Cleaned up ${deletedSessions} expired sessions`);

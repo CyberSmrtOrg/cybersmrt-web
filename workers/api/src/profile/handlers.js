@@ -56,9 +56,9 @@ function validateProfileData(data) {
 export async function getProfile(userId, env) {
   const user = await env.DB
     .prepare(`
-      SELECT id, email, display_name, avatar_url, bio, location, website, 
+      SELECT id, email, display_name, avatar_url, bio, location, website,
              role, email_verified, created_at, updated_at
-      FROM users 
+      FROM users
       WHERE id = ?
     `)
     .bind(userId)
@@ -107,7 +107,7 @@ export async function updateProfile(userId, data, env) {
 
   await env.DB
     .prepare(`
-      UPDATE users 
+      UPDATE users
       SET ${updates.join(', ')}
       WHERE id = ?
     `)
@@ -134,18 +134,18 @@ export async function uploadProfilePhoto(userId, photo, env) {
 
   const formData = new FormData();
   formData.append('file', photo);
-  
+
   const metadata = JSON.stringify({
     userId: userId,
     uploadedAt: new Date().toISOString(),
   });
   formData.append('metadata', metadata);
-  
+
   const imageId = `profile-${userId}-${Date.now()}`;
   formData.append('id', imageId);
 
   const uploadUrl = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
-  
+
   const response = await fetch(uploadUrl, {
     method: 'POST',
     headers: {
@@ -161,7 +161,7 @@ export async function uploadProfilePhoto(userId, photo, env) {
   }
 
   const result = await response.json();
-  
+
   if (!result.success) {
     throw new Error('Failed to upload photo to Cloudflare Images');
   }

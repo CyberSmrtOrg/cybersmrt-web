@@ -4,4 +4,3 @@ workers/**/node_modules/
 .wrangler/**
 tests/results/
 *.log
-admin/index.html

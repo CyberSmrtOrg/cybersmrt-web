@@ -1418,7 +1418,7 @@
         ctaButtons.style.display = 'flex';
       }
 
-      window.onHeroTurnstileVerified = function(token) {
+      window.onHeroTurnstileVerified = function(_token) {
         localStorage.setItem(VERIFICATION_KEY, JSON.stringify({
           timestamp: Date.now(),
           verified: true

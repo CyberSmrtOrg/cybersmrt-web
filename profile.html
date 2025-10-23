@@ -540,7 +540,7 @@
           website: document.getElementById('website').value.trim()
         };
 
-  const _response = await window.ProfileAPI.updateProfile(formData);
+  await window.ProfileAPI.updateProfile(formData);
 
   // Update original data
   originalData = formData;

@@ -670,7 +670,8 @@
       }
     }, 1000);
 
-    let current2FASecret = null;
+  /* eslint-disable-next-line no-unused-vars */
+  let current2FASecret = null;
 
     // Load settings on page load
     window.addEventListener('load', () => {
@@ -738,6 +739,11 @@
         showNotification('Failed to save settings', 'error');
       }
     }
+
+  // Expose UI functions for inline handlers
+  window.loadSettings = loadSettings;
+  window.saveSettings = saveSettings;
+  window.toggle2FA = toggle2FA;
 
     async function load2FAStatus() {
       if (!authReady) {

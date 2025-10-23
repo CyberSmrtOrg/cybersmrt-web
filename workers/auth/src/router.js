@@ -15,7 +15,7 @@ import {
   resetPassword
 } from './providers/password.js';
 import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
-import { createSession, getSession, deleteSession, getUserSessions } from './utils/session.js';
+import { createSession, deleteSession, getUserSessions } from './utils/session.js';
 import { checkOAuthRateLimit } from './utils/rateLimit.js';
 import { logLogin, logLogout, logOAuthLink } from './utils/security.js';
 
