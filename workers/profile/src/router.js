@@ -811,4 +811,168 @@ export class ProfileRouter {
       return new Response('Internal server error', { status: 500 });
     }
   }
+
+  /**
+   * Get all devices for the current user
+   */
+  async handleGetDevices() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { getUserDevices, generateDeviceFingerprint } = await import('./utils/device-manager.js');
+
+    const result = await getUserDevices(userId, this.env);
+
+    if (!result.success) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: result.error || 'Failed to fetch devices',
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Mark current device
+    const currentFingerprint = await generateDeviceFingerprint(this.request);
+    const devices = result.devices.map(device => ({
+      ...device,
+      isCurrent: device.device_fingerprint === currentFingerprint
+    }));
+
+    return new Response(JSON.stringify({
+      success: true,
+      devices,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Trust a device
+   */
+  async handleTrustDevice() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { trustDevice } = await import('./utils/device-manager.js');
+
+    const body = await this.request.json();
+    const { deviceFingerprint } = body;
+
+    if (!deviceFingerprint) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Device fingerprint is required',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const result = await trustDevice(userId, deviceFingerprint, this.env);
+
+    return new Response(JSON.stringify(result), {
+      status: result.success ? 200 : 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Untrust a device
+   */
+  async handleUntrustDevice() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { untrustDevice } = await import('./utils/device-manager.js');
+
+    const body = await this.request.json();
+    const { deviceFingerprint } = body;
+
+    if (!deviceFingerprint) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Device fingerprint is required',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const result = await untrustDevice(userId, deviceFingerprint, this.env);
+
+    return new Response(JSON.stringify(result), {
+      status: result.success ? 200 : 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Remove a device
+   */
+  async handleRemoveDevice() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { removeDevice } = await import('./utils/device-manager.js');
+
+    const url = new URL(this.request.url);
+    const deviceId = url.pathname.split('/').pop();
+
+    const result = await removeDevice(userId, deviceId, this.env);
+
+    return new Response(JSON.stringify(result), {
+      status: result.success ? 200 : 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Verify device challenge
+   */
+  async handleVerifyDeviceChallenge() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { verifyDeviceChallenge } = await import('./utils/device-manager.js');
+
+    const body = await this.request.json();
+    const { challengeCode } = body;
+
+    if (!challengeCode) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Challenge code is required',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const result = await verifyDeviceChallenge(userId, challengeCode, this.env);
+
+    return new Response(JSON.stringify(result), {
+      status: result.success ? 200 : 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Deny device challenge
+   */
+  async handleDenyDeviceChallenge() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+    const { denyDeviceChallenge } = await import('./utils/device-manager.js');
+
+    const body = await this.request.json();
+    const { challengeId } = body;
+
+    if (!challengeId) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Challenge ID is required',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const result = await denyDeviceChallenge(userId, challengeId, this.env);
+
+    return new Response(JSON.stringify(result), {
+      status: result.success ? 200 : 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

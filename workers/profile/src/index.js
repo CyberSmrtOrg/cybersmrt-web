@@ -137,6 +137,26 @@ export default {
         return await router.handleServeFile(key);
       }
 
+      // Device management
+      if (path === '/devices' && request.method === 'GET') {
+        return await router.handleGetDevices();
+      }
+      if (path === '/devices/trust' && request.method === 'POST') {
+        return await router.handleTrustDevice();
+      }
+      if (path === '/devices/untrust' && request.method === 'POST') {
+        return await router.handleUntrustDevice();
+      }
+      if (path.match(/^\/devices\/[^/]+$/) && request.method === 'DELETE') {
+        return await router.handleRemoveDevice();
+      }
+      if (path === '/devices/verify' && request.method === 'POST') {
+        return await router.handleVerifyDeviceChallenge();
+      }
+      if (path === '/devices/deny' && request.method === 'POST') {
+        return await router.handleDenyDeviceChallenge();
+      }
+
       // Health check
       if (path === '/health') {
         return jsonResponse(request, env, {
@@ -173,6 +193,14 @@ export default {
             account: {
               export: 'GET /export',
               delete: 'DELETE /account',
+            },
+            devices: {
+              list: 'GET /devices',
+              trust: 'POST /devices/trust',
+              untrust: 'POST /devices/untrust',
+              remove: 'DELETE /devices/{id}',
+              verify: 'POST /devices/verify',
+              deny: 'POST /devices/deny',
             },
             health: '/health',
           },
