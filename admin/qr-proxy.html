@@ -275,7 +275,8 @@
     <script>
         let ADMIN_TOKEN = '';
 
-        async function authenticate() {
+    /* exported authenticate, blockDomain, testWorker */
+    async function authenticate() {
             const token = document.getElementById('adminToken').value;
             if (!token) {
                 alert('Please enter admin token');
@@ -297,7 +298,7 @@
             }
         }
 
-        async function loadHealthStatus() {
+    async function loadHealthStatus() {
             try {
                 const response = await fetch('/tools/qr_proxy/health');
                 const data = await response.json();
@@ -310,7 +311,7 @@
             }
         }
 
-        async function blockDomain() {
+    async function blockDomain() {
             const domain = document.getElementById('domainInput').value.trim();
             const reason = document.getElementById('reasonInput').value.trim();
 

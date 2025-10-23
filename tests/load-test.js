@@ -167,6 +167,6 @@ function testHealthEndpoint() {
 // ============================================================
 // Tear down - runs once after all iterations
 // ============================================================
-export function teardown(data) {
+export function teardown(_data) {
   console.log('Load test complete!');
 }

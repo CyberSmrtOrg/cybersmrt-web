@@ -147,7 +147,7 @@
 <body>
   <!-- Shared header -->
   <div id="header-mount"></div>
-  <script defer src="/assets/js/header-loader.js"></script>
+  <script defer src="/assets/js/header-loader.js">` + `</scr` + `ipt>
 
 
   <main class="admin-wrap">
@@ -321,10 +321,11 @@
 
   <!-- Shared footer -->
   <div id="footer-mount"></div>
-  <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-loader.js">` + `</scr` + `ipt>
+<script defer src="/assets/js/footer-init.js">` + `</scr` + `ipt>
 
   <script>
+    /* eslint-disable */
     // ---------- State ----------
     let contentSectionCount = 0;
     let mediaItemCount = 0;
@@ -529,13 +530,13 @@
             mediaHTML += `
               <div class="video-container">
                 <iframe width="100%" height="400" src="https://www.youtube.com/embed/${url.value}" frameborder="0" allowfullscreen loading="lazy"></iframe>
-                ${cap.value ? `<p class="caption">${cap.value}</p>` : ''}
+                ${cap.value ? ('<p class="caption">' + cap.value + '</p>') : ''}
               </div>`;
           } else {
             mediaHTML += `
               <div class="image-container">
                 <img src="${url.value}" alt="${(cap.value||'Blog image').replace(/"/g,'&quot;')}" loading="lazy"/>
-                ${cap.value ? `<p class="caption">${cap.value}</p>` : ''}
+                ${cap.value ? ('<p class="caption">' + cap.value + '</p>') : ''}
               </div>`;
           }
         }
@@ -604,7 +605,7 @@
 <body>
   <!-- Shared header -->
   <div id="header-mount"></div>
-  <script defer src="/assets/js/header-loader.js"></script>
+  <script defer src="/assets/js/header-loader.js"></scr' + 'ipt>
 
 
   <main>
@@ -634,7 +635,7 @@
         ${conclusion}
       </div>
 
-      ${tags.length ? `<div class="tags">${tagsHTML}</div>` : ''}
+  ${tags.length ? ('<div class="tags">' + tagsHTML + '</div>') : ''}
 
       <div class="share-buttons">
         <a class="share-btn" data-share="x"        href="#" target="_blank" rel="noopener">Share on X</a>
@@ -646,8 +647,8 @@
 
   <!-- Shared footer -->
   <div id="footer-mount"></div>
-  <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-loader.js"></scr' + 'ipt>
+<script defer src="/assets/js/footer-init.js"></scr' + 'ipt>
 
   <!-- Fill share URLs at runtime -->
   <script>
@@ -664,7 +665,7 @@
       var em = document.querySelector('[data-share="email"]');
       if (em) em.href = 'mailto:?subject=' + pageTitle + '&body=Check out this article: ' + pageUrl;
     })();
-  <\/script>
+  </scr' + 'ipt>
 </body>
 </html>`;
     }

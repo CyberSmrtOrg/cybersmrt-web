@@ -13,27 +13,23 @@ const AUTH_BASE = 'https://auth.cybersmrt.org';
 /**
  * Make authenticated API request
  */
-async function apiCall(endpoint, options = {}) {
+async function apiRequest(endpoint, options = {}) {
   const token = window.getAccessToken ? window.getAccessToken() : null;
 
   if (!token) {
     throw new Error('Not authenticated');
   }
 
-  const defaultOptions = {
-    credentials: 'include', // Important for CORS with credentials
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      ...options.headers
-    }
-  };
+  const apiBase = window.API_BASE || API_BASE;
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    ...defaultOptions,
-    headers: defaultOptions.headers
-  });
+  // Merge options so callers can override defaults
+  const merged = Object.assign({}, { credentials: 'include' }, options);
+  merged.headers = Object.assign({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }, options.headers || {});
+
+  const response = await fetch(`${apiBase}${endpoint}`, merged);
 
   // Handle token expiration
   if (response.status === 401) {
@@ -48,6 +44,9 @@ async function apiCall(endpoint, options = {}) {
 
   return response.json();
 }
+
+// Backwards-compatible alias
+const apiCall = apiRequest;
 
 /**
  * Dashboard API
@@ -176,5 +175,7 @@ window.SettingsAPI = SettingsAPI;
 window.AuthAPI = AuthAPI;
 window.API_BASE = API_BASE;
 window.AUTH_BASE = AUTH_BASE;
+window.apiRequest = apiRequest;
+window.apiCall = apiCall;
 
 console.log('✅ API helper loaded (subdomains: api.cybersmrt.org, auth.cybersmrt.org)');

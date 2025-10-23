@@ -386,7 +386,7 @@ async function fetchWithSecurity(targetURL, parsedURL, env) {
   const chunks = [];
   let receivedLength = 0;
 
-  while (true) {
+  for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
 

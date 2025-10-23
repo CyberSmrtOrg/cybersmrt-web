@@ -15,7 +15,7 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       });
-    } catch {}
+    } catch (e) { /* noop */ }
   }
 
   function inject(html) {
@@ -50,7 +50,7 @@
         if (!res.ok) continue;
         inject(await res.text());
         return;
-      } catch { /* try next */ }
+  } catch (e) { void e; }
     }
     injectFallback('all fetch attempts failed');
   }

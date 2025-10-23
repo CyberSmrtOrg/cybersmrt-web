@@ -18,7 +18,7 @@ import {
   get2FAStatus,
 } from './handlers.js';
 
-export async function handleSettingsRoutes(request, env, ctx) {
+export async function handleSettingsRoutes(request, env, _ctx) {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;

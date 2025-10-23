@@ -775,7 +775,8 @@
       }
     }
 
-    async function setup2FA() {
+  /* global QRCode */
+  async function setup2FA() {
       try {
         const response = await window.apiRequest('/api/2fa/setup');
         const data = await response.json();
@@ -786,10 +787,18 @@
           // Generate QR code
           const qrContainer = document.getElementById('qr-code');
           qrContainer.innerHTML = '';
-          QRCode.toCanvas(data.qrCodeUrl, { width: 250 }, (error, canvas) => {
-            if (error) console.error(error);
-            qrContainer.appendChild(canvas);
-          });
+          if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
+            QRCode.toCanvas(data.qrCodeUrl, { width: 250 }, (error, canvas) => {
+              if (error) console.error(error);
+              qrContainer.appendChild(canvas);
+            });
+          } else {
+            console.warn('QRCode library not available; cannot render QR code canvas');
+            // Fallback: display the URL as text for manual copy
+            const pre = document.createElement('pre');
+            pre.textContent = data.qrCodeUrl;
+            qrContainer.appendChild(pre);
+          }
 
           // Show secret
           document.getElementById('secret-code').textContent = data.secret;

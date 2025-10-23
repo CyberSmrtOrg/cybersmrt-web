@@ -15,7 +15,7 @@ import {
   getProfilePhoto,
 } from './handlers.js';
 
-export async function handleProfileRoutes(request, env, ctx) {
+export async function handleProfileRoutes(request, env, _ctx) {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;

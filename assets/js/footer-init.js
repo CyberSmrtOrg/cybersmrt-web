@@ -45,7 +45,7 @@
 
   // Initialize when footer is loaded
   // Use MutationObserver to detect when footer appears
-  const observer = new MutationObserver((mutations) => {
+  const observer = new MutationObserver((_mutations) => {
     const footerExists = document.querySelector('.site-footer');
     if (footerExists) {
       initFooter();

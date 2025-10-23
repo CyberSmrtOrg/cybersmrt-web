@@ -59,7 +59,7 @@ function jsonResponse(data, status = 200) {
  * Main request handler
  */
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env, _ctx) {
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return handleOptions();

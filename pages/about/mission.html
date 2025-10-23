@@ -115,14 +115,14 @@
         const link = document.createElement('link');
         link.rel = 'stylesheet'; link.href = href;
         document.head.appendChild(link);
-      }catch{}
+      } catch (e) { /* noop */ }
     }
     async function injectOptionalModule(src){
       try{
         const res = await fetch(src, { method:'HEAD' });
         if(!res.ok) return;
         await import(src);
-      }catch{}
+      } catch (e) { /* noop */ }
     }
 
     injectOptionalCSS(OPTIONAL_CSS);

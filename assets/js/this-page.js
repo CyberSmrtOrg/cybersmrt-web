@@ -48,6 +48,6 @@
     });
 
     // Call the hook so your scaffold page doesn’t complain
-    try { window.Page.ready(); } catch {}
+  try { window.Page.ready(); } catch (e) { void e; }
   });
 })();

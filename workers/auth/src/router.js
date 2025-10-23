@@ -198,13 +198,14 @@ export class AuthRouter {
         case 'microsoft':
           result = await handleMicrosoftCallback(code, this.env);
           break;
-        case 'apple':
+        case 'apple': {
           // For Apple, check if there's user data in POST body
           const userData = this.request.method === 'POST'
             ? await this.request.formData().then(fd => fd.get('user'))
             : null;
           result = await handleAppleCallback(code, this.env, userData);
           break;
+        }
         default:
           throw new Error(`Unknown provider: ${provider}`);
       }

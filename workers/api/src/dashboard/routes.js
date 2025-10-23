@@ -10,7 +10,7 @@ import { rateLimit } from '../middleware/rateLimit.js';
 import { jsonResponse, errorResponse } from '../utils/response.js';
 import { getDashboardData } from './handlers.js';
 
-export async function handleDashboardRoutes(request, env, ctx) {
+export async function handleDashboardRoutes(request, env, _ctx) {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;
