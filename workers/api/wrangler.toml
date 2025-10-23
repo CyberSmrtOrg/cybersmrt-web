@@ -16,6 +16,10 @@ binding = "DB"
 database_name = "cybersmrt-users"
 database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "a069251c3a3d48af985e181c581e8d35"
+
 # Environment variables
 [vars]
 # Add your environment-specific variables here
