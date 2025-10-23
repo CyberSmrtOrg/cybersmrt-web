@@ -242,7 +242,7 @@ async function apiRequest(endpoint, options = {}) {
     }
   };
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
+  const response = await fetch(`${window.API_BASE}${endpoint}`, {
     ...options,
     ...defaultOptions,
     headers: defaultOptions.headers
@@ -324,7 +324,7 @@ if (!window.getUserProfile) window.getUserProfile = getUserProfile;
 if (!window.requireAuth) window.requireAuth = requireAuth;
 if (!window.handleLoginSuccess) window.handleLoginSuccess = handleLoginSuccess;
 if (!window.displayUserProfile) window.displayUserProfile = displayUserProfile;
-if (!window.AUTH_BASE) window.AUTH_BASE = window.AUTH_BASE;
+
 if (!window.API_BASE) window.API_BASE = API_BASE;
 
 // Initialize only if not already initialized
