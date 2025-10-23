@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CyberSmrt</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color, #333);
+            flex-wrap: wrap;
+        }
+
+        .admin-nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--text-color, #fff);
+            font-size: 1rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .admin-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .admin-nav-item.active {
+            border-bottom-color: var(--primary-color, #00a8ff);
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-secondary, #aaa);
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color, #00a8ff);
+            margin: 0;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary, #aaa);
+            margin-top: 0.5rem;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .users-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: bold;
+            color: var(--text-secondary, #aaa);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .users-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-admin {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .badge-super-admin {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .badge-user {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color, #fff);
+        }
+
+        .badge-active {
+            background: #51cf66;
+            color: white;
+        }
+
+        .badge-inactive {
+            background: #868e96;
+            color: white;
+        }
+
+        .badge-verified {
+            background: #00a8ff;
+            color: white;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .action-btn-primary {
+            background: var(--primary-color, #00a8ff);
+            color: white;
+        }
+
+        .action-btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .action-btn-warning {
+            background: #ffd93d;
+            color: black;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color, #fff);
+            font-size: 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-bar select {
+            min-width: 150px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color, #fff);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-info {
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary, #aaa);
+        }
+
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .logs-table th,
+        .logs-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .logs-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: bold;
+            color: var(--text-secondary, #aaa);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .settings-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .setting-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .setting-info p {
+            margin: 0;
+            color: var(--text-secondary, #aaa);
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #868e96;
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color, #00a8ff);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-color, #1a1a1a);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color, #fff);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color, #fff);
+            font-size: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 4px;
+            border-left: 3px solid #ff6b6b;
+        }
+
+        .success-message {
+            color: #51cf66;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(81, 207, 102, 0.1);
+            border-radius: 4px;
+            border-left: 3px solid #51cf66;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary, #aaa);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary, #aaa);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div>
+                <h1>🛡️ Admin Dashboard</h1>
+                <p id="admin-info" style="color: var(--text-secondary, #aaa); margin: 0.5rem 0 0 0;">Loading...</p>
+            </div>
+            <div>
+                <button onclick="window.location.href='/profile.html'" class="action-btn action-btn-primary">
+                    👤 My Profile
+                </button>
+                <button onclick="logout()" class="action-btn action-btn-danger">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <button class="admin-nav-item active" data-section="dashboard">📊 Dashboard</button>
+            <button class="admin-nav-item" data-section="users">👥 Users</button>
+            <button class="admin-nav-item" data-section="logs">📋 Audit Logs</button>
+            <button class="admin-nav-item" data-section="settings">⚙️ Settings</button>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="admin-section active">
+            <h2>System Overview</h2>
+            <div id="stats-container" class="loading">
+                <p>Loading statistics...</p>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section id="users" class="admin-section">
+            <h2>User Management</h2>
+
+            <div class="search-bar">
+                <input type="text" id="user-search" placeholder="Search users by email or name..." />
+                <select id="role-filter">
+                    <option value="">All Roles</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="super_admin">Super Admin</option>
+                </select>
+                <select id="status-filter">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button class="action-btn action-btn-primary" onclick="searchUsers()">Search</button>
+                <button class="action-btn action-btn-warning" onclick="resetSearch()">Reset</button>
+            </div>
+
+            <div id="users-container" class="loading">
+                <p>Loading users...</p>
+            </div>
+
+            <div id="users-pagination" class="pagination"></div>
+        </section>
+
+        <!-- Logs Section -->
+        <section id="logs" class="admin-section">
+            <h2>Admin Audit Logs</h2>
+
+            <div class="search-bar">
+                <select id="action-type-filter">
+                    <option value="">All Actions</option>
+                    <option value="user_created">User Created</option>
+                    <option value="user_updated">User Updated</option>
+                    <option value="user_deleted">User Deleted</option>
+                    <option value="user_suspended">User Suspended</option>
+                    <option value="user_activated">User Activated</option>
+                    <option value="user_promoted">User Promoted</option>
+                    <option value="user_demoted">User Demoted</option>
+                    <option value="setting_updated">Setting Updated</option>
+                </select>
+                <button class="action-btn action-btn-primary" onclick="loadAuditLogs()">Filter</button>
+            </div>
+
+            <div id="logs-container" class="loading">
+                <p>Loading audit logs...</p>
+            </div>
+
+            <div id="logs-pagination" class="pagination"></div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="admin-section">
+            <h2>System Settings</h2>
+
+            <div id="settings-container" class="loading">
+                <p>Loading settings...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- User Details Modal -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>User Details</h2>
+                <button class="close-modal" onclick="closeUserModal()">&times;</button>
+            </div>
+            <div id="user-modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const AUTH_API = 'https://auth.cybersmrt.org';
+        let currentPage = 1;
+        let logsPage = 1;
+        let currentUser = null;
+
+        // Check if user is admin
+        async function checkAdminAccess() {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                window.location.href = '/login.html';
+                return false;
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API}/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Unauthorized');
+                }
+
+                const data = await response.json();
+                currentUser = data.user;
+
+                if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'super_admin')) {
+                    alert('Access denied. Admin privileges required.');
+                    window.location.href = '/profile.html';
+                    return false;
+                }
+
+                // Update admin info
+                document.getElementById('admin-info').textContent =
+                    `Logged in as ${currentUser.display_name || currentUser.email} (${currentUser.role.replace('_', ' ')})`;
+
+                return true;
+            } catch (error) {
+                console.error('Admin access check failed:', error);
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                window.location.href = '/login.html';
+                return false;
+            }
+        }
+
+        // Load system statistics
+        async function loadStats() {
+            const token = localStorage.getItem('accessToken');
+            const container = document.getElementById('stats-container');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load stats');
+
+                const data = await response.json();
+                const stats = data.stats;
+
+                container.innerHTML = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Users</h3>
+                            <div class="value">${stats.users.total}</div>
+                            <div class="label">${stats.users.active} active</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Verified Users</h3>
+                            <div class="value">${stats.users.verified}</div>
+                            <div class="label">${((stats.users.verified / stats.users.total) * 100).toFixed(1)}% verified</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>2FA Enabled</h3>
+                            <div class="value">${stats.users.twoFactor}</div>
+                            <div class="label">${((stats.users.twoFactor / stats.users.total) * 100).toFixed(1)}% secured</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Recent Logins</h3>
+                            <div class="value">${stats.activity.recentLogins}</div>
+                            <div class="label">Last 24 hours</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>New Registrations</h3>
+                            <div class="value">${stats.activity.recentRegistrations}</div>
+                            <div class="label">Last 7 days</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Sessions</h3>
+                            <div class="value">${stats.activity.activeSessions}</div>
+                            <div class="label">Currently active</div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Users by Role</h3>
+                    <div class="stats-grid">
+                        ${stats.users.byRole.map(role => `
+                            <div class="stat-card">
+                                <h3>${role.role.replace('_', ' ').toUpperCase()}</h3>
+                                <div class="value">${role.count}</div>
+                                <div class="label">${((role.count / stats.users.total) * 100).toFixed(1)}% of users</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+                container.innerHTML = '<div class="error-message">Failed to load statistics.</div>';
+            }
+        }
+
+        // Load users
+        async function loadUsers(page = 1) {
+            const token = localStorage.getItem('accessToken');
+            const container = document.getElementById('users-container');
+            const search = document.getElementById('user-search').value;
+            const role = document.getElementById('role-filter').value;
+            const status = document.getElementById('status-filter').value;
+
+            container.innerHTML = '<div class="loading"><p>Loading users...</p></div>';
+
+            try {
+                const params = new URLSearchParams({
+                    page,
+                    limit: 20,
+                    ...(search && { search }),
+                    ...(role && { role }),
+                    ...(status && { status })
+                });
+
+                const response = await fetch(`${AUTH_API}/admin/users?${params}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load users');
+
+                const data = await response.json();
+                currentPage = page;
+
+                if (data.users.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <p>No users found</p>
+                        </div>
+                    `;
+                    document.getElementById('users-pagination').innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Email Verified</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.users.map(user => `
+                                <tr>
+                                    <td>
+                                        <div><strong>${user.display_name || 'N/A'}</strong></div>
+                                        <div style="font-size: 0.85rem; color: var(--text-secondary, #aaa);">${user.email}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-${user.role.replace('_', '-')}">
+                                            ${user.role.replace('_', ' ')}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-${user.is_active ? 'active' : 'inactive'}">
+                                            ${user.is_active ? 'Active' : 'Inactive'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        ${user.email_verified ? '<span class="badge badge-verified">✓ Verified</span>' : '<span style="color: #868e96;">Not verified</span>'}
+                                    </td>
+                                    <td>
+                                        ${user.last_login_at ? new Date(user.last_login_at * 1000).toLocaleDateString() : 'Never'}
+                                    </td>
+                                    <td>
+                                        <button class="action-btn action-btn-primary" onclick="viewUser('${user.id}')">View</button>
+                                        ${user.id !== currentUser.id ? `
+                                            <button class="action-btn action-btn-warning" onclick="toggleUserStatus('${user.id}', ${!user.is_active})">
+                                                ${user.is_active ? 'Suspend' : 'Activate'}
+                                            </button>
+                                        ` : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                // Pagination
+                const pagination = document.getElementById('users-pagination');
+                pagination.innerHTML = `
+                    <button ${data.pagination.page === 1 ? 'disabled' : ''} onclick="loadUsers(${data.pagination.page - 1})">Previous</button>
+                    <span class="page-info">Page ${data.pagination.page} of ${data.pagination.totalPages}</span>
+                    <button ${data.pagination.page === data.pagination.totalPages ? 'disabled' : ''} onclick="loadUsers(${data.pagination.page + 1})">Next</button>
+                `;
+            } catch (error) {
+                console.error('Failed to load users:', error);
+                container.innerHTML = '<div class="error-message">Failed to load users.</div>';
+            }
+        }
+
+        // View user details
+        async function viewUser(userId) {
+            const token = localStorage.getItem('accessToken');
+            const modal = document.getElementById('user-modal');
+            const content = document.getElementById('user-modal-content');
+
+            modal.classList.add('show');
+            content.innerHTML = '<div class="loading"><p>Loading user details...</p></div>';
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/users/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load user');
+
+                const data = await response.json();
+                const user = data.user;
+
+                content.innerHTML = `
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="text" value="${user.email}" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Display Name:</label>
+                        <input type="text" value="${user.display_name || ''}" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <span class="badge badge-${user.role.replace('_', '-')}">${user.role.replace('_', ' ')}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Status:</label>
+                        <span class="badge badge-${user.is_active ? 'active' : 'inactive'}">${user.is_active ? 'Active' : 'Inactive'}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Created:</label>
+                        <input type="text" value="${new Date(user.created_at * 1000).toLocaleString()}" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Login:</label>
+                        <input type="text" value="${user.last_login_at ? new Date(user.last_login_at * 1000).toLocaleString() : 'Never'}" readonly />
+                    </div>
+
+                    <h3>Active Sessions (${data.sessions.length})</h3>
+                    ${data.sessions.length > 0 ? `
+                        <table class="users-table" style="margin-bottom: 1rem;">
+                            <thead>
+                                <tr>
+                                    <th>Created</th>
+                                    <th>IP Address</th>
+                                    <th>Last Activity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.sessions.map(session => `
+                                    <tr>
+                                        <td>${new Date(session.created_at * 1000).toLocaleDateString()}</td>
+                                        <td>${session.ip_address}</td>
+                                        <td>${new Date(session.last_activity * 1000).toLocaleString()}</td>
+                                        <td>
+                                            <button class="action-btn action-btn-danger" onclick="terminateSession('${session.id}')">Terminate</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    ` : '<p style="color: var(--text-secondary, #aaa);">No active sessions</p>'}
+
+                    ${user.id !== currentUser.id && currentUser.role === 'super_admin' ? `
+                        <div class="form-actions">
+                            ${user.role === 'user' ? `
+                                <button class="action-btn action-btn-warning" onclick="promoteUser('${user.id}')">Promote to Admin</button>
+                            ` : user.role === 'admin' ? `
+                                <button class="action-btn action-btn-warning" onclick="demoteUser('${user.id}')">Demote to User</button>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                `;
+            } catch (error) {
+                console.error('Failed to load user:', error);
+                content.innerHTML = '<div class="error-message">Failed to load user details.</div>';
+            }
+        }
+
+        function closeUserModal() {
+            document.getElementById('user-modal').classList.remove('show');
+        }
+
+        // Toggle user status
+        async function toggleUserStatus(userId, activate) {
+            if (!confirm(`Are you sure you want to ${activate ? 'activate' : 'suspend'} this user?`)) return;
+
+            const token = localStorage.getItem('accessToken');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/users/${userId}/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        isActive: activate,
+                        reason: activate ? 'Admin activation' : 'Admin suspension'
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to update user status');
+
+                alert(`User ${activate ? 'activated' : 'suspended'} successfully`);
+                loadUsers(currentPage);
+            } catch (error) {
+                console.error('Failed to update user status:', error);
+                alert('Failed to update user status');
+            }
+        }
+
+        // Promote user
+        async function promoteUser(userId) {
+            if (!confirm('Are you sure you want to promote this user to admin?')) return;
+
+            const token = localStorage.getItem('accessToken');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/users/${userId}/promote`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ role: 'admin' })
+                });
+
+                if (!response.ok) throw new Error('Failed to promote user');
+
+                alert('User promoted successfully');
+                closeUserModal();
+                loadUsers(currentPage);
+            } catch (error) {
+                console.error('Failed to promote user:', error);
+                alert('Failed to promote user');
+            }
+        }
+
+        // Demote user
+        async function demoteUser(userId) {
+            if (!confirm('Are you sure you want to demote this user?')) return;
+
+            const token = localStorage.getItem('accessToken');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/users/${userId}/demote`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to demote user');
+
+                alert('User demoted successfully');
+                closeUserModal();
+                loadUsers(currentPage);
+            } catch (error) {
+                console.error('Failed to demote user:', error);
+                alert('Failed to demote user');
+            }
+        }
+
+        // Terminate session
+        async function terminateSession(sessionId) {
+            if (!confirm('Are you sure you want to terminate this session?')) return;
+
+            const token = localStorage.getItem('accessToken');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/sessions/${sessionId}/terminate`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to terminate session');
+
+                alert('Session terminated successfully');
+                // Reload user details
+                const modal = document.getElementById('user-modal');
+                if (modal.classList.contains('show')) {
+                    // Extract user ID from current modal (would need to track this)
+                    // For now, just close and reload users
+                    closeUserModal();
+                    loadUsers(currentPage);
+                }
+            } catch (error) {
+                console.error('Failed to terminate session:', error);
+                alert('Failed to terminate session');
+            }
+        }
+
+        // Load audit logs
+        async function loadAuditLogs(page = 1) {
+            const token = localStorage.getItem('accessToken');
+            const container = document.getElementById('logs-container');
+            const actionType = document.getElementById('action-type-filter').value;
+
+            container.innerHTML = '<div class="loading"><p>Loading audit logs...</p></div>';
+
+            try {
+                const params = new URLSearchParams({
+                    page,
+                    limit: 50,
+                    ...(actionType && { actionType })
+                });
+
+                const response = await fetch(`${AUTH_API}/admin/logs?${params}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load logs');
+
+                const data = await response.json();
+                logsPage = page;
+
+                if (data.logs.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <p>No audit logs found</p>
+                        </div>
+                    `;
+                    document.getElementById('logs-pagination').innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Admin</th>
+                                <th>Action</th>
+                                <th>Target</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.logs.map(log => `
+                                <tr>
+                                    <td>${new Date(log.created_at * 1000).toLocaleString()}</td>
+                                    <td>${log.admin_id.substring(0, 8)}...</td>
+                                    <td>${log.action_type.replace(/_/g, ' ')}</td>
+                                    <td>${log.target_type}${log.target_id ? ': ' + log.target_id.substring(0, 8) + '...' : ''}</td>
+                                    <td>${log.ip_address}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                // Pagination
+                const pagination = document.getElementById('logs-pagination');
+                pagination.innerHTML = `
+                    <button ${data.pagination.page === 1 ? 'disabled' : ''} onclick="loadAuditLogs(${data.pagination.page - 1})">Previous</button>
+                    <span class="page-info">Page ${data.pagination.page} of ${data.pagination.totalPages}</span>
+                    <button ${data.pagination.page === data.pagination.totalPages ? 'disabled' : ''} onclick="loadAuditLogs(${data.pagination.page + 1})">Next</button>
+                `;
+            } catch (error) {
+                console.error('Failed to load logs:', error);
+                container.innerHTML = '<div class="error-message">Failed to load audit logs.</div>';
+            }
+        }
+
+        // Load settings
+        async function loadSettings() {
+            const token = localStorage.getItem('accessToken');
+            const container = document.getElementById('settings-container');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/settings`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load settings');
+
+                const data = await response.json();
+                const settings = data.settings;
+
+                container.innerHTML = `
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Maintenance Mode</h3>
+                                <p>Block all non-admin access to the system</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${settings.maintenance_mode ? 'checked' : ''}
+                                    onchange="updateSetting('maintenance_mode', this.checked)"
+                                    ${currentUser.role !== 'super_admin' ? 'disabled' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Allow Registration</h3>
+                                <p>Enable new user registrations</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${settings.allow_registration ? 'checked' : ''}
+                                    onchange="updateSetting('allow_registration', this.checked)"
+                                    ${currentUser.role !== 'super_admin' ? 'disabled' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Require Email Verification</h3>
+                                <p>Require new users to verify their email</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${settings.require_email_verification ? 'checked' : ''}
+                                    onchange="updateSetting('require_email_verification', this.checked)"
+                                    ${currentUser.role !== 'super_admin' ? 'disabled' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Max Failed Logins</h3>
+                                <p>Maximum failed login attempts before lockout</p>
+                            </div>
+                            <input type="number" value="${settings.max_failed_logins}"
+                                onchange="updateSetting('max_failed_logins', this.value)"
+                                ${currentUser.role !== 'super_admin' ? 'disabled' : ''}
+                                style="width: 100px; padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: white;">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Session Timeout</h3>
+                                <p>Default session timeout in minutes</p>
+                            </div>
+                            <input type="number" value="${settings.session_timeout_minutes}"
+                                onchange="updateSetting('session_timeout_minutes', this.value)"
+                                ${currentUser.role !== 'super_admin' ? 'disabled' : ''}
+                                style="width: 100px; padding: 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: white;">
+                        </div>
+                    </div>
+
+                    ${currentUser.role !== 'super_admin' ? '<p style="margin-top: 1rem; color: var(--text-secondary, #aaa);">Only super admins can modify settings.</p>' : ''}
+                `;
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+                container.innerHTML = '<div class="error-message">Failed to load settings.</div>';
+            }
+        }
+
+        // Update setting
+        async function updateSetting(key, value) {
+            const token = localStorage.getItem('accessToken');
+
+            try {
+                const response = await fetch(`${AUTH_API}/admin/settings`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ key, value })
+                });
+
+                if (!response.ok) throw new Error('Failed to update setting');
+
+                console.log(`Setting ${key} updated to ${value}`);
+            } catch (error) {
+                console.error('Failed to update setting:', error);
+                alert('Failed to update setting');
+                // Reload settings to revert UI
+                loadSettings();
+            }
+        }
+
+        // Search users
+        function searchUsers() {
+            loadUsers(1);
+        }
+
+        function resetSearch() {
+            document.getElementById('user-search').value = '';
+            document.getElementById('role-filter').value = '';
+            document.getElementById('status-filter').value = '';
+            loadUsers(1);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            window.location.href = '/login.html';
+        }
+
+        // Navigation
+        document.querySelectorAll('.admin-nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Update active nav item
+                document.querySelectorAll('.admin-nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                // Show corresponding section
+                const section = item.dataset.section;
+                document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+                document.getElementById(section).classList.add('active');
+
+                // Load section data
+                switch(section) {
+                    case 'dashboard':
+                        loadStats();
+                        break;
+                    case 'users':
+                        loadUsers(1);
+                        break;
+                    case 'logs':
+                        loadAuditLogs(1);
+                        break;
+                    case 'settings':
+                        loadSettings();
+                        break;
+                }
+            });
+        });
+
+        // Initialize
+        (async () => {
+            const hasAccess = await checkAdminAccess();
+            if (hasAccess) {
+                loadStats();
+            }
+        })();
+    </script>
+</body>
+</html>
