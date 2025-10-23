@@ -724,7 +724,6 @@ export class AuthRouter {
       headers: { 'Content-Type': 'application/json' },
     });
   }
- */
 
   /**
    * Admin: Get security dashboard statistics
