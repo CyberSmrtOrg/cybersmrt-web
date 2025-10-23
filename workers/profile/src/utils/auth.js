@@ -3,10 +3,10 @@
  * Verify JWT tokens from the auth worker
  */
 
+import * as jose from 'jose';
+
 /**
- * Verify JWT token
- * In production, this should verify the token signature
- * For now, we'll decode and validate basic structure
+ * Verify JWT token with HS256 signature verification
  */
 export async function verifyToken(token, env) {
   if (!token) {
@@ -17,32 +17,40 @@ export async function verifyToken(token, env) {
     // Remove 'Bearer ' prefix if present
     const cleanToken = token.replace(/^Bearer\s+/, '');
 
-    // Split JWT into parts
-    const parts = cleanToken.split('.');
-    if (parts.length !== 3) {
-      throw new Error('Invalid token format');
+    // Get JWT secret from environment
+    const jwtSecret = env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET not configured');
     }
 
-    // Decode payload (base64url)
-    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    // Import secret as HMAC key
+    const secret = new TextEncoder().encode(jwtSecret);
 
-    // Validate expiration
-    const now = Math.floor(Date.now() / 1000);
-    if (payload.exp && payload.exp < now) {
-      throw new Error('Token expired');
-    }
+    // Verify and decode token
+    const { payload } = await jose.jwtVerify(cleanToken, secret, {
+      issuer: 'cybersmrt.org',
+      audience: 'cybersmrt-users',
+      algorithms: ['HS256'],
+    });
 
     // Validate required fields
-    if (!payload.userId) {
+    if (!payload.sub) {
       throw new Error('Invalid token payload');
     }
 
     return {
-      userId: payload.userId,
+      userId: payload.sub,
       email: payload.email,
       role: payload.role || 'user',
     };
   } catch (error) {
+    // Provide more specific error messages
+    if (error.code === 'ERR_JWT_EXPIRED') {
+      throw new Error('Token expired');
+    }
+    if (error.code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED') {
+      throw new Error('Invalid token signature');
+    }
     throw new Error(`Token verification failed: ${error.message}`);
   }
 }

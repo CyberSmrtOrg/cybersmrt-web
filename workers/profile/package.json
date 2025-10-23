@@ -15,6 +15,9 @@
   ],
   "author": "CyberSmrt",
   "license": "MIT",
+  "dependencies": {
+    "jose": "^5.2.0"
+  },
   "devDependencies": {
     "wrangler": "^3.0.0"
   }
