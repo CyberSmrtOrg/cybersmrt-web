@@ -6,6 +6,7 @@
 import { AuthRouter } from './router.js';
 import { cleanupExpiredSessions } from './utils/session.js';
 import { cleanupExpiredTokens, cleanupExpiredVerificationTokens } from './utils/password.js';
+import { withRateLimit, identifiers, createRateLimitResponse } from './utils/rate-limit.js';
 
 /**
  * Build CORS headers dynamically.
@@ -117,19 +118,47 @@ export default {
 
       // Email/Password authentication
       if (path === '/register' && request.method === 'POST') {
-        return await router.handleRegister();
+        return await withRateLimit(
+          'register',
+          identifiers.ip,
+          (req, env, ctx) => router.handleRegister(),
+          request,
+          env,
+          _ctx
+        );
       }
       if (path === '/login' && request.method === 'POST') {
-        return await router.handleLogin();
+        return await withRateLimit(
+          'login',
+          identifiers.ip,
+          (req, env, ctx) => router.handleLogin(),
+          request,
+          env,
+          _ctx
+        );
       }
       if (path === '/change-password' && request.method === 'POST') {
         return await router.handleChangePassword();
       }
       if (path === '/forgot-password' && request.method === 'POST') {
-        return await router.handleForgotPassword();
+        return await withRateLimit(
+          'password-reset-request',
+          identifiers.email,
+          (req, env, ctx) => router.handleForgotPassword(),
+          request,
+          env,
+          _ctx
+        );
       }
       if (path === '/reset-password' && request.method === 'POST') {
-        return await router.handleResetPassword();
+        return await withRateLimit(
+          'password-reset-complete',
+          identifiers.token,
+          (req, env, ctx) => router.handleResetPassword(),
+          request,
+          env,
+          _ctx
+        );
       }
 
       // Token management
@@ -157,12 +186,26 @@ export default {
         return await router.handleVerifyEmail();
       }
       if (path === '/resend-verification' && request.method === 'POST') {
-        return await router.handleResendVerification();
+        return await withRateLimit(
+          'email-verification',
+          identifiers.user,
+          (req, env, ctx) => router.handleResendVerification(),
+          request,
+          env,
+          _ctx
+        );
       }
 
       // Two-Factor Authentication (2FA)
       if (path === '/2fa/setup' && request.method === 'POST') {
-        return await router.handle2FASetup();
+        return await withRateLimit(
+          '2fa-setup',
+          identifiers.user,
+          (req, env, ctx) => router.handle2FASetup(),
+          request,
+          env,
+          _ctx
+        );
       }
       if (path === '/2fa/enable' && request.method === 'POST') {
         return await router.handle2FAEnable();
@@ -171,7 +214,14 @@ export default {
         return await router.handle2FADisable();
       }
       if (path === '/2fa/verify' && request.method === 'POST') {
-        return await router.handle2FAVerify();
+        return await withRateLimit(
+          '2fa-verify',
+          identifiers.ip,
+          (req, env, ctx) => router.handle2FAVerify(),
+          request,
+          env,
+          _ctx
+        );
       }
       if (path === '/2fa/status' && request.method === 'GET') {
         return await router.handle2FAStatus();
