@@ -149,6 +149,36 @@
             line-height: 1.5;
         }
 
+        .verification-reminder {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(234, 179, 8, 0.15) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #fbbf24;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .verification-reminder.show {
+            display: block;
+        }
+
+        .verification-reminder strong {
+            color: #fde68a;
+        }
+
+        .verification-reminder a {
+            color: #fde68a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .verification-reminder a:hover {
+            color: #fef3c7;
+        }
+
         @media (max-width: 480px) {
             .login-container {
                 padding: 2rem 1.5rem;
@@ -198,6 +228,11 @@
             ℹ️ By signing in, you agree to our Terms of Service and Privacy Policy. Your data is secured and encrypted.
         </div>
 
+        <div id="verification-reminder" class="verification-reminder">
+            ⚠️ <strong>Email Not Verified</strong><br>
+            You're logged in, but your email isn't verified yet. <a href="/dashboard.html">Go to Dashboard</a> to resend the verification email and access all features.
+        </div>
+
         <div class="back-link">
             <a href="/">← Back to Home</a>
         </div>
@@ -208,8 +243,14 @@
         if (localStorage.getItem('access_token')) {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             if (user.id) {
-                // Already logged in, redirect to dashboard
-                window.location.href = `/dashboard/${user.id}`;
+                // Check if email is verified
+                if (user.email_verified === 0 || user.emailVerified === false) {
+                    // Show verification reminder instead of redirecting
+                    document.getElementById('verification-reminder').classList.add('show');
+                } else {
+                    // Already logged in and verified, redirect to dashboard
+                    window.location.href = `/dashboard/${user.id}`;
+                }
             }
         }
     </script>
