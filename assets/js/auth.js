@@ -3,10 +3,6 @@
  * File: auth.js (replace your existing auth.js with this)
  */
 
-// Only declare if not already declared by another script
-const AUTH_BASE = window.AUTH_BASE || 'https://auth.cybersmrt.org';
-const API_BASE = window.API_BASE || 'https://api.cybersmrt.org';
-
 /**
  * Check if user is authenticated
  */
@@ -213,7 +209,7 @@ async function authRequest(endpoint, options = {}) {
     }
   };
 
-  const response = await fetch(`${AUTH_BASE}${endpoint}`, {
+  const response = await fetch(`${window.AUTH_BASE}${endpoint}`, {
     ...options,
     ...defaultOptions,
     headers: defaultOptions.headers
@@ -328,7 +324,7 @@ if (!window.getUserProfile) window.getUserProfile = getUserProfile;
 if (!window.requireAuth) window.requireAuth = requireAuth;
 if (!window.handleLoginSuccess) window.handleLoginSuccess = handleLoginSuccess;
 if (!window.displayUserProfile) window.displayUserProfile = displayUserProfile;
-if (!window.AUTH_BASE) window.AUTH_BASE = AUTH_BASE;
+if (!window.AUTH_BASE) window.AUTH_BASE = window.AUTH_BASE;
 if (!window.API_BASE) window.API_BASE = API_BASE;
 
 // Initialize only if not already initialized
