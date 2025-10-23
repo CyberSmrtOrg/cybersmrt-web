@@ -131,12 +131,65 @@
     </div>
 
     <div id="data-tab" class="tab-content">
-      <div class="card"><h2>Export Data</h2><p style="color: #94a3b8; margin-bottom: 1.5rem;">GDPR-compliant data export</p><button id="export-btn" class="btn btn-primary">Export</button></div>
+      <div class="card">
+        <h2>Export Data</h2>
+        <p style="color: #94a3b8; margin-bottom: 1.5rem;">GDPR-compliant data export including all your profile data, security logs, sessions, uploaded files, and more.</p>
+        <button id="export-btn" class="btn btn-primary">Export My Data</button>
+      </div>
+
+      <!-- Deletion Status Banner (shown if scheduled) -->
+      <div id="deletion-banner" class="card" style="display: none; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+        <h2 style="color: #fca5a5;">⚠️ Account Deletion Scheduled</h2>
+        <p style="color: #fca5a5; margin-bottom: 1rem;">Your account is scheduled for permanent deletion.</p>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-label">Deletion Date</div>
+            <div class="stat-value" id="deletion-date" style="color: #fca5a5;">---</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Days Remaining</div>
+            <div class="stat-value" id="days-remaining" style="color: #fca5a5;">---</div>
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <button id="cancel-deletion-btn" class="btn btn-primary">Cancel Deletion</button>
+        </div>
+      </div>
+
       <div class="card danger-zone">
         <h2>Delete Account</h2>
-        <div class="form-group"><label>Type "DELETE MY ACCOUNT"</label><input type="text" id="delete-confirm"></div>
-        <div class="form-group"><label>Password</label><input type="password" id="delete-password"></div>
-        <button id="delete-account-btn" class="btn btn-danger">Delete</button>
+        <p style="color: #94a3b8; margin-bottom: 1.5rem;">
+          <strong>Deleting your account will:</strong><br>
+          • Permanently remove all your data<br>
+          • Delete all uploaded files<br>
+          • Remove all security logs<br>
+          • Disconnect all OAuth providers<br>
+          <strong>This action cannot be undone.</strong>
+        </p>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h3 style="color: white; margin-bottom: 0.5rem;">Choose Deletion Method:</h3>
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="radio" name="deletion-method" value="scheduled" checked style="margin-right: 0.5rem;">
+              <span style="color: #cbd5e1;">Scheduled (30-day grace period)</span>
+            </label>
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="radio" name="deletion-method" value="immediate" style="margin-right: 0.5rem;">
+              <span style="color: #cbd5e1;">Immediate (no grace period)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Type "DELETE MY ACCOUNT"</label>
+          <input type="text" id="delete-confirm">
+        </div>
+        <div class="form-group" id="deletion-reason-group">
+          <label>Reason (optional)</label>
+          <textarea id="deletion-reason" maxlength="500" style="min-height: 60px;" placeholder="Help us improve by telling us why you're leaving..."></textarea>
+        </div>
+        <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
       </div>
     </div>
   </div>
@@ -330,18 +383,91 @@
         .finally(() => btn.disabled = false);
     });
 
-    document.getElementById('delete-account-btn').addEventListener('click', () => {
+    // Check deletion status on page load
+    fetch(`${API}/account/deletion-status`, { headers: { 'Authorization': `Bearer ${token()}` } })
+      .then(r => r.json())
+      .then(d => {
+        if (d.success && d.deletionStatus && d.deletionStatus.scheduled) {
+          const status = d.deletionStatus;
+          document.getElementById('deletion-banner').style.display = 'block';
+          document.getElementById('deletion-date').textContent = new Date(status.deleteAt * 1000).toLocaleDateString();
+          document.getElementById('days-remaining').textContent = status.daysRemaining;
+        }
+      })
+      .catch(e => console.error('Error checking deletion status:', e));
+
+    // Delete account button handler
+    document.getElementById('delete-account-btn').addEventListener('click', async () => {
       const confirm = document.getElementById('delete-confirm').value;
       if (confirm !== 'DELETE MY ACCOUNT') return showAlert('Type "DELETE MY ACCOUNT"', 'error');
-      if (!window.confirm('Sure?')) return;
-      fetch(`${API}/account`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token()}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: document.getElementById('delete-password').value, confirmDelete: confirm })
-      })
-      .then(r => r.json())
-      .then(d => { localStorage.clear(); window.location.href = '/'; })
-      .catch(e => showAlert(e.message, 'error'));
+
+      const deletionMethod = document.querySelector('input[name="deletion-method"]:checked').value;
+      const reason = document.getElementById('deletion-reason').value;
+
+      let confirmMsg = deletionMethod === 'scheduled'
+        ? 'Schedule account deletion with 30-day grace period?'
+        : 'Immediately delete account? This cannot be undone!';
+
+      if (!window.confirm(confirmMsg)) return;
+
+      const btn = document.getElementById('delete-account-btn');
+      btn.disabled = true;
+
+      try {
+        let endpoint = deletionMethod === 'scheduled' ? '/account/schedule-deletion' : '/account';
+        let method = deletionMethod === 'scheduled' ? 'POST' : 'DELETE';
+
+        const response = await fetch(`${API}${endpoint}`, {
+          method: method,
+          headers: { 'Authorization': `Bearer ${token()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ confirmDelete: confirm, reason: reason || undefined })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          if (deletionMethod === 'scheduled') {
+            showAlert(`Account deletion scheduled! You have ${data.deletionInfo.gracePeriodDays} days to cancel.`);
+            // Reload to show deletion banner
+            setTimeout(() => window.location.reload(), 2000);
+          } else {
+            showAlert('Account deleted. Logging out...');
+            setTimeout(() => {
+              localStorage.clear();
+              window.location.href = '/';
+            }, 2000);
+          }
+        } else {
+          showAlert(data.error || 'Deletion failed', 'error');
+        }
+      } catch (e) {
+        showAlert(e.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // Cancel deletion button handler
+    document.getElementById('cancel-deletion-btn').addEventListener('click', async () => {
+      if (!window.confirm('Cancel account deletion?')) return;
+
+      try {
+        const response = await fetch(`${API}/account/cancel-deletion`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token()}` }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showAlert('Deletion cancelled!');
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          showAlert(data.error || 'Failed to cancel', 'error');
+        }
+      } catch (e) {
+        showAlert(e.message, 'error');
+      }
     });
 
     // Avatar upload functionality

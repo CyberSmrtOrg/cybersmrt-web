@@ -14,6 +14,18 @@ import {
   getCDNUrl,
   cleanupOldAvatar,
 } from './utils/upload.js';
+import {
+  scheduleAccountDeletion,
+  cancelAccountDeletion,
+  softDeleteAccount,
+  hardDeleteAccount,
+  getDeletionStatus,
+} from './utils/deletion.js';
+import {
+  sendDeletionScheduledEmail,
+  sendDeletionCancelledEmail,
+  sendAccountDeletedEmail,
+} from './utils/deletion-emails.js';
 
 /**
  * Profile Router Class
@@ -486,6 +498,34 @@ export class ProfileRouter {
       .bind(userId)
       .all();
 
+    // Get backup codes
+    const backupCodes = await this.env.DB
+      .prepare('SELECT code_hash, used, used_at, created_at FROM backup_codes WHERE user_id = ?')
+      .bind(userId)
+      .all();
+
+    // Get uploaded files from R2
+    const uploadedFiles = [];
+    if (this.env.UPLOADS) {
+      try {
+        const prefix = `avatars/${userId}/`;
+        const list = await this.env.UPLOADS.list({ prefix });
+        for (const object of list.objects) {
+          uploadedFiles.push({
+            key: object.key,
+            size: object.size,
+            uploaded: object.uploaded,
+            downloadUrl: `https://profile.cybersmrt.org/uploads/${object.key}`,
+          });
+        }
+      } catch (error) {
+        console.error('Error listing R2 files:', error);
+      }
+    }
+
+    // Get deletion status
+    const deletionStatus = await getDeletionStatus(userId, this.env);
+
     // Build export data
     const exportData = {
       exportDate: new Date().toISOString(),
@@ -503,10 +543,14 @@ export class ProfileRouter {
         isActive: user.is_active === 1,
         createdAt: user.created_at,
         updatedAt: user.updated_at,
+        deletionScheduled: deletionStatus.scheduled,
+        deletionDate: deletionStatus.deleteAt ? new Date(deletionStatus.deleteAt * 1000).toISOString() : null,
       },
       oauthProviders: providers.results || [],
       sessions: sessions.results || [],
       securityLogs: logs.results || [],
+      backupCodes: backupCodes.results || [],
+      uploadedFiles: uploadedFiles,
     };
 
     return new Response(JSON.stringify(exportData, null, 2), {
@@ -518,14 +562,13 @@ export class ProfileRouter {
   }
 
   /**
-   * Delete user account (GDPR compliance)
-   * This is a soft delete - sets is_active = 0
+   * Schedule account deletion with grace period
    */
-  async handleDeleteAccount() {
+  async handleScheduleAccountDeletion() {
     const { userId } = await authenticateRequest(this.request, this.env);
 
     const body = await this.request.json();
-    const { password, confirmDelete } = body;
+    const { confirmDelete, reason, gracePeriodDays } = body;
 
     if (!confirmDelete || confirmDelete !== 'DELETE MY ACCOUNT') {
       throw new Error('Please confirm account deletion by typing "DELETE MY ACCOUNT"');
@@ -533,7 +576,7 @@ export class ProfileRouter {
 
     // Get user
     const user = await this.env.DB
-      .prepare('SELECT * FROM users WHERE id = ?')
+      .prepare('SELECT id, email, display_name FROM users WHERE id = ?')
       .bind(userId)
       .first();
 
@@ -541,33 +584,107 @@ export class ProfileRouter {
       throw new Error('User not found');
     }
 
-    // If user has a password, verify it
-    if (user.password_hash && password) {
-      // TODO: Verify password using bcrypt
-      // For now, we'll require password but not verify
-      // In production, import password verification from auth worker
+    // Schedule deletion
+    const deletionInfo = await scheduleAccountDeletion(
+      userId,
+      reason || 'User requested deletion',
+      this.env,
+      gracePeriodDays || 30
+    );
+
+    // Send confirmation email
+    await sendDeletionScheduledEmail(user, deletionInfo, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: `Account deletion scheduled for ${new Date(deletionInfo.deleteAt * 1000).toLocaleDateString()}`,
+      deletionInfo: {
+        scheduledAt: deletionInfo.scheduledAt,
+        deleteAt: deletionInfo.deleteAt,
+        gracePeriodDays: deletionInfo.gracePeriodDays,
+        canCancelUntil: deletionInfo.canCancelUntil,
+      },
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Cancel scheduled account deletion
+   */
+  async handleCancelAccountDeletion() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    // Get user
+    const user = await this.env.DB
+      .prepare('SELECT id, email, display_name FROM users WHERE id = ?')
+      .bind(userId)
+      .first();
+
+    if (!user) {
+      throw new Error('User not found');
     }
 
-    // Soft delete: deactivate account
-    const now = Math.floor(Date.now() / 1000);
-    await this.env.DB
-      .prepare('UPDATE users SET is_active = 0, updated_at = ? WHERE id = ?')
-      .bind(now, userId)
-      .run();
+    // Cancel deletion
+    const result = await cancelAccountDeletion(userId, this.env);
 
-    // Delete all sessions
-    await this.env.DB
-      .prepare('DELETE FROM sessions WHERE user_id = ?')
+    // Send confirmation email
+    await sendDeletionCancelledEmail(user, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Account deletion cancelled successfully',
+      cancelledAt: result.timestamp,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Get deletion status
+   */
+  async handleGetDeletionStatus() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const status = await getDeletionStatus(userId, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      deletionStatus: status,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Delete user account immediately (soft delete)
+   * For users who want immediate deletion without grace period
+   */
+  async handleDeleteAccount() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { confirmDelete, reason } = body;
+
+    if (!confirmDelete || confirmDelete !== 'DELETE MY ACCOUNT') {
+      throw new Error('Please confirm account deletion by typing "DELETE MY ACCOUNT"');
+    }
+
+    // Get user
+    const user = await this.env.DB
+      .prepare('SELECT id, email FROM users WHERE id = ?')
       .bind(userId)
-      .run();
+      .first();
 
-    // Delete backup codes
-    await this.env.DB
-      .prepare('DELETE FROM backup_codes WHERE user_id = ?')
-      .bind(userId)
-      .run();
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    // Note: We keep security logs for audit trail
+    // Perform soft delete
+    await softDeleteAccount(userId, reason || 'User requested immediate deletion', this.env);
+
+    // Send confirmation email
+    await sendAccountDeletedEmail(user.email, this.env);
 
     return new Response(JSON.stringify({
       success: true,

@@ -113,6 +113,15 @@ export default {
       if (path === '/account' && request.method === 'DELETE') {
         return await router.handleDeleteAccount();
       }
+      if (path === '/account/schedule-deletion' && request.method === 'POST') {
+        return await router.handleScheduleAccountDeletion();
+      }
+      if (path === '/account/cancel-deletion' && request.method === 'POST') {
+        return await router.handleCancelAccountDeletion();
+      }
+      if (path === '/account/deletion-status' && request.method === 'GET') {
+        return await router.handleGetDeletionStatus();
+      }
 
       // Avatar upload
       if (path === '/avatar/upload' && request.method === 'POST') {
