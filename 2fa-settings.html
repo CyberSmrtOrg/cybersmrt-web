@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two-Factor Authentication - CyberSmrt</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/fix-dark-bar.css">
+
+  <!-- QRCode.js for generating QR codes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding-top: 90px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-badge.enabled {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-badge.disabled {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(96, 165, 250, 0.3);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .setup-flow {
+      display: none;
+    }
+
+    .setup-flow.active {
+      display: block;
+    }
+
+    .setup-step {
+      margin-bottom: 2rem;
+    }
+
+    .setup-step h3 {
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .qr-code-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 1rem 0;
+    }
+
+    .manual-entry {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .manual-entry code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: #60a5fa;
+      letter-spacing: 0.1em;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      color: #cbd5e1;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #60a5fa;
+    }
+
+    .backup-codes {
+      background: rgba(251, 191, 36, 0.1);
+      border: 2px solid rgba(251, 191, 36, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .backup-codes h3 {
+      color: #fbbf24;
+      margin-bottom: 1rem;
+    }
+
+    .backup-codes p {
+      color: #fde68a;
+      margin-bottom: 1rem;
+    }
+
+    .codes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .backup-code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: #fde68a;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .alert.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .codes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header will be injected here -->
+  <script defer src="/assets/js/header-loader.js"></script>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Two-Factor Authentication</h1>
+      <p>Add an extra layer of security to your account</p>
+    </div>
+
+    <div id="alert" class="alert"></div>
+
+    <!-- 2FA Status Card -->
+    <div class="card" id="status-card">
+      <h2>Security Status</h2>
+      <div id="status-content">
+        <p>Loading...</p>
+      </div>
+    </div>
+
+    <!-- Setup Flow -->
+    <div id="setup-flow" class="setup-flow">
+      <div class="card">
+        <h2>Set Up Two-Factor Authentication</h2>
+
+        <div class="setup-step">
+          <h3>Step 1: Scan QR Code</h3>
+          <p>Open your authenticator app (Google Authenticator, Authy, 1Password, etc.) and scan this QR code:</p>
+          <div class="qr-code-container">
+            <div id="qrcode"></div>
+          </div>
+
+          <div class="manual-entry">
+            <strong>Can't scan the code?</strong>
+            <p>Enter this secret key manually in your authenticator app:</p>
+            <code id="secret-key"></code>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <h3>Step 2: Enter Verification Code</h3>
+          <p>Enter the 6-digit code from your authenticator app to complete setup:</p>
+          <div class="input-group">
+            <label for="verification-code">Verification Code</label>
+            <input type="text" id="verification-code" placeholder="000000" maxlength="6" pattern="[0-9]{6}">
+          </div>
+          <button id="verify-btn" class="btn btn-primary">Verify and Enable 2FA</button>
+          <button id="cancel-setup-btn" class="btn btn-danger" style="margin-left: 1rem;">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backup Codes Display -->
+    <div id="backup-codes-display" class="backup-codes" style="display: none;">
+      <h3>Save Your Backup Codes</h3>
+      <p>Store these codes in a safe place. Each code can only be used once if you lose access to your authenticator app.</p>
+      <div class="codes-grid" id="codes-grid"></div>
+      <button id="download-codes-btn" class="btn btn-primary">Download Codes</button>
+      <button id="done-btn" class="btn btn-primary" style="margin-left: 1rem;">I've Saved My Codes</button>
+    </div>
+
+    <!-- Disable 2FA Form -->
+    <div id="disable-form" class="card" style="display: none;">
+      <h2>Disable Two-Factor Authentication</h2>
+      <p>Disabling 2FA will make your account less secure. You'll need your password and a verification code to proceed.</p>
+
+      <div class="input-group">
+        <label for="disable-password">Current Password</label>
+        <input type="password" id="disable-password" placeholder="Enter your password">
+      </div>
+
+      <div class="input-group">
+        <label for="disable-code">Verification Code</label>
+        <input type="text" id="disable-code" placeholder="000000" maxlength="6" pattern="[0-9]{6}">
+      </div>
+
+      <button id="confirm-disable-btn" class="btn btn-danger">Disable 2FA</button>
+      <button id="cancel-disable-btn" class="btn btn-primary" style="margin-left: 1rem;">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const AUTH_API_URL = 'https://auth.cybersmrt.org';
+    let currentStatus = null;
+
+    // Show alert
+    function showAlert(message, type = 'success') {
+      const alert = document.getElementById('alert');
+      alert.textContent = message;
+      alert.className = `alert ${type} show`;
+      setTimeout(() => {
+        alert.classList.remove('show');
+      }, 5000);
+    }
+
+    // Get access token
+    function getAccessToken() {
+      return localStorage.getItem('access_token');
+    }
+
+    // Check authentication
+    function checkAuth() {
+      const token = getAccessToken();
+      if (!token) {
+        window.location.href = '/login.html';
+        return false;
+      }
+      return true;
+    }
+
+    // Load 2FA status
+    async function load2FAStatus() {
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/status`, {
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to load 2FA status');
+        }
+
+        currentStatus = data;
+        updateStatusUI(data);
+      } catch (error) {
+        console.error('Failed to load 2FA status:', error);
+        showAlert(error.message, 'error');
+      }
+    }
+
+    // Update status UI
+    function updateStatusUI(status) {
+      const statusContent = document.getElementById('status-content');
+
+      if (status.enabled) {
+        statusContent.innerHTML = `
+          <div class="status-badge enabled">
+            <span>✓</span> Two-Factor Authentication is ENABLED
+          </div>
+          <p>Your account is protected with two-factor authentication.</p>
+          <p><strong>Backup codes remaining:</strong> ${status.backupCodesRemaining}</p>
+          <button id="regenerate-codes-btn" class="btn btn-primary">Regenerate Backup Codes</button>
+          <button id="disable-2fa-btn" class="btn btn-danger" style="margin-left: 1rem;">Disable 2FA</button>
+        `;
+
+        document.getElementById('disable-2fa-btn').addEventListener('click', showDisableForm);
+        document.getElementById('regenerate-codes-btn').addEventListener('click', regenerateBackupCodes);
+      } else {
+        statusContent.innerHTML = `
+          <div class="status-badge disabled">
+            <span>✗</span> Two-Factor Authentication is DISABLED
+          </div>
+          <p>Add an extra layer of security to your account by enabling 2FA.</p>
+          <button id="enable-2fa-btn" class="btn btn-primary">Enable 2FA</button>
+        `;
+
+        document.getElementById('enable-2fa-btn').addEventListener('click', startSetup);
+      }
+    }
+
+    // Start 2FA setup
+    async function startSetup() {
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/setup`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to start 2FA setup');
+        }
+
+        // Show setup flow
+        document.getElementById('status-card').style.display = 'none';
+        document.getElementById('setup-flow').classList.add('active');
+
+        // Generate QR code
+        document.getElementById('qrcode').innerHTML = '';
+        new QRCode(document.getElementById('qrcode'), {
+          text: data.qrCodeUrl,
+          width: 256,
+          height: 256,
+        });
+
+        // Show secret key
+        document.getElementById('secret-key').textContent = data.secret;
+
+      } catch (error) {
+        console.error('Setup failed:', error);
+        showAlert(error.message, 'error');
+      }
+    }
+
+    // Verify and enable 2FA
+    async function verifyAndEnable() {
+      const code = document.getElementById('verification-code').value;
+
+      if (!code || code.length !== 6) {
+        showAlert('Please enter a valid 6-digit code', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('verify-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Verifying...';
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/enable`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: code }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Verification failed');
+        }
+
+        // Hide setup flow
+        document.getElementById('setup-flow').classList.remove('active');
+
+        // Show backup codes
+        displayBackupCodes(data.backupCodes);
+
+      } catch (error) {
+        console.error('Verification failed:', error);
+        showAlert(error.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Verify and Enable 2FA';
+      }
+    }
+
+    // Display backup codes
+    function displayBackupCodes(codes) {
+      const grid = document.getElementById('codes-grid');
+      grid.innerHTML = codes.map(code => `<div class="backup-code">${code}</div>`).join('');
+
+      document.getElementById('backup-codes-display').style.display = 'block';
+      window.backupCodes = codes; // Store for download
+    }
+
+    // Download backup codes
+    function downloadBackupCodes() {
+      const text = `CyberSmrt 2FA Backup Codes\n\nGenerated: ${new Date().toLocaleString()}\n\nIMPORTANT: Each code can only be used once. Store these codes in a safe place.\n\n${window.backupCodes.join('\n')}`;
+
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cybersmrt-backup-codes.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      showAlert('Backup codes downloaded!', 'success');
+    }
+
+    // Finish setup
+    function finishSetup() {
+      document.getElementById('backup-codes-display').style.display = 'none';
+      document.getElementById('status-card').style.display = 'block';
+      load2FAStatus();
+      showAlert('Two-factor authentication enabled successfully!', 'success');
+    }
+
+    // Cancel setup
+    function cancelSetup() {
+      document.getElementById('setup-flow').classList.remove('active');
+      document.getElementById('status-card').style.display = 'block';
+      document.getElementById('verification-code').value = '';
+    }
+
+    // Show disable form
+    function showDisableForm() {
+      document.getElementById('status-card').style.display = 'none';
+      document.getElementById('disable-form').style.display = 'block';
+    }
+
+    // Cancel disable
+    function cancelDisable() {
+      document.getElementById('disable-form').style.display = 'none';
+      document.getElementById('status-card').style.display = 'block';
+      document.getElementById('disable-password').value = '';
+      document.getElementById('disable-code').value = '';
+    }
+
+    // Confirm disable 2FA
+    async function confirmDisable() {
+      const password = document.getElementById('disable-password').value;
+      const code = document.getElementById('disable-code').value;
+
+      if (!password) {
+        showAlert('Please enter your password', 'error');
+        return;
+      }
+
+      if (!code || code.length !== 6) {
+        showAlert('Please enter a valid 6-digit code', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('confirm-disable-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Disabling...';
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/disable`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ password, token: code }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to disable 2FA');
+        }
+
+        // Hide disable form
+        document.getElementById('disable-form').style.display = 'none';
+        document.getElementById('status-card').style.display = 'block';
+
+        // Reload status
+        load2FAStatus();
+        showAlert('Two-factor authentication disabled', 'success');
+
+      } catch (error) {
+        console.error('Disable failed:', error);
+        showAlert(error.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Disable 2FA';
+      }
+    }
+
+    // Regenerate backup codes
+    async function regenerateBackupCodes() {
+      const code = prompt('Enter your verification code to regenerate backup codes:');
+
+      if (!code || code.length !== 6) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/regenerate-backup-codes`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: code }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to regenerate backup codes');
+        }
+
+        // Hide status card and show backup codes
+        document.getElementById('status-card').style.display = 'none';
+        displayBackupCodes(data.backupCodes);
+
+      } catch (error) {
+        console.error('Regenerate failed:', error);
+        showAlert(error.message, 'error');
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!checkAuth()) return;
+
+      load2FAStatus();
+
+      document.getElementById('verify-btn')?.addEventListener('click', verifyAndEnable);
+      document.getElementById('cancel-setup-btn')?.addEventListener('click', cancelSetup);
+      document.getElementById('download-codes-btn')?.addEventListener('click', downloadBackupCodes);
+      document.getElementById('done-btn')?.addEventListener('click', finishSetup);
+      document.getElementById('cancel-disable-btn')?.addEventListener('click', cancelDisable);
+      document.getElementById('confirm-disable-btn')?.addEventListener('click', confirmDisable);
+
+      // Enter key to submit
+      document.getElementById('verification-code')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') verifyAndEnable();
+      });
+    });
+  </script>
+</body>
+</html>
