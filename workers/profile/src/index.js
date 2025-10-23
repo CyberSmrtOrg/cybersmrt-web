@@ -68,6 +68,24 @@ function jsonResponse(request, env, data, status = 200) {
 }
 
 /**
+ * Add CORS headers to response
+ */
+function addCorsHeaders(response, request, env) {
+  const corsHeaders = buildCorsHeaders(request, env, true);
+  const newHeaders = new Headers(response.headers);
+
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    newHeaders.set(key, value);
+  });
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders,
+  });
+}
+
+/**
  * Main request handler
  */
 export default {
@@ -84,77 +102,97 @@ export default {
 
       // Profile endpoints
       if (path === '/profile' && request.method === 'GET') {
-        return await router.handleGetProfile();
+        const response = await router.handleGetProfile();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/profile' && request.method === 'PUT') {
-        return await router.handleUpdateProfile();
+        const response = await router.handleUpdateProfile();
+        return addCorsHeaders(response, request, env);
       }
 
       // Settings endpoints
       if (path === '/settings' && request.method === 'GET') {
-        return await router.handleGetSettings();
+        const response = await router.handleGetSettings();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/settings' && request.method === 'PUT') {
-        return await router.handleUpdateSettings();
+        const response = await router.handleUpdateSettings();
+        return addCorsHeaders(response, request, env);
       }
 
       // Security logs
       if (path === '/security-logs' && request.method === 'GET') {
-        return await router.handleGetSecurityLogs();
+        const response = await router.handleGetSecurityLogs();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/security-logs/export' && request.method === 'GET') {
-        return await router.handleExportSecurityLogs();
+        const response = await router.handleExportSecurityLogs();
+        return addCorsHeaders(response, request, env);
       }
 
       // Account management
       if (path === '/export' && request.method === 'GET') {
-        return await router.handleExportData();
+        const response = await router.handleExportData();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/account' && request.method === 'DELETE') {
-        return await router.handleDeleteAccount();
+        const response = await router.handleDeleteAccount();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/account/schedule-deletion' && request.method === 'POST') {
-        return await router.handleScheduleAccountDeletion();
+        const response = await router.handleScheduleAccountDeletion();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/account/cancel-deletion' && request.method === 'POST') {
-        return await router.handleCancelAccountDeletion();
+        const response = await router.handleCancelAccountDeletion();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/account/deletion-status' && request.method === 'GET') {
-        return await router.handleGetDeletionStatus();
+        const response = await router.handleGetDeletionStatus();
+        return addCorsHeaders(response, request, env);
       }
 
       // Avatar upload
       if (path === '/avatar/upload' && request.method === 'POST') {
-        return await router.handleUploadAvatar();
+        const response = await router.handleUploadAvatar();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/avatar' && request.method === 'DELETE') {
-        return await router.handleDeleteAvatar();
+        const response = await router.handleDeleteAvatar();
+        return addCorsHeaders(response, request, env);
       }
 
       // Serve uploaded files
       if (path.startsWith('/uploads/')) {
         const key = path.substring(9); // Remove '/uploads/' prefix
-        return await router.handleServeFile(key);
+        const response = await router.handleServeFile(key);
+        return addCorsHeaders(response, request, env);
       }
 
       // Device management
       if (path === '/devices' && request.method === 'GET') {
-        return await router.handleGetDevices();
+        const response = await router.handleGetDevices();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/devices/trust' && request.method === 'POST') {
-        return await router.handleTrustDevice();
+        const response = await router.handleTrustDevice();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/devices/untrust' && request.method === 'POST') {
-        return await router.handleUntrustDevice();
+        const response = await router.handleUntrustDevice();
+        return addCorsHeaders(response, request, env);
       }
       if (path.match(/^\/devices\/[^/]+$/) && request.method === 'DELETE') {
-        return await router.handleRemoveDevice();
+        const response = await router.handleRemoveDevice();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/devices/verify' && request.method === 'POST') {
-        return await router.handleVerifyDeviceChallenge();
+        const response = await router.handleVerifyDeviceChallenge();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/devices/deny' && request.method === 'POST') {
-        return await router.handleDenyDeviceChallenge();
+        const response = await router.handleDenyDeviceChallenge();
+        return addCorsHeaders(response, request, env);
       }
 
       // Health check
