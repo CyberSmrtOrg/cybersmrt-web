@@ -591,7 +591,7 @@ window.CyberGlobe = {
 };
 
 // ===== Ticker Management =====
-function addTickerRow({ id, category, cfg, origin, dest, vector }) {
+function addTickerRow({ id, _category: category, cfg, origin, dest, vector }) {
   if (!tickerEl) return;
 
   const row = document.createElement('div');

@@ -356,7 +356,7 @@
             }
         }
 
-        async function testWorker() {
+    async function testWorker() {
             const url = document.getElementById('testUrl').value.trim();
 
             if (!url) {
@@ -416,7 +416,12 @@
                     </div>
                 `;
             }
-        }
+    }
+
+    // Expose functions for inline onclick handlers
+    window.authenticate = authenticate;
+    window.blockDomain = blockDomain;
+    window.testWorker = testWorker;
 
         // Auto-refresh health status every 30 seconds
         setInterval(() => {

@@ -82,7 +82,8 @@
   </div>
 
   <script>
-    function testLogin() {
+  /* exported testLogin, testAsCurrentUser, clearAuth */
+  function testLogin() {
       // Create fake user data matching your actual user structure
       const fakeUser = {
         id: '98f7123c-8cb6-4aba-be3f-a907d5d2e3ac',
@@ -106,7 +107,7 @@
       window.location.href = `/dashboard/${fakeUser.id}`;
     }
 
-    function testAsCurrentUser() {
+  function testAsCurrentUser() {
       const currentUser = localStorage.getItem('user');
       if (currentUser) {
         const user = JSON.parse(currentUser);
@@ -117,7 +118,7 @@
       }
     }
 
-    function clearAuth() {
+  function clearAuth() {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');

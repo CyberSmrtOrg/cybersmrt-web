@@ -2,7 +2,7 @@
  * Profile Business Logic Handlers
  */
 
-import { binaryResponse, errorResponse } from '../utils/response.js';
+import { errorResponse } from '../utils/response.js';
 
 function validateProfileData(data) {
   const errors = [];

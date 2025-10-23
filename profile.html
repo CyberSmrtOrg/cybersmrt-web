@@ -540,10 +540,10 @@
           website: document.getElementById('website').value.trim()
         };
 
-        const response = await window.ProfileAPI.updateProfile(formData);
+  const _response = await window.ProfileAPI.updateProfile(formData);
 
-        // Update original data
-        originalData = formData;
+  // Update original data
+  originalData = formData;
 
         showMessage('Profile updated successfully!');
 
