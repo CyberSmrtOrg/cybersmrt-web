@@ -325,8 +325,6 @@ if (!window.requireAuth) window.requireAuth = requireAuth;
 if (!window.handleLoginSuccess) window.handleLoginSuccess = handleLoginSuccess;
 if (!window.displayUserProfile) window.displayUserProfile = displayUserProfile;
 
-if (!window.API_BASE) window.API_BASE = API_BASE;
-
 // Initialize only if not already initialized
 if (!window._authInitialized) {
   window._authInitialized = true;
