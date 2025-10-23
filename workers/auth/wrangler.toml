@@ -28,6 +28,10 @@ id = "1a3a4ae612f345c3b152e32e63f28575"
 binding = "PASSWORD_RESETS"
 id = "570b74fd135c47eaac90a8269761f9cf"
 
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "a069251c3a3d48af985e181c581e8d35"
+
 # Environment variables
 [vars]
 FRONTEND_URL = "https://cybersmrt.org"
