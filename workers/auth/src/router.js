@@ -16,6 +16,14 @@ import {
   verifyEmail,
   resendVerificationEmail
 } from './providers/password.js';
+import {
+  setup2FA,
+  enable2FA,
+  disable2FA,
+  verify2FA,
+  get2FAStatus,
+  regenerateBackupCodes
+} from './providers/2fa.js';
 import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
 import { createSession, deleteSession, getUserSessions } from './utils/session.js';
 import { checkOAuthRateLimit } from './utils/rateLimit.js';
@@ -578,6 +586,140 @@ export class AuthRouter {
     return new Response(JSON.stringify({
       success: true,
       message: 'If an unverified account exists with this email, a verification link has been sent',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Start 2FA setup
+   */
+  async handle2FASetup() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const result = await setup2FA(userId, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      secret: result.secret,
+      qrCodeUrl: result.qrCodeUrl,
+      email: result.email,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Enable 2FA (verify TOTP and get backup codes)
+   */
+  async handle2FAEnable() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { token } = body;
+
+    if (!token) {
+      throw new Error('Verification code is required');
+    }
+
+    const result = await enable2FA(userId, token, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      enabled: result.enabled,
+      backupCodes: result.backupCodes,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Disable 2FA
+   */
+  async handle2FADisable() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { password, token } = body;
+
+    if (!password) {
+      throw new Error('Password is required');
+    }
+
+    if (!token) {
+      throw new Error('Verification code is required');
+    }
+
+    const result = await disable2FA(userId, password, token, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      disabled: result.disabled,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Verify 2FA code (used during login)
+   */
+  async handle2FAVerify() {
+    const body = await this.request.json();
+    const { userId, code } = body;
+
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    if (!code) {
+      throw new Error('Verification code is required');
+    }
+
+    const result = await verify2FA(userId, code, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      verified: result.verified,
+      method: result.method,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Get 2FA status
+   */
+  async handle2FAStatus() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const status = await get2FAStatus(userId, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      ...status,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Regenerate backup codes
+   */
+  async handle2FARegenerateBackupCodes() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { token } = body;
+
+    if (!token) {
+      throw new Error('Verification code is required');
+    }
+
+    const result = await regenerateBackupCodes(userId, token, this.request, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      backupCodes: result.backupCodes,
     }), {
       headers: { 'Content-Type': 'application/json' },
     });

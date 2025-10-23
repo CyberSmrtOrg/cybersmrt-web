@@ -160,6 +160,26 @@ export default {
         return await router.handleResendVerification();
       }
 
+      // Two-Factor Authentication (2FA)
+      if (path === '/2fa/setup' && request.method === 'POST') {
+        return await router.handle2FASetup();
+      }
+      if (path === '/2fa/enable' && request.method === 'POST') {
+        return await router.handle2FAEnable();
+      }
+      if (path === '/2fa/disable' && request.method === 'POST') {
+        return await router.handle2FADisable();
+      }
+      if (path === '/2fa/verify' && request.method === 'POST') {
+        return await router.handle2FAVerify();
+      }
+      if (path === '/2fa/status' && request.method === 'GET') {
+        return await router.handle2FAStatus();
+      }
+      if (path === '/2fa/regenerate-backup-codes' && request.method === 'POST') {
+        return await router.handle2FARegenerateBackupCodes();
+      }
+
       // Health check
       if (path === '/health') {
         return jsonResponse(request, env, {
@@ -205,6 +225,14 @@ export default {
             verification: {
               verifyEmail: 'POST /verify-email',
               resendVerification: 'POST /resend-verification',
+            },
+            twoFactor: {
+              setup: 'POST /2fa/setup',
+              enable: 'POST /2fa/enable',
+              disable: 'POST /2fa/disable',
+              verify: 'POST /2fa/verify',
+              status: 'GET /2fa/status',
+              regenerateBackupCodes: 'POST /2fa/regenerate-backup-codes',
             },
             health: '/health',
           },
