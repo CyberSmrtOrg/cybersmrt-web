@@ -16,6 +16,18 @@ binding = "DB"
 database_name = "cybersmrt-users"
 database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 
+[[kv_namespaces]]
+binding = "USERS"
+id = "122705d528ad4f08ac98110cf9133e93"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "1a3a4ae612f345c3b152e32e63f28575"
+
+[[kv_namespaces]]
+binding = "PASSWORD_RESETS"
+id = "570b74fd135c47eaac90a8269761f9cf"
+
 # Environment variables
 [vars]
 FRONTEND_URL = "https://cybersmrt.org"
