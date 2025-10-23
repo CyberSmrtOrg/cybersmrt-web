@@ -724,4 +724,230 @@ export class AuthRouter {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+ */
+
+  /**
+   * Admin: Get security dashboard statistics
+   */
+  async handleAdminSecurityStats() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    // Check if user is admin
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const timeRange = parseInt(url.searchParams.get('timeRange')) || 24;
+
+    const { getSecurityStats } = await import('./utils/security-analytics.js');
+    const stats = await getSecurityStats(this.env, timeRange);
+
+    return new Response(JSON.stringify(stats), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get recent security events
+   */
+  async handleAdminSecurityEvents() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const limit = parseInt(url.searchParams.get('limit')) || 50;
+    const offset = parseInt(url.searchParams.get('offset')) || 0;
+    const eventType = url.searchParams.get('eventType') || null;
+
+    const { getRecentSecurityEvents } = await import('./utils/security-analytics.js');
+    const events = await getRecentSecurityEvents(this.env, limit, offset, eventType);
+
+    return new Response(JSON.stringify(events), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get login attempt analytics
+   */
+  async handleAdminLoginAnalytics() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const timeRange = parseInt(url.searchParams.get('timeRange')) || 24;
+
+    const { getLoginAttemptAnalytics } = await import('./utils/security-analytics.js');
+    const analytics = await getLoginAttemptAnalytics(this.env, timeRange);
+
+    return new Response(JSON.stringify(analytics), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get locked accounts
+   */
+  async handleAdminLockedAccounts() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const { getLockedAccounts } = await import('./utils/security-analytics.js');
+    const accounts = await getLockedAccounts(this.env);
+
+    return new Response(JSON.stringify(accounts), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Unlock account
+   */
+  async handleAdminUnlockAccount() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const body = await this.request.json();
+    const { email } = body;
+
+    if (!email) {
+      throw new Error('Email is required');
+    }
+
+    const { unlockAccount } = await import('./utils/security-analytics.js');
+    const result = await unlockAccount(email, this.env);
+
+    return new Response(JSON.stringify(result), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get device statistics
+   */
+  async handleAdminDeviceStats() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const timeRange = parseInt(url.searchParams.get('timeRange')) || 24;
+
+    const { getDeviceStats } = await import('./utils/security-analytics.js');
+    const stats = await getDeviceStats(this.env, timeRange);
+
+    return new Response(JSON.stringify(stats), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get pending device verification challenges
+   */
+  async handleAdminPendingChallenges() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const { getPendingChallenges } = await import('./utils/security-analytics.js');
+    const challenges = await getPendingChallenges(this.env);
+
+    return new Response(JSON.stringify(challenges), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get geographic distribution
+   */
+  async handleAdminGeographicDistribution() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const timeRange = parseInt(url.searchParams.get('timeRange')) || 24;
+
+    const { getGeographicDistribution } = await import('./utils/security-analytics.js');
+    const distribution = await getGeographicDistribution(this.env, timeRange);
+
+    return new Response(JSON.stringify(distribution), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Search security events
+   */
+  async handleAdminSearchEvents() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const filters = {
+      userId: url.searchParams.get('userId') || null,
+      eventType: url.searchParams.get('eventType') || null,
+      ipAddress: url.searchParams.get('ipAddress') || null,
+      email: url.searchParams.get('email') || null,
+      startTime: parseInt(url.searchParams.get('startTime')) || null,
+      endTime: parseInt(url.searchParams.get('endTime')) || null,
+      limit: parseInt(url.searchParams.get('limit')) || 50,
+      offset: parseInt(url.searchParams.get('offset')) || 0
+    };
+
+    const { searchSecurityEvents } = await import('./utils/security-analytics.js');
+    const results = await searchSecurityEvents(this.env, filters);
+
+    return new Response(JSON.stringify(results), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get user threat history
+   */
+  async handleAdminUserThreatHistory() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const targetUserId = url.searchParams.get('userId');
+    const limit = parseInt(url.searchParams.get('limit')) || 20;
+
+    if (!targetUserId) {
+      throw new Error('userId parameter is required');
+    }
+
+    const { getUserThreatHistory } = await import('./utils/security-analytics.js');
+    const history = await getUserThreatHistory(targetUserId, this.env, limit);
+
+    return new Response(JSON.stringify(history), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

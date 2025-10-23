@@ -389,6 +389,38 @@ export default {
             request, env, _ctx, ROLES.ADMIN
           );
         }
+
+        // Admin Security Analytics Endpoints
+        if (path === '/admin/security/stats' && request.method === 'GET') {
+          return await router.handleAdminSecurityStats();
+        }
+        if (path === '/admin/security/events' && request.method === 'GET') {
+          return await router.handleAdminSecurityEvents();
+        }
+        if (path === '/admin/security/login-analytics' && request.method === 'GET') {
+          return await router.handleAdminLoginAnalytics();
+        }
+        if (path === '/admin/security/locked-accounts' && request.method === 'GET') {
+          return await router.handleAdminLockedAccounts();
+        }
+        if (path === '/admin/security/unlock-account' && request.method === 'POST') {
+          return await router.handleAdminUnlockAccount();
+        }
+        if (path === '/admin/security/device-stats' && request.method === 'GET') {
+          return await router.handleAdminDeviceStats();
+        }
+        if (path === '/admin/security/pending-challenges' && request.method === 'GET') {
+          return await router.handleAdminPendingChallenges();
+        }
+        if (path === '/admin/security/geographic-distribution' && request.method === 'GET') {
+          return await router.handleAdminGeographicDistribution();
+        }
+        if (path === '/admin/security/search' && request.method === 'GET') {
+          return await router.handleAdminSearchEvents();
+        }
+        if (path === '/admin/security/user-threat-history' && request.method === 'GET') {
+          return await router.handleAdminUserThreatHistory();
+        }
       }
 
       // Health check
@@ -459,6 +491,18 @@ export default {
               settings: 'GET /admin/settings',
               updateSetting: 'PUT /admin/settings',
               terminateSession: 'POST /admin/sessions/{id}/terminate',
+              security: {
+                stats: "GET /admin/security/stats",
+                events: "GET /admin/security/events",
+                loginAnalytics: "GET /admin/security/login-analytics",
+                lockedAccounts: "GET /admin/security/locked-accounts",
+                unlockAccount: "POST /admin/security/unlock-account",
+                deviceStats: "GET /admin/security/device-stats",
+                pendingChallenges: "GET /admin/security/pending-challenges",
+                geographicDistribution: "GET /admin/security/geographic-distribution",
+                search: "GET /admin/security/search",
+                userThreatHistory: "GET /admin/security/user-threat-history"
+              },
             },
             health: '/health',
           },
