@@ -209,7 +209,9 @@ async function authRequest(endpoint, options = {}) {
     }
   };
 
-  const response = await fetch(`${window.AUTH_BASE}${endpoint}`, {
+  const authBase = window.AUTH_BASE || 'https://auth.cybersmrt.org';
+
+  const response = await fetch(`${authBase}${endpoint}`, {
     ...options,
     ...defaultOptions,
     headers: defaultOptions.headers
@@ -242,7 +244,10 @@ async function apiRequest(endpoint, options = {}) {
     }
   };
 
-  const response = await fetch(`${window.API_BASE}${endpoint}`, {
+  // Use window.API_BASE if available, otherwise fallback to hardcoded URL
+  const apiBase = window.API_BASE || 'https://api.cybersmrt.org';
+
+  const response = await fetch(`${apiBase}${endpoint}`, {
     ...options,
     ...defaultOptions,
     headers: defaultOptions.headers
