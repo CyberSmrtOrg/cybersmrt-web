@@ -949,4 +949,149 @@ export class AuthRouter {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  /**
+   * Admin: Get system health
+   */
+  async handleAdminSystemHealth() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const { checkSystemHealth } = await import('./utils/monitoring.js');
+    const health = await checkSystemHealth(this.env);
+
+    return new Response(JSON.stringify(health), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get performance metrics
+   */
+  async handleAdminPerformanceMetrics() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const minutes = parseInt(url.searchParams.get('minutes')) || 60;
+
+    const { getPerformanceMetrics } = await import('./utils/monitoring.js');
+    const metrics = await getPerformanceMetrics(this.env, minutes);
+
+    return new Response(JSON.stringify(metrics), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get recent alerts
+   */
+  async handleAdminAlerts() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const limit = parseInt(url.searchParams.get('limit')) || 50;
+
+    const { getRecentAlerts } = await import('./utils/monitoring.js');
+    const alerts = await getRecentAlerts(this.env, limit);
+
+    return new Response(JSON.stringify(alerts), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Acknowledge alert
+   */
+  async handleAdminAcknowledgeAlert() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const body = await this.request.json();
+    const { alertId } = body;
+
+    if (!alertId) {
+      throw new Error('alertId is required');
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    const result = await this.env.DB.prepare(`
+      UPDATE alerts
+      SET acknowledged = 1, acknowledged_by = ?, acknowledged_at = ?
+      WHERE id = ?
+    `).bind(userId, now, alertId).run();
+
+    return new Response(JSON.stringify({ success: result.success }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Admin: Get error logs
+   */
+  async handleAdminErrorLogs() {
+    const { userId, user } = await authenticateRequest(this.request, this.env);
+
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const url = new URL(this.request.url);
+    const limit = parseInt(url.searchParams.get('limit')) || 50;
+    const offset = parseInt(url.searchParams.get('offset')) || 0;
+    const errorType = url.searchParams.get('errorType') || null;
+
+    let query = `
+      SELECT
+        el.id,
+        el.error_type,
+        el.error_message,
+        el.stack_trace,
+        el.user_id,
+        el.ip_address,
+        el.endpoint,
+        el.context,
+        el.created_at,
+        u.email
+      FROM error_logs el
+      LEFT JOIN users u ON el.user_id = u.id
+    `;
+
+    const params = [];
+
+    if (errorType) {
+      query += ' WHERE el.error_type = ?';
+      params.push(errorType);
+    }
+
+    query += ' ORDER BY el.created_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const result = await this.env.DB.prepare(query).bind(...params).all();
+
+    return new Response(JSON.stringify({
+      success: true,
+      errors: result.results.map(error => ({
+        ...error,
+        context: error.context ? JSON.parse(error.context) : null
+      })),
+      limit,
+      offset
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

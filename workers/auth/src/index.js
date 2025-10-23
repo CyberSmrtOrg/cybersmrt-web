@@ -420,6 +420,7 @@ export default {
         }
         if (path === '/admin/security/user-threat-history' && request.method === 'GET') {
           return await router.handleAdminUserThreatHistory();
+// Admin Monitoring Endpoints        if (path === "/admin/monitoring/health" && request.method === "GET") {          return await router.handleAdminSystemHealth();        }        if (path === "/admin/monitoring/performance" && request.method === "GET") {          return await router.handleAdminPerformanceMetrics();        }        if (path === "/admin/monitoring/alerts" && request.method === "GET") {          return await router.handleAdminAlerts();        }        if (path === "/admin/monitoring/alerts/acknowledge" && request.method === "POST") {          return await router.handleAdminAcknowledgeAlert();        }        if (path === "/admin/monitoring/errors" && request.method === "GET") {          return await router.handleAdminErrorLogs();        }
         }
       }
 
@@ -502,6 +503,7 @@ export default {
                 geographicDistribution: "GET /admin/security/geographic-distribution",
                 search: "GET /admin/security/search",
                 userThreatHistory: "GET /admin/security/user-threat-history"
+              monitoring: {                health: "GET /admin/monitoring/health",                performance: "GET /admin/monitoring/performance",                alerts: "GET /admin/monitoring/alerts",                acknowledgeAlert: "POST /admin/monitoring/alerts/acknowledge",                errors: "GET /admin/monitoring/errors"              },
               },
             },
             health: '/health',
@@ -515,9 +517,19 @@ export default {
     } catch (error) {
       console.error('Auth error:', error);
 
-      // Log error for debugging
-      if (error.stack) {
-        console.error(error.stack);
+      // Track error with monitoring system
+      try {
+        const { trackError } = await import('./utils/monitoring.js');
+        const url = new URL(request.url);
+
+        await trackError(error, {
+          endpoint: url.pathname,
+          method: request.method,
+          ipAddress: request.headers.get('CF-Connecting-IP') || 'unknown',
+          userAgent: request.headers.get('User-Agent') || 'unknown'
+        }, env);
+      } catch (trackingError) {
+        console.error('Failed to track error:', trackingError);
       }
 
       return errorResponse(request, env, error.message, 500);
@@ -525,19 +537,66 @@ export default {
   },
 
   /**
-   * Scheduled handler for cleanup tasks
+   * Scheduled handler for cleanup tasks and monitoring
    */
   async scheduled(event, env, _ctx) {
-    // Clean up expired sessions daily
-    const deletedSessions = await cleanupExpiredSessions(env);
-    console.log(`Cleaned up ${deletedSessions} expired sessions`);
+    const { log, LogLevel } = await import('./utils/monitoring.js');
 
-    // Clean up expired password reset tokens
-    const deletedTokens = await cleanupExpiredTokens(env);
-    console.log(`Cleaned up ${deletedTokens} expired password reset tokens`);
+    log(LogLevel.INFO, 'Starting scheduled tasks');
 
-    // Clean up expired verification tokens
-    const deletedVerificationTokens = await cleanupExpiredVerificationTokens(env);
-    console.log(`Cleaned up ${deletedVerificationTokens} expired verification tokens`);
+    try {
+      // Clean up expired sessions daily
+      const deletedSessions = await cleanupExpiredSessions(env);
+      log(LogLevel.INFO, `Cleaned up ${deletedSessions} expired sessions`);
+
+      // Clean up expired password reset tokens
+      const deletedTokens = await cleanupExpiredTokens(env);
+      log(LogLevel.INFO, `Cleaned up ${deletedTokens} expired password reset tokens`);
+
+      // Clean up expired verification tokens
+      const deletedVerificationTokens = await cleanupExpiredVerificationTokens(env);
+      log(LogLevel.INFO, `Cleaned up ${deletedVerificationTokens} expired verification tokens`);
+
+      // Clean up old login attempts (keep 30 days)
+      const { cleanupOldLoginAttempts } = await import('./utils/device-manager.js');
+      const cleanedAttempts = await cleanupOldLoginAttempts(env, 30);
+      log(LogLevel.INFO, `Cleaned up ${cleanedAttempts.deleted || 0} old login attempts`);
+
+      // Clean up expired device challenges
+      const { cleanupExpiredChallenges } = await import('./utils/device-manager.js');
+      const cleanedChallenges = await cleanupExpiredChallenges(env);
+      log(LogLevel.INFO, `Cleaned up ${cleanedChallenges.expired || 0} expired device challenges`);
+
+      // Check for alert conditions
+      const { checkAlertConditions, logAlert } = await import('./utils/monitoring.js');
+      const alerts = await checkAlertConditions(env);
+
+      if (alerts.length > 0) {
+        log(LogLevel.WARN, `Found ${alerts.length} alert conditions`);
+
+        // Log each alert
+        for (const alert of alerts) {
+          await logAlert(alert, env);
+        }
+      }
+
+      // Clean up old error logs (keep 7 days)
+      const sevenDaysAgo = Math.floor(Date.now() / 1000) - (7 * 24 * 60 * 60);
+      const deletedErrors = await env.DB.prepare(
+        'DELETE FROM error_logs WHERE created_at < ?'
+      ).bind(sevenDaysAgo).run();
+      log(LogLevel.INFO, `Cleaned up ${deletedErrors.meta.changes || 0} old error logs`);
+
+      // Clean up old alerts (keep 30 days, only acknowledged ones)
+      const thirtyDaysAgo = Math.floor(Date.now() / 1000) - (30 * 24 * 60 * 60);
+      const deletedAlerts = await env.DB.prepare(
+        'DELETE FROM alerts WHERE created_at < ? AND acknowledged = 1'
+      ).bind(thirtyDaysAgo).run();
+      log(LogLevel.INFO, `Cleaned up ${deletedAlerts.meta.changes || 0} old acknowledged alerts`);
+
+      log(LogLevel.INFO, 'Completed all scheduled tasks successfully');
+    } catch (error) {
+      log(LogLevel.ERROR, 'Scheduled task failed', { error: error.message, stack: error.stack });
+    }
   },
 };
