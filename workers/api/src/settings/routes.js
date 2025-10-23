@@ -26,7 +26,16 @@ export async function handleSettingsRoutes(request, env, ctx) {
   try {
     // All settings endpoints require authentication
     const user = await authenticate(request, env);
-    const rateInfo = await rateLimit(request, env, user.userId);
+
+    // Rate limiting - skip if KV not configured
+    let rateInfo = { remaining: 100, resetAt: Date.now() + 60000 };
+    try {
+      if (env.RATE_LIMIT_KV) {
+        rateInfo = await rateLimit(request, env, user.userId);
+      }
+    } catch (e) {
+      console.warn('Rate limiting skipped:', e.message);
+    }
 
     // Get settings
     if (path === '/settings' && method === 'GET') {

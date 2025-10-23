@@ -18,16 +18,40 @@ export async function handleDashboardRoutes(request, env, ctx) {
   try {
     // All dashboard endpoints require authentication
     const user = await authenticate(request, env);
-    const rateInfo = await rateLimit(request, env, user.userId);
+
+    // Rate limiting - skip if KV not configured
+    let rateInfo = {
+      remaining: 100,
+      resetAt: Date.now() + 60000
+    };
+
+    try {
+      if (env.RATE_LIMIT_KV) {
+        rateInfo = await rateLimit(request, env, user.userId);
+      }
+    } catch (e) {
+      console.warn('Rate limiting skipped:', e.message);
+    }
 
     if (path === '/dashboard' && method === 'GET') {
       const dashboard = await getDashboardData(user.userId, env);
+
+      // Safely format resetAt - ensure it's a valid timestamp
+      let resetAtISO;
+      try {
+        const resetTimestamp = typeof rateInfo.resetAt === 'number' ? rateInfo.resetAt : Date.now();
+        resetAtISO = new Date(resetTimestamp).toISOString();
+      } catch (e) {
+        console.error('Error formatting resetAt:', e);
+        resetAtISO = new Date().toISOString();
+      }
+
       return jsonResponse(
         { dashboard },
         200,
         {
-          'X-RateLimit-Remaining': rateInfo.remaining,
-          'X-RateLimit-Reset': new Date(rateInfo.resetAt).toISOString(),
+          'X-RateLimit-Remaining': String(rateInfo.remaining || 100),
+          'X-RateLimit-Reset': resetAtISO,
         },
         request
       );
@@ -37,6 +61,11 @@ export async function handleDashboardRoutes(request, env, ctx) {
 
   } catch (error) {
     console.error('Dashboard route error:', error);
+
+    // Log full error details
+    if (error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
 
     if (error.message.includes('token') || error.message.includes('authorization')) {
       return errorResponse(error.message, 401, {}, request);

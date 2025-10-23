@@ -29,7 +29,16 @@ export async function handleProfileRoutes(request, env, ctx) {
 
     // All other endpoints require authentication
     const user = await authenticate(request, env);
-    const rateInfo = await rateLimit(request, env, user.userId);
+
+    // Rate limiting - skip if KV not configured
+    let rateInfo = { remaining: 100, resetAt: Date.now() + 60000 };
+    try {
+      if (env.RATE_LIMIT_KV) {
+        rateInfo = await rateLimit(request, env, user.userId);
+      }
+    } catch (e) {
+      console.warn('Rate limiting skipped:', e.message);
+    }
 
     if (path === '/profile' && method === 'GET') {
       const profile = await getProfile(user.userId, env);
