@@ -111,6 +111,20 @@ export default {
         return await router.handleDeleteAccount();
       }
 
+      // Avatar upload
+      if (path === '/avatar/upload' && request.method === 'POST') {
+        return await router.handleUploadAvatar();
+      }
+      if (path === '/avatar' && request.method === 'DELETE') {
+        return await router.handleDeleteAvatar();
+      }
+
+      // Serve uploaded files
+      if (path.startsWith('/uploads/')) {
+        const key = path.substring(9); // Remove '/uploads/' prefix
+        return await router.handleServeFile(key);
+      }
+
       // Health check
       if (path === '/health') {
         return jsonResponse(request, env, {
@@ -133,6 +147,13 @@ export default {
             settings: {
               get: 'GET /settings',
               update: 'PUT /settings',
+            },
+            avatar: {
+              upload: 'POST /avatar/upload',
+              delete: 'DELETE /avatar',
+            },
+            uploads: {
+              serve: 'GET /uploads/{key}',
             },
             security: {
               logs: 'GET /security-logs',

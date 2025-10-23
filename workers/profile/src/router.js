@@ -4,6 +4,16 @@
  */
 
 import { authenticateRequest } from './utils/auth.js';
+import {
+  validateFile,
+  generateFilename,
+  uploadToR2,
+  deleteFromR2,
+  getFromR2,
+  parseFormData,
+  getCDNUrl,
+  cleanupOldAvatar,
+} from './utils/upload.js';
 
 /**
  * Profile Router Class
@@ -438,5 +448,123 @@ export class ProfileRouter {
     }), {
       headers: { 'Content-Type': 'application/json' },
     });
+  }
+
+  /**
+   * Upload avatar
+   */
+  async handleUploadAvatar() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    // Parse multipart form data
+    const { files } = await parseFormData(this.request);
+
+    if (files.length === 0) {
+      throw new Error('No file provided');
+    }
+
+    const fileEntry = files[0];
+    const file = fileEntry.file;
+
+    // Validate file
+    validateFile(file, {
+      maxSize: 2 * 1024 * 1024, // 2MB for avatars
+      allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+    });
+
+    // Get current user to check for existing avatar
+    const user = await this.env.DB
+      .prepare('SELECT avatar_url FROM users WHERE id = ?')
+      .bind(userId)
+      .first();
+
+    // Clean up old avatar if exists
+    if (user.avatar_url) {
+      await cleanupOldAvatar(this.env.UPLOADS, userId, user.avatar_url);
+    }
+
+    // Generate filename
+    const filename = generateFilename(userId, file.name, 'avatars/');
+
+    // Upload to R2
+    const uploadResult = await uploadToR2(this.env.UPLOADS, filename, file, {
+      userId,
+      type: 'avatar',
+    });
+
+    // Generate CDN URL
+    const avatarUrl = getCDNUrl(filename, this.env);
+
+    // Update database
+    const now = Math.floor(Date.now() / 1000);
+    await this.env.DB
+      .prepare('UPDATE users SET avatar_url = ?, updated_at = ? WHERE id = ?')
+      .bind(avatarUrl, now, userId)
+      .run();
+
+    return new Response(JSON.stringify({
+      success: true,
+      avatarUrl,
+      message: 'Avatar uploaded successfully',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Delete avatar
+   */
+  async handleDeleteAvatar() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    // Get current avatar URL
+    const user = await this.env.DB
+      .prepare('SELECT avatar_url FROM users WHERE id = ?')
+      .bind(userId)
+      .first();
+
+    if (!user || !user.avatar_url) {
+      throw new Error('No avatar to delete');
+    }
+
+    // Delete from R2
+    await cleanupOldAvatar(this.env.UPLOADS, userId, user.avatar_url);
+
+    // Update database
+    const now = Math.floor(Date.now() / 1000);
+    await this.env.DB
+      .prepare('UPDATE users SET avatar_url = NULL, updated_at = ? WHERE id = ?')
+      .bind(now, userId)
+      .run();
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Avatar deleted successfully',
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Serve uploaded file from R2
+   */
+  async handleServeFile(key) {
+    try {
+      const file = await getFromR2(this.env.UPLOADS, key);
+
+      if (!file) {
+        return new Response('File not found', { status: 404 });
+      }
+
+      return new Response(file.body, {
+        headers: {
+          'Content-Type': file.httpMetadata?.contentType || 'application/octet-stream',
+          'Cache-Control': 'public, max-age=31536000', // Cache for 1 year
+        },
+      });
+    } catch (error) {
+      console.error('Error serving file:', error);
+      return new Response('Internal server error', { status: 500 });
+    }
   }
 }

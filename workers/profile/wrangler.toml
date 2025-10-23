@@ -8,6 +8,11 @@ binding = "DB"
 database_name = "cybersmrt-users"
 database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 
+# R2 Storage bindings
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "cybersmrt-uploads"
+
 # Environment variables
 [vars]
 FRONTEND_ORIGIN = "https://cybersmrt.org"

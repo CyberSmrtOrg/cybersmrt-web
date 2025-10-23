@@ -68,6 +68,30 @@
 
     <div id="profile-tab" class="tab-content active">
       <div class="card">
+        <h2>Avatar</h2>
+        <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem;">
+          <div style="position: relative;">
+            <img id="current-avatar" src="" alt="Avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(148, 163, 184, 0.3);">
+            <div id="avatar-placeholder" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; border: 2px solid rgba(148, 163, 184, 0.3);"></div>
+          </div>
+          <div style="flex: 1;">
+            <p style="color: #94a3b8; margin-bottom: 1rem;">Upload a profile picture. JPG, PNG, GIF, or WebP. Max 2MB.</p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <label class="btn btn-primary" style="cursor: pointer;">
+                <input type="file" id="avatar-input" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
+                Choose File
+              </label>
+              <button id="upload-avatar-btn" class="btn btn-primary" style="display: none;">Upload</button>
+              <button id="delete-avatar-btn" class="btn btn-danger" style="display: none;">Delete Avatar</button>
+            </div>
+            <div id="avatar-preview-container" style="margin-top: 1rem; display: none;">
+              <img id="avatar-preview" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.3);">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
         <h2>Edit Profile</h2>
         <form id="profile-form">
           <div class="form-group"><label>Display Name</label><input type="text" id="displayName" maxlength="100"></div>
@@ -138,6 +162,23 @@
           document.getElementById('location').value = d.profile.location || '';
           document.getElementById('website').value = d.profile.website || '';
           document.getElementById('welcome-text').textContent = `Welcome, ${d.profile.displayName}!`;
+
+          // Handle avatar display
+          const avatarImg = document.getElementById('current-avatar');
+          const avatarPlaceholder = document.getElementById('avatar-placeholder');
+          const deleteBtn = document.getElementById('delete-avatar-btn');
+
+          if (d.profile.avatarUrl) {
+            avatarImg.src = d.profile.avatarUrl;
+            avatarImg.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+            deleteBtn.style.display = 'inline-block';
+          } else {
+            avatarImg.style.display = 'none';
+            avatarPlaceholder.style.display = 'flex';
+            avatarPlaceholder.textContent = (d.profile.displayName || d.profile.email || '?')[0].toUpperCase();
+            deleteBtn.style.display = 'none';
+          }
         }
       })
       .catch(e => showAlert(e.message, 'error'));
@@ -214,6 +255,124 @@
       .then(r => r.json())
       .then(d => { localStorage.clear(); window.location.href = '/'; })
       .catch(e => showAlert(e.message, 'error'));
+    });
+
+    // Avatar upload functionality
+    let selectedFile = null;
+
+    document.getElementById('avatar-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validate file size
+      if (file.size > 2 * 1024 * 1024) {
+        showAlert('File too large. Maximum size is 2MB', 'error');
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        showAlert('Invalid file type. Use JPG, PNG, GIF, or WebP', 'error');
+        return;
+      }
+
+      selectedFile = file;
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('avatar-preview').src = e.target.result;
+        document.getElementById('avatar-preview-container').style.display = 'block';
+        document.getElementById('upload-avatar-btn').style.display = 'inline-block';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('upload-avatar-btn').addEventListener('click', async () => {
+      if (!selectedFile) return;
+
+      const uploadBtn = document.getElementById('upload-avatar-btn');
+      const originalText = uploadBtn.textContent;
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span class="loading"></span>Uploading...';
+
+      try {
+        const formData = new FormData();
+        formData.append('avatar', selectedFile);
+
+        const response = await fetch(`${API}/avatar/upload`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token()}` },
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showAlert('Avatar uploaded successfully!');
+
+          // Update UI
+          const avatarImg = document.getElementById('current-avatar');
+          const avatarPlaceholder = document.getElementById('avatar-placeholder');
+
+          avatarImg.src = data.avatarUrl;
+          avatarImg.style.display = 'block';
+          avatarPlaceholder.style.display = 'none';
+
+          document.getElementById('delete-avatar-btn').style.display = 'inline-block';
+          document.getElementById('avatar-preview-container').style.display = 'none';
+          document.getElementById('upload-avatar-btn').style.display = 'none';
+          document.getElementById('avatar-input').value = '';
+          selectedFile = null;
+        } else {
+          showAlert(data.error || 'Upload failed', 'error');
+        }
+      } catch (error) {
+        showAlert(error.message, 'error');
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = originalText;
+      }
+    });
+
+    document.getElementById('delete-avatar-btn').addEventListener('click', async () => {
+      if (!confirm('Delete your avatar?')) return;
+
+      const deleteBtn = document.getElementById('delete-avatar-btn');
+      deleteBtn.disabled = true;
+
+      try {
+        const response = await fetch(`${API}/avatar`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token()}` }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showAlert('Avatar deleted successfully!');
+
+          // Update UI
+          const avatarImg = document.getElementById('current-avatar');
+          const avatarPlaceholder = document.getElementById('avatar-placeholder');
+
+          avatarImg.style.display = 'none';
+          avatarPlaceholder.style.display = 'flex';
+
+          // Get display name for placeholder initial
+          const displayName = document.getElementById('displayName').value;
+          avatarPlaceholder.textContent = (displayName || '?')[0].toUpperCase();
+
+          deleteBtn.style.display = 'none';
+        } else {
+          showAlert(data.error || 'Delete failed', 'error');
+        }
+      } catch (error) {
+        showAlert(error.message, 'error');
+      } finally {
+        deleteBtn.disabled = false;
+      }
     });
   </script>
 </body>
