@@ -755,16 +755,25 @@
         const response = await window.apiRequest('/settings/2fa/status');
         const data = await response.json();
 
-        if (data.enabled) {
+        console.log('2FA status response:', data);
+
+        if (data.success && data.enabled) {
           document.getElementById('2fa-status').textContent = 'Enabled';
           document.getElementById('2fa-status').className = 'status-badge enabled';
           document.getElementById('2fa-button').textContent = 'Disable 2FA';
           document.getElementById('2fa-button').className = 'btn btn-danger';
           document.getElementById('2fa-description').textContent =
             `Two-factor authentication is enabled. ${data.backupCodesRemaining} backup codes remaining.`;
+        } else if (data.success && !data.enabled) {
+          // Explicitly handle disabled state
+          document.getElementById('2fa-status').textContent = 'Disabled';
+          document.getElementById('2fa-status').className = 'status-badge disabled';
+          document.getElementById('2fa-button').textContent = 'Enable 2FA';
+          document.getElementById('2fa-button').className = 'btn btn-primary';
         }
       } catch (error) {
         console.error('Failed to load 2FA status:', error);
+        showNotification('Failed to load 2FA status', 'error');
       }
     }
 
