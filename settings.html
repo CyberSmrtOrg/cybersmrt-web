@@ -806,6 +806,11 @@
         reduceMotion: document.getElementById('reduce-motion').checked
       };
 
+      // Save to localStorage for site-wide access
+      localStorage.setItem('theme', settings.theme);
+      localStorage.setItem('language', settings.language);
+      localStorage.setItem('reduceMotion', settings.reduceMotion ? 'true' : 'false');
+
       // Apply theme and language immediately
       applyTheme(settings.theme);
       applyLanguage(settings.language);
