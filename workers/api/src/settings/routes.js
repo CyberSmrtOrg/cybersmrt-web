@@ -32,6 +32,10 @@ export async function handleSettingsRoutes(request, env, _ctx) {
     try {
       if (env.RATE_LIMIT_KV) {
         rateInfo = await rateLimit(request, env, user.userId);
+        // Ensure resetAt is in milliseconds (convert if in seconds)
+        if (rateInfo.resetAt < 10000000000) {
+          rateInfo.resetAt = rateInfo.resetAt * 1000;
+        }
       }
     } catch (e) {
       console.warn('Rate limiting skipped:', e.message);
