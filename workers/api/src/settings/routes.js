@@ -32,13 +32,21 @@ export async function handleSettingsRoutes(request, env, _ctx) {
     try {
       if (env.RATE_LIMIT_KV) {
         rateInfo = await rateLimit(request, env, user.userId);
-        // Ensure resetAt is in milliseconds (convert if in seconds)
-        if (rateInfo.resetAt < 10000000000) {
-          rateInfo.resetAt = rateInfo.resetAt * 1000;
+        // Ensure resetAt is valid and in milliseconds
+        if (rateInfo.resetAt && typeof rateInfo.resetAt === 'number') {
+          // Convert seconds to milliseconds if needed (timestamps < year 2286)
+          if (rateInfo.resetAt < 10000000000) {
+            rateInfo.resetAt = rateInfo.resetAt * 1000;
+          }
+        } else {
+          // Fallback to current time + 1 minute if invalid
+          rateInfo.resetAt = Date.now() + 60000;
         }
       }
     } catch (e) {
       console.warn('Rate limiting skipped:', e.message);
+      // Reset to default on error
+      rateInfo = { remaining: 100, resetAt: Date.now() + 60000 };
     }
 
     // Get settings
