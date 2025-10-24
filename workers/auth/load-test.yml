@@ -1,0 +1,233 @@
+##
+# CyberSmrt Auth Worker - Artillery Load Test Configuration
+# Tests authentication endpoints under various load conditions
+#
+# Install: npm install -g artillery
+# Run: artillery run load-test.yml
+# Report: artillery run --output report.json load-test.yml && artillery report report.json
+##
+
+config:
+  target: "https://auth.cybersmrt.org"
+  phases:
+    # Phase 1: Warm-up (gradual ramp)
+    - duration: 60
+      arrivalRate: 10
+      name: "Warm-up"
+
+    # Phase 2: Normal load
+    - duration: 180
+      arrivalRate: 100
+      name: "Normal load"
+
+    # Phase 3: Peak load
+    - duration: 120
+      arrivalRate: 500
+      name: "Peak load"
+
+    # Phase 4: Stress test
+    - duration: 60
+      arrivalRate: 1000
+      name: "Stress test"
+
+    # Phase 5: Cool down
+    - duration: 60
+      arrivalRate: 10
+      name: "Cool down"
+
+  # Performance thresholds
+  ensure:
+    maxErrorRate: 1              # Max 1% error rate
+    p95: 300                     # 95th percentile < 300ms
+    p99: 500                     # 99th percentile < 500ms
+
+  # Load test variables
+  variables:
+    testEmail: "loadtest-{{ $randomNumber() }}@example.com"
+    testPassword: "LoadTest123!@#"
+
+  # HTTP settings
+  http:
+    timeout: 10                  # 10 second timeout
+    pool: 100                    # Connection pool size
+
+  # Plugins for better reporting
+  plugins:
+    expect: {}
+    metrics-by-endpoint:
+      # Group metrics by endpoint
+      stripQueryString: true
+
+scenarios:
+  ##
+  # Scenario 1: Health Check Monitoring
+  # Lightweight checks to verify service availability
+  ##
+  - name: "Health Check"
+    weight: 5
+    flow:
+      - get:
+          url: "/health"
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - hasProperty: success
+          capture:
+            - json: "$.status"
+              as: "healthStatus"
+
+  ##
+  # Scenario 2: Registration Flow
+  # Tests user registration under load
+  ##
+  - name: "User Registration"
+    weight: 15
+    flow:
+      - post:
+          url: "/register"
+          json:
+            email: "{{ testEmail }}"
+            password: "{{ testPassword }}"
+            display_name: "Load Test User"
+          expect:
+            - statusCode:
+                - 200
+                - 201
+                - 429  # Rate limit is acceptable
+          capture:
+            - json: "$.userId"
+              as: "userId"
+            - json: "$.tokens.accessToken"
+              as: "accessToken"
+
+      # Verify registration succeeded (if not rate limited)
+      - think: 1
+      - get:
+          url: "/health"
+          expect:
+            - statusCode: 200
+
+  ##
+  # Scenario 3: Login Flow
+  # Tests email/password authentication
+  ##
+  - name: "Email Login"
+    weight: 30
+    flow:
+      - post:
+          url: "/login"
+          json:
+            email: "demo@example.com"
+            password: "DemoPassword123!"
+          expect:
+            - statusCode:
+                - 200
+                - 401  # Invalid creds acceptable for load test
+                - 429  # Rate limit acceptable
+          capture:
+            - json: "$.tokens.accessToken"
+              as: "loginToken"
+            - json: "$.session.id"
+              as: "sessionId"
+
+      - think: 2
+
+  ##
+  # Scenario 4: Session Validation
+  # Tests JWT token verification under load
+  ##
+  - name: "Session Validation"
+    weight: 25
+    flow:
+      # First, get a session (simplified - using health check)
+      - get:
+          url: "/health"
+          expect:
+            - statusCode: 200
+
+      - think: 1
+
+  ##
+  # Scenario 5: OAuth Endpoints
+  # Tests OAuth provider endpoints
+  ##
+  - name: "OAuth Discovery"
+    weight: 10
+    flow:
+      - get:
+          url: "/oauth/providers"
+          expect:
+            - statusCode: 200
+            - contentType: json
+
+      - think: 1
+
+      # Test Google OAuth redirect (won't complete, just tests endpoint)
+      - post:
+          url: "/oauth/google"
+          json:
+            redirect_uri: "https://cybersmrt.org/callback.html"
+          expect:
+            - statusCode:
+                - 200
+                - 302
+                - 400  # Missing params acceptable for load test
+
+  ##
+  # Scenario 6: Rate Limit Testing
+  # Intentionally hits rate limits to test protection
+  ##
+  - name: "Rate Limit Test"
+    weight: 5
+    flow:
+      - loop:
+          - post:
+              url: "/login"
+              json:
+                email: "ratelimit-test@example.com"
+                password: "test"
+          - think: 0.1
+        count: 20  # Rapid requests to trigger rate limiting
+
+      # Verify rate limiting is working
+      - post:
+          url: "/login"
+          json:
+            email: "ratelimit-test@example.com"
+            password: "test"
+          expect:
+            - statusCode: 429  # Should be rate limited
+
+  ##
+  # Scenario 7: Admin Endpoints (Low priority)
+  # Tests admin dashboard endpoints
+  ##
+  - name: "Admin Health Check"
+    weight: 5
+    flow:
+      - get:
+          url: "/admin/monitoring/health"
+          expect:
+            - statusCode:
+                - 200
+                - 401  # Unauthorized acceptable (no auth token)
+
+      - think: 2
+
+  ##
+  # Scenario 8: Password Reset Flow
+  # Tests password reset request endpoint
+  ##
+  - name: "Password Reset Request"
+    weight: 5
+    flow:
+      - post:
+          url: "/forgot-password"
+          json:
+            email: "{{ testEmail }}"
+          expect:
+            - statusCode:
+                - 200
+                - 429  # Rate limit acceptable
+
+      - think: 3

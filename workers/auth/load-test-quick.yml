@@ -1,0 +1,67 @@
+##
+# CyberSmrt Auth Worker - Quick Load Test
+# Rapid load test for development/debugging (2 minutes)
+#
+# Run: artillery quick --duration 120 --rate 50 https://auth.cybersmrt.org/health
+# Or: artillery run load-test-quick.yml
+##
+
+config:
+  target: "https://auth.cybersmrt.org"
+  phases:
+    - duration: 30
+      arrivalRate: 20
+      name: "Quick ramp-up"
+
+    - duration: 60
+      arrivalRate: 50
+      name: "Sustained load"
+
+    - duration: 30
+      arrivalRate: 10
+      name: "Cool down"
+
+  ensure:
+    maxErrorRate: 2
+    p95: 500
+    p99: 1000
+
+scenarios:
+  - name: "Health Check"
+    weight: 30
+    flow:
+      - get:
+          url: "/health"
+          expect:
+            - statusCode: 200
+
+  - name: "Login Attempt"
+    weight: 40
+    flow:
+      - post:
+          url: "/login"
+          json:
+            email: "test@example.com"
+            password: "test123"
+          expect:
+            - statusCode:
+                - 200
+                - 401
+                - 429
+
+  - name: "OAuth Providers"
+    weight: 20
+    flow:
+      - get:
+          url: "/oauth/providers"
+          expect:
+            - statusCode: 200
+
+  - name: "API Documentation"
+    weight: 10
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+            - contentType: json
