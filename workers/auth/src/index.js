@@ -593,7 +593,7 @@ export default {
         console.error('Failed to track error:', trackingError);
       }
 
-      return errorResponse(request, env, error.message, 500);
+      return errorResponse(request, env, error.message, 500, true);
     }
   },
 
