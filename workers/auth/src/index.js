@@ -232,6 +232,10 @@ export default {
         const response = await router.handle2FAEnable();
         return addCorsHeaders(response, request, env);
       }
+      if (path === '/2fa/confirm' && request.method === 'POST') {
+        const response = await router.handle2FAConfirm();
+        return addCorsHeaders(response, request, env);
+      }
       if (path === '/2fa/disable' && request.method === 'POST') {
         const response = await router.handle2FADisable();
         return addCorsHeaders(response, request, env);

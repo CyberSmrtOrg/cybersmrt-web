@@ -22,10 +22,11 @@ import {
   disable2FA,
   verify2FA,
   get2FAStatus,
-  regenerateBackupCodes
+  regenerateBackupCodes,
+  confirm2FASetup
 } from './providers/2fa.js';
 import { generateAccessToken, generateRefreshToken, refreshAccessToken, authenticateRequest } from './utils/jwt.js';
-import { createSession, deleteSession, getUserSessions } from './utils/session.js';
+import { createSession, deleteSession, getUserSessions, deleteUserSessions } from './utils/session.js';
 import { checkOAuthRateLimit } from './utils/rateLimit.js';
 import { logLogin, logLogout, logOAuthLink } from './utils/security.js';
 
@@ -336,6 +337,23 @@ export class AuthRouter {
     // Login user
     const user = await loginWithPassword(email, password, this.request, this.env);
 
+    // Check if 2FA is enabled
+    if (user.totp_enabled === 1) {
+      // Return response indicating 2FA is required
+      // Do NOT create session yet - wait for 2FA verification
+      return new Response(JSON.stringify({
+        success: true,
+        requires2FA: true,
+        userId: user.id, // Needed for 2FA verification
+        message: 'Two-factor authentication required',
+      }), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+
+    // No 2FA required, proceed with normal login
     // Create session
     const session = await createSession(user.id, this.request, this.env);
 
@@ -611,6 +629,7 @@ export class AuthRouter {
 
   /**
    * Enable 2FA (verify TOTP and get backup codes)
+   * Note: This doesn't enable 2FA yet - user must verify a backup code first
    */
   async handle2FAEnable() {
     const { userId } = await authenticateRequest(this.request, this.env);
@@ -626,8 +645,39 @@ export class AuthRouter {
 
     return new Response(JSON.stringify({
       success: true,
-      enabled: result.enabled,
+      setupComplete: result.setupComplete,
       backupCodes: result.backupCodes,
+      message: result.message,
+    }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  /**
+   * Confirm 2FA setup by verifying backup code
+   * This actually enables 2FA and logs out all sessions
+   */
+  async handle2FAConfirm() {
+    const { userId } = await authenticateRequest(this.request, this.env);
+
+    const body = await this.request.json();
+    const { backupCode } = body;
+
+    if (!backupCode) {
+      throw new Error('Backup code is required');
+    }
+
+    // Verify backup code and enable 2FA
+    const result = await confirm2FASetup(userId, backupCode, this.request, this.env);
+
+    // Delete all user sessions (force re-login with 2FA)
+    await deleteUserSessions(userId, this.env);
+
+    return new Response(JSON.stringify({
+      success: true,
+      enabled: result.enabled,
+      message: result.message,
+      requiresRelogin: true,
     }), {
       headers: { 'Content-Type': 'application/json' },
     });
@@ -675,14 +725,50 @@ export class AuthRouter {
       throw new Error('Verification code is required');
     }
 
+    // Verify the 2FA code
     const result = await verify2FA(userId, code, this.request, this.env);
+
+    // Get user details
+    const user = await this.env.DB
+      .prepare('SELECT * FROM users WHERE id = ?')
+      .bind(userId)
+      .first();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // 2FA verified - create session and return tokens
+    const session = await createSession(user.id, this.request, this.env);
+
+    // Generate tokens
+    const accessToken = await generateAccessToken(user.id, user.email, this.env);
+    const refreshToken = await generateRefreshToken(user.id, this.env);
 
     return new Response(JSON.stringify({
       success: true,
-      verified: result.verified,
+      verified: true,
       method: result.method,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.display_name,
+        avatarUrl: user.avatar_url,
+        role: user.role,
+      },
+      session: {
+        id: session.sessionId,
+        expiresAt: session.expiresAt,
+      },
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
     }), {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
+      },
     });
   }
 

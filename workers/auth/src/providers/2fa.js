@@ -105,6 +105,57 @@ export async function enable2FA(userId, token, request, env) {
   // Store backup codes
   await storeBackupCodes(userId, backupCodes, env);
 
+  // Store backup codes but don't enable 2FA yet
+  // User must verify a backup code first
+  const now = Math.floor(Date.now() / 1000);
+  await env.DB
+    .prepare('UPDATE users SET updated_at = ? WHERE id = ?')
+    .bind(now, userId)
+    .run();
+
+  // Log 2FA setup completion (but not yet enabled)
+  await logSecurityEvent(userId, '2fa_setup_completed', request, env);
+
+  return {
+    setupComplete: true,
+    backupCodes, // IMPORTANT: Show these to user only once
+    message: 'Verify one backup code to complete 2FA setup',
+  };
+}
+
+/**
+ * Confirm 2FA setup by verifying backup code
+ * This actually enables 2FA and invalidates all sessions
+ */
+export async function confirm2FASetup(userId, backupCode, request, env) {
+  // Get user
+  const user = await env.DB
+    .prepare('SELECT * FROM users WHERE id = ?')
+    .bind(userId)
+    .first();
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (user.totp_enabled === 1) {
+    throw new Error('2FA is already enabled');
+  }
+
+  if (!user.totp_secret) {
+    throw new Error('2FA setup not started');
+  }
+
+  // Verify the backup code (this will mark it as used)
+  const isValid = await consumeBackupCode(userId, backupCode, env);
+
+  if (!isValid) {
+    await logSecurityEvent(userId, '2fa_confirmation_failed', request, env, {
+      reason: 'invalid_backup_code',
+    });
+    throw new Error('Invalid backup code');
+  }
+
   // Enable 2FA
   const now = Math.floor(Date.now() / 1000);
   await env.DB
@@ -117,7 +168,7 @@ export async function enable2FA(userId, token, request, env) {
 
   return {
     enabled: true,
-    backupCodes, // IMPORTANT: Show these to user only once
+    message: 'Two-factor authentication is now enabled. Please log in again to verify.',
   };
 }
 
