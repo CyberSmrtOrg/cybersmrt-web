@@ -1,0 +1,123 @@
+name: Deploy Auth Worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/auth/**'
+      - '.github/workflows/deploy-auth-worker.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Auth Worker
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'workers/auth/package.json'
+
+      - name: Install dependencies
+        working-directory: workers/auth
+        run: npm ci
+
+      - name: Run linting
+        working-directory: workers/auth
+        run: npm run lint --if-present
+
+      - name: Run tests
+        working-directory: workers/auth
+        run: npm test --if-present
+
+      - name: Security audit
+        working-directory: workers/auth
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Auth Worker
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'workers/auth/package.json'
+
+      - name: Install dependencies
+        working-directory: workers/auth
+        run: npm ci
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: 'workers/auth'
+          command: deploy
+          secrets: |
+            JWT_SECRET
+            GOOGLE_CLIENT_SECRET
+            GITHUB_CLIENT_SECRET
+            MICROSOFT_CLIENT_SECRET
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          MICROSOFT_CLIENT_SECRET: ${{ secrets.MICROSOFT_CLIENT_SECRET }}
+
+      - name: Wait for deployment propagation
+        run: sleep 10
+
+      - name: Health check
+        run: |
+          RESPONSE=$(curl -s https://auth.cybersmrt.org/health)
+          echo "Health check response: $RESPONSE"
+
+          # Verify JSON response contains "success": true
+          if echo "$RESPONSE" | grep -q '"success":true'; then
+            echo "✅ Health check passed!"
+          else
+            echo "❌ Health check failed!"
+            exit 1
+          fi
+
+      - name: Test critical endpoints
+        run: |
+          # Test OAuth providers endpoint
+          curl -f https://auth.cybersmrt.org/oauth/providers || exit 1
+
+          # Test API documentation endpoint
+          curl -f https://auth.cybersmrt.org/ || exit 1
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Auth Worker deployed successfully!"
+          echo "🔗 Health: https://auth.cybersmrt.org/health"
+          echo "📚 Docs: https://auth.cybersmrt.org/"
+          echo "🔐 Endpoints:"
+          echo "  - POST /register"
+          echo "  - POST /login"
+          echo "  - POST /oauth/{provider}"
+          echo "  - GET /admin/monitoring/health"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          echo "❌ Auth Worker deployment failed!"
+          echo "Review logs and consider rollback if needed."
+          echo "Rollback command: npx wrangler rollback --name cybersmrt-auth"
