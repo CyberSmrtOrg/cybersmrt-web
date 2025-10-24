@@ -241,10 +241,8 @@
             }
           }
 
-          return;
-        }
-
-        if (data.success) {
+          // Don't continue processing - wait for 2FA
+        } else if (data.success) {
           statusEl.textContent = 'Success! Redirecting...';
 
           // Store authentication data
