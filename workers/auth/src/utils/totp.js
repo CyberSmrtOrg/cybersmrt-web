@@ -3,7 +3,7 @@
  * Implements RFC 6238 for Two-Factor Authentication
  */
 
-import { hashPassword } from './password.js';
+import { hashPassword, verifyPassword } from './password.js';
 
 /**
  * Generate a random base32 secret for TOTP
@@ -247,10 +247,10 @@ export async function consumeBackupCode(userId, code, env) {
 
   // Check each code
   for (const storedCode of codes.results) {
-    const codeHash = await hashPassword(cleanCode);
+    // Use proper bcrypt verification
+    const isValid = await verifyPassword(cleanCode, storedCode.code_hash);
 
-    // Simple comparison (in production, use proper bcrypt verification)
-    if (codeHash.slice(0, 20) === storedCode.code_hash.slice(0, 20)) {
+    if (isValid) {
       // Mark code as used
       const now = Math.floor(Date.now() / 1000);
       await env.DB

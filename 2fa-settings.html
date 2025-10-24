@@ -579,11 +579,17 @@
 
     // Confirm backup code and enable 2FA
     async function confirmBackupCode() {
-      const code = document.getElementById('verify-backup-code').value.trim();
+      let code = document.getElementById('verify-backup-code').value.trim();
 
-      if (!code || !/^\d{4}-\d{4}$/.test(code)) {
-        showAlert('Please enter a valid backup code in format XXXX-XXXX', 'error');
+      // Accept with or without hyphen
+      if (!code || !/^\d{4}-?\d{4}$/.test(code)) {
+        showAlert('Please enter a valid 8-digit backup code', 'error');
         return;
+      }
+
+      // Ensure hyphen is present for API call
+      if (code.length === 8 && !code.includes('-')) {
+        code = code.slice(0, 4) + '-' + code.slice(4);
       }
 
       const btn = document.getElementById('confirm-backup-btn');
@@ -770,6 +776,22 @@
       // Enter key for backup code verification
       document.getElementById('verify-backup-code')?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') confirmBackupCode();
+      });
+
+      // Auto-format backup code as user types
+      document.getElementById('verify-backup-code')?.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-digits
+
+        if (value.length > 8) {
+          value = value.slice(0, 8); // Limit to 8 digits
+        }
+
+        // Add hyphen after 4th digit
+        if (value.length > 4) {
+          value = value.slice(0, 4) + '-' + value.slice(4);
+        }
+
+        e.target.value = value;
       });
     });
   </script>
