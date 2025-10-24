@@ -275,7 +275,7 @@ export async function verify2FA(userId, token, env) {
 
 export async function get2FAStatus(userId, env) {
   const user = await env.DB
-    .prepare('SELECT totp_enabled, totp_backup_codes FROM users WHERE id = ?')
+    .prepare('SELECT totp_enabled FROM users WHERE id = ?')
     .bind(userId)
     .first();
 
@@ -283,15 +283,15 @@ export async function get2FAStatus(userId, env) {
     throw new Error('User not found');
   }
 
-  // Count remaining backup codes
+  // Count remaining backup codes from backup_codes table
   let backupCodesRemaining = 0;
-  if (user.totp_backup_codes) {
-    try {
-      const codes = JSON.parse(user.totp_backup_codes);
-      backupCodesRemaining = codes.length;
-    } catch (e) {
-      console.error('Error parsing backup codes:', e);
-    }
+  const backupCodesResult = await env.DB
+    .prepare('SELECT COUNT(*) as count FROM backup_codes WHERE user_id = ? AND used = 0')
+    .bind(userId)
+    .first();
+
+  if (backupCodesResult) {
+    backupCodesRemaining = backupCodesResult.count;
   }
 
   return {
