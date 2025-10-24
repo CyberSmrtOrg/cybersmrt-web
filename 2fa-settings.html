@@ -347,7 +347,21 @@
       <p>Store these codes in a safe place. Each code can only be used once if you lose access to your authenticator app.</p>
       <div class="codes-grid" id="codes-grid"></div>
       <button id="download-codes-btn" class="btn btn-primary">Download Codes</button>
-      <button id="done-btn" class="btn btn-primary" style="margin-left: 1rem;">I've Saved My Codes</button>
+      <button id="done-btn" class="btn btn-primary" style="margin-left: 1rem;">Next: Verify Backup Code</button>
+    </div>
+
+    <!-- Backup Code Verification -->
+    <div id="backup-code-verification" class="card" style="display: none;">
+      <h2>Verify Backup Code</h2>
+      <p>To complete 2FA setup, please enter one of your backup codes to confirm you've saved them:</p>
+
+      <div class="input-group">
+        <label for="verify-backup-code">Enter a Backup Code</label>
+        <input type="text" id="verify-backup-code" placeholder="XXXX-XXXX" maxlength="9" pattern="[0-9]{4}-[0-9]{4}">
+      </div>
+
+      <button id="confirm-backup-btn" class="btn btn-primary">Confirm and Enable 2FA</button>
+      <button id="cancel-backup-btn" class="btn btn-danger" style="margin-left: 1rem;">Cancel</button>
     </div>
 
     <!-- Disable 2FA Form -->
@@ -556,12 +570,75 @@
       showAlert('Backup codes downloaded!', 'success');
     }
 
-    // Finish setup
+    // Show backup code verification
     function finishSetup() {
       document.getElementById('backup-codes-display').style.display = 'none';
+      document.getElementById('backup-code-verification').style.display = 'block';
+      document.getElementById('verify-backup-code').focus();
+    }
+
+    // Confirm backup code and enable 2FA
+    async function confirmBackupCode() {
+      const code = document.getElementById('verify-backup-code').value.trim();
+
+      if (!code || !/^\d{4}-\d{4}$/.test(code)) {
+        showAlert('Please enter a valid backup code in format XXXX-XXXX', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('confirm-backup-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Confirming...';
+
+      try {
+        const response = await fetch(`${AUTH_API_URL}/2fa/confirm`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ backupCode: code }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Confirmation failed');
+        }
+
+        // Hide verification form
+        document.getElementById('backup-code-verification').style.display = 'none';
+
+        // Show success message with logout notice
+        showAlert('✓ Two-factor authentication enabled! You will be logged out now. Please sign in again to verify 2FA.', 'success');
+
+        // Clear local auth data
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('sessionId');
+
+        // Redirect to login after short delay
+        setTimeout(() => {
+          window.location.href = '/login.html';
+        }, 3000);
+
+      } catch (error) {
+        console.error('Confirmation failed:', error);
+        showAlert(error.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Confirm and Enable 2FA';
+      }
+    }
+
+    // Cancel backup verification
+    function cancelBackupVerification() {
+      document.getElementById('backup-code-verification').style.display = 'none';
       document.getElementById('status-card').style.display = 'block';
+      document.getElementById('verify-backup-code').value = '';
+      // Note: 2FA is not enabled yet, so user needs to start over
+      showAlert('2FA setup cancelled. Your backup codes are still saved but 2FA is not enabled yet.', 'error');
       load2FAStatus();
-      showAlert('Two-factor authentication enabled successfully!', 'success');
     }
 
     // Cancel setup
@@ -680,12 +757,19 @@
       document.getElementById('cancel-setup-btn')?.addEventListener('click', cancelSetup);
       document.getElementById('download-codes-btn')?.addEventListener('click', downloadBackupCodes);
       document.getElementById('done-btn')?.addEventListener('click', finishSetup);
+      document.getElementById('confirm-backup-btn')?.addEventListener('click', confirmBackupCode);
+      document.getElementById('cancel-backup-btn')?.addEventListener('click', cancelBackupVerification);
       document.getElementById('cancel-disable-btn')?.addEventListener('click', cancelDisable);
       document.getElementById('confirm-disable-btn')?.addEventListener('click', confirmDisable);
 
       // Enter key to submit
       document.getElementById('verification-code')?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') verifyAndEnable();
+      });
+
+      // Enter key for backup code verification
+      document.getElementById('verify-backup-code')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') confirmBackupCode();
       });
     });
   </script>

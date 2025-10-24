@@ -224,6 +224,45 @@ export class AuthRouter {
       // Find or create user
       const user = await findOrCreateUser(result.profile, this.env);
 
+      // Check if 2FA is enabled
+      if (user.totp_enabled === 1) {
+        // Store pending auth data in KV for 2FA verification
+        const pendingAuthId = crypto.randomUUID();
+        const pendingAuthData = {
+          userId: user.id,
+          provider,
+          timestamp: Date.now(),
+        };
+
+        await this.env.RATE_LIMIT_KV.put(
+          `pending_2fa:${pendingAuthId}`,
+          JSON.stringify(pendingAuthData),
+          { expirationTtl: 600 } // 10 minutes
+        );
+
+        // Log OAuth link but not full login yet (waiting for 2FA)
+        await logOAuthLink(user.id, provider, this.request, this.env);
+
+        // Redirect to 2FA verification page
+        const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
+        const twoFAUrl = new URL(frontend + '/callback.html');
+
+        // Pass pending auth ID and user info in hash
+        const pendingData = {
+          requires2FA: true,
+          pendingAuthId,
+          userId: user.id,
+          email: user.email,
+          displayName: user.display_name,
+          provider,
+        };
+
+        twoFAUrl.hash = btoa(JSON.stringify(pendingData));
+
+        return Response.redirect(twoFAUrl.toString(), 302);
+      }
+
+      // No 2FA required - proceed with normal login
       // Create session
       const session = await createSession(user.id, this.request, this.env);
 
@@ -715,7 +754,7 @@ export class AuthRouter {
    */
   async handle2FAVerify() {
     const body = await this.request.json();
-    const { userId, code } = body;
+    const { userId, code, pendingAuthId } = body;
 
     if (!userId) {
       throw new Error('User ID is required');
@@ -736,6 +775,28 @@ export class AuthRouter {
 
     if (!user) {
       throw new Error('User not found');
+    }
+
+    // If this is completing an OAuth flow, verify and log it
+    if (pendingAuthId) {
+      const pendingAuthJson = await this.env.RATE_LIMIT_KV.get(`pending_2fa:${pendingAuthId}`);
+
+      if (!pendingAuthJson) {
+        throw new Error('Invalid or expired pending authentication');
+      }
+
+      const pendingAuth = JSON.parse(pendingAuthJson);
+
+      // Verify user ID matches
+      if (pendingAuth.userId !== userId) {
+        throw new Error('User ID mismatch');
+      }
+
+      // Delete pending auth data (one-time use)
+      await this.env.RATE_LIMIT_KV.delete(`pending_2fa:${pendingAuthId}`);
+
+      // Log successful OAuth login (now that 2FA is complete)
+      await logLogin(user.id, this.request, this.env, pendingAuth.provider);
     }
 
     // 2FA verified - create session and return tokens
