@@ -23,7 +23,21 @@ const ALLOWED_ORIGINS = [
  */
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin');
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+
+  // If the origin is in the allowed list OR is a www variant, echo it back
+  let allowedOrigin = ALLOWED_ORIGINS[0]; // default
+
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    allowedOrigin = origin; // Echo back exact origin
+  } else if (origin) {
+    // Check for www variant
+    const wwwVariant = origin.replace('://', '://www.');
+    const nonWwwVariant = origin.replace('://www.', '://');
+
+    if (ALLOWED_ORIGINS.includes(wwwVariant) || ALLOWED_ORIGINS.includes(nonWwwVariant)) {
+      allowedOrigin = origin; // Echo back the actual origin (with or without www)
+    }
+  }
 
   return {
     'Access-Control-Allow-Origin': allowedOrigin,

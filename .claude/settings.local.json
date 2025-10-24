@@ -12,7 +12,9 @@
       "Bash(git add:*)",
       "Bash(git pull:*)",
       "Bash(timeout 10 curl:*)",
-      "Bash(nslookup:*)"
+      "Bash(nslookup:*)",
+      "Bash(timeout 15 npx wrangler tail:*)",
+      "Bash(timeout 5 npx wrangler tail:*)"
     ],
     "deny": [],
     "ask": []
