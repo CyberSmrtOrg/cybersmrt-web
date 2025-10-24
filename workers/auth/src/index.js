@@ -76,6 +76,24 @@ function jsonResponse(request, env, data, status = 200, includeCredentials = fal
 }
 
 /**
+ * Add CORS headers to response
+ */
+function addCorsHeaders(response, request, env) {
+  const corsHeaders = buildCorsHeaders(request, env, true);
+  const newHeaders = new Headers(response.headers);
+
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    newHeaders.set(key, value);
+  });
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders,
+  });
+}
+
+/**
  * Main request handler
  */
 export default {
@@ -200,7 +218,7 @@ export default {
 
       // Two-Factor Authentication (2FA)
       if (path === '/2fa/setup' && request.method === 'POST') {
-        return await withRateLimit(
+        const response = await withRateLimit(
           '2fa-setup',
           identifiers.user,
           (req, env, ctx) => router.handle2FASetup(),
@@ -208,15 +226,18 @@ export default {
           env,
           _ctx
         );
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/2fa/enable' && request.method === 'POST') {
-        return await router.handle2FAEnable();
+        const response = await router.handle2FAEnable();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/2fa/disable' && request.method === 'POST') {
-        return await router.handle2FADisable();
+        const response = await router.handle2FADisable();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/2fa/verify' && request.method === 'POST') {
-        return await withRateLimit(
+        const response = await withRateLimit(
           '2fa-verify',
           identifiers.ip,
           (req, env, ctx) => router.handle2FAVerify(),
@@ -224,12 +245,15 @@ export default {
           env,
           _ctx
         );
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/2fa/status' && request.method === 'GET') {
-        return await router.handle2FAStatus();
+        const response = await router.handle2FAStatus();
+        return addCorsHeaders(response, request, env);
       }
       if (path === '/2fa/regenerate-backup-codes' && request.method === 'POST') {
-        return await router.handle2FARegenerateBackupCodes();
+        const response = await router.handle2FARegenerateBackupCodes();
+        return addCorsHeaders(response, request, env);
       }
 
       // Admin endpoints (protected by withAdminAuth middleware)
