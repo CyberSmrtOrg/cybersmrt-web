@@ -123,7 +123,7 @@ export async function setup2FA(userId, email, env) {
   await env.DB
     .prepare(`
       UPDATE users
-      SET two_factor_secret = ?
+      SET totp_secret = ?
       WHERE id = ?
     `)
     .bind(secret, userId)
@@ -148,11 +148,11 @@ export async function enable2FA(userId, token, env) {
 
   // Get user's temporary secret
   const user = await env.DB
-    .prepare('SELECT two_factor_secret FROM users WHERE id = ?')
+    .prepare('SELECT totp_secret FROM users WHERE id = ?')
     .bind(userId)
     .first();
 
-  if (!user || !user.two_factor_secret) {
+  if (!user || !user.totp_secret) {
     throw new Error('2FA setup not initiated. Please call setup first.');
   }
 
@@ -162,7 +162,7 @@ export async function enable2FA(userId, token, env) {
     algorithm: 'SHA1',
     digits: 6,
     period: 30,
-    secret: user.two_factor_secret,
+    secret: user.totp_secret,
   });
 
   const delta = totp.validate({ token, window: 1 });
@@ -179,8 +179,8 @@ export async function enable2FA(userId, token, env) {
   await env.DB
     .prepare(`
       UPDATE users
-      SET two_factor_enabled = 1,
-          two_factor_backup_codes = ?,
+      SET totp_enabled = 1,
+          totp_backup_codes = ?,
           updated_at = ?
       WHERE id = ?
     `)
@@ -201,11 +201,11 @@ export async function disable2FA(userId, token, env) {
 
   // Get user's 2FA info
   const user = await env.DB
-    .prepare('SELECT two_factor_enabled, two_factor_secret FROM users WHERE id = ?')
+    .prepare('SELECT totp_enabled, totp_secret FROM users WHERE id = ?')
     .bind(userId)
     .first();
 
-  if (!user || !user.two_factor_enabled) {
+  if (!user || !user.totp_enabled) {
     throw new Error('2FA is not enabled');
   }
 
@@ -215,7 +215,7 @@ export async function disable2FA(userId, token, env) {
     algorithm: 'SHA1',
     digits: 6,
     period: 30,
-    secret: user.two_factor_secret,
+    secret: user.totp_secret,
   });
 
   const delta = totp.validate({ token, window: 1 });
@@ -228,9 +228,9 @@ export async function disable2FA(userId, token, env) {
   await env.DB
     .prepare(`
       UPDATE users
-      SET two_factor_enabled = 0,
-          two_factor_secret = NULL,
-          two_factor_backup_codes = NULL,
+      SET totp_enabled = 0,
+          totp_secret = NULL,
+          totp_backup_codes = NULL,
           updated_at = ?
       WHERE id = ?
     `)
@@ -249,11 +249,11 @@ export async function verify2FA(userId, token, env) {
 
   // Get user's 2FA info
   const user = await env.DB
-    .prepare('SELECT two_factor_enabled, two_factor_secret FROM users WHERE id = ?')
+    .prepare('SELECT totp_enabled, totp_secret FROM users WHERE id = ?')
     .bind(userId)
     .first();
 
-  if (!user || !user.two_factor_enabled) {
+  if (!user || !user.totp_enabled) {
     throw new Error('2FA is not enabled');
   }
 
@@ -263,7 +263,7 @@ export async function verify2FA(userId, token, env) {
     algorithm: 'SHA1',
     digits: 6,
     period: 30,
-    secret: user.two_factor_secret,
+    secret: user.totp_secret,
   });
 
   const delta = totp.validate({ token, window: 1 });
@@ -275,7 +275,7 @@ export async function verify2FA(userId, token, env) {
 
 export async function get2FAStatus(userId, env) {
   const user = await env.DB
-    .prepare('SELECT two_factor_enabled FROM users WHERE id = ?')
+    .prepare('SELECT totp_enabled, totp_backup_codes FROM users WHERE id = ?')
     .bind(userId)
     .first();
 
@@ -283,7 +283,19 @@ export async function get2FAStatus(userId, env) {
     throw new Error('User not found');
   }
 
+  // Count remaining backup codes
+  let backupCodesRemaining = 0;
+  if (user.totp_backup_codes) {
+    try {
+      const codes = JSON.parse(user.totp_backup_codes);
+      backupCodesRemaining = codes.length;
+    } catch (e) {
+      console.error('Error parsing backup codes:', e);
+    }
+  }
+
   return {
-    enabled: user.two_factor_enabled === 1,
+    enabled: user.totp_enabled === 1,
+    backupCodesRemaining,
   };
 }
