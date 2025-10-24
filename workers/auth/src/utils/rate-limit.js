@@ -211,6 +211,8 @@ export function createRateLimitResponse(rateLimitResult, message = 'Too many req
  * Wraps an endpoint handler with rate limiting
  */
 export async function withRateLimit(endpoint, identifierFn, handler, request, env, ctx) {
+  let rateLimitResult;
+
   try {
     // Get identifier (IP, email, user ID, etc.)
     const identifier = await identifierFn(request, env);
@@ -221,7 +223,7 @@ export async function withRateLimit(endpoint, identifierFn, handler, request, en
     }
 
     // Check rate limit
-    const rateLimitResult = await checkRateLimit(endpoint, identifier, env);
+    rateLimitResult = await checkRateLimit(endpoint, identifier, env);
 
     // If rate limit exceeded, return error
     if (!rateLimitResult.allowed) {
@@ -230,11 +232,17 @@ export async function withRateLimit(endpoint, identifierFn, handler, request, en
         `Rate limit exceeded. Please try again in ${rateLimitResult.retryAfter} seconds.`
       );
     }
+  } catch (error) {
+    // If rate limiting itself fails, allow request (fail open)
+    console.error('Rate limiting check error:', error);
+    // Continue to execute handler without rate limiting
+  }
 
-    // Execute handler
-    const response = await handler(request, env, ctx);
+  // Execute handler (outside try-catch to let handler errors propagate)
+  const response = await handler(request, env, ctx);
 
-    // Add rate limit headers to successful response
+  // Add rate limit headers to successful response if we have results
+  if (rateLimitResult) {
     const headers = new Headers(response.headers);
     const rateLimitHeaders = getRateLimitHeaders(rateLimitResult);
     for (const [key, value] of Object.entries(rateLimitHeaders)) {
@@ -246,11 +254,9 @@ export async function withRateLimit(endpoint, identifierFn, handler, request, en
       statusText: response.statusText,
       headers,
     });
-  } catch (error) {
-    // If rate limiting fails, allow request (fail open)
-    console.error('Rate limiting error:', error);
-    return await handler(request, env, ctx);
   }
+
+  return response;
 }
 
 /**
