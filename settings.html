@@ -552,7 +552,7 @@
           </button>
         </div>
 
-        <div class="info-box">
+        <div id="2fa-info-box" class="info-box">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
@@ -764,12 +764,16 @@
           document.getElementById('2fa-button').className = 'btn btn-danger';
           document.getElementById('2fa-description').textContent =
             `Two-factor authentication is enabled. ${data.backupCodesRemaining} backup codes remaining.`;
+          // Hide the info box when 2FA is enabled
+          document.getElementById('2fa-info-box').style.display = 'none';
         } else if (data.success && !data.enabled) {
           // Explicitly handle disabled state
           document.getElementById('2fa-status').textContent = 'Disabled';
           document.getElementById('2fa-status').className = 'status-badge disabled';
           document.getElementById('2fa-button').textContent = 'Enable 2FA';
           document.getElementById('2fa-button').className = 'btn btn-primary';
+          // Show the info box when 2FA is disabled
+          document.getElementById('2fa-info-box').style.display = 'flex';
         }
       } catch (error) {
         console.error('Failed to load 2FA status:', error);
