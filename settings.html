@@ -778,16 +778,8 @@
     }
 
     async function toggle2FA() {
-      const button = document.getElementById('2fa-button');
-      const isEnabled = button.textContent === 'Disable 2FA';
-
-      if (isEnabled) {
-        if (confirm('Are you sure you want to disable two-factor authentication? This will make your account less secure.')) {
-          await disable2FA();
-        }
-      } else {
-        await setup2FA();
-      }
+      // Redirect to the dedicated 2FA settings page
+      window.location.href = '/2fa-settings.html';
     }
 
   /* global QRCode */
