@@ -43,7 +43,7 @@ export async function getDashboardData(userId, env) {
   // Get 2FA status
   const twoFactorStatus = await env.DB
     .prepare(`
-      SELECT two_factor_enabled
+      SELECT totp_enabled
       FROM users
       WHERE id = ?
     `)
@@ -52,7 +52,7 @@ export async function getDashboardData(userId, env) {
 
   // Parse settings or use defaults
   let userSettings = {
-    theme: 'light',
+    theme: 'dark',
     notifications: true,
     emailNotifications: true,
     language: 'en',
@@ -82,7 +82,7 @@ export async function getDashboardData(userId, env) {
     },
     stats: {
       activeSessions: sessionCount?.count || 0,
-      twoFactorEnabled: twoFactorStatus?.two_factor_enabled === 1,
+      twoFactorEnabled: twoFactorStatus?.totp_enabled === 1,
       accountAge: Math.floor((Date.now() / 1000 - user.created_at) / 86400), // days
     },
     settings: userSettings,
