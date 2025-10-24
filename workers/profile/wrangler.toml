@@ -18,6 +18,9 @@ bucket_name = "cybersmrt-uploads"
 FRONTEND_ORIGIN = "https://cybersmrt.org"
 AUTH_API_URL = "https://auth.cybersmrt.org"
 
+# Secrets (set with: wrangler secret put SECRET_NAME)
+# - JWT_SECRET (must match auth worker)
+
 # Triggers
 [triggers]
 crons = []
