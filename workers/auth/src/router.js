@@ -245,7 +245,7 @@ export class AuthRouter {
 
         // Redirect to 2FA verification page
         const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
-        const twoFAUrl = new URL(frontend + '/callback.html');
+        const twoFAUrl = new URL(frontend + '/callback');
 
         // Pass pending auth ID and user info in hash
         const pendingData = {
@@ -300,7 +300,7 @@ export class AuthRouter {
 
       // Redirect to frontend callback page with data in hash
       const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
-      const callbackUrl = new URL(frontend + '/callback.html');
+      const callbackUrl = new URL(frontend + '/callback');
       callbackUrl.hash = encodedData;
 
       // Set session cookie (HttpOnly, Secure)
