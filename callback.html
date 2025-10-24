@@ -245,9 +245,9 @@
         } else if (data.success) {
           statusEl.textContent = 'Success! Redirecting...';
 
-          // Store authentication data
-          localStorage.setItem('access_token', data.tokens.accessToken);
-          localStorage.setItem('refresh_token', data.tokens.refreshToken);
+          // Store authentication data - use camelCase keys to match auth.js
+          localStorage.setItem('accessToken', data.tokens.accessToken);
+          localStorage.setItem('refreshToken', data.tokens.refreshToken);
           localStorage.setItem('user', JSON.stringify(data.user));
 
           if (data.session && data.session.id) {
@@ -330,9 +330,9 @@
         }
 
         if (result.success && result.verified) {
-          // Store authentication data
-          localStorage.setItem('access_token', result.tokens.accessToken);
-          localStorage.setItem('refresh_token', result.tokens.refreshToken);
+          // Store authentication data - use camelCase keys to match auth.js
+          localStorage.setItem('accessToken', result.tokens.accessToken);
+          localStorage.setItem('refreshToken', result.tokens.refreshToken);
           localStorage.setItem('user', JSON.stringify(result.user));
 
           if (result.session && result.session.id) {
