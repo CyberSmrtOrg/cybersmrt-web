@@ -9,7 +9,7 @@ import { encode } from 'hi-base32';
 
 function validateSettings(data) {
   const errors = [];
-  const allowed = ['theme', 'notifications', 'emailNotifications', 'language'];
+  const allowed = ['theme', 'notifications', 'emailNotifications', 'language', 'timezone', 'courseReminders', 'marketing', 'profileVisibility', 'reduceMotion'];
 
   for (const key of Object.keys(data)) {
     if (!allowed.includes(key)) {

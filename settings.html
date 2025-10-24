@@ -727,7 +727,7 @@
       try {
         const response = await window.apiRequest('/settings', {
           method: 'PUT',
-          body: JSON.stringify({ settings })
+          body: JSON.stringify(settings)
         });
 
         const data = await response.json();
