@@ -259,8 +259,8 @@
           statusEl.className = 'success';
           statusEl.innerHTML = `✓ Authentication successful!<br>Welcome ${data.user.displayName || data.user.email}`;
 
-          // Determine redirect location
-          let redirectUrl = '/profile.html';
+          // Determine redirect location - default to dashboard
+          let redirectUrl = `/dashboard/${data.user.id}`;
 
           // Check if user needs to complete setup or verify email
           if (data.user.email_verified === false || data.user.emailVerified === false) {
@@ -269,9 +269,9 @@
             redirectUrl = '/profile.html?setup=true';
           }
 
-          // Redirect after a short delay
+          // Redirect after a short delay - use replace for full reload
           setTimeout(() => {
-            window.location.href = redirectUrl;
+            window.location.replace(redirectUrl);
           }, 1500);
 
         } else {
@@ -346,9 +346,9 @@
           statusEl.className = 'success';
           statusEl.innerHTML = `✓ Successfully authenticated!<br>Welcome ${result.user.displayName || result.user.email}`;
 
-          // Redirect after a short delay
+          // Redirect after a short delay - use window.location.replace for full reload
           setTimeout(() => {
-            window.location.href = '/profile.html';
+            window.location.replace(`/dashboard/${result.user.id}`);
           }, 1500);
         } else {
           throw new Error('Verification failed');
