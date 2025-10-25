@@ -240,7 +240,7 @@
 
     <script>
         // Check if user is already logged in
-        if (localStorage.getItem('access_token')) {
+        if (localStorage.getItem('accessToken')) {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             if (user.id) {
                 // Check if email is verified

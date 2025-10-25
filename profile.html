@@ -201,7 +201,7 @@
 
   <script>
     const API = 'https://profile.cybersmrt.org';
-    const token = () => localStorage.getItem('access_token');
+    const token = () => localStorage.getItem('accessToken');
     if (!token()) window.location.href = '/login.html';
 
     const showAlert = (msg, type = 'success') => {
