@@ -27,21 +27,14 @@ Disallow: /*/_*
 Disallow: /functions/
 Disallow: /workers/
 
-# Block search and filter results to prevent duplicate content
-Disallow: /*?*
-
-# Block assets and technical files
-Disallow: /*.js$
-Disallow: /*.css$
-Disallow: /node_modules/
-
-# Allow specific important JavaScript for rendering
+# Allow JavaScript and CSS for proper rendering
 Allow: /assets/*.js
 Allow: /js/*.js
-
-# Allow CSS for proper rendering in Google previews
 Allow: /assets/*.css
 Allow: /css/*.css
+
+# Block specific technical files
+Disallow: /node_modules/
 
 # Allow images for image search
 Allow: /assets/images/
@@ -64,12 +57,36 @@ Disallow: /.git/
 Disallow: /.github/
 
 # Specific bot rules
-# Google Bot - allow everything not blocked above
+# Google Bot - explicitly allow public pages
 User-agent: Googlebot
+Allow: /
+Allow: /pages/
+Allow: /assets/
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /dashboard.html
+Disallow: /dashboard/
+Disallow: /profile.html
+Disallow: /settings.html
+Disallow: /callback.html
+Disallow: /admin/
+Disallow: /api/
 Crawl-delay: 0
 
 # Bing Bot
 User-agent: Bingbot
+Allow: /
+Allow: /pages/
+Allow: /assets/
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /dashboard.html
+Disallow: /dashboard/
+Disallow: /profile.html
+Disallow: /settings.html
+Disallow: /callback.html
+Disallow: /admin/
+Disallow: /api/
 Crawl-delay: 0
 
 # GPTBot (ChatGPT/OpenAI crawler)
