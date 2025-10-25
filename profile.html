@@ -18,41 +18,51 @@
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); color: var(--text-primary); min-height: 100vh; padding-top: 90px; transition: background 0.3s ease, color 0.3s ease; }
     .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
     .page-header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .tabs { display: flex; gap: 1rem; margin: 2rem 0; border-bottom: 2px solid rgba(148, 163, 184, 0.18); overflow-x: auto; }
-    .tab { padding: 0.75rem 1.5rem; background: none; border: none; color: #94a3b8; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+    .page-header p { color: var(--text-secondary); }
+    .tabs { display: flex; gap: 1rem; margin: 2rem 0; border-bottom: 2px solid var(--border-color); overflow-x: auto; }
+    .tab { padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-secondary); font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s; }
     .tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-    .card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
-    .card h2 { font-size: 1.5rem; color: white; margin-bottom: 1.5rem; }
+    .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+    .card h2 { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; }
     .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; color: #cbd5e1; margin-bottom: 0.5rem; font-weight: 600; }
-    .form-group input, .form-group textarea { width: 100%; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 8px; color: white; font-size: 1rem; }
+    .form-group label { display: block; color: var(--text-primary); margin-bottom: 0.5rem; font-weight: 600; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.75rem 1rem; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 1rem; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-secondary); opacity: 0.6; }
     .form-group textarea { resize: vertical; min-height: 100px; }
     .btn { padding: 0.75rem 1.5rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 1rem; }
     .btn-primary { background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); color: white; }
     .btn-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    .stat-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px; padding: 1rem; }
-    .stat-label { color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem; }
-    .stat-value { color: white; font-size: 1.25rem; font-weight: 600; }
+    .stat-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; }
+    .stat-label { color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem; }
+    .stat-value { color: var(--text-primary); font-size: 1.25rem; font-weight: 600; }
     .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
-    .badge.success { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-    .badge.warning { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-    .badge.danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .badge.success { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .badge.warning { background: rgba(251, 191, 36, 0.2); color: #f59e0b; }
+    .badge.danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
     .log-list { max-height: 500px; overflow-y: auto; }
-    .log-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+    .log-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
     .log-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
     .log-type { font-weight: 600; color: #60a5fa; }
-    .log-time { color: #64748b; font-size: 0.875rem; }
+    .log-time { color: var(--text-secondary); font-size: 0.875rem; }
+    .log-details { color: var(--text-secondary); font-size: 0.875rem; }
     .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: none; }
     .alert.show { display: block; }
-    .alert.success { background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #4ade80; }
-    .alert.error { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; }
+    .alert.success { background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); color: #22c55e; }
+    .alert.error { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
     .danger-zone { border: 2px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); }
-    .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 0.5rem; }
+    .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--text-secondary); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 0.5rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Light mode specific adjustments */
+    [data-theme="light"] .badge.success { color: #16a34a; }
+    [data-theme="light"] .badge.warning { color: #ca8a04; }
+    [data-theme="light"] .badge.danger { color: #dc2626; }
+    [data-theme="light"] .alert.success { color: #16a34a; }
+    [data-theme="light"] .alert.error { color: #dc2626; }
   </style>
 </head>
 <body>
@@ -80,7 +90,7 @@
             <div id="avatar-placeholder" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; border: 2px solid rgba(148, 163, 184, 0.3);"></div>
           </div>
           <div style="flex: 1;">
-            <p style="color: #94a3b8; margin-bottom: 1rem;">Upload a profile picture. JPG, PNG, GIF, or WebP. Max 2MB.</p>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Upload a profile picture. JPG, PNG, GIF, or WebP. Max 2MB.</p>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
               <label class="btn btn-primary" style="cursor: pointer;">
                 <input type="file" id="avatar-input" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
@@ -117,7 +127,7 @@
           <div class="stat-item"><div class="stat-label">2FA</div><div class="stat-value" id="2fa-status">---</div></div>
           <div class="stat-item"><div class="stat-label">Sessions</div><div class="stat-value" id="active-sessions">---</div></div>
         </div>
-        <div style="margin-top: 1.5rem;"><h3 style="color: white; margin-bottom: 1rem;">Providers</h3><div id="providers-list"></div></div>
+        <div style="margin-top: 1.5rem;"><h3 style="color: var(--text-primary); margin-bottom: 1rem;">Providers</h3><div id="providers-list"></div></div>
         <div style="margin-top: 2rem;"><a href="/2fa-settings.html" class="btn btn-primary">Manage 2FA</a></div>
       </div>
     </div>
@@ -138,7 +148,7 @@
     <div id="data-tab" class="tab-content">
       <div class="card">
         <h2>Export Data</h2>
-        <p style="color: #94a3b8; margin-bottom: 1.5rem;">GDPR-compliant data export including all your profile data, security logs, sessions, uploaded files, and more.</p>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">GDPR-compliant data export including all your profile data, security logs, sessions, uploaded files, and more.</p>
         <button id="export-btn" class="btn btn-primary">Export My Data</button>
       </div>
 
@@ -163,7 +173,7 @@
 
       <div class="card danger-zone">
         <h2>Delete Account</h2>
-        <p style="color: #94a3b8; margin-bottom: 1.5rem;">
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
           <strong>Deleting your account will:</strong><br>
           • Permanently remove all your data<br>
           • Delete all uploaded files<br>
@@ -173,15 +183,15 @@
         </p>
 
         <div style="margin-bottom: 1.5rem;">
-          <h3 style="color: white; margin-bottom: 0.5rem;">Choose Deletion Method:</h3>
+          <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Choose Deletion Method:</h3>
           <div style="display: flex; gap: 1rem; margin-top: 1rem;">
             <label style="display: flex; align-items: center; cursor: pointer;">
               <input type="radio" name="deletion-method" value="scheduled" checked style="margin-right: 0.5rem;">
-              <span style="color: #cbd5e1;">Scheduled (30-day grace period)</span>
+              <span style="color: var(--text-primary);">Scheduled (30-day grace period)</span>
             </label>
             <label style="display: flex; align-items: center; cursor: pointer;">
               <input type="radio" name="deletion-method" value="immediate" style="margin-right: 0.5rem;">
-              <span style="color: #cbd5e1;">Immediate (no grace period)</span>
+              <span style="color: var(--text-primary);">Immediate (no grace period)</span>
             </label>
           </div>
         </div>
@@ -284,7 +294,7 @@
       .then(r => r.json())
       .then(d => {
         if (d.logs.length === 0) {
-          document.getElementById('security-logs').innerHTML = '<p style="color: #64748b;">No events</p>';
+          document.getElementById('security-logs').innerHTML = '<p class="log-details">No events</p>';
           return;
         }
 
@@ -304,14 +314,14 @@
             `<span class="badge ${security.riskLevel === 'critical' || security.riskLevel === 'high' ? 'danger' : security.riskLevel === 'medium' ? 'warning' : 'success'}" style="margin-left: 0.5rem;">${security.riskLevel.toUpperCase()}</span>` : '';
 
           const deviceInfo = device.browser || device.os ?
-            `<div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem;">
+            `<div class="log-details" style="font-size: 0.875rem; margin-top: 0.25rem;">
               ${device.browser ? `📱 ${device.browser}` : ''}
               ${device.os ? `• ${device.os}` : ''}
               ${device.type ? `• ${device.type}` : ''}
             </div>` : '';
 
           const locationInfo = geo.location ?
-            `<div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem;">
+            `<div class="log-details" style="font-size: 0.875rem; margin-top: 0.25rem;">
               📍 ${geo.location}
             </div>` : '';
 
@@ -328,7 +338,7 @@
               <span class="log-type">${l.event_type.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')}${riskBadge}</span>
               <span class="log-time">${new Date(l.created_at * 1000).toLocaleString()}</span>
             </div>
-            <div style="color: #94a3b8; font-size: 0.875rem;">IP: ${l.ip_address}</div>
+            <div class="log-details" style="font-size: 0.875rem;">IP: ${l.ip_address}</div>
             ${deviceInfo}
             ${locationInfo}
             ${securityFlags}
