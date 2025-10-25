@@ -119,8 +119,8 @@ export async function handleMicrosoftCallback(code, env) {
   // Exchange code for tokens
   const tokens = await exchangeMicrosoftCode(code, env);
 
-  // Get user profile
-  const profile = await getMicrosoftUserInfo(tokens.accessToken, env);
+  // Get user profile (Microsoft returns access_token not accessToken)
+  const profile = await getMicrosoftUserInfo(tokens.access_token, env);
 
   return {
     tokens,

@@ -1,0 +1,45 @@
+/* TEAM */
+    Organization: CyberSmrt
+    Site: https://cybersmrt.org
+    Location: United States
+
+/* THANKS */
+    Claude AI - Development assistance
+    Cloudflare - Infrastructure & hosting
+    Open Source Community - Security tools & libraries
+
+/* SITE */
+    Last update: 2025/10/25
+    Standards: HTML5, CSS3, ES6+
+    Components: React, Cloudflare Workers, D1 Database
+    Software: VS Code, Wrangler CLI, Git
+
+/* STACK */
+    Backend: Cloudflare Workers (auth, profile, api, qr-proxy)
+    Database: Cloudflare D1 (SQLite)
+    Storage: Cloudflare R2, KV
+    Frontend: Vanilla JS, CSS Custom Properties
+    Authentication: OAuth 2.0 (Google, GitHub, Microsoft), 2FA/TOTP
+    Security: bcryptjs, jose (JWT), Turnstile CAPTCHA
+
+/* FEATURES */
+    - Two-Factor Authentication (TOTP & Backup Codes)
+    - OAuth Single Sign-On
+    - QR Code Security Scanner
+    - Phishing Email Detector
+    - Password Strength Checker
+    - Dark/Light Theme Support
+    - Security Activity Logging
+    - Session Management
+
+/* MISSION */
+    CyberSmrt is a nonprofit organization dedicated to providing
+    free cybersecurity education and tools to underserved communities.
+    We believe everyone deserves access to the knowledge and resources
+    needed to protect themselves online.
+
+    Learn more: https://cybersmrt.org/pages/about/mission
+
+/* CONTACT */
+    Email: info@cybersmrt.org
+    GitHub: https://github.com/CyberSmrtOrg

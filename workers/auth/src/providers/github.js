@@ -122,8 +122,8 @@ export async function handleGitHubCallback(code, env) {
   // Exchange code for tokens
   const tokens = await exchangeGitHubCode(code, env);
 
-  // Get user profile
-  const profile = await getGitHubUserInfo(tokens.accessToken, env);
+  // Get user profile (GitHub returns access_token not accessToken)
+  const profile = await getGitHubUserInfo(tokens.access_token, env);
 
   return {
     tokens,

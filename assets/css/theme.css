@@ -50,10 +50,10 @@
   --toggle-border: rgba(148, 163, 184, 0.5);
   --toggle-knob: #94a3b8;
 
-  /* Status colors - darker for better contrast in light mode */
-  --success-bg: rgba(34, 197, 94, 0.15);
-  --success-border: rgba(34, 197, 94, 0.3);
-  --success-text: #15803d;
+  /* Status colors - green background with grey text for badges */
+  --success-bg: #22c55e;
+  --success-border: #16a34a;
+  --success-text: #64748b;
   --warning-bg: rgba(251, 191, 36, 0.15);
   --warning-border: rgba(251, 191, 36, 0.3);
   --warning-text: #a16207;

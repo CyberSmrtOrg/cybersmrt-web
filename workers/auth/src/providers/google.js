@@ -118,8 +118,8 @@ export async function handleGoogleCallback(code, env) {
   // Exchange code for tokens
   const tokens = await exchangeGoogleCode(code, env);
 
-  // Get user profile
-  const profile = await getGoogleUserInfo(tokens.accessToken, env);
+  // Get user profile (Google returns access_token not accessToken)
+  const profile = await getGoogleUserInfo(tokens.access_token, env);
 
   return {
     tokens,

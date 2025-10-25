@@ -1,16 +1,117 @@
 # robots.txt for cybersmrt.org
+# Enhanced SEO and security configuration
 
+# Default crawl rules for all bots
 User-agent: *
 Allow: /
 
-# Block admin pages
+# Block authentication and user-specific pages
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /dashboard.html
+Disallow: /dashboard/
+Disallow: /profile.html
+Disallow: /settings.html
+Disallow: /callback.html
+
+# Block admin interfaces
 Disallow: /admin/
+Disallow: /admin.html
 
-# Block template files
+# Block API endpoints (use API docs instead)
+Disallow: /api/
+Disallow: /*.json$
+
+# Block template and function files
 Disallow: /*/_*
-
-# Block function files
 Disallow: /functions/
+Disallow: /workers/
 
-# Sitemap location
+# Block search and filter results to prevent duplicate content
+Disallow: /*?*
+
+# Block assets and technical files
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /node_modules/
+
+# Allow specific important JavaScript for rendering
+Allow: /assets/*.js
+Allow: /js/*.js
+
+# Allow CSS for proper rendering in Google previews
+Allow: /assets/*.css
+Allow: /css/*.css
+
+# Allow images for image search
+Allow: /assets/images/
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+
+# Block backup and temporary files
+Disallow: /*.bak$
+Disallow: /*.tmp$
+Disallow: /*~$
+Disallow: /*.log$
+
+# Block version control
+Disallow: /.git/
+Disallow: /.github/
+
+# Specific bot rules
+# Google Bot - allow everything not blocked above
+User-agent: Googlebot
+Crawl-delay: 0
+
+# Bing Bot
+User-agent: Bingbot
+Crawl-delay: 0
+
+# GPTBot (ChatGPT/OpenAI crawler)
+User-agent: GPTBot
+Allow: /pages/blog/
+Allow: /pages/resources/
+Allow: /pages/about/
+Disallow: /
+
+# Common Crawlers (CCBot)
+User-agent: CCBot
+Disallow: /
+
+# Block aggressive scrapers and bad bots
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Block AI training bots that don't respect content
+User-agent: anthropic-ai
+Allow: /pages/blog/
+Allow: /pages/resources/
+Disallow: /
+
+User-agent: Claude-Web
+Allow: /pages/blog/
+Allow: /pages/resources/
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+# Sitemap locations
 Sitemap: https://cybersmrt.org/sitemap.xml
+
+# Host (helps with canonical URL)
+Host: https://cybersmrt.org
