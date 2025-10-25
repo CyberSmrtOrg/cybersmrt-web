@@ -113,8 +113,8 @@ export async function refreshAppleToken(refreshToken, env) {
     body: new URLSearchParams({
       client_id: config.clientId,
       client_secret: clientSecret,
-      refresh_token: refreshToken,
-      grant_type: 'refresh_token',
+      refreshToken: refreshToken,
+      grant_type: 'refreshToken',
     }),
   });
 

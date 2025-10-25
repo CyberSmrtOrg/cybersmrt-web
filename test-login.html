@@ -97,8 +97,8 @@
       const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OGY3MTIzYy04Y2I2LTRhYmEtYmUzZi1hOTA3ZDVkMmUzYWMiLCJleHAiOjk5OTk5OTk5OTl9.fake';
 
       // Store in localStorage
-      localStorage.setItem('access_token', fakeToken);
-      localStorage.setItem('refresh_token', 'fake_refresh_token');
+      localStorage.setItem('accessToken', fakeToken);
+      localStorage.setItem('refreshToken', 'fake_refreshToken');
       localStorage.setItem('user', JSON.stringify(fakeUser));
 
       console.log('✅ Test login successful');
@@ -119,8 +119,8 @@
     }
 
   function clearAuth() {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
       localStorage.removeItem('session_id');
       alert('Auth cleared! You are now logged out.');

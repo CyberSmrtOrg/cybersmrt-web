@@ -99,8 +99,8 @@ export async function refreshMicrosoftToken(refreshToken, env) {
     body: new URLSearchParams({
       client_id: config.clientId,
       client_secret: config.clientSecret,
-      refresh_token: refreshToken,
-      grant_type: 'refresh_token',
+      refreshToken: refreshToken,
+      grant_type: 'refreshToken',
     }),
   });
 
@@ -120,7 +120,7 @@ export async function handleMicrosoftCallback(code, env) {
   const tokens = await exchangeMicrosoftCode(code, env);
 
   // Get user profile
-  const profile = await getMicrosoftUserInfo(tokens.access_token, env);
+  const profile = await getMicrosoftUserInfo(tokens.accessToken, env);
 
   return {
     tokens,

@@ -205,17 +205,17 @@ npx wrangler dev
 
 ```bash
 # Get current user (use accessToken from login)
-curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+curl -H "Authorization: Bearer YOUR_accessToken" \
   http://localhost:8787/me
 
 # Refresh token
 curl -X POST http://localhost:8787/refresh \
   -H "Content-Type: application/json" \
-  -d '{"refreshToken": "YOUR_REFRESH_TOKEN"}'
+  -d '{"refreshToken": "YOUR_refreshToken"}'
 
 # Logout
 curl -X POST http://localhost:8787/logout \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+  -H "Authorization: Bearer YOUR_accessToken"
 ```
 
 ---

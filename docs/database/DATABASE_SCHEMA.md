@@ -39,8 +39,8 @@ OAuth provider connections (Google, GitHub, etc.).
 | user_id | TEXT | NOT NULL | FK to users.id |
 | provider | TEXT | NOT NULL | google, github, microsoft, apple |
 | provider_user_id | TEXT | NOT NULL | Provider's user ID |
-| access_token | TEXT | NULL | Encrypted OAuth token |
-| refresh_token | TEXT | NULL | Encrypted refresh token |
+| accessToken | TEXT | NULL | Encrypted OAuth token |
+| refreshToken | TEXT | NULL | Encrypted refresh token |
 | token_expires_at | INTEGER | NULL | Unix timestamp |
 | profile_data | TEXT | NULL | JSON profile data |
 | created_at | INTEGER | NOT NULL | Unix timestamp |

@@ -16,7 +16,7 @@ export const PROVIDERS = {
   github: {
     name: 'GitHub',
     authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-    tokenEndpoint: 'https://github.com/login/oauth/access_token',
+    tokenEndpoint: 'https://github.com/login/oauth/accessToken',
     userInfoEndpoint: 'https://api.github.com/user',
     emailEndpoint: 'https://api.github.com/user/emails',
     scope: 'read:user user:email',
