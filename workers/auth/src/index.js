@@ -1,6 +1,7 @@
 /**
  * CyberSmrt OAuth Authentication Worker
  * Main entry point
+ * Version: 1.0.1
  */
 
 import { AuthRouter } from './router.js';
