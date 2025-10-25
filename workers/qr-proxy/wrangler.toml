@@ -43,13 +43,12 @@ VERSION = "2.1.0-secure"
 ENVIRONMENT = "production"
 
 [observability]
-enabled = false
+enabled = true
 head_sampling_rate = 1
 
 [observability.logs]
 enabled = true
 head_sampling_rate = 1
-persist = true
 invocation_logs = true
 
 # SECURITY: Secrets must be set via CLI, NEVER in this file
@@ -71,10 +70,6 @@ id = "dev_namespace_id_here"  # Create with: wrangler kv:namespace create BLOCKE
 
 [env.development.vars]
 ENVIRONMENT = "development"
-
-# Observability
-[observability]
-enabled = true
 
 # Scheduled tasks for cleanup (data retention compliance)
 # Runs daily at 2 AM UTC

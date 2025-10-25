@@ -38,13 +38,12 @@ FRONTEND_ORIGIN = "https://cybersmrt.org"
 SESSION_EXPIRY = 2592000
 
 [observability]
-enabled = false
+enabled = true
 head_sampling_rate = 1
 
 [observability.logs]
 enabled = true
 head_sampling_rate = 1
-persist = true
 invocation_logs = true
 
 # Secrets (set with: wrangler secret put SECRET_NAME)
