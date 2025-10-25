@@ -13,6 +13,16 @@ database_id = "fe041848-b5e6-44b9-8de4-a43d4ef4c370"
 binding = "UPLOADS"
 bucket_name = "cybersmrt-uploads"
 
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
 # Environment variables
 [vars]
 FRONTEND_ORIGIN = "https://cybersmrt.org"

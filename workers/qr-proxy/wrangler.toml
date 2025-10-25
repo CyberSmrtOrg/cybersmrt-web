@@ -42,6 +42,16 @@ SERVICE_NAME = "CyberSmrt QR Proxy"
 VERSION = "2.1.0-secure"
 ENVIRONMENT = "production"
 
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
 # SECURITY: Secrets must be set via CLI, NEVER in this file
 # Set secrets with:
 #   wrangler secret put VIRUSTOTAL_API_KEY
