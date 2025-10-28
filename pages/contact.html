@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact CyberSmrt - Get in Touch | Free Cybersecurity Education Nonprofit</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Contact CyberSmrt for questions about our free cybersecurity education programs, K-12 curriculum, tools, partnerships, donations, or volunteer opportunities. We're here to help!">
+  <meta name="keywords" content="contact cybersmrt, cybersecurity education contact, nonprofit contact, K-12 curriculum questions, partnership inquiry, volunteer contact">
+  <meta name="author" content="CyberSmrt">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://cybersmrt.org/pages/contact">
+
+  <!-- OpenGraph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cybersmrt.org/pages/contact">
+  <meta property="og:title" content="Contact CyberSmrt - Get in Touch">
+  <meta property="og:description" content="Contact CyberSmrt for questions about our free cybersecurity education programs, K-12 curriculum, tools, partnerships, or volunteer opportunities.">
+  <meta property="og:image" content="https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="CyberSmrt">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://cybersmrt.org/pages/contact">
+  <meta name="twitter:title" content="Contact CyberSmrt - Get in Touch">
+  <meta name="twitter:description" content="Contact CyberSmrt for questions about our free cybersecurity education programs, K-12 curriculum, tools, partnerships, or volunteer opportunities.">
+  <meta name="twitter:image" content="https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png">
+  <meta name="twitter:site" content="@cybersmrt">
+  <meta name="twitter:creator" content="@cybersmrt">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "CyberSmrt",
+    "url": "https://cybersmrt.org",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "General Inquiries",
+      "email": "tony@cybersmrt.org",
+      "availableLanguage": "English"
+    }]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cybersmrt.org"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Contact",
+        "item": "https://cybersmrt.org/pages/contact"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="/assets/logos/cybersmrt-logo-only.png" type="image/png">
+
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scrollbar-gutter: stable both-edges;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Hero Section */
+    .page-hero {
+      background: linear-gradient(135deg, #0a0f23 0%, #667eea 100%);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page-hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .page-hero p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Contact Info Sidebar */
+    .contact-info {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      height: fit-content;
+    }
+
+    .contact-info h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #667eea;
+    }
+
+    .info-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .info-item h3 {
+      font-size: 1.1rem;
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-item p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .info-item a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .info-item a:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+
+    /* Contact Form */
+    .contact-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+    }
+
+    .contact-form h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: #667eea;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-group label .required {
+      color: #f87171;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23cbd5e1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .form-group select option {
+      background: #1a1a1a;
+      color: #ffffff;
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-helper {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-top: 0.25rem;
+    }
+
+    /* Turnstile Container */
+    .turnstile-container {
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Success/Error Messages */
+    .message {
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .page-hero {
+        padding: 3rem 1.5rem 2rem;
+      }
+
+      .contact-form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-mount"></div>
+  <script defer src="/assets/js/header-loader.js"></script>
+
+  <!-- No-JS Header Fallback -->
+  <noscript>
+    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+      <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+      <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
+      <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+      <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="/pages/contact" style="color:#fff">Contact</a>
+    </nav>
+  </noscript>
+
+  <!-- Hero Section -->
+  <section class="page-hero">
+    <div class="hero-content">
+      <h1>Get in Touch</h1>
+      <p>Have questions about our programs, tools, or partnerships? We'd love to hear from you!</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="contact-grid">
+      <!-- Contact Information Sidebar -->
+      <aside class="contact-info">
+        <h2>Contact Information</h2>
+
+        <div class="info-item">
+          <h3>📧 Email</h3>
+          <p><a href="mailto:tony@cybersmrt.org">tony@cybersmrt.org</a></p>
+          <p class="form-helper">We typically respond within 24-48 hours</p>
+        </div>
+
+        <div class="info-item">
+          <h3>🏢 Organization</h3>
+          <p>CyberSmrt Inc.</p>
+          <p>Service-Disabled Veteran-Owned</p>
+          <p>501(c)(3) Nonprofit</p>
+        </div>
+
+        <div class="info-item">
+          <h3>📍 Location</h3>
+          <p>Seattle, WA</p>
+          <p>Serving communities nationwide</p>
+        </div>
+
+        <div class="info-item">
+          <h3>🔗 Connect</h3>
+          <p><a href="https://github.com/CyberSmrtOrg" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+          <p class="form-helper">Follow our open-source projects</p>
+        </div>
+
+        <div class="info-item">
+          <h3>⏰ Response Time</h3>
+          <p>General Inquiries: 24-48 hours</p>
+          <p>Partnership Requests: 3-5 business days</p>
+          <p>Technical Support: 48-72 hours</p>
+        </div>
+      </aside>
+
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h2>Send Us a Message</h2>
+
+        <div id="formMessage" class="message"></div>
+
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input type="text" id="firstName" name="firstName" required>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Last Name <span class="required">*</span></label>
+              <input type="text" id="lastName" name="lastName" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required>
+            <p class="form-helper">We'll never share your email with anyone else</p>
+          </div>
+
+          <div class="form-group">
+            <label for="organization">Organization / School (Optional)</label>
+            <input type="text" id="organization" name="organization">
+          </div>
+
+          <div class="form-group">
+            <label for="reason">Reason for Contact <span class="required">*</span></label>
+            <select id="reason" name="reason" required>
+              <option value="">-- Please Select --</option>
+              <option value="general">General Question</option>
+              <option value="curriculum">K-12 Curriculum Inquiry</option>
+              <option value="partnership">School/Organization Partnership</option>
+              <option value="donation">Donation / Sponsorship</option>
+              <option value="volunteer">Volunteer Opportunity</option>
+              <option value="board">Board Member Interest</option>
+              <option value="tools">Tool Support (QR Scanner, Phishing Detector)</option>
+              <option value="grant">Grant / Foundation Inquiry</option>
+              <option value="media">Media / Press Inquiry</option>
+              <option value="technical">Technical Issue</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message <span class="required">*</span></label>
+            <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
+          </div>
+
+          <!-- Cloudflare Turnstile -->
+          <div class="turnstile-container">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAAksDP4jt0khKOSO" data-theme="dark"></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section style="margin-top: 4rem; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 16px;">
+      <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #667eea; text-align: center;">Common Questions</h2>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">Are your programs really free?</summary>
+          <p style="margin-top: 0.5rem; color: #cbd5e1;">Yes! All our educational programs, curriculum, and tools are 100% free. We're a 501(c)(3) nonprofit dedicated to democratizing cybersecurity education.</p>
+        </details>
+
+        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">How can my school use your K-12 curriculum?</summary>
+          <p style="margin-top: 0.5rem; color: #cbd5e1;">Contact us using the form above with "K-12 Curriculum Inquiry" as your reason. We'll provide access to our standards-aligned curriculum and implementation support.</p>
+        </details>
+
+        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">Do you accept corporate sponsorships?</summary>
+          <p style="margin-top: 0.5rem; color: #cbd5e1;">Absolutely! Select "Donation / Sponsorship" as your contact reason and we'll discuss partnership opportunities. All donations are tax-deductible.</p>
+        </details>
+
+        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">How can I volunteer?</summary>
+          <p style="margin-top: 0.5rem; color: #cbd5e1;">We welcome volunteers! Select "Volunteer Opportunity" and tell us about your background and how you'd like to contribute.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Form submission handler
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formMessage = document.getElementById('formMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // Get Turnstile token
+      const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+      if (!turnstileToken) {
+        showMessage('Please complete the security verification', 'error');
+        return;
+      }
+
+      data.turnstileToken = turnstileToken;
+
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      try {
+        // TODO: Replace with your actual contact form endpoint
+        // For now, we'll use FormSubmit.co as a simple solution
+        const response = await fetch('https://formsubmit.co/ajax/tony@cybersmrt.org', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          showMessage('Thank you! Your message has been sent successfully. We\'ll get back to you soon.', 'success');
+          form.reset();
+          // Reset Turnstile
+          if (window.turnstile) {
+            window.turnstile.reset();
+          }
+        } else {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        showMessage('Sorry, there was an error sending your message. Please try emailing us directly at tony@cybersmrt.org', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }
+    });
+
+    function showMessage(text, type) {
+      formMessage.textContent = text;
+      formMessage.className = `message ${type} show`;
+      formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      if (type === 'success') {
+        setTimeout(() => {
+          formMessage.classList.remove('show');
+        }, 10000);
+      }
+    }
+
+    // Dynamic form helper based on reason selection
+    const reasonSelect = document.getElementById('reason');
+    const messageTextarea = document.getElementById('message');
+
+    const placeholders = {
+      'general': 'Tell us how we can help...',
+      'curriculum': 'Please tell us about your school, grade levels you teach, and how you\'d like to use our curriculum...',
+      'partnership': 'Tell us about your organization and the type of partnership you\'re interested in...',
+      'donation': 'Please share information about your organization and sponsorship interests...',
+      'volunteer': 'Tell us about your background and how you\'d like to contribute...',
+      'board': 'Please share your relevant experience and why you\'re interested in joining our board...',
+      'tools': 'Which tool are you having issues with? Please describe the problem...',
+      'grant': 'Tell us about your foundation and grant opportunities...',
+      'media': 'Please provide details about your publication and inquiry...',
+      'technical': 'Please describe the technical issue you\'re experiencing...',
+      'other': 'Tell us how we can help...'
+    };
+
+    reasonSelect.addEventListener('change', (e) => {
+      const selectedReason = e.target.value;
+      if (placeholders[selectedReason]) {
+        messageTextarea.placeholder = placeholders[selectedReason];
+      }
+    });
+  </script>
+</body>
+</html>
