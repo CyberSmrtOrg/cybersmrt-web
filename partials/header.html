@@ -49,6 +49,7 @@
       background: white;
       color: #667eea;
       padding: 0.625rem 1.75rem;
+      min-height: 44px; /* WCAG 2.1 touch target compliance */
       border-radius: 50px;
       border: none;
       font-weight: 600;
@@ -56,6 +57,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
+      /* Improve mobile touch responsiveness */
+      -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .header-signin-btn:hover {
       transform: translateY(-2px);
@@ -218,6 +224,9 @@
       .header-signin-btn {
         width: 100%;
         max-width: 250px;
+        min-height: 52px; /* Larger touch target on mobile */
+        padding: 0.875rem 1.75rem;
+        font-size: 1rem;
       }
       .user-dropdown {
         right: 1rem;
