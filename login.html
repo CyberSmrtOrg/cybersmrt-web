@@ -78,6 +78,7 @@
             justify-content: center;
             gap: 0.75rem;
             padding: 1rem;
+            min-height: 56px; /* Ensures WCAG 2.1 compliance (44px minimum + padding) */
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
@@ -87,6 +88,11 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            /* Improve touch responsiveness */
+            -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .oauth-btn:hover {
@@ -186,6 +192,16 @@
 
             h1 {
                 font-size: 1.75rem;
+            }
+
+            .oauth-btn {
+                min-height: 60px; /* Larger touch target on mobile */
+                padding: 1.125rem 1rem;
+                font-size: 1.05rem;
+            }
+
+            .oauth-buttons {
+                gap: 1.25rem; /* More spacing between buttons on mobile */
             }
         }
     </style>
