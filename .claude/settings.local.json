@@ -14,7 +14,18 @@
       "Bash(timeout 10 curl:*)",
       "Bash(nslookup:*)",
       "Bash(timeout 15 npx wrangler tail:*)",
-      "Bash(timeout 5 npx wrangler tail:*)"
+      "Bash(timeout 5 npx wrangler tail:*)",
+      "Read(//c/Users/antho/**)",
+      "Bash(python:*)",
+      "Bash(echo:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(powershell -Command \"Get-ChildItem ''C:\\Users\\antho\\AppData\\Roaming'' | Where-Object { $_Name -match ''claude'' -or $_Name -match ''Claude'' }\")",
+      "Bash(powershell -Command \"[Environment]::GetEnvironmentVariable(''CLICKUP_PERSONAL_TOKEN'', ''User'')\")",
+      "Bash(timeout 30 python:*)",
+      "Bash(set CLICKUP_PERSONAL_TOKEN=pk_138096830_H7Z1UH3LE4E9QR8E598ZJQGPJZJYSC0D)",
+      "Bash(git stash:*)",
+      "Bash(pip install:*)"
     ],
     "deny": [],
     "ask": []

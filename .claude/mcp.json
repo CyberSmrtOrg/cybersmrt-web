@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "clickup": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@nazruden/clickup-server"
+      ]
+    }
+  }
+}
