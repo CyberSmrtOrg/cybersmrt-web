@@ -25,7 +25,8 @@
       "Bash(timeout 30 python:*)",
       "Bash(set CLICKUP_PERSONAL_TOKEN=pk_138096830_H7Z1UH3LE4E9QR8E598ZJQGPJZJYSC0D)",
       "Bash(git stash:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

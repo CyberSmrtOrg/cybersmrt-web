@@ -1,7 +1,54 @@
 // /assets/js/globe-hero.js
-import * as THREE from 'https://esm.sh/three@0.168.0';
-import ThreeGlobe from 'https://esm.sh/three-globe@2.31.1?deps=three@0.168.0&exports=default';
-import { feature } from 'https://esm.sh/topojson-client@3.1.0';
+// At the top of globe-hero.js
+console.log('🌍 Globe script starting...');
+
+try {
+  // Import THREE.js
+  const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js')
+    .then(m => {
+      console.log('✅ THREE.js loaded');
+      return m;
+    })
+    .catch(e => {
+      console.error('❌ THREE.js failed:', e);
+      throw e;
+    });
+
+  // Import ThreeGlobe
+  const ThreeGlobeModule = await import('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.mjs')
+    .then(m => {
+      console.log('✅ ThreeGlobe loaded');
+      return m;
+    })
+    .catch(e => {
+      console.error('❌ ThreeGlobe failed:', e);
+      throw e;
+    });
+  const ThreeGlobe = ThreeGlobeModule.default;
+
+  // Import topojson
+  const topojson = await import('https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm')
+    .then(m => {
+      console.log('✅ topojson loaded');
+      return m;
+    })
+    .catch(e => {
+      console.error('❌ topojson failed:', e);
+      throw e;
+    });
+  const { feature } = topojson;
+
+  console.log('✅ All globe dependencies loaded');
+
+  // ... rest of your globe code here ...
+
+} catch (error) {
+  console.error('🌍 Globe initialization failed:', error);
+  const mountEl = document.getElementById('globe-hero');
+  if (mountEl) {
+    mountEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
+  }
+}
 
 // ========================================
 // RAM MANAGEMENT - ADDED FOR MEMORY OPTIMIZATION
