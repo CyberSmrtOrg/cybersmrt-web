@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Cybersecurity Education for Everyone | CyberSmrt Nonprofit</title>
+  <title>CyberSmrt | Cybersecurity Nonprofit</title>
 
   <script type="importmap">
   {
@@ -1514,19 +1514,29 @@
   <script defer src="/assets/js/footer-loader.js"></script>
   <script defer src="/assets/js/footer-init.js"></script>
 
-  <!-- Globe module -->
+  <!-- Globe dependencies and script -->
+  <script src="https://unpkg.com/three@0.168.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three-globe@2.31.1/dist/three-globe.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+
   <script>
-  const globeEl = document.getElementById('globe-hero');
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      const script = document.createElement('script');
-      script.type = 'module';
-      script.src = '/assets/js/globe-hero.js?v=8';
-      document.body.appendChild(script);
-      observer.disconnect();
-    }
-  }, { threshold: 0.1 });
-  if (globeEl) observer.observe(globeEl);
+    // Load globe when visible (performance optimization)
+    const globeEl = document.getElementById('globe-hero');
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        const script = document.createElement('script');
+        script.src = '/assets/js/globe-hero.js?v=9';
+        script.onerror = () => {
+          console.error('Failed to load globe script');
+          if (globeEl) {
+            globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
+          }
+        };
+        document.body.appendChild(script);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (globeEl) observer.observe(globeEl);
   </script>
 
 

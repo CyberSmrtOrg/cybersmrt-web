@@ -1,9 +1,23 @@
-// /assets/js/globe-hero.js
-import * as THREE from 'three';
-import ThreeGlobe from 'three-globe';
-import { feature } from 'topojson-client';
+// /assets/js/globe-hero.js - Non-Module Version
+// Libraries loaded via script tags, accessed from window
+const THREE = window.THREE;
+const ThreeGlobe = window.ThreeGlobe;
+const { feature } = window.topojson;
 
-console.log('🌍 Globe starting with:', { THREE, ThreeGlobe, feature });
+console.log('🌍 Globe starting with:', {
+  THREE: !!THREE,
+  ThreeGlobe: !!ThreeGlobe,
+  feature: !!feature
+});
+
+if (!THREE || !ThreeGlobe || !feature) {
+  console.error('❌ Globe dependencies not loaded');
+  const mountEl = document.getElementById('globe-hero');
+  if (mountEl) {
+    mountEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe dependencies failed to load.</div>';
+  }
+  throw new Error('Globe dependencies missing');
+}
 
 // ========================================
 // RAM MANAGEMENT - ADDED FOR MEMORY OPTIMIZATION
@@ -39,7 +53,7 @@ if (document.readyState === 'loading') {
 }
 
 // ========================================
-// ORIGINAL CODE BELOW - UNCHANGED
+// GLOBE INITIALIZATION
 // ========================================
 
 const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
@@ -521,6 +535,8 @@ async function init() {
 
   // Start attack simulation
   startWeightedTraffic();
+
+  console.log('✅ Globe initialized successfully');
 }
 
 // ===== Update Globe Layers =====
@@ -593,7 +609,7 @@ window.CyberGlobe = {
 };
 
 // ===== Ticker Management =====
-function addTickerRow({ id, _category, cfg, origin, dest, vector }) {
+function addTickerRow({ id, category, cfg, origin, dest, vector }) {
   if (!tickerEl) return;
 
   const row = document.createElement('div');
