@@ -1,30 +1,9 @@
 // /assets/js/globe-hero.js
-console.log('🌍 Globe script starting...');
+import * as THREE from 'three';
+import ThreeGlobe from 'three-globe';
+import { feature } from 'topojson-client';
 
-// Load THREE.js first
-const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js')
-  .then(m => {
-    console.log('✅ THREE.js loaded');
-    window.THREE = m; // Make THREE global for three-globe
-    return m;
-  });
-
-// Now load three-globe (it will find THREE on window)
-const ThreeGlobeModule = await import('https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.mjs')
-  .then(m => {
-    console.log('✅ ThreeGlobe loaded');
-    return m;
-  });
-const ThreeGlobe = ThreeGlobeModule.default;
-
-// Load topojson
-const { feature } = await import('https://cdn.skypack.dev/topojson-client@3.1.0')
-  .then(m => {
-    console.log('✅ topojson loaded');
-    return m;
-  });
-
-console.log('✅ All dependencies loaded successfully');
+console.log('🌍 Globe starting with:', { THREE, ThreeGlobe, feature });
 
 // ========================================
 // RAM MANAGEMENT - ADDED FOR MEMORY OPTIMIZATION
