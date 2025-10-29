@@ -3,21 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberSmrt | Cybersecurity Nonprofit</title>
-
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
-      "three-globe": "https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.mjs",
-      "topojson-client": "https://cdn.skypack.dev/topojson-client@3.1.0"
-    }
-  }
-  </script>
+  <title>CyberSmrt | Nonprofit Cybersecurity</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Service-Disabled Veteran-Owned 501(c)(3) nonprofit offering free cybersecurity education, QR scanner, phishing detector, and K-12 curriculum for underserved communities. Tax-deductible donations welcome.">
-  <meta name="keywords" content="cybersecurity education nonprofit, free cyber training, K-12 security curriculum, veteran owned nonprofit, 501c3, phishing detector, QR scanner, underserved communities, tax deductible donation">
+  <meta name="description" content="Service-Disabled Veteran-Owned 501(c)(3) offering cybersecurity education and services on a sliding scale. Free tools, affordable managed security for nonprofits, schools, and small businesses.">
+  <meta name="keywords" content="cybersecurity education nonprofit, cyber training sliding scale, K-12 security curriculum, veteran owned nonprofit, 501c3, phishing detector, QR scanner, underserved communities, affordable security">
   <meta name="author" content="CyberSmrt">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://cybersmrt.org/">
@@ -25,8 +15,8 @@
   <!-- OpenGraph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cybersmrt.org/">
-  <meta property="og:title" content="Free Cybersecurity Education for Everyone | CyberSmrt Nonprofit">
-  <meta property="og:description" content="Service-Disabled Veteran-Owned 501(c)(3) nonprofit offering free cybersecurity education, QR scanner, phishing detector, and K-12 curriculum for underserved communities.">
+  <meta property="og:title" content="CyberSmrt | Nonprofit Cybersecurity">
+  <meta property="og:description" content="Service-Disabled Veteran-Owned 501(c)(3) offering cybersecurity education and services on a sliding scale for underserved communities.">
   <meta property="og:image" content="https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -36,8 +26,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://cybersmrt.org/">
-  <meta name="twitter:title" content="Free Cybersecurity Education for Everyone | CyberSmrt Nonprofit">
-  <meta name="twitter:description" content="Service-Disabled Veteran-Owned 501(c)(3) offering free cybersecurity tools, K-12 curriculum, and education for underserved communities.">
+  <meta name="twitter:title" content="CyberSmrt | Nonprofit Cybersecurity">
+  <meta name="twitter:description" content="Service-Disabled Veteran-Owned 501(c)(3) offering affordable cybersecurity services and free education for underserved communities.">
   <meta name="twitter:image" content="https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png">
   <meta name="twitter:site" content="@cybersmrt">
   <meta name="twitter:creator" content="@cybersmrt">
@@ -71,12 +61,12 @@
       "height": 500
     },
     "image": "https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png",
-    "description": "Service-Disabled Veteran-Owned 501(c)(3) nonprofit providing free cybersecurity education, tools, and training to underserved communities, K-12 students, and educators nationwide.",
-    "slogan": "Free Cybersecurity Education & Tools for Everyone",
+    "description": "Service-Disabled Veteran-Owned 501(c)(3) nonprofit providing cybersecurity education and services on a sliding scale to underserved communities, K-12 students, and educators nationwide.",
+    "slogan": "Accessible Cybersecurity Education & Services",
     "foundingDate": "2023",
     "founder": {
       "@type": "Person",
-      "name": "Tony",
+      "name": "Tony Rossi",
       "jobTitle": "Founder & CEO",
       "description": "Service-disabled veteran with 21+ years military service, 15+ years cybersecurity experience, CISSP, CISM, TS/SCI clearance"
     },
@@ -488,7 +478,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100px; /* Prevents layout shift while loading */
+      min-height: 100px;
     }
 
     .equity-icon img {
@@ -498,7 +488,7 @@
       filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
       transition: transform 0.3s ease;
     }
-    /* Fallback if image fails to load */
+
     .equity-icon img[alt]:not([src]),
     .equity-icon img[alt][src=""] {
       display: none;
@@ -510,19 +500,16 @@
       font-size: 3.5rem;
       display: block;
     }
-    /* Loading state */
+
     .equity-icon img[loading] {
       opacity: 0;
       animation: fadeIn 0.5s ease forwards;
     }
+
     @keyframes fadeIn {
-    from {
-      opacity: 0;
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-    to {
-      opacity: 1;
-    }
-  }
 
     .equity-card:hover .equity-icon img {
       transform: scale(1.1) translateY(-5px);
@@ -1514,31 +1501,73 @@
   <script defer src="/assets/js/footer-loader.js"></script>
   <script defer src="/assets/js/footer-init.js"></script>
 
-  <!-- Globe dependencies and script -->
+  <!-- Globe dependencies - Load synchronously in correct order -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 
+  <!-- Globe initialization script -->
   <script>
-    // Load globe when visible (performance optimization)
-    const globeEl = document.getElementById('globe-hero');
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        const script = document.createElement('script');
-        script.src = '/assets/js/globe-hero.js?v=9';
-        script.onerror = () => {
-          console.error('Failed to load globe script');
-          if (globeEl) {
-            globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
-          }
-        };
-        document.body.appendChild(script);
-        observer.disconnect();
+    // Wait for dependencies and load globe when visible
+    (function() {
+      const globeEl = document.getElementById('globe-hero');
+      if (!globeEl) {
+        console.error('Globe element not found');
+        return;
       }
-    }, { threshold: 0.1 });
-    if (globeEl) observer.observe(globeEl);
-  </script>
 
+      // Check if dependencies loaded
+      function checkDependencies() {
+        if (window.THREE && window.ThreeGlobe && window.topojson) {
+          console.log('✅ All globe dependencies loaded');
+          return true;
+        }
+        console.warn('⏳ Waiting for globe dependencies...');
+        return false;
+      }
+
+      // Wait for dependencies with timeout
+      let attempts = 0;
+      const maxAttempts = 50; // 5 seconds max wait
+
+      function waitForDependencies() {
+        if (checkDependencies()) {
+          setupGlobeLoader();
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(waitForDependencies, 100);
+        } else {
+          console.error('❌ Globe dependencies failed to load');
+          globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
+        }
+      }
+
+      function setupGlobeLoader() {
+        const observer = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            console.log('🌍 Globe in view, loading script...');
+            const script = document.createElement('script');
+            script.src = '/assets/js/globe-hero.js?v=11';
+            script.onerror = () => {
+              console.error('Failed to load globe script');
+              globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
+            };
+            document.body.appendChild(script);
+            observer.disconnect();
+          }
+        }, { threshold: 0.1 });
+
+        observer.observe(globeEl);
+      }
+
+      // Start checking for dependencies
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForDependencies);
+      } else {
+        waitForDependencies();
+      }
+    })();
+  </script>
 
   <script>
     // Turnstile verification
@@ -1583,15 +1612,15 @@
       };
     })();
   </script>
+
   <script>
-  // Make ticker draggable
+  // Make ticker draggable (desktop only)
     (function() {
       const ticker = document.querySelector('.ticker-overlay');
       if (!ticker) return;
 
-      // Don't make it draggable on mobile
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      if (isMobile) return; // Exit early on mobile
+      if (isMobile) return;
 
       let isDragging = false;
       let currentX, currentY, initialX, initialY;
@@ -1660,7 +1689,7 @@
     "name": "CyberSmrt",
     "url": "https://cybersmrt.org",
     "logo": "https://cybersmrt.org/assets/logos/cybersmrt-logo-only.png",
-    "description": "CyberSmrt is a nonprofit organization providing free cybersecurity education and tools to underserved communities.",
+    "description": "CyberSmrt is a nonprofit organization providing cybersecurity education and services on a sliding scale to underserved communities.",
     "foundingDate": "2024",
     "sameAs": [
       "https://github.com/CyberSmrtOrg"
@@ -1679,7 +1708,7 @@
     "@type": "WebSite",
     "name": "CyberSmrt",
     "url": "https://cybersmrt.org",
-    "description": "Free cybersecurity education and tools including QR code scanner, phishing detector, and password checker.",
+    "description": "Cybersecurity education and services on a sliding scale including QR code scanner, phishing detector, and password checker.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://cybersmrt.org/pages/blog?q={search_term_string}",
