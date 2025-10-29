@@ -1501,10 +1501,8 @@
   <script defer src="/assets/js/footer-loader.js"></script>
   <script defer src="/assets/js/footer-init.js"></script>
 
-  <!-- Globe dependencies - Load synchronously in correct order -->
+  <!-- Globe dependencies - Load THREE.js only -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 
   <!-- Globe initialization script -->
   <script>
@@ -1518,11 +1516,11 @@
 
       // Check if dependencies loaded
       function checkDependencies() {
-        if (window.THREE && window.ThreeGlobe && window.topojson) {
+        if (window.THREE) {
           console.log('✅ All globe dependencies loaded');
           return true;
         }
-        console.warn('⏳ Waiting for globe dependencies...');
+        console.warn('⏳ Waiting for THREE.js...');
         return false;
       }
 
