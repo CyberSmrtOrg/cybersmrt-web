@@ -1,19 +1,24 @@
 // Globe Hero Animation with Attack Visualization
 // Optimized for performance with memory leak prevention
-
-import * as THREE from 'three';
+// Uses global THREE variable from CDN
 
 // Performance Configuration
-const MAX_ACTIVE_ATTACKS = 30; // Limit simultaneous attack arcs
-const ATTACK_CLEANUP_TIME = 10000; // Remove attacks after 10 seconds
-const FPS_TARGET = 30; // Target FPS for quality adjustment
-const UI_UPDATE_THROTTLE = 100; // ms between UI counter updates
+const MAX_ACTIVE_ATTACKS = 30;
+const ATTACK_CLEANUP_TIME = 10000;
+const FPS_TARGET = 30;
+const UI_UPDATE_THROTTLE = 100;
 
 class GlobeHero {
     constructor(containerId) {
         this.container = document.getElementById(containerId);
         if (!this.container) {
             console.error('Globe container not found:', containerId);
+            return;
+        }
+
+        // Check if THREE is available
+        if (typeof THREE === 'undefined') {
+            console.error('THREE.js is not loaded. Make sure to include it before this script.');
             return;
         }
 
@@ -33,7 +38,7 @@ class GlobeHero {
             powerPreference: 'high-performance'
         });
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.container.appendChild(this.renderer.domElement);
 
         // Globe properties
@@ -46,7 +51,7 @@ class GlobeHero {
         this.frameCount = 0;
         this.lastFrameTime = performance.now();
         this.currentFPS = 60;
-        this.quality = 1.0; // Auto-adjust based on FPS
+        this.quality = 1.0;
 
         // Animation state
         this.animationId = null;
@@ -56,7 +61,6 @@ class GlobeHero {
     }
 
     init() {
-        // Camera position
         this.camera.position.z = 2.5;
 
         // Lighting
@@ -74,7 +78,8 @@ class GlobeHero {
         this.start();
 
         // Handle window resize
-        window.addEventListener('resize', () => this.onWindowResize());
+        this.resizeHandler = () => this.onWindowResize();
+        window.addEventListener('resize', this.resizeHandler);
 
         // Start attack simulation
         this.startAttackSimulation();
@@ -83,7 +88,6 @@ class GlobeHero {
     createGlobe() {
         const geometry = new THREE.SphereGeometry(1, 64, 64);
 
-        // Globe material with Earth texture
         const material = new THREE.MeshPhongMaterial({
             color: 0x2194ce,
             emissive: 0x112244,
@@ -98,7 +102,7 @@ class GlobeHero {
     }
 
     createAttackArc(startLat, startLon, endLat, endLon) {
-        // Limit active attacks for performance
+        // Limit active attacks
         if (this.attacks.length >= MAX_ACTIVE_ATTACKS) {
             const oldestAttack = this.attacks.shift();
             this.removeAttackFromScene(oldestAttack);
@@ -107,7 +111,6 @@ class GlobeHero {
         const start = this.latLonToVector3(startLat, startLon, 1.01);
         const end = this.latLonToVector3(endLat, endLon, 1.01);
 
-        // Create arc curve with quality adjustment
         const pointCount = Math.floor(50 * this.quality);
         const curve = new THREE.QuadraticBezierCurve3(
             start,
@@ -118,7 +121,6 @@ class GlobeHero {
         const points = curve.getPoints(pointCount);
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-        // Attack material (red glowing line)
         const material = new THREE.LineBasicMaterial({
             color: 0xff0000,
             transparent: true,
@@ -139,7 +141,6 @@ class GlobeHero {
         this.attacks.push(attack);
         this.attackCounter++;
 
-        // Throttled UI update
         const now = Date.now();
         if (now - this.lastUIUpdate > UI_UPDATE_THROTTLE) {
             this.updateAttackCounter();
@@ -180,7 +181,6 @@ class GlobeHero {
     }
 
     startAttackSimulation() {
-        // Common attack origin points (threat actor locations)
         const attackOrigins = [
             { lat: 55.7558, lon: 37.6173, name: 'Moscow' },
             { lat: 39.9042, lon: 116.4074, name: 'Beijing' },
@@ -189,7 +189,6 @@ class GlobeHero {
             { lat: 37.5665, lon: 126.9780, name: 'Seoul' }
         ];
 
-        // Common target points (major data centers)
         const targets = [
             { lat: 37.7749, lon: -122.4194, name: 'San Francisco' },
             { lat: 51.5074, lon: -0.1278, name: 'London' },
@@ -198,8 +197,7 @@ class GlobeHero {
             { lat: 52.5200, lon: 13.4050, name: 'Berlin' }
         ];
 
-        // Generate random attacks
-        setInterval(() => {
+        this.attackInterval = setInterval(() => {
             const origin = attackOrigins[Math.floor(Math.random() * attackOrigins.length)];
             const target = targets[Math.floor(Math.random() * targets.length)];
 
@@ -209,7 +207,7 @@ class GlobeHero {
                 target.lat,
                 target.lon
             );
-        }, 500); // New attack every 500ms (adjustable for intensity)
+        }, 500);
     }
 
     cleanupOldAttacks() {
@@ -240,7 +238,7 @@ class GlobeHero {
             this.frameCount = 0;
             this.lastFrameTime = now;
 
-            // Auto-adjust quality based on FPS
+            // Auto-adjust quality
             if (this.currentFPS < FPS_TARGET * 0.8) {
                 this.quality = Math.max(0.5, this.quality - 0.1);
             } else if (this.currentFPS > FPS_TARGET * 1.2 && this.quality < 1.0) {
@@ -259,7 +257,7 @@ class GlobeHero {
             this.globe.rotation.y += 0.001;
         }
 
-        // Update attack arcs (pulsing effect)
+        // Update attack arcs
         this.attacks.forEach(attack => {
             if (attack.arc && attack.arc.material) {
                 attack.progress += 0.02;
@@ -268,7 +266,7 @@ class GlobeHero {
         });
 
         // Periodic cleanup
-        if (Math.random() < 0.01) { // ~1% chance per frame
+        if (Math.random() < 0.01) {
             this.cleanupOldAttacks();
         }
 
@@ -291,6 +289,10 @@ class GlobeHero {
             cancelAnimationFrame(this.animationId);
             this.animationId = null;
         }
+        if (this.attackInterval) {
+            clearInterval(this.attackInterval);
+            this.attackInterval = null;
+        }
     }
 
     onWindowResize() {
@@ -302,7 +304,6 @@ class GlobeHero {
     }
 
     dispose() {
-        // Cleanup to prevent memory leaks
         this.stop();
 
         // Remove all attacks
@@ -325,20 +326,44 @@ class GlobeHero {
         }
 
         // Remove event listeners
-        window.removeEventListener('resize', () => this.onWindowResize());
+        if (this.resizeHandler) {
+            window.removeEventListener('resize', this.resizeHandler);
+        }
     }
 }
 
-// Initialize globe when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+// Function to initialize globe when dependencies are ready
+function initGlobe() {
+    if (typeof THREE === 'undefined') {
+        console.error('❌ THREE.js not loaded');
+        return null;
+    }
+
+    console.log('✅ Initializing globe...');
     const globeHero = new GlobeHero('globe-container');
 
-    // Optional: Add cleanup on page unload
+    // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
         if (globeHero) {
             globeHero.dispose();
         }
     });
-});
 
-export default GlobeHero;
+    return globeHero;
+}
+
+// Make initGlobe available globally
+window.initGlobe = initGlobe;
+
+// Auto-initialize if DOM is ready and THREE is available
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof THREE !== 'undefined') {
+            initGlobe();
+        }
+    });
+} else {
+    if (typeof THREE !== 'undefined') {
+        initGlobe();
+    }
+}
