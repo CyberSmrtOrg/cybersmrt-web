@@ -28,7 +28,8 @@
       "Bash(pip install:*)",
       "Bash(mkdir:*)",
       "Bash(powershell -Command:*)",
-      "Bash(copy /Y \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero-restored.js\" \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero.js\")"
+      "Bash(copy /Y \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero-restored.js\" \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero.js\")",
+      "Bash(tasklist:*)"
     ],
     "deny": [],
     "ask": []
