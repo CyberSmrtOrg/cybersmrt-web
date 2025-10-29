@@ -153,9 +153,9 @@
         </div>
 
         <div class="cookie-popup-links">
-          <a href="/privacy.html" target="_blank">Privacy Policy</a>
+          <a href="/pages/legal/privacy-policy.html" target="_blank">Privacy Policy</a>
           <span>•</span>
-          <a href="/terms.html" target="_blank">Terms of Service</a>
+          <a href="/pages/legal/terms-of-service.html" target="_blank">Terms of Service</a>
         </div>
       </div>
     `;
