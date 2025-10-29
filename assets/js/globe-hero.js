@@ -132,8 +132,8 @@ const MIN_ALT = 0.10;
 const MAX_ALT = 0.35;
 const ARC_TRAVEL_MIN_MS = 1200;
 const ARC_TRAVEL_MAX_MS = 2800;
-const ARC_DASH_LENGTH = 0.22;
-const ARC_DASH_GAP_SAFE = 0.78;
+const ARC_DASH_LENGTH = 0.4; // Increased from 0.22 for more visible arcs
+const ARC_DASH_GAP_SAFE = 0.1; // Reduced from 0.78 so arcs look more continuous
 const AXIAL_TILT_DEG = 23.4;
 // Reduce star count on mobile
 const STAR_COUNT = window.matchMedia('(max-width: 768px)').matches ? 500 : 1000;
@@ -578,7 +578,7 @@ window.CyberGlobe = {
     const id = nextId++;
     const arcAlt = arcAltitude(origin, dest);
     const travelMs = travelMsForDistance(origin, dest);
-    const ttl = travelMs + 80;
+    const ttl = travelMs + 1500; // Keep arc visible for 1.5s after animation completes
 
     attacks.push({
       id,
@@ -657,7 +657,8 @@ function pruneExpired(now = performance.now()) {
 
   const aliveArcs = [];
   for (const a of attacks) {
-    if (now >= a.createdAt + a.travelMs) {
+    // Use expiresAt instead of just travelMs to keep arcs visible longer
+    if (now >= a.expiresAt) {
       removeTickerRow(a.id);
     } else {
       aliveArcs.push(a);
