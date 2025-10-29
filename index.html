@@ -1501,12 +1501,9 @@
   <script defer src="/assets/js/footer-loader.js"></script>
   <script defer src="/assets/js/footer-init.js"></script>
 
-  <!-- Globe dependencies - Load THREE.js only -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
-
-  <!-- Globe initialization script -->
+  <!-- Globe dependencies - Load THREE.js with proper async handling -->
   <script>
-    // Wait for dependencies and load globe when visible
+    // Load THREE.js and globe script
     (function() {
       const globeEl = document.getElementById('globe-hero');
       if (!globeEl) {
@@ -1514,38 +1511,20 @@
         return;
       }
 
-      // Check if dependencies loaded
-      function checkDependencies() {
-        if (window.THREE) {
-          console.log('✅ All globe dependencies loaded');
-          return true;
-        }
-        console.warn('⏳ Waiting for THREE.js...');
-        return false;
-      }
+      // Load THREE.js
+      const threeScript = document.createElement('script');
+      threeScript.src = 'https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js';
+      threeScript.async = false;
 
-      // Wait for dependencies with timeout
-      let attempts = 0;
-      const maxAttempts = 50; // 5 seconds max wait
+      threeScript.onload = function() {
+        console.log('✅ THREE.js loaded');
 
-      function waitForDependencies() {
-        if (checkDependencies()) {
-          setupGlobeLoader();
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(waitForDependencies, 100);
-        } else {
-          console.error('❌ Globe dependencies failed to load');
-          globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
-        }
-      }
-
-      function setupGlobeLoader() {
+        // Now load globe script
         const observer = new IntersectionObserver((entries) => {
           if (entries[0].isIntersecting) {
             console.log('🌍 Globe in view, loading script...');
             const script = document.createElement('script');
-            script.src = '/assets/js/globe-hero.js?v=11';
+            script.src = '/assets/js/globe-hero.js?v=12';
             script.onerror = () => {
               console.error('Failed to load globe script');
               globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
@@ -1556,14 +1535,14 @@
         }, { threshold: 0.1 });
 
         observer.observe(globeEl);
-      }
+      };
 
-      // Start checking for dependencies
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', waitForDependencies);
-      } else {
-        waitForDependencies();
-      }
+      threeScript.onerror = function() {
+        console.error('❌ Failed to load THREE.js from CDN');
+        globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load (THREE.js).</div>';
+      };
+
+      document.head.appendChild(threeScript);
     })();
   </script>
 
