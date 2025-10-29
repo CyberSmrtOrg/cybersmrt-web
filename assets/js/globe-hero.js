@@ -340,7 +340,7 @@ function initGlobe() {
     }
 
     console.log('✅ Initializing globe...');
-    const globeHero = new GlobeHero('globe-container');
+    const globeHero = new GlobeHero('globe-hero');
 
     // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
