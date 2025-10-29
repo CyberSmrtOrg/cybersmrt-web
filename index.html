@@ -1511,9 +1511,9 @@
         return;
       }
 
-      // Load THREE.js
+      // Load THREE.js (local copy)
       const threeScript = document.createElement('script');
-      threeScript.src = 'https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js';
+      threeScript.src = '/assets/js/three.min.js';
       threeScript.async = false;
 
       threeScript.onload = function() {
