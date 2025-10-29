@@ -1476,7 +1476,7 @@
         <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">
           Or scan to donate from your phone
         </p>
-        <img src="/assets/images/qr-code-donate.svg"
+        <img src="/assets/images/qr-code-donate.png"
             alt="Scan QR code to donate to CyberSmrt campaign"
             width="200"
             height="200"
@@ -1501,29 +1501,74 @@
   <script defer src="/assets/js/footer-loader.js"></script>
   <script defer src="/assets/js/footer-init.js"></script>
 
-  <!-- Globe dependencies and script -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three-globe@2.31.1/dist/three-globe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
-
+  <!-- Globe dependencies - Load in correct order -->
   <script>
-    // Load globe when visible (performance optimization)
-    const globeEl = document.getElementById('globe-hero');
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        const script = document.createElement('script');
-        script.src = '/assets/js/globe-hero.js?v=13';
-        script.onerror = () => {
-          console.error('Failed to load globe script');
-          if (globeEl) {
-            globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe visualization failed to load.</div>';
-          }
+    (function() {
+      const globeEl = document.getElementById('globe-hero');
+      if (!globeEl) return;
+
+      // Load THREE.js first
+      const threeScript = document.createElement('script');
+      threeScript.src = '/assets/js/three.min.js';
+
+      threeScript.onload = function() {
+        console.log('✅ THREE.js loaded');
+
+        // Then load three-globe
+        const globeLibScript = document.createElement('script');
+        globeLibScript.src = '/assets/js/three-globe.min.js';
+
+        globeLibScript.onload = function() {
+          console.log('✅ three-globe loaded');
+
+          // Finally load topojson
+          const topoScript = document.createElement('script');
+          topoScript.src = '/assets/js/topojson-client.min.js';
+
+          topoScript.onload = function() {
+            console.log('✅ topojson loaded');
+
+            // Now load globe script when visible
+            const observer = new IntersectionObserver((entries) => {
+              if (entries[0].isIntersecting) {
+                console.log('🌍 Globe in view, loading script...');
+                const script = document.createElement('script');
+                script.src = '/assets/js/globe-hero.js?v=14';
+                script.onerror = () => {
+                  console.error('Failed to load globe script');
+                  globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe script failed to load.</div>';
+                };
+                document.body.appendChild(script);
+                observer.disconnect();
+              }
+            }, { threshold: 0.1 });
+
+            observer.observe(globeEl);
+          };
+
+          topoScript.onerror = () => {
+            console.error('❌ Failed to load topojson');
+            globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe dependencies failed (topojson).</div>';
+          };
+
+          document.head.appendChild(topoScript);
         };
-        document.body.appendChild(script);
-        observer.disconnect();
-      }
-    }, { threshold: 0.1 });
-    if (globeEl) observer.observe(globeEl);
+
+        globeLibScript.onerror = () => {
+          console.error('❌ Failed to load three-globe');
+          globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe dependencies failed (three-globe).</div>';
+        };
+
+        document.head.appendChild(globeLibScript);
+      };
+
+      threeScript.onerror = () => {
+        console.error('❌ Failed to load THREE.js');
+        globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe dependencies failed (THREE.js).</div>';
+      };
+
+      document.head.appendChild(threeScript);
+    })();
   </script>
 
   <script>
