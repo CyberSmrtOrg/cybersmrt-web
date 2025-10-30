@@ -68,8 +68,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'workers/profile'
-          packageManager: npm
-          command: deploy --env=""
+          command: deploy
 
       - name: Wait for deployment propagation
         run: sleep 10
