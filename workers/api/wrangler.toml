@@ -1,5 +1,6 @@
 # Cloudflare Workers Configuration for CyberSmrt API
 # File path: workers/api/wrangler.toml
+# Updated: Secrets configured
 
 name = "cybersmrt-api"
 main = "src/index.js"
