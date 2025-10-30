@@ -21,6 +21,12 @@ async function verifyTurnstile(token, env) {
   });
 
   const outcome = await result.json();
+  console.log('Turnstile verification outcome:', outcome);
+
+  if (!outcome.success) {
+    console.error('Turnstile errors:', outcome['error-codes']);
+  }
+
   return outcome.success;
 }
 
@@ -50,8 +56,10 @@ export async function handleContactRoutes(request, env, ctx) {
 
       const turnstileValid = await verifyTurnstile(turnstileToken, env);
       if (!turnstileValid) {
+        console.error('Turnstile verification failed for token:', turnstileToken.substring(0, 20) + '...');
         return errorResponse('Security verification failed. Please try again.', 403);
       }
+      console.log('✅ Turnstile verification passed');
 
       // Get audience configuration for this reason
       const audienceConfig = getAudienceConfig(reason);
