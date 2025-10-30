@@ -662,10 +662,16 @@
         });
 
         const result = await response.json();
+        console.log('API Response:', { status: response.status, ok: response.ok, result });
 
         if (response.ok) {
+          // Get the reason label safely
+          const reasonSelect = document.querySelector('#reason');
+          const selectedOption = reasonSelect?.options[reasonSelect.selectedIndex];
+          const reasonLabel = selectedOption?.textContent?.toLowerCase() || 'our';
+
           const message = result.audienceAdded
-            ? `Thank you! Your message has been sent successfully. You've been added to our ${document.querySelector('#reason option:checked').textContent.toLowerCase()} mailing list for updates. We typically respond within ${result.responseTime}.`
+            ? `Thank you! Your message has been sent successfully. You've been added to our ${reasonLabel} mailing list for updates. We typically respond within ${result.responseTime}.`
             : `Thank you! Your message has been sent successfully. We'll get back to you within ${result.responseTime}.`;
 
           showMessage(message, 'success');
