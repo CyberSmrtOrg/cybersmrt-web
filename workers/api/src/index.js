@@ -9,6 +9,7 @@
 import { handleProfileRoutes } from './profile/routes.js';
 import { handleDashboardRoutes } from './dashboard/routes.js';
 import { handleSettingsRoutes } from './settings/routes.js';
+import { handleContactRoutes } from './contact/routes.js';
 import { jsonResponse, errorResponse } from './utils/response.js';
 
 const ALLOWED_ORIGINS = [
@@ -83,6 +84,11 @@ export default {
         return await handleSettingsRoutes(request, env, ctx);
       }
 
+      // Contact routes
+      if (path.startsWith('/contact')) {
+        return await handleContactRoutes(request, env, ctx);
+      }
+
       // API root - documentation
       if (path === '/' || path === '') {
         return jsonResponse({
@@ -109,6 +115,10 @@ export default {
                 verify: 'POST /settings/2fa/verify',
                 status: 'GET /settings/2fa/status',
               },
+            },
+            contact: {
+              submit: 'POST /contact',
+              config: 'GET /contact/config',
             },
             health: '/health',
           },
