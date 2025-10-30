@@ -31,7 +31,8 @@
       "Bash(copy /Y \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero-restored.js\" \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero.js\")",
       "Bash(tasklist:*)",
       "Bash(gh run list:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(openssl rand:*)"
     ],
     "deny": [],
     "ask": []

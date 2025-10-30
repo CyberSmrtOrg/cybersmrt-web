@@ -47,7 +47,7 @@
     "contactPoint": [{
       "@type": "ContactPoint",
       "contactType": "General Inquiries",
-      "email": "tony@cybersmrt.org",
+      "email": "info@cybersmrt.org",
       "availableLanguage": "English"
     }]
   }
@@ -402,7 +402,7 @@
 
         <div class="info-item">
           <h3>📧 Email</h3>
-          <p><a href="mailto:tony@cybersmrt.org">tony@cybersmrt.org</a></p>
+          <p><a href="mailto:info@cybersmrt.org">info@cybersmrt.org</a></p>
           <p class="form-helper">We typically respond within 24-48 hours</p>
         </div>
 
@@ -624,7 +624,7 @@
         showMessage('Loading security verification... Please wait a moment and try again.', 'error');
         await waitForTurnstile();
         if (!turnstileReady) {
-          showMessage('Security verification failed to load. Please refresh the page or email us directly at tony@cybersmrt.org', 'error');
+          showMessage('Security verification failed to load. Please refresh the page or email us directly at info@cybersmrt.org', 'error');
           return;
         }
         showMessage('Security verification loaded. Please check the box and try submitting again.', 'error');
@@ -679,7 +679,7 @@
         }
       } catch (error) {
         console.error('Form submission error:', error);
-        showMessage('Sorry, there was an error sending your message. Please try emailing us directly at tony@cybersmrt.org', 'error');
+        showMessage('Sorry, there was an error sending your message. Please try emailing us directly at info@cybersmrt.org', 'error');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send Message';
