@@ -58,16 +58,15 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'workers/auth/package.json'
 
-      - name: Install dependencies
+      - name: Install worker dependencies
         working-directory: workers/auth
         run: npm ci
 
       - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config workers/auth/wrangler.toml
+        run: cd workers/auth && npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Wait for deployment propagation
         run: sleep 10
