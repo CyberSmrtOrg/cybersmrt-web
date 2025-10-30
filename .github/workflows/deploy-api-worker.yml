@@ -1,18 +1,18 @@
-name: Deploy Auth Worker
+name: Deploy API Worker
 
 on:
   push:
     branches: [main]
     paths:
-      - 'workers/auth/**'
+      - 'workers/api/**'
       - 'workers/shared/**'
-      - '.github/workflows/deploy-auth-worker.yml'
+      - '.github/workflows/deploy-api-worker.yml'
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test Auth Worker
+    name: Test API Worker
 
     steps:
       - name: Checkout code
@@ -23,28 +23,28 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'workers/auth/package.json'
+          cache-dependency-path: 'workers/api/package.json'
 
       - name: Install dependencies
-        working-directory: workers/auth
+        working-directory: workers/api
         run: npm ci
 
       - name: Run linting
-        working-directory: workers/auth
+        working-directory: workers/api
         run: npm run lint --if-present
 
       - name: Run tests
-        working-directory: workers/auth
+        working-directory: workers/api
         run: npm test --if-present
 
       - name: Security audit
-        working-directory: workers/auth
+        working-directory: workers/api
         run: npm audit --audit-level=high
         continue-on-error: true
 
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy Auth Worker
+    name: Deploy API Worker
     needs: test
 
     steps:
@@ -56,10 +56,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'workers/auth/package.json'
+          cache-dependency-path: 'workers/api/package.json'
 
       - name: Install dependencies
-        working-directory: workers/auth
+        working-directory: workers/api
         run: npm ci
 
       - name: Deploy to Cloudflare Workers
@@ -67,18 +67,18 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config workers/auth/wrangler.toml
+          command: deploy --config workers/api/wrangler.toml
 
       - name: Wait for deployment propagation
         run: sleep 10
 
       - name: Health check
         run: |
-          RESPONSE=$(curl -s https://auth.cybersmrt.org/health)
+          RESPONSE=$(curl -s https://api.cybersmrt.org/health)
           echo "Health check response: $RESPONSE"
 
-          # Verify JSON response contains "success": true
-          if echo "$RESPONSE" | grep -q '"success":true'; then
+          # Verify JSON response contains "status": "healthy"
+          if echo "$RESPONSE" | grep -q '"status":"healthy"'; then
             echo "✅ Health check passed!"
           else
             echo "❌ Health check failed!"
@@ -87,27 +87,34 @@ jobs:
 
       - name: Test critical endpoints
         run: |
-          # Test OAuth providers endpoint
-          curl -f https://auth.cybersmrt.org/oauth/providers || exit 1
-
           # Test API documentation endpoint
-          curl -f https://auth.cybersmrt.org/ || exit 1
+          curl -f https://api.cybersmrt.org/ || exit 1
+
+          # Test contact config endpoint
+          curl -f https://api.cybersmrt.org/contact/config || exit 1
+
+          echo "Note: Authenticated endpoints require valid JWT token"
+          echo "Endpoints tested:"
+          echo "  ✅ GET /health"
+          echo "  ✅ GET / (API documentation)"
+          echo "  ✅ GET /contact/config"
 
       - name: Notify deployment success
         if: success()
         run: |
-          echo "✅ Auth Worker deployed successfully!"
-          echo "🔗 Health: https://auth.cybersmrt.org/health"
-          echo "📚 Docs: https://auth.cybersmrt.org/"
-          echo "🔐 Endpoints:"
-          echo "  - POST /register"
-          echo "  - POST /login"
-          echo "  - POST /oauth/{provider}"
-          echo "  - GET /admin/monitoring/health"
+          echo "✅ API Worker deployed successfully!"
+          echo "🔗 Health: https://api.cybersmrt.org/health"
+          echo "📚 Docs: https://api.cybersmrt.org/"
+          echo "🎯 Endpoints:"
+          echo "  - GET/PUT /profile"
+          echo "  - GET /dashboard"
+          echo "  - GET/PUT /settings"
+          echo "  - POST /contact"
+          echo "  - GET /contact/config"
 
       - name: Notify deployment failure
         if: failure()
         run: |
-          echo "❌ Auth Worker deployment failed!"
+          echo "❌ API Worker deployment failed!"
           echo "Review logs and consider rollback if needed."
-          echo "Rollback command: npx wrangler rollback --name cybersmrt-auth"
+          echo "Rollback command: npx wrangler rollback --name cybersmrt-api"

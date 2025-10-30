@@ -488,7 +488,10 @@
 
           <!-- Cloudflare Turnstile -->
           <div class="turnstile-container">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAAAksDP4jt0khKOSO" data-theme="dark"></div>
+            <div id="cf-turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAAB6oJXRLsymxDd45" data-theme="dark"></div>
+            <p id="turnstile-loading" style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem;">
+              Loading security verification...
+            </p>
           </div>
 
           <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
@@ -541,8 +544,92 @@
     const submitBtn = document.getElementById('submitBtn');
     const formMessage = document.getElementById('formMessage');
 
+    // Wait for Turnstile to be ready
+    let turnstileReady = false;
+
+    // Check if Turnstile script loaded
+    function waitForTurnstile() {
+      return new Promise((resolve) => {
+        if (window.turnstile) {
+          turnstileReady = true;
+          resolve();
+        } else {
+          const checkInterval = setInterval(() => {
+            if (window.turnstile) {
+              clearInterval(checkInterval);
+              turnstileReady = true;
+              resolve();
+            }
+          }, 100);
+
+          // Timeout after 10 seconds
+          setTimeout(() => {
+            clearInterval(checkInterval);
+            resolve();
+          }, 10000);
+        }
+      });
+    }
+
+    // Initialize when page loads
+    window.addEventListener('load', async () => {
+      await waitForTurnstile();
+
+      if (turnstileReady) {
+        console.log('✅ Turnstile ready');
+        // Explicitly render the widget
+        try {
+          const widget = document.getElementById('cf-turnstile-widget');
+          if (widget && !widget.querySelector('iframe')) {
+            window.turnstile.render('#cf-turnstile-widget', {
+              sitekey: '0x4AAAAAAB6oJXRLsymxDd45',
+              theme: 'dark',
+              callback: function(token) {
+                console.log('✅ Turnstile completed');
+                const loadingMsg = document.getElementById('turnstile-loading');
+                if (loadingMsg) loadingMsg.style.display = 'none';
+              }
+            });
+          }
+          // Hide loading message
+          const loadingMsg = document.getElementById('turnstile-loading');
+          if (loadingMsg) {
+            setTimeout(() => {
+              if (loadingMsg) loadingMsg.style.display = 'none';
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('❌ Failed to render Turnstile:', error);
+          const loadingMsg = document.getElementById('turnstile-loading');
+          if (loadingMsg) {
+            loadingMsg.textContent = 'Security verification failed to load. You can still submit the form.';
+            loadingMsg.style.color = '#fca5a5';
+          }
+        }
+      } else {
+        console.warn('⚠️ Turnstile not available');
+        const loadingMsg = document.getElementById('turnstile-loading');
+        if (loadingMsg) {
+          loadingMsg.textContent = 'Security verification unavailable. You can still submit the form.';
+          loadingMsg.style.color = '#fca5a5';
+        }
+      }
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Wait for Turnstile if not ready yet
+      if (!turnstileReady) {
+        showMessage('Loading security verification... Please wait a moment and try again.', 'error');
+        await waitForTurnstile();
+        if (!turnstileReady) {
+          showMessage('Security verification failed to load. Please refresh the page or email us directly at tony@cybersmrt.org', 'error');
+          return;
+        }
+        showMessage('Security verification loaded. Please check the box and try submitting again.', 'error');
+        return;
+      }
 
       // Get form data
       const formData = new FormData(form);
@@ -552,7 +639,9 @@
       const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
 
       if (!turnstileToken) {
-        showMessage('Please complete the security verification', 'error');
+        showMessage('Please complete the security verification by checking the box above the submit button', 'error');
+        // Scroll to turnstile
+        document.querySelector('.turnstile-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 

@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'workers/profile/**'
+      - 'workers/shared/**'
       - '.github/workflows/deploy-profile-worker.yml'
   workflow_dispatch:
 
@@ -66,8 +67,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: 'workers/profile'
-          command: deploy
+          command: deploy --config workers/profile/wrangler.toml
 
       - name: Wait for deployment propagation
         run: sleep 10
