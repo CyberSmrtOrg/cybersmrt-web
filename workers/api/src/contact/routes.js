@@ -63,6 +63,7 @@ export async function handleContactRoutes(request, env, ctx) {
 
       // Get audience configuration for this reason
       const audienceConfig = getAudienceConfig(reason);
+      console.log('📋 Contact reason:', reason, '- Config:', { label: audienceConfig.label, fromEmail: audienceConfig.fromEmail, notifyEmail: audienceConfig.notifyEmail });
       const fullName = `${firstName} ${lastName}`;
 
       // Initialize email service
@@ -86,17 +87,21 @@ export async function handleContactRoutes(request, env, ctx) {
 
       // Send confirmation email to submitter
       try {
-        await emailService.send('contactConfirmation', email, {
+        const confirmationData = {
           firstName,
           name: fullName,
           email,
           organization: data.organization,
           reasonLabel: audienceConfig.label,
           responseTime: audienceConfig.responseTime
-        }, {
+        };
+        const confirmationOptions = {
           from: audienceConfig.fromEmail || 'CyberSmrt <noreply@cybersmrt.org>',
           replyTo: audienceConfig.notifyEmail || env.CONTACT_NOTIFICATION_EMAIL || 'tony@cybersmrt.org'
-        });
+        };
+        console.log('📧 Sending confirmation email with data:', confirmationData, 'options:', confirmationOptions);
+
+        await emailService.send('contactConfirmation', email, confirmationData, confirmationOptions);
         console.log('✅ Confirmation email sent to:', email);
       } catch (error) {
         console.error('⚠️ Failed to send confirmation email:', error);

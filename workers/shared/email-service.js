@@ -712,30 +712,30 @@ function renderTemplate(templateName, data) {
         </div>
         <div class="content">
           <p>Hi ${data.firstName},</p>
-          <p>Thank you for contacting CyberSmrt! We've received your message regarding <strong>${data.reasonLabel}</strong>.</p>
+          <p>Thank you for reaching out to CyberSmrt! We've received your message and wanted to confirm we'll be in touch soon.</p>
 
           <div class="info-box">
             <h3 style="margin-top: 0;">Your Submission</h3>
             <p><strong>Name:</strong> ${data.name}</p>
             <p><strong>Email:</strong> ${data.email}</p>
             ${data.organization ? `<p><strong>Organization:</strong> ${data.organization}</p>` : ''}
-            <p><strong>Reason:</strong> ${data.reasonLabel}</p>
+            <p><strong>Subject:</strong> ${data.reasonLabel}</p>
           </div>
 
           <div class="success-box">
             <p><strong>⏰ What's Next?</strong></p>
-            <p>We typically respond to ${data.reasonLabel.toLowerCase()} inquiries within <strong>${data.responseTime}</strong>. Someone from our team will get back to you soon!</p>
+            <p>Our team typically responds within <strong>${data.responseTime}</strong>. We'll get back to you as soon as possible!</p>
           </div>
 
-          <p style="margin-top: 30px;">In the meantime, feel free to:</p>
+          <p style="margin-top: 30px;">While you wait, feel free to explore:</p>
           <ul>
-            <li><a href="https://cybersmrt.org">Explore our website</a></li>
-            <li><a href="https://cybersmrt.org/#programs">Check out our programs</a></li>
-            <li><a href="https://cybersmrt.org/pages/blog">Read our blog</a></li>
+            <li><a href="https://cybersmrt.org/#programs">Our cybersecurity programs</a></li>
+            <li><a href="https://cybersmrt.org/pages/blog">Latest blog posts and resources</a></li>
+            <li><a href="https://cybersmrt.org/pages/tools">Free security tools</a></li>
           </ul>
 
           <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
-            If you have additional questions, you can reply directly to this email.
+            Have more questions? Just reply to this email - we're here to help!
           </p>
         </div>
         <div class="footer">
