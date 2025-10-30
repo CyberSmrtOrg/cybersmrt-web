@@ -675,7 +675,7 @@ function renderTemplate(templateName, data) {
           <div class="alert-box">
             <h3 style="margin-top: 0;">Suspicious Patterns Detected:</h3>
             <ul>
-              ${data.flags.map(flag => `<li>${flag.replace(/_/g, ' ')}</li>`).join('')}
+              ${(data.flags || []).map(flag => `<li>${flag.replace(/_/g, ' ')}</li>`).join('')}
             </ul>
           </div>
 
