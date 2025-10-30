@@ -29,7 +29,9 @@
       "Bash(mkdir:*)",
       "Bash(powershell -Command:*)",
       "Bash(copy /Y \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero-restored.js\" \"C:\\Users\\antho\\Git\\cybersmrt-web\\assets\\js\\globe-hero.js\")",
-      "Bash(tasklist:*)"
+      "Bash(tasklist:*)",
+      "Bash(gh run list:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
