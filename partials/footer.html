@@ -559,12 +559,33 @@ function toggleUserMenu(event) {
   button.setAttribute('aria-expanded', isOpen);
 }
 
-// Close user menu when clicking outside
+// Tools dropdown toggle
+function toggleToolsDropdown(event) {
+  event.stopPropagation();
+  const container = event.currentTarget.closest('.tools-dropdown-container');
+  container.classList.toggle('open');
+
+  // Update aria-expanded
+  const button = container.querySelector('.tools-dropdown-trigger');
+  const isOpen = container.classList.contains('open');
+  button.setAttribute('aria-expanded', isOpen);
+}
+
+// Close dropdowns when clicking outside
 document.addEventListener('click', () => {
-  const openMenus = document.querySelectorAll('.user-menu-container.open');
-  openMenus.forEach(menu => {
+  // Close user menu
+  const openUserMenus = document.querySelectorAll('.user-menu-container.open');
+  openUserMenus.forEach(menu => {
     menu.classList.remove('open');
     const button = menu.querySelector('.user-menu');
+    button.setAttribute('aria-expanded', 'false');
+  });
+
+  // Close tools dropdown
+  const openToolsDropdowns = document.querySelectorAll('.tools-dropdown-container.open');
+  openToolsDropdowns.forEach(dropdown => {
+    dropdown.classList.remove('open');
+    const button = dropdown.querySelector('.tools-dropdown-trigger');
     button.setAttribute('aria-expanded', 'false');
   });
 });
@@ -586,4 +607,5 @@ window.openLoginModalSafe = openLoginModalSafe;
 window.closeLoginModal = closeLoginModal;
 window.closeLoginModalOnOverlay = closeLoginModalOnOverlay;
 window.toggleUserMenu = toggleUserMenu;
+window.toggleToolsDropdown = toggleToolsDropdown;
 </script>

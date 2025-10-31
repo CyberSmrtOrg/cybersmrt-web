@@ -202,6 +202,93 @@
       opacity: 0.8;
     }
 
+    /* Tools Dropdown */
+    .tools-dropdown-container {
+      position: relative;
+    }
+
+    .tools-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      padding-bottom: 2px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+    }
+
+    .tools-dropdown-trigger:hover {
+      color: #ffffff;
+      opacity: 1;
+    }
+
+    .tools-dropdown-arrow {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .tools-dropdown-container.open .tools-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .tools-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(6, 10, 22, 0.95);
+      border: 1px solid var(--hdr-border);
+      border-radius: 12px;
+      min-width: 200px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .tools-dropdown-container.open .tools-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tools-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .tools-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .tools-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .tools-dropdown svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+    }
+
     .site-header .nav-toggle{
       display:none; width:40px; height:40px; border:0; background:transparent; position:relative;
     }
@@ -256,6 +343,37 @@
       <a href="/">Home</a>
       <a href="/#programs">Programs</a>
       <a href="/pages/blog/">Blog</a>
+
+      <!-- Tools Dropdown -->
+      <div class="tools-dropdown-container">
+        <button class="tools-dropdown-trigger" onclick="toggleToolsDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          Tools
+          <svg class="tools-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="tools-dropdown">
+          <a href="/pages/tools/password-checker">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Password Checker
+          </a>
+          <a href="/pages/tools/phishing-detector">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Phishing Detector
+          </a>
+          <a href="/pages/tools/qr-tester">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            QR Code Tester
+          </a>
+        </div>
+      </div>
+
       <a href="/pages/about/">About</a>
       <a href="/pages/contact">Contact</a>
 
