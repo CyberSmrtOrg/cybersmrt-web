@@ -46,18 +46,18 @@ export async function handleContactRoutes(request, env, ctx) {
       const { firstName, lastName, email, reason, message, turnstileToken } = data;
 
       if (!firstName || !lastName || !email || !reason || !message) {
-        return errorResponse('Missing required fields', 400);
+        return errorResponse('Missing required fields', 400, {}, request);
       }
 
       // Verify Turnstile token
       if (!turnstileToken) {
-        return errorResponse('Security verification required', 400);
+        return errorResponse('Security verification required', 400, {}, request);
       }
 
       const turnstileValid = await verifyTurnstile(turnstileToken, env);
       if (!turnstileValid) {
         console.error('Turnstile verification failed for token:', turnstileToken.substring(0, 20) + '...');
-        return errorResponse('Security verification failed. Please try again.', 403);
+        return errorResponse('Security verification failed. Please try again.', 403, {}, request);
       }
       console.log('✅ Turnstile verification passed');
 
@@ -136,13 +136,15 @@ export async function handleContactRoutes(request, env, ctx) {
         message: 'Thank you for contacting us! We\'ll be in touch soon.',
         audienceAdded: !!audienceResult,
         responseTime: audienceConfig.responseTime
-      });
+      }, 200, {}, request);
 
     } catch (error) {
       console.error('Contact form error:', error);
       return errorResponse(
         'An error occurred while processing your message. Please try again or email us directly at tony@cybersmrt.org',
-        500
+        500,
+        {},
+        request
       );
     }
   }
@@ -154,8 +156,8 @@ export async function handleContactRoutes(request, env, ctx) {
       message: audiencesEnabled()
         ? 'Audience management is enabled'
         : 'Audience management is disabled (no audience IDs configured)'
-    });
+    }, 200, {}, request);
   }
 
-  return errorResponse('Endpoint not found', 404);
+  return errorResponse('Endpoint not found', 404, {}, request);
 }
