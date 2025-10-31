@@ -44,6 +44,8 @@ function loadEnv() {
 function generateConfig() {
   const env = loadEnv();
   const analyticsId = env.GOOGLE_ANALYTICS_ID || '';
+  const cloudflareToken = env.CLOUDFLARE_ANALYTICS_TOKEN || '';
+  const clarityId = env.MICROSOFT_CLARITY_ID || '';
 
   const configContent = `/**
  * Analytics Configuration
@@ -53,15 +55,27 @@ function generateConfig() {
 
 // Google Analytics Measurement ID from environment
 const GOOGLE_ANALYTICS_ID = '${analyticsId}';
+
+// Cloudflare Web Analytics Token from environment
+const CLOUDFLARE_ANALYTICS_TOKEN = '${cloudflareToken}';
+
+// Microsoft Clarity Project ID from environment
+const MICROSOFT_CLARITY_ID = '${clarityId}';
 `;
 
   const outputPath = path.join(__dirname, '..', 'assets', 'js', 'analytics-config.js');
   fs.writeFileSync(outputPath, configContent, 'utf-8');
 
-  if (analyticsId) {
-    console.log('✓ Analytics config generated with ID:', analyticsId);
+  // Report what was configured
+  const configured = [];
+  if (analyticsId) configured.push('Google Analytics');
+  if (cloudflareToken) configured.push('Cloudflare Web Analytics');
+  if (clarityId) configured.push('Microsoft Clarity');
+
+  if (configured.length > 0) {
+    console.log('✓ Analytics config generated with:', configured.join(', '));
   } else {
-    console.log('⚠ Analytics config generated without ID (analytics will be disabled)');
+    console.log('⚠ Analytics config generated without any IDs (all analytics will be disabled)');
   }
 }
 

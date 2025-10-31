@@ -1,17 +1,29 @@
 /**
- * Google Analytics Configuration
+ * Multi-Analytics Configuration
  *
- * This script loads Google Analytics (GA4) using the GOOGLE_ANALYTICS_ID
- * from environment variables. It respects user privacy and cookie consent.
+ * This script loads multiple analytics services:
+ * - Google Analytics (GA4) - Comprehensive analytics
+ * - Cloudflare Web Analytics - Privacy-first, cookieless
+ * - Microsoft Clarity - Heatmaps and session recordings
+ *
+ * All services respect user privacy and cookie consent.
  */
 
 (function() {
   'use strict';
 
-  // Get Google Analytics ID from environment variable
-  // This will be replaced at build time or server-side
+  // Get analytics IDs/tokens from environment variables
+  // These will be replaced at build time from .env
   const GA_MEASUREMENT_ID = typeof GOOGLE_ANALYTICS_ID !== 'undefined'
     ? GOOGLE_ANALYTICS_ID
+    : null;
+
+  const CLOUDFLARE_TOKEN = typeof CLOUDFLARE_ANALYTICS_TOKEN !== 'undefined'
+    ? CLOUDFLARE_ANALYTICS_TOKEN
+    : null;
+
+  const CLARITY_ID = typeof MICROSOFT_CLARITY_ID !== 'undefined'
+    ? MICROSOFT_CLARITY_ID
     : null;
 
   // Don't load analytics if:
@@ -64,6 +76,60 @@
     });
 
     console.log('Google Analytics: Loaded with ID', GA_MEASUREMENT_ID);
+  }
+
+  // Load Cloudflare Web Analytics (privacy-first, no cookies)
+  function loadCloudflareAnalytics() {
+    if (!CLOUDFLARE_TOKEN) {
+      console.log('Cloudflare Analytics: No token configured');
+      return;
+    }
+
+    // Cloudflare Analytics doesn't require DNT or cookie consent (privacy-first)
+    const script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', JSON.stringify({ token: CLOUDFLARE_TOKEN }));
+    document.head.appendChild(script);
+
+    console.log('Cloudflare Analytics: Loaded');
+  }
+
+  // Load Microsoft Clarity (heatmaps and session recordings)
+  function loadMicrosoftClarity() {
+    if (!CLARITY_ID) {
+      console.log('Microsoft Clarity: No project ID configured');
+      return;
+    }
+
+    // Check for Do Not Track
+    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+      console.log('Microsoft Clarity: Disabled due to Do Not Track');
+      return;
+    }
+
+    // Microsoft Clarity initialization
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", CLARITY_ID);
+
+    console.log('Microsoft Clarity: Loaded with ID', CLARITY_ID);
+  }
+
+  // Load Cloudflare Analytics immediately (privacy-first, no consent needed)
+  loadCloudflareAnalytics();
+
+  // Load Microsoft Clarity with same consent rules as Google Analytics
+  if (typeof window.cookieConsent !== 'undefined' && !window.cookieConsent.analytics) {
+    window.addEventListener('cookieConsentChanged', function(e) {
+      if (e.detail && e.detail.analytics) {
+        loadMicrosoftClarity();
+      }
+    });
+  } else {
+    loadMicrosoftClarity();
   }
 
   // Expose analytics helper functions
