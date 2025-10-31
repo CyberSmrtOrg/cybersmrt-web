@@ -230,40 +230,6 @@
       top: 1rem;
     }
 
-    .cta-section {
-      margin-top: 3rem;
-      text-align: center;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 1rem 2.5rem;
-      margin: 0.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 10px 30px rgba(102,126,234,0.3);
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(102,126,234,0.4);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 2px solid #667eea;
-      color: #667eea;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(102,126,234,0.1);
-    }
-
     /* Share Section */
     .share-section {
       background: rgba(255,255,255,.03);
@@ -436,12 +402,14 @@
       opacity: 0.8;
     }
 
-    /* Header visibility control */
-    #header-placeholder {
+    /* Header and Footer visibility control */
+    #header-placeholder,
+    #footer-placeholder {
       display: none;
     }
 
-    .reveal-screen.active ~ #header-placeholder {
+    .reveal-screen.active ~ #header-placeholder,
+    .reveal-screen.active ~ #footer-placeholder {
       display: block;
     }
 
@@ -463,13 +431,6 @@
       .tips-list li {
         padding: 1rem 1rem 1rem 2.5rem;
         font-size: 0.95rem;
-      }
-
-      .btn {
-        display: block;
-        width: 100%;
-        max-width: 300px;
-        margin: 0.5rem auto;
       }
 
       .share-buttons {
@@ -590,33 +551,32 @@
       </div>
     </div>
 
-    <!-- CTA Buttons -->
-    <div class="cta-section">
-      <a href="/" class="btn">Learn More About CyberSmrt</a>
-      <a href="/pages/get-involved/volunteer.html" class="btn btn-secondary">Get Involved</a>
-    </div>
-
-    <div class="footer-note">
-      <p>A Service-Disabled Veteran-Owned 501(c)(3) Cybersecurity Nonprofit</p>
-      <a href="/" class="logo-link">
-        <span>🛡️</span>
-        <span>CyberSmrt • Securing the Underserved</span>
-      </a>
-    </div>
   </div>
 
   <!-- Header (loaded after reveal) -->
   <div id="header-placeholder"></div>
+
+  <!-- Footer (loaded after reveal) -->
+  <div id="footer-placeholder"></div>
 
   <script>
     // Timing for the reveal
     setTimeout(() => {
       document.getElementById('hackScreen').classList.add('hidden');
       document.getElementById('revealScreen').classList.add('active');
+
       // Load header after reveal
       if (window.loadHeader) {
         window.loadHeader();
       }
+
+      // Load footer after reveal
+      fetch('/partials/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        })
+        .catch(err => console.error('Failed to load footer:', err));
     }, 3500); // 3.5 seconds of "hacking"
 
     // Share functionality
