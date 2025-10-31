@@ -1,11 +1,21 @@
 <!-- /partials/footer.html -->
 <footer class="site-footer" role="contentinfo">
   <style>
+    /* Footer theme variables - adapt to light/dark mode */
     :root {
       --ft-bg: rgba(6, 10, 22, 0.9);
       --ft-border: rgba(148,163,184,.18);
       --ft-link: #8ab4ff;
       --ft-text: #cbd5e1;
+      --ft-text-hover: #ffffff;
+    }
+
+    [data-theme="light"] {
+      --ft-bg: rgba(248, 250, 252, 0.95);
+      --ft-border: rgba(148,163,184,.3);
+      --ft-link: #4299e1;
+      --ft-text: #475569;
+      --ft-text-hover: #1e293b;
     }
     .site-footer {
       margin-top: 4rem;
@@ -61,7 +71,7 @@
       font-weight: 600;
       opacity: .9;
     }
-    .footer-right a:hover { color: #ffffff; opacity: 1; }
+    .footer-right a:hover { color: var(--ft-text-hover); opacity: 1; }
 
     /* Social Media Icons */
     .footer-social {
@@ -78,14 +88,14 @@
       justify-content: center;
       width: 36px;
       height: 36px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 8px;
       transition: all 0.3s ease;
       opacity: 0.9;
     }
     .footer-social a:hover {
-      background: rgba(138, 180, 255, 0.15);
+      background: var(--card-bg-hover);
       border-color: var(--ft-link);
       transform: translateY(-2px);
       opacity: 1;
@@ -93,8 +103,13 @@
     .footer-social img {
       width: 20px;
       height: 20px;
-      filter: brightness(0) invert(1);
       opacity: 0.8;
+    }
+    [data-theme="dark"] .footer-social img {
+      filter: brightness(0) invert(1);
+    }
+    [data-theme="light"] .footer-social img {
+      filter: brightness(0.4);
     }
     .footer-social a:hover img {
       opacity: 1;

@@ -1,10 +1,21 @@
 <!-- /partials/header.html -->
 <header class="site-header" role="banner">
   <style>
+    /* Header theme variables - adapt to light/dark mode */
     :root {
       --hdr-bg: rgba(6, 10, 22, 0.82);
       --hdr-border: rgba(148,163,184,.18);
       --brand: #8ab4ff;
+      --hdr-text: #cbd5e1;
+      --hdr-text-hover: #ffffff;
+    }
+
+    [data-theme="light"] {
+      --hdr-bg: rgba(248, 250, 252, 0.9);
+      --hdr-border: rgba(148,163,184,.3);
+      --brand: #4299e1;
+      --hdr-text: #475569;
+      --hdr-text-hover: #1e293b;
     }
 
     /* Orbitron is loaded in the page <head> */
@@ -35,19 +46,19 @@
 
     .site-header .nav-links { display:flex; gap:1.25rem; align-items:center; }
     .site-header .nav-links a {
-      color:#cbd5e1; text-decoration:none; font-weight:600; opacity:.9;
+      color: var(--hdr-text); text-decoration:none; font-weight:600; opacity:.9;
       padding-bottom: 2px;
     }
-    .site-header .nav-links a:hover { color:#ffffff; opacity:1; }
+    .site-header .nav-links a:hover { color: var(--hdr-text-hover); opacity:1; }
     .site-header .nav-links a.is-active,
     .site-header .nav-links a[aria-current="page"] {
-      color:#fff; border-bottom:2px solid #60a5fa;
+      color: var(--hdr-text-hover); border-bottom:2px solid var(--brand);
     }
 
     /* Sign In Button */
     .header-signin-btn {
-      background: white;
-      color: #667eea;
+      background: var(--brand-primary);
+      color: white;
       padding: 0.625rem 1.75rem;
       min-height: 44px; /* WCAG 2.1 touch target compliance */
       border-radius: 50px;
@@ -65,7 +76,8 @@
     }
     .header-signin-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      background: var(--brand-primary-hover);
     }
 
     /* User Menu Dropdown Container */
@@ -138,12 +150,12 @@
       position: absolute;
       top: calc(100% + 0.5rem);
       right: 0;
-      background: rgba(6, 10, 22, 0.95);
+      background: var(--hdr-bg);
       border: 1px solid var(--hdr-border);
       border-radius: 12px;
       min-width: 220px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-lg);
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
@@ -164,7 +176,7 @@
       gap: 0.75rem;
       width: 100%;
       padding: 0.875rem 1.25rem;
-      color: #cbd5e1;
+      color: var(--hdr-text);
       text-decoration: none;
       background: none;
       border: none;
@@ -174,7 +186,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s ease;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .user-dropdown a:last-child,
@@ -184,8 +196,8 @@
 
     .user-dropdown a:hover,
     .user-dropdown button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: var(--card-bg-hover);
+      color: var(--hdr-text-hover);
     }
 
     .user-dropdown button.logout-btn {
@@ -212,7 +224,7 @@
       display: flex;
       align-items: center;
       gap: 0.35rem;
-      color: #cbd5e1;
+      color: var(--hdr-text);
       text-decoration: none;
       font-weight: 600;
       opacity: 0.9;
@@ -225,7 +237,7 @@
     }
 
     .tools-dropdown-trigger:hover {
-      color: #ffffff;
+      color: var(--hdr-text-hover);
       opacity: 1;
     }
 
@@ -244,12 +256,12 @@
       top: calc(100% + 0.5rem);
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(6, 10, 22, 0.95);
+      background: var(--hdr-bg);
       border: 1px solid var(--hdr-border);
       border-radius: 12px;
       min-width: 200px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-lg);
       opacity: 0;
       visibility: hidden;
       transform: translateX(-50%) translateY(-10px);
@@ -268,11 +280,11 @@
       align-items: center;
       gap: 0.75rem;
       padding: 0.875rem 1.25rem;
-      color: #cbd5e1;
+      color: var(--hdr-text);
       text-decoration: none;
       font-weight: 600;
       transition: background 0.2s ease;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .tools-dropdown a:last-child {
@@ -280,8 +292,8 @@
     }
 
     .tools-dropdown a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: var(--card-bg-hover);
+      color: var(--hdr-text-hover);
     }
 
     .tools-dropdown svg {
