@@ -715,11 +715,26 @@
       border-radius: 20px;
       border: 1px solid var(--card-border);
       transition: 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-theme="light"] .program-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+      border: 2px solid rgba(203, 213, 225, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .program-card:hover {
       background: var(--card-bg-hover);
       border-color: var(--card-border-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    [data-theme="light"] .program-card:hover {
+      background: linear-gradient(135deg, rgba(248, 250, 252, 1) 0%, rgba(241, 245, 249, 1) 100%);
+      border-color: rgba(102, 126, 234, 0.6);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+      transform: translateY(-4px);
     }
 
     .program-card:hover .program-icon img {
