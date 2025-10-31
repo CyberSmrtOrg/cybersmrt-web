@@ -384,6 +384,13 @@
       <a href="/pages/about/">About</a>
       <a href="/pages/contact">Contact</a>
 
+      <!-- Theme Toggle Button -->
+      <button class="theme-toggle" onclick="window.ThemeManager.toggle()" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <div class="theme-toggle-icon dark-icon">🌙</div>
+        <div class="theme-toggle-icon light-icon">☀️</div>
+        <span class="theme-toggle-label">Theme</span>
+      </button>
+
       <!-- Sign In Button (shown when NOT logged in) -->
       <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide>
         Sign In

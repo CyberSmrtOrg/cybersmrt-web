@@ -13,6 +13,11 @@
       return localStorage.getItem('theme') || 'dark';
     },
 
+    // Get the actual applied theme (resolving 'auto')
+    getAppliedTheme: function() {
+      return document.documentElement.getAttribute('data-theme') || 'dark';
+    },
+
     // Apply theme to the page
     applyTheme: function(themeSetting) {
       const html = document.documentElement;
@@ -33,6 +38,14 @@
     setTheme: function(theme) {
       localStorage.setItem('theme', theme);
       this.applyTheme(theme);
+    },
+
+    // Toggle between light and dark
+    toggle: function() {
+      const currentTheme = this.getAppliedTheme();
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      this.setTheme(newTheme);
+      return newTheme;
     },
 
     // Initialize theme on page load

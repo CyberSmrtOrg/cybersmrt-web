@@ -7,19 +7,38 @@
   /* Dark theme (default) */
   --bg-gradient-start: #0f172a;
   --bg-gradient-end: #1e293b;
+  --bg-solid: #0a0a0a;
+  --bg-elevated: #1a1a1a;
+  --bg-elevated-hover: #2a2a2a;
+
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-bright: white;
+  --text-bright: #ffffff;
+  --text-heading: #ffffff;
+
   --card-bg: rgba(255, 255, 255, 0.05);
+  --card-bg-hover: rgba(255, 255, 255, 0.08);
   --card-border: rgba(148, 163, 184, 0.18);
+  --card-border-hover: rgba(102, 126, 234, 0.5);
+
   --input-bg: rgba(15, 23, 42, 0.6);
   --input-bg-focus: rgba(15, 23, 42, 0.8);
   --input-border: rgba(148, 163, 184, 0.2);
+  --input-border-focus: rgba(102, 126, 234, 0.5);
+
   --border-color: rgba(148, 163, 184, 0.1);
+  --border-color-strong: #333333;
+
   --toggle-bg: rgba(100, 116, 139, 0.3);
   --toggle-border: rgba(100, 116, 139, 0.5);
   --toggle-knob: #64748b;
+
+  /* Brand colors */
+  --brand-primary: #667eea;
+  --brand-primary-hover: #764ba2;
+  --brand-secondary: #8ab4ff;
+  --brand-accent: #9240e4;
 
   /* Status colors */
   --success-bg: rgba(34, 197, 94, 0.2);
@@ -31,35 +50,72 @@
   --danger-bg: rgba(239, 68, 68, 0.2);
   --danger-border: rgba(239, 68, 68, 0.3);
   --danger-text: #fca5a5;
+
+  /* Link colors */
+  --link-color: #667eea;
+  --link-hover: #764ba2;
+
+  /* Shadow */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="light"] {
   --bg-gradient-start: #f8fafc;
   --bg-gradient-end: #e2e8f0;
+  --bg-solid: #ffffff;
+  --bg-elevated: #f1f5f9;
+  --bg-elevated-hover: #e2e8f0;
+
   --text-primary: #1e293b;
   --text-secondary: #475569;
   --text-muted: #64748b;
   --text-bright: #0f172a;
+  --text-heading: #0f172a;
+
   --card-bg: rgba(255, 255, 255, 0.9);
+  --card-bg-hover: rgba(255, 255, 255, 1);
   --card-border: rgba(148, 163, 184, 0.3);
+  --card-border-hover: rgba(102, 126, 234, 0.6);
+
   --input-bg: rgba(255, 255, 255, 0.9);
   --input-bg-focus: rgba(255, 255, 255, 1);
   --input-border: rgba(148, 163, 184, 0.4);
+  --input-border-focus: rgba(102, 126, 234, 0.6);
+
   --border-color: rgba(148, 163, 184, 0.2);
+  --border-color-strong: #cbd5e1;
+
   --toggle-bg: rgba(203, 213, 225, 0.5);
   --toggle-border: rgba(148, 163, 184, 0.5);
   --toggle-knob: #94a3b8;
 
-  /* Status colors - green background with grey text for badges */
+  /* Brand colors - slightly adjusted for light mode */
+  --brand-primary: #5a67d8;
+  --brand-primary-hover: #6b46c1;
+  --brand-secondary: #4299e1;
+  --brand-accent: #805ad5;
+
+  /* Status colors */
   --success-bg: #22c55e;
   --success-border: #16a34a;
-  --success-text: #64748b;
-  --warning-bg: rgba(251, 191, 36, 0.15);
-  --warning-border: rgba(251, 191, 36, 0.3);
+  --success-text: #ffffff;
+  --warning-bg: rgba(251, 191, 36, 0.25);
+  --warning-border: rgba(251, 191, 36, 0.5);
   --warning-text: #a16207;
-  --danger-bg: rgba(239, 68, 68, 0.15);
-  --danger-border: rgba(239, 68, 68, 0.3);
+  --danger-bg: rgba(239, 68, 68, 0.25);
+  --danger-border: rgba(239, 68, 68, 0.5);
   --danger-text: #b91c1c;
+
+  /* Link colors */
+  --link-color: #5a67d8;
+  --link-hover: #6b46c1;
+
+  /* Shadow - more visible in light mode */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Smooth transitions */
@@ -75,4 +131,62 @@ body {
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg-hover);
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-toggle-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Hide the icon that doesn't match current theme */
+[data-theme="dark"] .theme-toggle .light-icon {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle .dark-icon {
+  display: none;
+}
+
+/* Optional: Add text label for desktop */
+.theme-toggle-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .theme-toggle-label {
+    display: block;
+  }
 }
