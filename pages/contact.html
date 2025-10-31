@@ -665,20 +665,32 @@
         console.log('API Response:', { status: response.status, ok: response.ok, result });
 
         if (response.ok) {
-          // Get the reason label safely
-          const reasonSelect = document.querySelector('#reason');
-          const selectedOption = reasonSelect?.options[reasonSelect.selectedIndex];
-          const reasonLabel = selectedOption?.textContent?.toLowerCase() || 'our';
+          try {
+            // Get the reason label safely
+            const reasonSelect = document.querySelector('#reason');
+            const selectedOption = reasonSelect?.options[reasonSelect.selectedIndex];
+            const reasonLabel = selectedOption?.textContent?.toLowerCase() || 'our';
 
-          const message = result.audienceAdded
-            ? `Thank you! Your message has been sent successfully. You've been added to our ${reasonLabel} mailing list for updates. We typically respond within ${result.responseTime}.`
-            : `Thank you! Your message has been sent successfully. We'll get back to you within ${result.responseTime}.`;
+            // Build success message with safe fallbacks
+            const responseTime = result.responseTime || '24-48 hours';
+            const message = result.audienceAdded
+              ? `Thank you! Your message has been sent successfully. You've been added to our ${reasonLabel} mailing list for updates. We typically respond within ${responseTime}.`
+              : `Thank you! Your message has been sent successfully. We'll get back to you within ${responseTime}.`;
 
-          showMessage(message, 'success');
-          form.reset();
-          // Reset Turnstile
-          if (window.turnstile) {
-            window.turnstile.reset();
+            console.log('Showing success message...');
+            showMessage(message, 'success');
+
+            console.log('Resetting form...');
+            // Reset form and Turnstile
+            form.reset();
+            if (window.turnstile) {
+              console.log('Resetting Turnstile...');
+              window.turnstile.reset();
+            }
+            console.log('Form submission complete!');
+          } catch (successError) {
+            console.error('Error in success handler:', successError);
+            throw successError;
           }
         } else {
           throw new Error(result.message || 'Failed to send message');
