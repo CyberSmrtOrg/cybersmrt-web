@@ -63,49 +63,38 @@
     }
     .footer-right a:hover { color: #ffffff; opacity: 1; }
 
-    /* CTA Buttons Section */
-    .footer-cta {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 2rem 0 1.5rem;
-      border-top: 1px solid var(--ft-border);
-      margin-top: 1rem;
-    }
-    .footer-cta-buttons {
+    /* Social Media Icons */
+    .footer-social {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .footer-social a {
+      display: flex;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      opacity: 0.9;
     }
-    .footer-cta .btn {
-      padding: 0.85rem 2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: 0.3s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .footer-cta .btn-primary {
-      background: white;
-      color: #667eea;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    }
-    .footer-cta .btn-primary:hover {
+    .footer-social a:hover {
+      background: rgba(138, 180, 255, 0.15);
+      border-color: var(--ft-link);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      opacity: 1;
     }
-    .footer-cta .btn-secondary {
-      background: transparent;
-      color: white;
-      border: 2px solid white;
+    .footer-social img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
     }
-    .footer-cta .btn-secondary:hover {
-      background: white;
-      color: #667eea;
-      transform: translateY(-2px);
+    .footer-social a:hover img {
+      opacity: 1;
     }
 
     .footer-back {
@@ -125,13 +114,12 @@
         text-align: center;
         justify-items: center;
       }
-      .footer-cta-buttons {
+      .footer-right {
         flex-direction: column;
-        align-items: center;
+        gap: 1.5rem !important;
       }
-      .footer-cta .btn {
-        width: 100%;
-        max-width: 280px;
+      .footer-social {
+        justify-content: center;
       }
     }
   </style>
@@ -142,23 +130,33 @@
       © <span id="footer-year">2025</span> CyberSmrt — Securing the underserved, one community at a time.
     </div>
 
-    <nav class="footer-right" aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/#programs">Programs</a>
-      <a href="/pages/blog">Blog</a>
-      <a href="/pages/about">About</a>
-      <a href="/pages/contact">Contact</a>
-      <a href="https://www.linkedin.com/company/cybersmrt" target="_blank" rel="noopener">LinkedIn ↗</a>
-    </nav>
+    <div class="footer-right">
+      <nav aria-label="Footer Navigation" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/">Home</a>
+        <a href="/#programs">Programs</a>
+        <a href="/pages/blog">Blog</a>
+        <a href="/pages/about">About</a>
+        <a href="/pages/contact">Contact</a>
+      </nav>
 
-    <!-- CTA Buttons -->
-    <div class="footer-cta">
-      <div class="footer-cta-buttons">
-        <a href="mailto:tony@cybersmrt.org?subject=Partnership Inquiry - CyberSmrt" class="btn btn-primary">
-          Partner With Us
+      <div class="footer-social" aria-label="Social Media">
+        <a href="https://www.linkedin.com/company/cybersmrtorg/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+          <img src="/assets/logos/linkedin.png" alt="LinkedIn">
         </a>
-        <a href="/pages/about" class="btn btn-secondary">
-          Learn More
+        <a href="https://www.facebook.com/CyberSmrtOrg/" target="_blank" rel="noopener noreferrer" title="Facebook">
+          <img src="/assets/logos/fb.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/cybersmrtorg" target="_blank" rel="noopener noreferrer" title="Instagram">
+          <img src="/assets/logos/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://www.tiktok.com/@cybersmrtorg" target="_blank" rel="noopener noreferrer" title="TikTok">
+          <img src="/assets/logos/tiktok.png" alt="TikTok">
+        </a>
+        <a href="https://bsky.app/profile/cybersmrt.bsky.social" target="_blank" rel="noopener noreferrer" title="Bluesky">
+          <img src="/assets/logos/bluesky.png" alt="Bluesky">
+        </a>
+        <a href="https://github.com/CyberSmrtOrg" target="_blank" rel="noopener noreferrer" title="GitHub">
+          <img src="/assets/logos/github.png" alt="GitHub">
         </a>
       </div>
     </div>
