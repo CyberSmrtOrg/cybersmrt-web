@@ -102,9 +102,9 @@
   --brand-secondary: #4299e1;
   --brand-accent: #805ad5;
 
-  /* Hero gradients - lighter purple gradient with dark text */
-  --hero-gradient-start: #e0d4f7;
-  --hero-gradient-end: #c4b5fd;
+  /* Hero gradients - vibrant purple gradient with dark text */
+  --hero-gradient-start: #a78bfa;
+  --hero-gradient-end: #7c3aed;
   --hero-text: #1e293b;
 
   /* Status colors */
