@@ -32,7 +32,8 @@
       "Bash(tasklist:*)",
       "Bash(gh run list:*)",
       "Bash(cat:*)",
-      "Bash(openssl rand:*)"
+      "Bash(openssl rand:*)",
+      "Bash(timeout 60 npx wrangler tail:*)"
     ],
     "deny": [],
     "ask": []
