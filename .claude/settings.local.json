@@ -33,7 +33,9 @@
       "Bash(gh run list:*)",
       "Bash(cat:*)",
       "Bash(openssl rand:*)",
-      "Bash(timeout 60 npx wrangler tail:*)"
+      "Bash(timeout 60 npx wrangler tail:*)",
+      "Bash(md5sum:*)",
+      "Bash(you are.\"\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
