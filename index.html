@@ -153,8 +153,8 @@
     .hero--split {
       position: relative;
       min-height: 92vh;
-      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
-      color: var(--hero-text);
+      background: radial-gradient(1200px 700px at 70% 40%, #0a0f23 0%, #090d1c 60%, #070b18 100%);
+      color: #e5e7eb;
       overflow: clip;
       display: grid;
       place-items: center;
@@ -206,7 +206,6 @@
       margin: 0.25rem 0 0.35rem 0;
       opacity: 0.95;
       text-shadow: 0 2px 20px rgba(0,0,0,0.35);
-      color: var(--hero-text);
     }
 
     .subtitle {
@@ -214,7 +213,6 @@
       opacity: 0.9;
       margin-bottom: 1.5rem;
       line-height: 1.5;
-      color: var(--hero-text);
     }
 
     .cta-buttons {
@@ -396,7 +394,7 @@
       color: transparent;
     }
 
-    .mission { background: #111; }
+    .mission { background: var(--bg-solid); }
 
     .mission-text {
       font-size: 1.3rem;
@@ -404,7 +402,7 @@
       text-align: center;
       max-width: 900px;
       margin: 0 auto 2rem;
-      color: #d0d0d0;
+      color: var(--text-secondary);
     }
 
     .badge {
@@ -419,7 +417,7 @@
     }
 
     .equity-focus {
-      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
+      background: var(--bg-elevated);
       position: relative;
     }
 
@@ -456,8 +454,8 @@
     }
 
     .equity-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(102,126,234,0.2);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 15px;
       padding: 2rem;
       text-align: center;
@@ -520,7 +518,7 @@
     }
 
     .equity-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: #667eea; }
-    .equity-card p { color: #b0b0b0; line-height: 1.6; font-size: 0.95rem; }
+    .equity-card p { color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
 
     .equity-callout {
       background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
@@ -546,6 +544,8 @@
     .stats {
       background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
       padding: 2rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .stats-grid {
@@ -579,7 +579,7 @@
 
     .stat-label { font-size: 1.1rem; opacity: 0.9; }
 
-    .partners { background: #111; overflow: hidden; }
+    .partners { background: var(--bg-solid); overflow: hidden; }
     .partners-scroll { position: relative; width: 100%; overflow: hidden; padding: 2rem 0; }
     .partners-track { display: flex; animation: scroll 30s linear infinite; width: fit-content; }
     .partners-track:hover { animation-play-state: paused; }
@@ -616,8 +616,8 @@
     .logo-box {
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-      border: 2px solid #333;
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
       border-radius: 15px;
       padding: 1.25rem 1.75rem;
       min-width: 180px;
@@ -640,7 +640,7 @@
       filter: none;
     }
 
-    .programs { background: #0a0a0a; }
+    .programs { background: var(--bg-solid); }
     .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
 
     .program-card {
@@ -692,7 +692,8 @@
     .cta-section p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95; color: var(--hero-text); }
 
     .funding-ask {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.25);
+      border: 2px solid rgba(255,255,255,0.3);
       backdrop-filter: blur(10px);
       padding: 2rem;
       border-radius: 20px;
@@ -1541,7 +1542,7 @@
               if (entries[0].isIntersecting) {
                 console.log('🌍 Globe in view, loading script...');
                 const script = document.createElement('script');
-                script.src = '/assets/js/globe-hero.js?v=14';
+                script.src = '/assets/js/globe-hero.js?v=15';
                 script.onerror = () => {
                   console.error('Failed to load globe script');
                   globeEl.innerHTML = '<div style="color:#fecaca;padding:2rem;text-align:center;">Globe script failed to load.</div>';

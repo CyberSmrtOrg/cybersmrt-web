@@ -422,12 +422,12 @@ async function init() {
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
     .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
     .showAtmosphere(true)
-    .atmosphereColor('#667eea')
-    .atmosphereAltitude(0.20)
+    .atmosphereColor('#8ab4ff')
+    .atmosphereAltitude(0.25)
     .polygonsData(countries.features)
-    .polygonCapColor(() => 'rgba(2,10,22,0.7)')
-    .polygonSideColor(() => 'rgba(2,10,22,0.2)')
-    .polygonStrokeColor(() => 'rgba(102,126,234,0.35)');
+    .polygonCapColor(() => 'rgba(30,40,60,0.5)')
+    .polygonSideColor(() => 'rgba(30,40,60,0.15)')
+    .polygonStrokeColor(() => 'rgba(138,180,255,0.45)');
 
   // Group with tilt
   const globeGroup = new THREE.Group();

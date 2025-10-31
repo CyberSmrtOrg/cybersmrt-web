@@ -132,12 +132,12 @@
 
     .leader-info h4 {
       font-size: 1.2rem;
-      color: #888;
+      color: var(--text-muted);
       margin-bottom: 1rem;
     }
 
     .leader-info p {
-      color: #d0d0d0;
+      color: var(--text-secondary);
       line-height: 1.8;
       margin-bottom: 1rem;
     }
@@ -151,8 +151,8 @@
     }
 
     .team-card {
-      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-      border: 1px solid #333;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 2rem;
       text-align: center;
@@ -161,7 +161,7 @@
 
     .team-card:hover {
       transform: translateY(-5px);
-      border-color: #9240e4;
+      border-color: var(--brand-primary);
       box-shadow: 0 20px 40px rgba(146, 64, 228, 0.2);
     }
 
@@ -195,17 +195,17 @@
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      color: #9240e4;
+      color: var(--text-heading);
     }
 
     .team-title {
       font-size: 1rem;
-      color: #888;
+      color: var(--text-secondary);
       margin-bottom: 1rem;
     }
 
     .team-bio {
-      color: #b0b0b0;
+      color: var(--text-secondary);
       font-size: 0.95rem;
       line-height: 1.6;
       margin-bottom: 1.5rem;
@@ -230,7 +230,7 @@
 
     /* Join CTA */
     .join-cta {
-      background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
       border-radius: 20px;
       padding: 3rem;
       text-align: center;
@@ -240,12 +240,14 @@
     .join-cta h2 {
       font-size: 2rem;
       margin-bottom: 1rem;
+      color: var(--hero-text);
     }
 
     .join-cta p {
       font-size: 1.1rem;
       margin-bottom: 2rem;
       opacity: 0.95;
+      color: var(--hero-text);
     }
 
     .btn {
