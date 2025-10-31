@@ -16,9 +16,6 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
-  <!-- Header styles -->
-  <script src="/assets/js/header-loader.js"></script>
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -561,22 +558,32 @@
 
   <script>
     // Timing for the reveal
-    setTimeout(() => {
+    setTimeout(async () => {
       document.getElementById('hackScreen').classList.add('hidden');
       document.getElementById('revealScreen').classList.add('active');
 
       // Load header after reveal
-      if (window.loadHeader) {
-        window.loadHeader();
+      try {
+        const headerRes = await fetch('/partials/header.html');
+        const headerHtml = await headerRes.text();
+        document.getElementById('header-placeholder').innerHTML = headerHtml;
+
+        // Load header scripts
+        const headerScript = document.createElement('script');
+        headerScript.src = '/assets/js/header-loader.js';
+        document.head.appendChild(headerScript);
+      } catch (err) {
+        console.error('Failed to load header:', err);
       }
 
       // Load footer after reveal
-      fetch('/partials/footer.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('footer-placeholder').innerHTML = html;
-        })
-        .catch(err => console.error('Failed to load footer:', err));
+      try {
+        const footerRes = await fetch('/partials/footer.html');
+        const footerHtml = await footerRes.text();
+        document.getElementById('footer-placeholder').innerHTML = footerHtml;
+      } catch (err) {
+        console.error('Failed to load footer:', err);
+      }
     }, 3500); // 3.5 seconds of "hacking"
 
     // Share functionality

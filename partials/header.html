@@ -57,17 +57,19 @@
 
     /* Sign In Button */
     .header-signin-btn {
-      background: var(--brand-primary);
-      color: white;
+      background: var(--card-bg);
+      color: var(--text-primary);
       padding: 0.625rem 1.75rem;
       min-height: 44px; /* WCAG 2.1 touch target compliance */
       border-radius: 50px;
-      border: none;
+      border: 1px solid var(--card-border);
       font-weight: 600;
       font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-sm);
       /* Improve mobile touch responsiveness */
       -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
       touch-action: manipulation;
@@ -75,9 +77,10 @@
       -webkit-user-select: none;
     }
     .header-signin-btn:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--brand-primary);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-      background: var(--brand-primary-hover);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
 
     /* User Menu Dropdown Container */

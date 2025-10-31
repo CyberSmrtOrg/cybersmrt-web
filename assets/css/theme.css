@@ -181,11 +181,21 @@ body {
   transform: rotate(15deg) scale(1.1);
 }
 
-/* Hide the icon that doesn't match current theme */
-[data-theme="dark"] .theme-toggle .light-icon {
+/* Show/hide icons based on theme */
+/* Default (dark mode): show moon, hide sun */
+.theme-toggle .dark-icon {
+  display: flex;
+}
+
+.theme-toggle .light-icon {
   display: none;
 }
 
+/* Light mode: show sun, hide moon */
 [data-theme="light"] .theme-toggle .dark-icon {
   display: none;
+}
+
+[data-theme="light"] .theme-toggle .light-icon {
+  display: flex;
 }
