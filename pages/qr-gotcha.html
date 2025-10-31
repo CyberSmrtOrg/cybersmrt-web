@@ -113,6 +113,10 @@
       text-align: center;
     }
 
+    [data-theme="light"] .reveal-screen {
+      background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
+    }
+
     .reveal-screen.active {
       display: flex;
       animation: fadeIn 0.5s ease;
@@ -149,6 +153,10 @@
       max-width: 600px;
     }
 
+    [data-theme="light"] .subtitle {
+      color: #475569;
+    }
+
     /* Education Section */
     .education-box {
       background: linear-gradient(135deg, rgba(102,126,234,.1) 0%, rgba(118,75,162,.08) 100%);
@@ -158,6 +166,12 @@
       max-width: 800px;
       margin: 3rem auto;
       text-align: left;
+    }
+
+    [data-theme="light"] .education-box {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+      border: 2px solid rgba(99,102,241,.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .education-box h2 {
@@ -257,6 +271,12 @@
       max-width: 800px;
     }
 
+    [data-theme="light"] .share-section {
+      background: rgba(255, 255, 255, 1);
+      border: 2px solid rgba(203, 213, 225, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
     .share-section h3 {
       font-size: 1.5rem;
       color: #667eea;
@@ -269,6 +289,10 @@
       color: #b0b0b0;
       margin-bottom: 2rem;
       font-size: 1.05rem;
+    }
+
+    [data-theme="light"] .share-section p {
+      color: #475569;
     }
 
     .share-buttons {
@@ -331,6 +355,12 @@
       text-align: center;
     }
 
+    [data-theme="light"] .contact-section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+      border: 2px solid rgba(203, 213, 225, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
     .contact-section h3 {
       font-size: 1.3rem;
       color: #667eea;
@@ -347,6 +377,10 @@
       color: #b0b0b0;
       font-size: 1.05rem;
       margin-bottom: 1.5rem;
+    }
+
+    [data-theme="light"] .contact-section .title {
+      color: #475569;
     }
 
     .contact-links {
@@ -379,6 +413,11 @@
       text-align: center;
     }
 
+    [data-theme="light"] .footer-note {
+      border-top: 1px solid rgba(203, 213, 225, 0.5);
+      color: #64748b;
+    }
+
     .logo-link {
       display: inline-flex;
       align-items: center;
@@ -393,6 +432,42 @@
     .logo-link:hover {
       opacity: 0.8;
     }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 10000;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    }
+
+    .theme-toggle-icon {
+      font-size: 1.5rem;
+      transition: opacity 0.3s ease;
+    }
+
+    .theme-toggle .dark-icon { display: block; }
+    .theme-toggle .light-icon { display: none; }
+
+    [data-theme="light"] .theme-toggle .dark-icon { display: none; }
+    [data-theme="light"] .theme-toggle .light-icon { display: block; }
 
     @media (max-width: 768px) {
       .education-box {
@@ -425,6 +500,12 @@
 </head>
 
 <body>
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="window.ThemeManager.toggle()" aria-label="Toggle theme">
+    <div class="theme-toggle-icon dark-icon">🌙</div>
+    <div class="theme-toggle-icon light-icon">☀️</div>
+  </button>
+
   <!-- Phase 1: Fake "Hacking" Screen -->
   <div class="hack-screen" id="hackScreen">
     <div class="glitch-text">ACCESS GRANTED</div>
