@@ -78,7 +78,7 @@
         document.querySelectorAll('[data-user-name]').forEach(el=>el.textContent = user.displayName || user.email || '');
         document.querySelectorAll('[data-user-email]').forEach(el=>el.textContent = user.email || '');
         document.querySelectorAll('[data-user-avatar]').forEach(el=>{ if (el.tagName==='IMG') el.src = user.avatarUrl || '/assets/logos/cybersmrt-logo-only.png'; });
-        displayUserProfile(user);
+        // displayUserProfile(user); // Disabled - header now handles user menu with data-auth-show
       }
     }
 
