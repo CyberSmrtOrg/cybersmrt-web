@@ -697,6 +697,15 @@
       filter: none;
     }
 
+    /* Theme-aware partner logos */
+    /* Dark mode (default): show light logos, hide dark logos */
+    .partner-img-light { display: block; }
+    .partner-img-dark { display: none; }
+
+    /* Light mode: show dark logos, hide light logos */
+    [data-theme="light"] .partner-img-light { display: none; }
+    [data-theme="light"] .partner-img-dark { display: block; }
+
     .programs { background: var(--bg-solid); }
     .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
 
@@ -1409,7 +1418,8 @@
         <a class="partner-card" href="https://www.tenable.com/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/tenable.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/tenable-light.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/tenable-dark.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">Tenable</p>
           </div>
@@ -1418,7 +1428,8 @@
         <a class="partner-card" href="https://www.isc2.org/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/isc2.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/isc2-light.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/isc2-dark.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">ISC²</p>
           </div>
@@ -1427,7 +1438,8 @@
         <a class="partner-card" href="https://www.comptia.org/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/comptia.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/comptia-light.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/comptia-dark.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">CompTIA</p>
           </div>
@@ -1436,7 +1448,8 @@
         <a class="partner-card" href="https://www.cloudrangecyber.com/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/cloudrange.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/cloudrange-light.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cloudrange-dark.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">CloudRange</p>
           </div>
@@ -1455,7 +1468,8 @@
         <a class="partner-card" href="https://www.tenable.com/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/tenable.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/tenable-light.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/tenable-dark.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">Tenable</p>
           </div>
@@ -1464,7 +1478,8 @@
         <a class="partner-card" href="https://www.isc2.org/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/isc2.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/isc2-light.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/isc2-dark.png" alt="ISC²" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">ISC²</p>
           </div>
@@ -1473,7 +1488,8 @@
         <a class="partner-card" href="https://www.comptia.org/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/comptia.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/comptia-light.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/comptia-dark.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">CompTIA</p>
           </div>
@@ -1482,7 +1498,8 @@
         <a class="partner-card" href="https://www.cloudrangecyber.com/" target="_blank" rel="noopener noreferrer">
           <div class="partner-logo">
             <div class="logo-box">
-              <img src="/assets/partners/cloudrange.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img"/>
+              <img src="/assets/partners/cloudrange-light.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cloudrange-dark.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
             </div>
             <p class="partner-label">CloudRange</p>
           </div>
