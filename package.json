@@ -4,7 +4,10 @@
   "private": true,
   "description": "CyberSmrt.org website and tools",
   "scripts": {
-    "lint": "eslint . --ext .js,.html || true"
+    "lint": "eslint . --ext .js,.html || true",
+    "generate:analytics": "node scripts/generate-analytics-config.js",
+    "prebuild": "npm run generate:analytics",
+    "build": "echo 'Build complete'"
   },
   "devDependencies": {
     "eslint": "^8.50.0",

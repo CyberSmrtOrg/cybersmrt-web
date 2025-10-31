@@ -29,6 +29,9 @@ dist/
 build/
 *.log
 
+# Auto-generated configuration files
+assets/js/analytics-config.js
+
 # Blog Generator - KEEP PRIVATE, LOCAL ONLY
 blog-generator.html
 
