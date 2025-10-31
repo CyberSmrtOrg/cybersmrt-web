@@ -25,10 +25,10 @@
     const isOpen = container.classList.contains('open');
 
     // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open').forEach(el => {
+    document.querySelectorAll('.user-menu-container.open, .tools-dropdown-container.open').forEach(el => {
       if (el !== container) {
         el.classList.remove('open');
-        const btn = el.querySelector('.user-menu');
+        const btn = el.querySelector('.user-menu, .tools-dropdown-trigger');
         if (btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
@@ -38,12 +38,41 @@
     event.currentTarget.setAttribute('aria-expanded', !isOpen);
   };
 
-  // Close user menu when clicking outside
+  // Toggle tools dropdown menu
+  window.toggleToolsDropdown = function(event) {
+    event.stopPropagation();
+    const container = event.currentTarget.closest('.tools-dropdown-container');
+    if (!container) return;
+
+    const isOpen = container.classList.contains('open');
+
+    // Close all other open menus first
+    document.querySelectorAll('.user-menu-container.open, .tools-dropdown-container.open').forEach(el => {
+      if (el !== container) {
+        el.classList.remove('open');
+        const btn = el.querySelector('.user-menu, .tools-dropdown-trigger');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Toggle this menu
+    container.classList.toggle('open');
+    event.currentTarget.setAttribute('aria-expanded', !isOpen);
+  };
+
+  // Close dropdown menus when clicking outside
   document.addEventListener('click', function(event) {
-    if (!event.target.closest('.user-menu-container')) {
+    if (!event.target.closest('.user-menu-container') && !event.target.closest('.tools-dropdown-container')) {
+      // Close user menu
       document.querySelectorAll('.user-menu-container.open').forEach(el => {
         el.classList.remove('open');
         const btn = el.querySelector('.user-menu');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+      // Close tools dropdown
+      document.querySelectorAll('.tools-dropdown-container.open').forEach(el => {
+        el.classList.remove('open');
+        const btn = el.querySelector('.tools-dropdown-trigger');
         if (btn) btn.setAttribute('aria-expanded', 'false');
       });
     }
@@ -106,7 +135,7 @@
     }
   });
 
-  console.log('✅ Global functions loaded (including toggleUserMenu)');
+  console.log('✅ Global functions loaded (including toggleUserMenu, toggleToolsDropdown)');
 })();
 
 // ============================================
