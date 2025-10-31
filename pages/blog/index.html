@@ -37,7 +37,7 @@
 
         /* Hero */
         .blog-hero {
-            background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
             padding: 4rem 2rem;
             margin-top: 80px; /* Space for sticky header + user menu */
         }
@@ -66,12 +66,12 @@
             margin-bottom: 1rem;
             font-weight: 900;
             letter-spacing: 0.02em;
-            color: #ffffff
+            color: var(--hero-text);
         }
 
         .hero-text p {
             font-size: 1.3rem;
-            color: #ffffff;
+            color: var(--hero-text);
             line-height: 1.6;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }

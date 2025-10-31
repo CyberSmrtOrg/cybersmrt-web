@@ -34,25 +34,26 @@
     .hero {
       text-align: center;
       margin-bottom: 4rem;
-      padding: 2rem 0;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      border-radius: 20px;
+      margin-top: 80px;
     }
 
     .hero h1 {
       font-family: "Orbitron", sans-serif;
       font-size: 3rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--hero-text);
       margin-bottom: 1rem;
     }
 
     .hero p {
       font-size: 1.25rem;
-      color: #cbd5e1;
+      color: var(--hero-text);
       max-width: 700px;
       margin: 0 auto;
+      opacity: 0.95;
     }
 
     .tools-grid {
@@ -63,8 +64,8 @@
     }
 
     .tool-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 2rem;
       transition: all 0.3s ease;
@@ -74,9 +75,9 @@
 
     .tool-card:hover {
       transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.08);
-      border-color: #667eea;
-      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+      background: var(--card-bg-hover);
+      border-color: var(--card-border-hover);
+      box-shadow: var(--shadow-lg);
     }
 
     .tool-icon {
@@ -99,12 +100,12 @@
     .tool-card h2 {
       font-family: "Orbitron", sans-serif;
       font-size: 1.5rem;
-      color: #ffffff;
+      color: var(--text-heading);
       margin-bottom: 0.75rem;
     }
 
     .tool-card p {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       margin-bottom: 1.25rem;
       line-height: 1.7;
     }
@@ -115,7 +116,7 @@
     }
 
     .tool-features li {
-      color: #94a3b8;
+      color: var(--text-muted);
       padding: 0.5rem 0;
       display: flex;
       align-items: center;
@@ -125,7 +126,7 @@
 
     .tool-features li:before {
       content: "✓";
-      color: #667eea;
+      color: var(--brand-primary);
       font-weight: bold;
       font-size: 1.1rem;
     }
@@ -149,8 +150,8 @@
     }
 
     .info-section {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 2.5rem;
       margin-bottom: 3rem;
@@ -159,18 +160,18 @@
     .info-section h2 {
       font-family: "Orbitron", sans-serif;
       font-size: 1.8rem;
-      color: #667eea;
+      color: var(--brand-primary);
       margin-bottom: 1rem;
     }
 
     .info-section p {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       line-height: 1.8;
       margin-bottom: 1rem;
     }
 
     .info-section ul {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       margin-left: 1.5rem;
       line-height: 1.8;
     }

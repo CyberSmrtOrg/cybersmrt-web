@@ -40,6 +40,11 @@
   --brand-secondary: #8ab4ff;
   --brand-accent: #9240e4;
 
+  /* Hero gradients */
+  --hero-gradient-start: #040e3b;
+  --hero-gradient-end: #9240e4;
+  --hero-text: #ffffff;
+
   /* Status colors */
   --success-bg: rgba(34, 197, 94, 0.2);
   --success-border: rgba(34, 197, 94, 0.3);
@@ -74,9 +79,9 @@
   --text-bright: #0f172a;
   --text-heading: #0f172a;
 
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-bg-hover: rgba(255, 255, 255, 1);
-  --card-border: rgba(148, 163, 184, 0.3);
+  --card-bg: #ffffff;
+  --card-bg-hover: #f8fafc;
+  --card-border: rgba(203, 213, 225, 0.8);
   --card-border-hover: rgba(102, 126, 234, 0.6);
 
   --input-bg: rgba(255, 255, 255, 0.9);
@@ -96,6 +101,11 @@
   --brand-primary-hover: #6b46c1;
   --brand-secondary: #4299e1;
   --brand-accent: #805ad5;
+
+  /* Hero gradients - lighter purple gradient with dark text */
+  --hero-gradient-start: #e0d4f7;
+  --hero-gradient-end: #c4b5fd;
+  --hero-text: #1e293b;
 
   /* Status colors */
   --success-bg: #22c55e;

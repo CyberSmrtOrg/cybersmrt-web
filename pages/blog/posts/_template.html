@@ -38,7 +38,7 @@
 
         /* Blog Post Hero - Compact Version */
         .post-hero {
-            background: linear-gradient(135deg, #040e3b 0%, #9240e4 100%);
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
             padding: 3rem 2rem 2.5rem; /* Reduced from likely 5-6rem */
             text-align: center;
         }
@@ -46,7 +46,7 @@
         .category {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            color: #fff;
+            color: var(--hero-text);
             padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -61,6 +61,7 @@
             line-height: 1.2;
             margin-bottom: 1rem; /* Reduced spacing */
             letter-spacing: 0.02em;
+            color: var(--hero-text);
         }
 
         .post-meta {
@@ -68,7 +69,7 @@
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--hero-text);
             font-size: 0.95rem;
             margin-bottom: 1.5rem; /* Reduced spacing */
         }
