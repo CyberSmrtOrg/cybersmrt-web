@@ -399,15 +399,14 @@
       opacity: 0.8;
     }
 
-    /* Header and Footer visibility control */
-    #header-placeholder,
-    #footer-placeholder {
-      display: none;
+    /* Header should be hidden until loaded */
+    .site-header {
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .reveal-screen.active ~ #header-placeholder,
-    .reveal-screen.active ~ #footer-placeholder {
-      display: block;
+    .site-header.loaded {
+      opacity: 1;
     }
 
     /* Add padding to reveal screen for header */
@@ -550,23 +549,25 @@
 
   </div>
 
-  <!-- Header (loaded after reveal) -->
-  <div id="header-placeholder"></div>
-
-  <!-- Footer (loaded after reveal) -->
-  <div id="footer-placeholder"></div>
-
   <script>
     // Timing for the reveal
     setTimeout(async () => {
       document.getElementById('hackScreen').classList.add('hidden');
       document.getElementById('revealScreen').classList.add('active');
 
-      // Load header after reveal
+      // Load header after reveal (insert at top of body)
       try {
         const headerRes = await fetch('/partials/header.html');
         const headerHtml = await headerRes.text();
-        document.getElementById('header-placeholder').innerHTML = headerHtml;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = headerHtml;
+        const headerElement = tempDiv.firstElementChild;
+        document.body.insertBefore(headerElement, document.body.firstChild);
+
+        // Add loaded class for fade-in
+        setTimeout(() => {
+          headerElement.classList.add('loaded');
+        }, 50);
 
         // Load header scripts
         const headerScript = document.createElement('script');
@@ -576,11 +577,14 @@
         console.error('Failed to load header:', err);
       }
 
-      // Load footer after reveal
+      // Load footer after reveal (append at end of body)
       try {
         const footerRes = await fetch('/partials/footer.html');
         const footerHtml = await footerRes.text();
-        document.getElementById('footer-placeholder').innerHTML = footerHtml;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = footerHtml;
+        const footerElement = tempDiv.firstElementChild;
+        document.body.appendChild(footerElement);
       } catch (err) {
         console.error('Failed to load footer:', err);
       }
