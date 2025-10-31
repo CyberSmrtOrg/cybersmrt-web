@@ -720,6 +720,8 @@ function renderTemplate(templateName, data) {
             <p><strong>Email:</strong> ${data.email}</p>
             ${data.organization ? `<p><strong>Organization:</strong> ${data.organization}</p>` : ''}
             <p><strong>Subject:</strong> ${data.reasonLabel}</p>
+            <p><strong>Message:</strong></p>
+            <p style="white-space: pre-wrap; background: #f8fafc; padding: 15px; border-radius: 8px; border-left: 3px solid #667eea;">${data.message}</p>
           </div>
 
           <div class="success-box">
