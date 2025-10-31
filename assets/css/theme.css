@@ -148,20 +148,23 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 24px;
-  padding: 0.4rem 0.6rem;
+  border-radius: 50%;
+  padding: 0.65rem;
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  width: 44px;
+  height: 44px;
 }
 
 .theme-toggle:hover {
   background: var(--card-bg-hover);
   border-color: var(--brand-primary);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .theme-toggle-icon {
@@ -170,7 +173,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 18px;
   transition: transform 0.3s ease;
 }
 
@@ -185,18 +188,4 @@ body {
 
 [data-theme="light"] .theme-toggle .dark-icon {
   display: none;
-}
-
-/* Optional: Add text label for desktop */
-.theme-toggle-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .theme-toggle-label {
-    display: block;
-  }
 }

@@ -34,12 +34,15 @@
     /* Hero */
     .page-hero {
       background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
-      padding: 4rem 2rem 3rem;
+      padding: 4rem 2rem;
       text-align: center;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
 
     .hero-content {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -53,10 +56,25 @@
     }
 
     .page-hero p {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       opacity: 0.95;
       line-height: 1.6;
       color: var(--hero-text);
+    }
+
+    @media (max-width: 768px) {
+      .page-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+
+      .page-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .page-hero p {
+        font-size: 1.1rem;
+      }
     }
 
     /* Main Content */
