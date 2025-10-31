@@ -153,8 +153,8 @@
 
     /* Contact Info Sidebar */
     .contact-info {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 2rem;
       height: fit-content;
@@ -163,13 +163,13 @@
     .contact-info h2 {
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
-      color: #667eea;
+      color: var(--brand-primary);
     }
 
     .info-item {
       margin-bottom: 1.5rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--card-border);
     }
 
     .info-item:last-child {
@@ -180,7 +180,7 @@
 
     .info-item h3 {
       font-size: 1.1rem;
-      color: #60a5fa;
+      color: var(--brand-secondary);
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
@@ -194,13 +194,13 @@
     }
 
     .info-item a {
-      color: #60a5fa;
+      color: var(--link-color);
       text-decoration: none;
       transition: color 0.3s;
     }
 
     .info-item a:hover {
-      color: #93c5fd;
+      color: var(--link-hover);
       text-decoration: underline;
     }
 
@@ -217,16 +217,16 @@
       align-items: center;
       justify-content: center;
       padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 12px;
       transition: all 0.3s ease;
       text-decoration: none !important;
     }
 
     .social-link:hover {
-      background: rgba(96, 165, 250, 0.1);
-      border-color: #60a5fa;
+      background: var(--card-bg-hover);
+      border-color: var(--brand-primary);
       transform: translateY(-2px);
       text-decoration: none !important;
     }
@@ -234,20 +234,26 @@
     .social-link img {
       width: 24px;
       height: 24px;
-      filter: brightness(0) invert(1);
       opacity: 0.8;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s, filter 0.3s;
+    }
+
+    [data-theme="dark"] .social-link img {
+      filter: brightness(0) invert(1);
+    }
+
+    [data-theme="light"] .social-link img {
+      filter: brightness(0.5);
     }
 
     .social-link:hover img {
       opacity: 1;
-      filter: brightness(0) invert(1);
     }
 
     /* Contact Form */
     .contact-form {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 16px;
       padding: 2.5rem;
     }
@@ -255,7 +261,7 @@
     .contact-form h2 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
-      color: #667eea;
+      color: var(--brand-primary);
     }
 
     .form-group {
@@ -265,7 +271,7 @@
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #cbd5e1;
+      color: var(--text-primary);
       font-weight: 600;
       font-size: 0.95rem;
     }
@@ -280,7 +286,7 @@
       width: 100%;
       padding: 0.875rem 1rem;
       background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--input-border);
       border-radius: 8px;
       color: var(--text-primary);
       font-size: 1rem;
@@ -292,8 +298,8 @@
     .form-group select:focus,
     .form-group textarea:focus {
       outline: none;
-      border-color: #667eea;
-      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--input-border-focus);
+      background: var(--input-bg-focus);
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
@@ -306,9 +312,13 @@
       padding-right: 2.5rem;
     }
 
+    [data-theme="light"] .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    }
+
     .form-group select option {
-      background: #1a1a1a;
-      color: #ffffff;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
     }
 
     .form-group textarea {
@@ -324,7 +334,7 @@
 
     .form-helper {
       font-size: 0.85rem;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin-top: 0.25rem;
     }
 
@@ -383,6 +393,71 @@
 
     .message.show {
       display: block;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+    }
+
+    .faq-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--brand-primary);
+      text-align: center;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .faq-item:hover {
+      border-color: var(--brand-primary);
+    }
+
+    .faq-item summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--brand-secondary);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--brand-primary);
+      transition: transform 0.3s;
+    }
+
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      margin-top: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
     /* Mobile Responsive */
@@ -565,32 +640,32 @@
     </div>
 
     <!-- FAQ Section -->
-    <section style="margin-top: 4rem; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 16px;">
-      <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #667eea; text-align: center;">Common Questions</h2>
-      <div style="max-width: 800px; margin: 0 auto;">
-        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">Are your programs really free?</summary>
-          <p style="margin-top: 0.5rem; color: var(--text-secondary);">Our open-source tools and resources are 100% free! Our educational programs and curriculum implementation services are tailored to each organization's needs. Contact us to discuss how we can support your cybersecurity education goals.</p>
+    <section class="faq-section">
+      <h2>Common Questions</h2>
+      <div class="faq-container">
+        <details class="faq-item">
+          <summary>Are your programs really free?</summary>
+          <p>Our open-source tools and resources are 100% free! Our educational programs and curriculum implementation services are tailored to each organization's needs. Contact us to discuss how we can support your cybersecurity education goals.</p>
         </details>
 
-        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">How can my school use your K-12 curriculum?</summary>
-          <p style="margin-top: 0.5rem; color: var(--text-secondary);">Contact us using the form above with "K-12 Curriculum Inquiry" as your reason. We'll work with your school to implement our standards-aligned curriculum and provide implementation support tailored to your needs.</p>
+        <details class="faq-item">
+          <summary>How can my school use your K-12 curriculum?</summary>
+          <p>Contact us using the form above with "K-12 Curriculum Inquiry" as your reason. We'll work with your school to implement our standards-aligned curriculum and provide implementation support tailored to your needs.</p>
         </details>
 
-        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">Do you offer services for nonprofits and small businesses?</summary>
-          <p style="margin-top: 0.5rem; color: var(--text-secondary);">Yes! We provide high-quality cybersecurity services to nonprofits, schools, small businesses, and underserved communities on a sliding scale. Everyone's budget is different and so is everyone's needs—we'll meet you where you are. Contact us to discuss how we can support your organization.</p>
+        <details class="faq-item">
+          <summary>Do you offer services for nonprofits and small businesses?</summary>
+          <p>Yes! We provide high-quality cybersecurity services to nonprofits, schools, small businesses, and underserved communities on a sliding scale. Everyone's budget is different and so is everyone's needs—we'll meet you where you are. Contact us to discuss how we can support your organization.</p>
         </details>
 
-        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">Do you accept corporate sponsorships?</summary>
-          <p style="margin-top: 0.5rem; color: var(--text-secondary);">Absolutely! Select "Donation / Sponsorship" as your contact reason and we'll discuss partnership opportunities. All donations are tax-deductible.</p>
+        <details class="faq-item">
+          <summary>Do you accept corporate sponsorships?</summary>
+          <p>Absolutely! Select "Donation / Sponsorship" as your contact reason and we'll discuss partnership opportunities. All donations are tax-deductible.</p>
         </details>
 
-        <details style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-          <summary style="cursor: pointer; font-weight: 600; color: #60a5fa;">How can I volunteer?</summary>
-          <p style="margin-top: 0.5rem; color: var(--text-secondary);">We welcome volunteers! Select "Volunteer Opportunity" and tell us about your background and how you'd like to contribute.</p>
+        <details class="faq-item">
+          <summary>How can I volunteer?</summary>
+          <p>We welcome volunteers! Select "Volunteer Opportunity" and tell us about your background and how you'd like to contribute.</p>
         </details>
       </div>
     </section>

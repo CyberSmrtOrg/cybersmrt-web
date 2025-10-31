@@ -39,30 +39,22 @@
         .blog-hero {
             background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
             padding: 4rem 2rem;
-            margin-top: 80px; /* Space for sticky header + user menu */
+            margin-top: 80px;
+            text-align: center;
+            border-radius: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-content {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-        }
-
-        .hero-logo img {
-            display: block;
-            border-radius: 20px;
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
-        }
-
-        .hero-text {
-            flex: 1;
         }
 
         .hero-text h1 {
             font-family: "Orbitron", system-ui, sans-serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
             font-weight: 900;
             letter-spacing: 0.02em;
@@ -70,24 +62,13 @@
         }
 
         .hero-text p {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--hero-text);
             line-height: 1.6;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0.95;
         }
 
         @media (max-width: 768px) {
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 2rem;
-            }
-
-            .hero-logo img {
-                width: 150px;
-                height: 150px;
-            }
-
             .hero-text h1 {
                 font-size: 2.5rem;
             }
@@ -355,14 +336,6 @@
 
     <section class="blog-hero">
         <div class="hero-content">
-            <div class="hero-logo">
-                <img
-                    src="/assets/logos/cybersmrt-logo-only.png"
-                    alt="CyberSmrt logo"
-                    width="200"
-                    height="200"
-                />
-            </div>
             <div class="hero-text">
                 <h1>CYBERSMRT Blog</h1>
                 <p>Insights on cybersecurity education, equity, and protecting underserved communities</p>

@@ -109,7 +109,12 @@
       filter: brightness(0) invert(1);
     }
     [data-theme="light"] .footer-social img {
-      filter: brightness(0.4);
+      filter: brightness(0) saturate(0%);
+      opacity: 0.7;
+    }
+    [data-theme="light"] .footer-social a:hover img {
+      opacity: 1;
+      filter: brightness(0) saturate(0%);
     }
     .footer-social a:hover img {
       opacity: 1;
