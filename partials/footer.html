@@ -65,9 +65,12 @@
 
     /* Social Media Icons */
     .footer-social {
+      grid-column: 1 / -1;
       display: flex;
       gap: 0.75rem;
+      justify-content: center;
       align-items: center;
+      padding: 1.25rem 0 0.75rem;
     }
     .footer-social a {
       display: flex;
@@ -114,12 +117,9 @@
         text-align: center;
         justify-items: center;
       }
-      .footer-right {
-        flex-direction: column;
-        gap: 1.5rem !important;
-      }
       .footer-social {
-        justify-content: center;
+        flex-wrap: wrap;
+        padding: 1rem 0;
       }
     }
   </style>
@@ -130,35 +130,34 @@
       © <span id="footer-year">2025</span> CyberSmrt — Securing the underserved, one community at a time.
     </div>
 
-    <div class="footer-right">
-      <nav aria-label="Footer Navigation" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="/">Home</a>
-        <a href="/#programs">Programs</a>
-        <a href="/pages/blog">Blog</a>
-        <a href="/pages/about">About</a>
-        <a href="/pages/contact">Contact</a>
-      </nav>
+    <nav class="footer-right" aria-label="Footer Navigation">
+      <a href="/">Home</a>
+      <a href="/#programs">Programs</a>
+      <a href="/pages/blog">Blog</a>
+      <a href="/pages/about">About</a>
+      <a href="/pages/contact">Contact</a>
+    </nav>
 
-      <div class="footer-social" aria-label="Social Media">
-        <a href="https://www.linkedin.com/company/cybersmrtorg/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-          <img src="/assets/logos/linkedin.png" alt="LinkedIn">
-        </a>
-        <a href="https://www.facebook.com/CyberSmrtOrg/" target="_blank" rel="noopener noreferrer" title="Facebook">
-          <img src="/assets/logos/fb.png" alt="Facebook">
-        </a>
-        <a href="https://www.instagram.com/cybersmrtorg" target="_blank" rel="noopener noreferrer" title="Instagram">
-          <img src="/assets/logos/instagram.png" alt="Instagram">
-        </a>
-        <a href="https://www.tiktok.com/@cybersmrtorg" target="_blank" rel="noopener noreferrer" title="TikTok">
-          <img src="/assets/logos/tiktok.png" alt="TikTok">
-        </a>
-        <a href="https://bsky.app/profile/cybersmrt.bsky.social" target="_blank" rel="noopener noreferrer" title="Bluesky">
-          <img src="/assets/logos/bluesky.png" alt="Bluesky">
-        </a>
-        <a href="https://github.com/CyberSmrtOrg" target="_blank" rel="noopener noreferrer" title="GitHub">
-          <img src="/assets/logos/github.png" alt="GitHub">
-        </a>
-      </div>
+    <!-- Social Media Icons -->
+    <div class="footer-social" aria-label="Social Media">
+      <a href="https://www.linkedin.com/company/cybersmrtorg/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+        <img src="/assets/logos/linkedin.png" alt="LinkedIn">
+      </a>
+      <a href="https://www.facebook.com/CyberSmrtOrg/" target="_blank" rel="noopener noreferrer" title="Facebook">
+        <img src="/assets/logos/fb.png" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/cybersmrtorg" target="_blank" rel="noopener noreferrer" title="Instagram">
+        <img src="/assets/logos/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://www.tiktok.com/@cybersmrtorg" target="_blank" rel="noopener noreferrer" title="TikTok">
+        <img src="/assets/logos/tiktok.png" alt="TikTok">
+      </a>
+      <a href="https://bsky.app/profile/cybersmrt.bsky.social" target="_blank" rel="noopener noreferrer" title="Bluesky">
+        <img src="/assets/logos/bluesky.png" alt="Bluesky">
+      </a>
+      <a href="https://github.com/CyberSmrtOrg" target="_blank" rel="noopener noreferrer" title="GitHub">
+        <img src="/assets/logos/github.png" alt="GitHub">
+      </a>
     </div>
 
     <!-- Legal Links -->
