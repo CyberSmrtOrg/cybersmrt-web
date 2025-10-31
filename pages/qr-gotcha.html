@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
+  <!-- Header styles -->
+  <script src="/assets/js/header-loader.js"></script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -433,41 +436,23 @@
       opacity: 0.8;
     }
 
-    /* Theme Toggle */
-    .theme-toggle {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      z-index: 10000;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 50%;
-      padding: 0.75rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Header visibility control */
+    #header-placeholder {
+      display: none;
     }
 
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    .reveal-screen.active ~ #header-placeholder {
+      display: block;
     }
 
-    .theme-toggle-icon {
-      font-size: 1.5rem;
-      transition: opacity 0.3s ease;
+    /* Add padding to reveal screen for header */
+    .reveal-screen {
+      padding-top: 2rem;
     }
 
-    .theme-toggle .dark-icon { display: block; }
-    .theme-toggle .light-icon { display: none; }
-
-    [data-theme="light"] .theme-toggle .dark-icon { display: none; }
-    [data-theme="light"] .theme-toggle .light-icon { display: block; }
+    .reveal-screen.active {
+      padding-top: 120px;
+    }
 
     @media (max-width: 768px) {
       .education-box {
@@ -500,12 +485,6 @@
 </head>
 
 <body>
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" onclick="window.ThemeManager.toggle()" aria-label="Toggle theme">
-    <div class="theme-toggle-icon dark-icon">🌙</div>
-    <div class="theme-toggle-icon light-icon">☀️</div>
-  </button>
-
   <!-- Phase 1: Fake "Hacking" Screen -->
   <div class="hack-screen" id="hackScreen">
     <div class="glitch-text">ACCESS GRANTED</div>
@@ -626,11 +605,18 @@
     </div>
   </div>
 
+  <!-- Header (loaded after reveal) -->
+  <div id="header-placeholder"></div>
+
   <script>
     // Timing for the reveal
     setTimeout(() => {
       document.getElementById('hackScreen').classList.add('hidden');
       document.getElementById('revealScreen').classList.add('active');
+      // Load header after reveal
+      if (window.loadHeader) {
+        window.loadHeader();
+      }
     }, 3500); // 3.5 seconds of "hacking"
 
     // Share functionality
