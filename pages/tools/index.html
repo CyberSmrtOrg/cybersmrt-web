@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Cybersecurity Tools - CyberSmrt</title>
+  <meta name="description" content="Free, open-source cybersecurity tools from CyberSmrt. Check password strength, detect phishing, and test QR codes with our privacy-focused tools.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/assets/logos/cybersmrt-logo-only.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #e5e7eb;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding: 2rem 0;
+    }
+
+    .hero h1 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .tool-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #667eea;
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+    }
+
+    .tool-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .tool-icon svg {
+      width: 36px;
+      height: 36px;
+      color: white;
+    }
+
+    .tool-card h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .tool-card p {
+      color: #cbd5e1;
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+
+    .tool-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .tool-features li {
+      color: #94a3b8;
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .tool-features li:before {
+      content: "✓";
+      color: #667eea;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .tool-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .tool-button:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .info-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-section h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 1rem;
+    }
+
+    .info-section p {
+      color: #cbd5e1;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .info-section ul {
+      color: #cbd5e1;
+      margin-left: 1.5rem;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared Header -->
+  <div id="header-mount"></div>
+  <script defer src="/assets/js/header-loader.js"></script>
+
+  <main class="container">
+    <div class="hero">
+      <h1>Free Cybersecurity Tools</h1>
+      <p>Privacy-focused, open-source tools to help you stay secure online. No data collection, no tracking - just security.</p>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Password Checker -->
+      <a href="/pages/tools/password-checker" class="tool-card">
+        <div class="tool-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <h2>Password Checker</h2>
+        <p>Test your password strength and get instant feedback on how to improve it. Learn what makes a password secure.</p>
+        <ul class="tool-features">
+          <li>Real-time strength analysis</li>
+          <li>Checks against common patterns</li>
+          <li>No data sent to servers</li>
+          <li>Educational feedback</li>
+        </ul>
+        <span class="tool-button">
+          Try Password Checker
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Phishing Detector -->
+      <a href="/pages/tools/phishing-detector" class="tool-card">
+        <div class="tool-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h2>Phishing Detector</h2>
+        <p>Analyze suspicious emails and URLs to identify phishing attempts. Protect yourself from scams and credential theft.</p>
+        <ul class="tool-features">
+          <li>URL and email analysis</li>
+          <li>Identifies common phishing tactics</li>
+          <li>Educational explanations</li>
+          <li>Privacy-preserving checks</li>
+        </ul>
+        <span class="tool-button">
+          Try Phishing Detector
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </a>
+
+      <!-- QR Code Tester -->
+      <a href="/pages/tools/qr-tester" class="tool-card">
+        <div class="tool-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+          </svg>
+        </div>
+        <h2>QR Code Tester</h2>
+        <p>Safely scan and analyze QR codes before visiting them. Check for malicious URLs and understand where a QR code will take you.</p>
+        <ul class="tool-features">
+          <li>Safe QR code preview</li>
+          <li>URL reputation checking</li>
+          <li>VirusTotal integration</li>
+          <li>Scan before you click</li>
+        </ul>
+        <span class="tool-button">
+          Try QR Code Tester
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="info-section">
+      <h2>Why Use Our Tools?</h2>
+      <p><strong>Privacy First:</strong> All tools run locally in your browser whenever possible. Your data never leaves your device unless explicitly needed for a security check (like URL reputation).</p>
+      <p><strong>Educational:</strong> Each tool provides explanations and learning opportunities, not just results. Understand the "why" behind cybersecurity best practices.</p>
+      <p><strong>100% Free:</strong> These tools are completely free to use, with no ads, no tracking, and no premium upsells. Part of our mission to democratize cybersecurity education.</p>
+      <p><strong>Open Source:</strong> Our code is transparent and available on GitHub. You can verify exactly how these tools work and contribute improvements.</p>
+    </div>
+
+    <div class="info-section">
+      <h2>Need More Help?</h2>
+      <p>These tools are just the beginning. If your organization needs comprehensive cybersecurity services, training, or consulting, we're here to help.</p>
+      <p><a href="/pages/contact" style="color: #667eea; text-decoration: none; font-weight: 600;">Contact us</a> to discuss how we can support your security needs with our sliding scale pricing for nonprofits, schools, and small businesses.</p>
+    </div>
+  </main>
+
+  <!-- Shared Footer -->
+  <div id="footer-mount"></div>
+  <script defer src="/assets/js/footer-loader.js"></script>
+</body>
+</html>
