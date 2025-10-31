@@ -139,9 +139,10 @@ window.analytics.setUserProperties({
 
 ### For GitHub Pages or Static Hosting:
 
-Before deploying, always regenerate the config:
+The `analytics-config.js` file is committed to the repository, so it will be deployed automatically. If you need to update your Measurement ID:
 
 ```bash
+# Update .env with new ID
 npm run generate:analytics
 git add assets/js/analytics-config.js
 git commit -m "Update analytics configuration"
@@ -150,11 +151,7 @@ git push
 
 ### For Cloudflare Pages:
 
-Add the `GOOGLE_ANALYTICS_ID` as an environment variable:
-
-1. Go to Cloudflare Pages → Settings → Environment variables
-2. Add: `GOOGLE_ANALYTICS_ID` = `G-XXXXXXXXXX`
-3. Set up a build command: `npm run build`
+The analytics configuration is included in the repository and will deploy automatically. No additional build steps or environment variables are needed in Cloudflare Pages.
 
 ## 10. Recommended GA4 Settings
 
@@ -212,6 +209,8 @@ Check browser console for:
 ## 13. Security Notes
 
 - **Never commit** your `.env` file to git (already in `.gitignore`)
-- The `analytics-config.js` file is auto-generated and **should not be committed**
-- Measurement IDs are public and safe to expose in client-side code
+- The `analytics-config.js` file is committed to the repository - this is safe because:
+  - Google Analytics Measurement IDs are public and designed to be exposed in client-side code
+  - They don't grant any administrative access to your GA4 property
+  - They're visible in the browser's network tab anyway
 - All analytics tracking respects user privacy and consent
