@@ -69,6 +69,7 @@ function errorResponse(request, env, message, status = 400, includeCredentials =
     status,
     headers: {
       'Content-Type': 'application/json',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
       ...buildCorsHeaders(request, env, includeCredentials),
     },
   });
@@ -82,6 +83,7 @@ function jsonResponse(request, env, data, status = 200, includeCredentials = fal
     status,
     headers: {
       'Content-Type': 'application/json',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
       ...buildCorsHeaders(request, env, includeCredentials),
     },
   });
@@ -97,6 +99,9 @@ function addCorsHeaders(response, request, env) {
   Object.entries(corsHeaders).forEach(([key, value]) => {
     newHeaders.set(key, value);
   });
+
+  // Add X-Robots-Tag to prevent indexing
+  newHeaders.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
 
   return new Response(response.body, {
     status: response.status,
@@ -118,6 +123,35 @@ export default {
     try {
       const url = new URL(request.url);
       const path = url.pathname;
+
+      // Serve robots.txt to prevent search engine indexing
+      if (path === '/robots.txt') {
+        const robotsTxt = `# robots.txt for auth.cybersmrt.org
+# This is an authentication service - do not index
+
+User-agent: *
+Disallow: /
+
+# Prevent all search engine indexing
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: *
+Disallow: /
+`;
+        return new Response(robotsTxt, {
+          status: 200,
+          headers: {
+            'Content-Type': 'text/plain',
+            'X-Robots-Tag': 'noindex, nofollow, noarchive',
+            'Cache-Control': 'public, max-age=86400'
+          }
+        });
+      }
+
       const router = new AuthRouter(env, request);
 
       // OAuth initiation endpoints
