@@ -455,7 +455,7 @@ function getAdminDashboardHTML() {
       sessionStorage.setItem('oauth_state', state);
 
       // Redirect to OAuth provider
-      window.location.href = \`https://auth.cybersmrt.org/oauth/\${provider}?state=\${encodeURIComponent(state)}\`;
+      window.location.href = \`https://auth.cybersmrt.org/\${provider}?state=\${encodeURIComponent(state)}\`;
     }
 
     // Check for existing session or OAuth callback
