@@ -147,7 +147,7 @@ function getAdminDashboardHTML() {
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #000000;
+      background: linear-gradient(135deg, #1a0033 0%, #4a0080 50%, #7b2cbf 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -156,16 +156,15 @@ function getAdminDashboardHTML() {
     }
 
     .container {
-      background: white;
+      background: transparent;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       max-width: 1200px;
       width: 100%;
       overflow: hidden;
     }
 
     .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #000000;
       color: white;
       padding: 30px;
       text-align: center;
@@ -186,6 +185,8 @@ function getAdminDashboardHTML() {
 
     .content {
       padding: 40px;
+      background: white;
+      border-radius: 0 0 20px 20px;
     }
 
     .login-container {
