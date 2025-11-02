@@ -3,14 +3,14 @@
 /* Persistent Settings Tab */
 .cookie-settings-tab {
   position: fixed;
-  right: 0;
+  right: -45px;
   top: 50%;
   transform: translateY(-50%) rotate(-90deg);
-  transform-origin: right center;
+  transform-origin: center center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 12px 20px;
+  padding: 12px 24px;
   border-radius: 8px 8px 0 0;
   cursor: pointer;
   font-size: 14px;
@@ -20,11 +20,13 @@
   gap: 8px;
   box-shadow: -2px -2px 8px rgba(0, 0, 0, 0.2);
   z-index: 9998;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: right 0.3s ease, box-shadow 0.3s ease;
+  min-width: 120px;
+  justify-content: center;
 }
 
 .cookie-settings-tab:hover {
-  transform: translateY(-50%) rotate(-90deg) translateX(-5px);
+  right: -40px;
   box-shadow: -2px -2px 12px rgba(0, 0, 0, 0.3);
 }
 
