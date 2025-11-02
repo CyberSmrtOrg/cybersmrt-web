@@ -29,6 +29,12 @@
   Cross-Origin-Resource-Policy: cross-origin
   CDN-Cache-Control: public, max-age=31536000
 
+/assets/logos/*
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: cross-origin
+  Access-Control-Allow-Origin: *
+  CDN-Cache-Control: public, max-age=31536000
+
 /images/*
   Cache-Control: public, max-age=31536000, immutable
   Cross-Origin-Resource-Policy: cross-origin
