@@ -362,7 +362,7 @@ function getAdminDashboardHTML() {
 <body>
   <div class="container">
     <div class="header">
-      <img src="/assets/logos/cybersmrt-logo-stacked.png" alt="CyberSmrt" class="header-logo">
+      <img src="https://cybersmrt.org/assets/logos/cybersmrt-logo-stacked.png" alt="CyberSmrt" class="header-logo">
       <h1>Administrative Dashboard</h1>
     </div>
 
