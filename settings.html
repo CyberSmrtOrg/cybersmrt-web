@@ -595,18 +595,6 @@
 
         <div class="setting-item">
           <div class="setting-info">
-            <h3>Theme</h3>
-            <p>Choose how CyberSmrt looks to you</p>
-          </div>
-          <select id="theme" onchange="saveSettings()">
-            <option value="dark">Dark Mode</option>
-            <option value="light">Light Mode</option>
-            <option value="auto">System Default</option>
-          </select>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
             <h3>Reduce Motion</h3>
             <p>Minimize animations and transitions</p>
           </div>
@@ -697,14 +685,6 @@
   /* eslint-disable-next-line no-unused-vars */
   let current2FASecret = null;
 
-    // Listen for system theme changes when in auto mode
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      const currentTheme = document.getElementById('theme')?.value;
-      if (currentTheme === 'auto') {
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-      }
-    });
-
     // Load settings on page load
     window.addEventListener('load', () => {
       waitForAuth(async () => {
@@ -712,22 +692,6 @@
         await load2FAStatus();
       });
     });
-
-    // Apply theme to the page
-    function applyTheme(themeSetting) {
-      const html = document.documentElement;
-
-      if (themeSetting === 'auto') {
-        // Use system preference
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-      } else if (themeSetting === 'light') {
-        html.setAttribute('data-theme', 'light');
-      } else {
-        // Default to dark
-        html.setAttribute('data-theme', 'dark');
-      }
-    }
 
     // Update HTML lang attribute
     function applyLanguage(language) {
@@ -752,11 +716,9 @@
           document.getElementById('course-reminders').checked = settings.courseReminders !== false;
           document.getElementById('marketing').checked = settings.marketing === true;
           document.getElementById('profile-visibility').value = settings.profileVisibility || 'public';
-          document.getElementById('theme').value = settings.theme || 'dark';
           document.getElementById('reduce-motion').checked = settings.reduceMotion === true;
 
-          // Apply theme and language
-          applyTheme(settings.theme || 'dark');
+          // Apply language
           applyLanguage(settings.language || 'en');
         }
       } catch (error) {
@@ -777,17 +739,14 @@
         courseReminders: document.getElementById('course-reminders').checked,
         marketing: document.getElementById('marketing').checked,
         profileVisibility: document.getElementById('profile-visibility').value,
-        theme: document.getElementById('theme').value,
         reduceMotion: document.getElementById('reduce-motion').checked
       };
 
       // Save to localStorage for site-wide access
-      localStorage.setItem('theme', settings.theme);
       localStorage.setItem('language', settings.language);
       localStorage.setItem('reduceMotion', settings.reduceMotion ? 'true' : 'false');
 
-      // Apply theme and language immediately
-      applyTheme(settings.theme);
+      // Apply language immediately
       applyLanguage(settings.language);
 
       // Handle reduce motion preference
