@@ -121,6 +121,25 @@ Disallow: /
           }
         });
       }
+
+      // Health check endpoint for GitHub Actions and monitoring
+      if (path === '/health') {
+        return new Response(JSON.stringify({
+          success: true,
+          status: 'healthy',
+          service: 'profile',
+          timestamp: new Date().toISOString(),
+          version: '1.0.1'
+        }), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Robots-Tag': 'noindex, nofollow, noarchive',
+            'Cache-Control': 'no-cache'
+          }
+        });
+      }
+
       const router = new ProfileRouter(env, request);
 
       // Profile endpoints
