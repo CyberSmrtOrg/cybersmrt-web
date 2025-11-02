@@ -11,6 +11,14 @@
  * Security: Requires JWT authentication with admin role
  */
 
+import {
+  logSecurityEvent,
+  getRequestContext,
+  detectRepeatedFailures,
+  SEVERITY,
+  EVENT_TYPE,
+} from './security-logger.js';
+
 // CORS configuration
 function buildCorsHeaders(request, env, includeCredentials = false) {
   const origin = request.headers.get('Origin');
@@ -354,7 +362,7 @@ function getAdminDashboardHTML() {
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://cybersmrt.org/assets/images/logo-white.svg" alt="CyberSmrt" class="header-logo">
+      <img src="/assets/logos/cybersmrt-logo-stacked.png" alt="CyberSmrt" class="header-logo">
       <h1>Administrative Dashboard</h1>
     </div>
 
@@ -486,10 +494,21 @@ function getAdminDashboardHTML() {
 
           // Verify user email is @cybersmrt.org
           if (!payload.email || !payload.email.endsWith('@cybersmrt.org')) {
+            // Log unauthorized email attempt
+            await fetch('/log-oauth-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventType: 'admin_login_failed_invalid_email',
+                severity: 'critical',
+                email: payload.email,
+                reason: 'Non-@cybersmrt.org email attempted admin access'
+              })
+            }).catch(console.error);
+
             errorDiv.textContent = 'Access denied - @cybersmrt.org email required';
             errorDiv.style.display = 'block';
 
-            // Redirect back to login after 3 seconds
             setTimeout(() => {
               window.location.href = '/';
             }, 3000);
@@ -498,26 +517,72 @@ function getAdminDashboardHTML() {
 
           // Verify user has admin or super_admin role
           if (payload.role !== 'admin' && payload.role !== 'super_admin') {
+            // Log unauthorized role attempt
+            await fetch('/log-oauth-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventType: 'admin_login_failed_invalid_role',
+                severity: 'critical',
+                email: payload.email,
+                reason: \`User with role '\${payload.role}' attempted admin access\`
+              })
+            }).catch(console.error);
+
             errorDiv.textContent = 'Access denied - admin privileges required';
             errorDiv.style.display = 'block';
 
-            // Redirect back to login after 3 seconds
             setTimeout(() => {
               window.location.href = '/';
             }, 3000);
             return;
           }
 
+          // Log successful admin login
+          await fetch('/log-oauth-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              eventType: 'admin_login_success',
+              severity: 'info',
+              email: payload.email,
+              reason: 'Successful admin dashboard login'
+            })
+          }).catch(console.error);
+
           authToken = data.token;
           localStorage.setItem('adminToken', authToken);
           showDashboard();
           loadDashboardStats();
         } else {
+          // Log failed OAuth
+          await fetch('/log-oauth-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              eventType: 'admin_login_failed_token_invalid',
+              severity: 'warning',
+              reason: data.error || 'OAuth login failed'
+            })
+          }).catch(console.error);
+
           errorDiv.textContent = data.error || 'OAuth login failed';
           errorDiv.style.display = 'block';
         }
       } catch (error) {
         console.error('OAuth callback error:', error);
+
+        // Log error
+        await fetch('/log-oauth-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventType: 'token_tampering_detected',
+            severity: 'critical',
+            reason: 'JWT parsing or validation error: ' + error.message
+          })
+        }).catch(console.error);
+
         errorDiv.textContent = 'Authentication error - please try again';
         errorDiv.style.display = 'block';
       }
@@ -637,11 +702,40 @@ Disallow: /
 
     // API endpoints (require authentication)
     if (path.startsWith('/api/')) {
+      const requestContext = getRequestContext(request);
+
       // Verify admin token
       const auth = await verifyAdminToken(request, env);
       if (!auth.valid) {
+        // Log failed API access attempt
+        await logSecurityEvent(env, EVENT_TYPE.API_ACCESS_DENIED, SEVERITY.WARNING, {
+          ...requestContext,
+          path,
+          reason: auth.error,
+        });
+
+        // Check for repeated failures
+        const failures = await detectRepeatedFailures(env, requestContext.ipAddress);
+        if (failures.exceeded) {
+          await logSecurityEvent(env, EVENT_TYPE.MULTIPLE_FAILED_ATTEMPTS, SEVERITY.CRITICAL, {
+            ...requestContext,
+            path,
+            attemptCount: failures.count,
+            reason: 'Multiple failed authentication attempts detected',
+          });
+        }
+
         return errorResponse(request, env, auth.error, 401);
       }
+
+      // Log successful API access
+      await logSecurityEvent(env, EVENT_TYPE.API_ACCESS_SUCCESS, SEVERITY.INFO, {
+        ...requestContext,
+        email: auth.email,
+        userId: auth.userId,
+        path,
+        method: request.method,
+      });
 
       // Verify token endpoint
       if (path === '/api/verify') {
@@ -654,6 +748,12 @@ Disallow: /
 
       // Dashboard statistics
       if (path === '/api/stats') {
+        await logSecurityEvent(env, EVENT_TYPE.API_STATS_VIEWED, SEVERITY.INFO, {
+          ...requestContext,
+          email: auth.email,
+          userId: auth.userId,
+        });
+
         // TODO: Query actual stats from database
         // For now, return placeholder data
         return successResponse(request, env, {
@@ -668,6 +768,12 @@ Disallow: /
       // User management endpoints
       if (path === '/api/users') {
         if (request.method === 'GET') {
+          await logSecurityEvent(env, EVENT_TYPE.API_USERS_VIEWED, SEVERITY.INFO, {
+            ...requestContext,
+            email: auth.email,
+            userId: auth.userId,
+          });
+
           // TODO: List users from database
           return successResponse(request, env, {
             users: [],
@@ -679,6 +785,13 @@ Disallow: /
       // Security logs endpoint
       if (path === '/api/security-logs') {
         if (request.method === 'GET') {
+          await logSecurityEvent(env, EVENT_TYPE.API_ACCESS_SUCCESS, SEVERITY.INFO, {
+            ...requestContext,
+            email: auth.email,
+            userId: auth.userId,
+            action: 'view_security_logs',
+          });
+
           // TODO: Query security logs from database
           return successResponse(request, env, {
             logs: [],
@@ -687,7 +800,58 @@ Disallow: /
         }
       }
 
+      // Client-side event logging endpoint
+      if (path === '/api/log-event' && request.method === 'POST') {
+        try {
+          const body = await request.json();
+          const { eventType, severity, details } = body;
+
+          await logSecurityEvent(env, eventType, severity || SEVERITY.INFO, {
+            ...requestContext,
+            email: auth.email,
+            userId: auth.userId,
+            ...details,
+          });
+
+          return successResponse(request, env, { logged: true });
+        } catch (error) {
+          return errorResponse(request, env, 'Failed to log event', 500);
+        }
+      }
+
       return errorResponse(request, env, 'API endpoint not found', 404);
+    }
+
+    // Public event logging (for OAuth callback events before auth)
+    if (path === '/log-oauth-event' && request.method === 'POST') {
+      const requestContext = getRequestContext(request);
+
+      try {
+        const body = await request.json();
+        const { eventType, severity, email, reason } = body;
+
+        await logSecurityEvent(env, eventType, severity || SEVERITY.WARNING, {
+          ...requestContext,
+          email: email || 'unknown',
+          reason: reason || 'OAuth authentication attempt',
+        });
+
+        return new Response(JSON.stringify({ success: true }), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            ...buildCorsHeaders(request, env),
+          },
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ success: false }), {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            ...buildCorsHeaders(request, env),
+          },
+        });
+      }
     }
 
     // Serve admin dashboard HTML
