@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(node scripts/generate-analytics-config.js:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(profile\",\n  \"timestamp\": \"2025-11-02T00:00:00.000Z\",\n  \"version\": \"1.0.x\"\n}\n\nThis allows GitHub Actions workflows to verify successful deployment\nwith simple health checks.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

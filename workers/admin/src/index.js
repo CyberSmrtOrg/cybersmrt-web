@@ -862,6 +862,7 @@ Disallow: /
           'Content-Type': 'text/html',
           'X-Robots-Tag': 'noindex, nofollow, noarchive',
           'Cache-Control': 'no-cache',
+          'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://cybersmrt.org data:; connect-src 'self' https://auth.cybersmrt.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self';",
         },
       });
     }
