@@ -1,0 +1,22 @@
+name = "cybersmrt-admin"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Admin dashboard worker
+# Provides administrative interfaces for managing the CyberSmrt platform
+
+# Production route
+[[routes]]
+pattern = "admin.cybersmrt.org/*"
+zone_name = "cybersmrt.org"
+
+# Environment variables
+[env.production]
+vars = { FRONTEND_ORIGIN = "https://cybersmrt.org", AUTH_API_URL = "https://auth.cybersmrt.org" }
+
+[env.production.observability]
+enabled = true
+head_sampling_rate = 1
+
+# Secrets (set via wrangler secret put):
+# - JWT_SECRET: Secret key for verifying JWT tokens
