@@ -27,13 +27,6 @@
     .main-tab:hover { color: var(--text-primary); background: var(--card-bg); }
     .main-tab.active { color: #ffffff; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); border-bottom-color: #60a5fa; border-radius: 8px 8px 0 0; }
 
-    /* Sub Tabs (for Profile) */
-    .sub-tabs { display: none; gap: 0.75rem; margin: 1rem 0; padding: 0 0.5rem; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
-    .sub-tabs::-webkit-scrollbar { display: none; }
-    .sub-tabs.active { display: flex; }
-    .sub-tab { padding: 0.5rem 1rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
-    .sub-tab:hover { color: var(--text-primary); background: rgba(96, 165, 250, 0.1); border-color: #60a5fa; }
-    .sub-tab.active { color: #ffffff; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); border-color: #60a5fa; }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -166,27 +159,21 @@
 
   <div class="container">
     <div class="page-header">
-      <h1>Dashboard</h1>
-      <p id="welcome-text">Manage your account</p>
+      <h1>My Profile</h1>
+      <p id="welcome-text">Manage your account and preferences</p>
     </div>
     <div id="alert" class="alert"></div>
 
     <!-- Main Tabs -->
     <div class="main-tabs">
-      <button class="main-tab active" data-main-tab="dashboard">Dashboard</button>
+      <button class="main-tab active" data-main-tab="overview">Overview</button>
       <button class="main-tab" data-main-tab="profile">Profile</button>
+      <button class="main-tab" data-main-tab="security">Security</button>
       <button class="main-tab" data-main-tab="settings">Settings</button>
     </div>
 
-    <!-- Sub Tabs (only for Profile) -->
-    <div id="profile-sub-tabs" class="sub-tabs">
-      <button class="sub-tab active" data-sub-tab="account">Account</button>
-      <button class="sub-tab" data-sub-tab="security">Security</button>
-      <button class="sub-tab" data-sub-tab="data">Data</button>
-    </div>
-
-    <!-- Dashboard Tab -->
-    <div id="dashboard-tab" class="tab-content active">
+    <!-- Overview Tab -->
+    <div id="overview-tab" class="tab-content active">
       <!-- Email Verification Warning Banner -->
       <div id="verification-banner" class="verification-banner">
         <div class="verification-icon">⚠️</div>
@@ -283,8 +270,6 @@
 
     <!-- Profile Tab -->
     <div id="profile-tab" class="tab-content">
-      <!-- Account Sub-tab -->
-      <div id="account-sub-tab" class="tab-content active">
         <div class="card">
           <h2>Avatar</h2>
           <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem;">
@@ -331,10 +316,10 @@
           <div style="margin-top: 1.5rem;"><h3 style="color: var(--text-primary); margin-bottom: 1rem;">Providers</h3><div id="providers-list"></div></div>
           <div style="margin-top: 2rem;"><a href="/2fa-settings.html" class="btn btn-primary">Manage 2FA</a></div>
         </div>
-      </div>
+    </div>
 
-      <!-- Security Sub-tab -->
-      <div id="security-sub-tab" class="tab-content">
+    <!-- Security Tab -->
+    <div id="security-tab" class="tab-content">
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <h2 style="margin: 0;">Security Activity</h2>
@@ -345,10 +330,71 @@
           </div>
           <div id="security-logs" class="log-list">Loading...</div>
         </div>
-      </div>
 
-      <!-- Data Sub-tab -->
-      <div id="data-sub-tab" class="tab-content">
+        <div class="card">
+          <h2>Export Data</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">GDPR-compliant data export including all your profile data, security logs, sessions, uploaded files, and more.</p>
+          <button id="export-btn" class="btn btn-primary">Export My Data</button>
+        </div>
+
+        <!-- Deletion Status Banner (shown if scheduled) -->
+        <div id="deletion-banner" class="card" style="display: none; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+          <h2 style="color: #fca5a5;">⚠️ Account Deletion Scheduled</h2>
+          <p style="color: #fca5a5; margin-bottom: 1rem;">Your account is scheduled for permanent deletion.</p>
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-label">Deletion Date</div>
+              <div class="stat-value" id="deletion-date" style="color: #fca5a5;">---</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Days Remaining</div>
+              <div class="stat-value" id="days-remaining" style="color: #fca5a5;">---</div>
+            </div>
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <button id="cancel-deletion-btn" class="btn btn-primary">Cancel Deletion</button>
+          </div>
+        </div>
+
+        <div class="card danger-zone">
+          <h2>Delete Account</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            <strong>Deleting your account will:</strong><br>
+            • Permanently remove all your data<br>
+            • Delete all uploaded files<br>
+            • Remove all security logs<br>
+            • Disconnect all OAuth providers<br>
+            <strong>This action cannot be undone.</strong>
+          </p>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Choose Deletion Method:</h3>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+              <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="radio" name="deletion-method" value="scheduled" checked style="margin-right: 0.5rem;">
+                <span style="color: var(--text-primary);">Scheduled (30-day grace period)</span>
+              </label>
+              <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="radio" name="deletion-method" value="immediate" style="margin-right: 0.5rem;">
+                <span style="color: var(--text-primary);">Immediate (no grace period)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Type "DELETE MY ACCOUNT"</label>
+            <input type="text" id="delete-confirm">
+          </div>
+          <div class="form-group" id="deletion-reason-group">
+            <label>Reason (optional)</label>
+            <textarea id="deletion-reason" maxlength="500" style="min-height: 60px;" placeholder="Help us improve by telling us why you're leaving..."></textarea>
+          </div>
+          <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
+        </div>
+    </div>
+
+    <!-- Settings Tab (Data section removed) -->
+    <div id="settings-tab-dummy" class="tab-content" style="display: none;">
         <div class="card">
           <h2>Export Data</h2>
           <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">GDPR-compliant data export including all your profile data, security logs, sessions, uploaded files, and more.</p>
@@ -593,36 +639,14 @@
         document.querySelectorAll('.container > .tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(`${tabName}-tab`).classList.add('active');
 
-        // Show/hide sub-tabs based on main tab
-        const subTabs = document.getElementById('profile-sub-tabs');
-        if (tabName === 'profile') {
-          subTabs.classList.add('active');
-          // Update page title
-          document.querySelector('.page-header h1').textContent = 'Profile Settings';
-        } else {
-          subTabs.classList.remove('active');
-          // Update page title
-          if (tabName === 'dashboard') {
-            document.querySelector('.page-header h1').textContent = 'Dashboard';
-          } else if (tabName === 'settings') {
-            document.querySelector('.page-header h1').textContent = 'Settings';
-          }
-        }
-      });
-    });
-
-    // Sub tab switching (for Profile tab)
-    document.querySelectorAll('.sub-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const subTabName = tab.dataset.subTab;
-
-        // Update active sub tab
-        document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        // Hide all sub tab contents
-        document.querySelectorAll('#profile-tab > .tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(`${subTabName}-sub-tab`).classList.add('active');
+        // Update page title based on tab
+        const titles = {
+          'overview': 'My Profile',
+          'profile': 'Edit Profile',
+          'security': 'Security & Privacy',
+          'settings': 'Preferences'
+        };
+        document.querySelector('.page-header h1').textContent = titles[tabName] || 'My Profile';
       });
     });
 

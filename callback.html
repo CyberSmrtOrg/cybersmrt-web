@@ -259,14 +259,35 @@
           statusEl.className = 'success';
           statusEl.innerHTML = `✓ Authentication successful!<br>Welcome ${data.user.displayName || data.user.email}`;
 
-          // Determine redirect location - default to profile
+          // Determine redirect location
           let redirectUrl = '/profile';
 
-          // Check if user needs to complete setup or verify email
-          if (data.user.email_verified === false || data.user.emailVerified === false) {
-            redirectUrl = '/profile?verify=true';
-          } else if (!data.user.displayName) {
-            redirectUrl = '/profile?setup=true';
+          // Check if there's a saved return URL
+          const savedReturnUrl = localStorage.getItem('loginReturnUrl');
+          if (savedReturnUrl) {
+            // Parse the URL to ensure it's on the same origin
+            try {
+              const returnUrlObj = new URL(savedReturnUrl);
+              const currentOrigin = window.location.origin;
+
+              // Only use saved URL if it's from the same origin
+              if (returnUrlObj.origin === currentOrigin) {
+                redirectUrl = savedReturnUrl;
+              }
+            } catch (e) {
+              // If URL parsing fails, use default
+              console.log('Could not parse saved return URL');
+            }
+
+            // Clear the saved return URL
+            localStorage.removeItem('loginReturnUrl');
+          } else {
+            // Check if user needs to complete setup or verify email
+            if (data.user.email_verified === false || data.user.emailVerified === false) {
+              redirectUrl = '/profile?verify=true';
+            } else if (!data.user.displayName) {
+              redirectUrl = '/profile?setup=true';
+            }
           }
 
           // Redirect after a short delay - use replace for full reload
@@ -346,9 +367,33 @@
           statusEl.className = 'success';
           statusEl.innerHTML = `✓ Successfully authenticated!<br>Welcome ${result.user.displayName || result.user.email}`;
 
+          // Determine redirect location
+          let redirectUrl = '/profile';
+
+          // Check if there's a saved return URL
+          const savedReturnUrl = localStorage.getItem('loginReturnUrl');
+          if (savedReturnUrl) {
+            // Parse the URL to ensure it's on the same origin
+            try {
+              const returnUrlObj = new URL(savedReturnUrl);
+              const currentOrigin = window.location.origin;
+
+              // Only use saved URL if it's from the same origin
+              if (returnUrlObj.origin === currentOrigin) {
+                redirectUrl = savedReturnUrl;
+              }
+            } catch (e) {
+              // If URL parsing fails, use default
+              console.log('Could not parse saved return URL');
+            }
+
+            // Clear the saved return URL
+            localStorage.removeItem('loginReturnUrl');
+          }
+
           // Redirect after a short delay - use window.location.replace for full reload
           setTimeout(() => {
-            window.location.replace('/profile');
+            window.location.replace(redirectUrl);
           }, 1500);
         } else {
           throw new Error('Verification failed');
