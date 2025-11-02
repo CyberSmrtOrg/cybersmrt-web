@@ -476,27 +476,68 @@
 
         <div class="setting-item">
           <div class="setting-info">
-            <h3>Language</h3>
-            <p>Choose your preferred language for the interface</p>
-          </div>
-          <select id="language" onchange="saveSettings()">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-          </select>
-        </div>
-
-        <div class="setting-item">
-          <div class="setting-info">
             <h3>Timezone</h3>
             <p>Set your local timezone for accurate scheduling</p>
           </div>
           <select id="timezone" onchange="saveSettings()">
-            <option value="America/Los_Angeles">Pacific Time (PT)</option>
-            <option value="America/Denver">Mountain Time (MT)</option>
-            <option value="America/Chicago">Central Time (CT)</option>
-            <option value="America/New_York">Eastern Time (ET)</option>
+            <optgroup label="North America">
+              <option value="America/New_York">Eastern Time (ET)</option>
+              <option value="America/Chicago">Central Time (CT)</option>
+              <option value="America/Denver">Mountain Time (MT)</option>
+              <option value="America/Phoenix">Arizona (MST)</option>
+              <option value="America/Los_Angeles">Pacific Time (PT)</option>
+              <option value="America/Anchorage">Alaska (AKT)</option>
+              <option value="Pacific/Honolulu">Hawaii (HST)</option>
+              <option value="America/Toronto">Toronto</option>
+              <option value="America/Vancouver">Vancouver</option>
+              <option value="America/Mexico_City">Mexico City</option>
+            </optgroup>
+            <optgroup label="Europe">
+              <option value="Europe/London">London (GMT/BST)</option>
+              <option value="Europe/Paris">Paris (CET)</option>
+              <option value="Europe/Berlin">Berlin (CET)</option>
+              <option value="Europe/Rome">Rome (CET)</option>
+              <option value="Europe/Madrid">Madrid (CET)</option>
+              <option value="Europe/Amsterdam">Amsterdam (CET)</option>
+              <option value="Europe/Brussels">Brussels (CET)</option>
+              <option value="Europe/Vienna">Vienna (CET)</option>
+              <option value="Europe/Warsaw">Warsaw (CET)</option>
+              <option value="Europe/Athens">Athens (EET)</option>
+              <option value="Europe/Istanbul">Istanbul (TRT)</option>
+              <option value="Europe/Moscow">Moscow (MSK)</option>
+            </optgroup>
+            <optgroup label="Asia">
+              <option value="Asia/Dubai">Dubai (GST)</option>
+              <option value="Asia/Karachi">Karachi (PKT)</option>
+              <option value="Asia/Kolkata">India (IST)</option>
+              <option value="Asia/Dhaka">Dhaka (BST)</option>
+              <option value="Asia/Bangkok">Bangkok (ICT)</option>
+              <option value="Asia/Singapore">Singapore (SGT)</option>
+              <option value="Asia/Hong_Kong">Hong Kong (HKT)</option>
+              <option value="Asia/Shanghai">Shanghai (CST)</option>
+              <option value="Asia/Tokyo">Tokyo (JST)</option>
+              <option value="Asia/Seoul">Seoul (KST)</option>
+            </optgroup>
+            <optgroup label="Australia & Pacific">
+              <option value="Australia/Perth">Perth (AWST)</option>
+              <option value="Australia/Adelaide">Adelaide (ACST)</option>
+              <option value="Australia/Brisbane">Brisbane (AEST)</option>
+              <option value="Australia/Sydney">Sydney (AEST)</option>
+              <option value="Australia/Melbourne">Melbourne (AEST)</option>
+              <option value="Pacific/Auckland">Auckland (NZST)</option>
+            </optgroup>
+            <optgroup label="South America">
+              <option value="America/Sao_Paulo">São Paulo (BRT)</option>
+              <option value="America/Buenos_Aires">Buenos Aires (ART)</option>
+              <option value="America/Santiago">Santiago (CLT)</option>
+              <option value="America/Lima">Lima (PET)</option>
+            </optgroup>
+            <optgroup label="Africa">
+              <option value="Africa/Cairo">Cairo (EET)</option>
+              <option value="Africa/Johannesburg">Johannesburg (SAST)</option>
+              <option value="Africa/Lagos">Lagos (WAT)</option>
+              <option value="Africa/Nairobi">Nairobi (EAT)</option>
+            </optgroup>
           </select>
         </div>
       </div>
@@ -693,10 +734,6 @@
       });
     });
 
-    // Update HTML lang attribute
-    function applyLanguage(language) {
-      document.documentElement.setAttribute('lang', language || 'en');
-    }
 
     async function loadSettings() {
       if (!authReady) {
@@ -710,16 +747,12 @@
 
         if (data.success) {
           const settings = data.settings;
-          document.getElementById('language').value = settings.language || 'en';
           document.getElementById('timezone').value = settings.timezone || 'America/Los_Angeles';
           document.getElementById('email-notifications').checked = settings.emailNotifications !== false;
           document.getElementById('course-reminders').checked = settings.courseReminders !== false;
           document.getElementById('marketing').checked = settings.marketing === true;
           document.getElementById('profile-visibility').value = settings.profileVisibility || 'public';
           document.getElementById('reduce-motion').checked = settings.reduceMotion === true;
-
-          // Apply language
-          applyLanguage(settings.language || 'en');
         }
       } catch (error) {
         console.error('Failed to load settings:', error);
@@ -733,7 +766,6 @@
       }
 
       const settings = {
-        language: document.getElementById('language').value,
         timezone: document.getElementById('timezone').value,
         emailNotifications: document.getElementById('email-notifications').checked,
         courseReminders: document.getElementById('course-reminders').checked,
@@ -743,11 +775,7 @@
       };
 
       // Save to localStorage for site-wide access
-      localStorage.setItem('language', settings.language);
       localStorage.setItem('reduceMotion', settings.reduceMotion ? 'true' : 'false');
-
-      // Apply language immediately
-      applyLanguage(settings.language);
 
       // Handle reduce motion preference
       if (settings.reduceMotion) {
