@@ -82,7 +82,7 @@
       }
     }
 
-    function requireAuth() { if (!isAuthenticated()) { window.location.href = '/?login=required'; return false; } const user = getCurrentUser(); if (user) { const parts = window.location.pathname.split('/'); const urlUserId = parts[parts.length-1]; if (!urlUserId || urlUserId.length < 30) { const p = parts[1] || 'dashboard'; window.location.href = `/${p}/${user.id}`; return false; } } return true; }
+    function requireAuth() { if (!isAuthenticated()) { window.location.href = '/?login=required'; return false; } return true; }
 
     async function authRequest(endpoint, options={}) { const token = getAccessToken(); if (!token) throw new Error('Not authenticated'); const authBase = window.AUTH_BASE || 'https://auth.cybersmrt.org'; const merged = Object.assign({}, { credentials: 'include' }, options); merged.headers = Object.assign({ 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }, options.headers||{}); const res = await fetch(authBase + endpoint, merged); if (res.status===401) { logout(); throw new Error('Session expired'); } return res; }
 
@@ -94,7 +94,7 @@
       const scheduleNext = ()=>{ const token = getAccessToken(); const payload = token?parseJWT(token):null; if (payload && typeof payload.exp==='number'){ const now=Math.floor(Date.now()/1000); const sec=payload.exp-now; const refreshSec=Math.max(60, sec - 5*60); schedule(refreshSec*1000);} else schedule(6*60*60*1000); };
       scheduleNext(); }
 
-    function handleLoginSuccess(userData){ const id = userData && userData.id; if (id) window.location.href = `/dashboard/${id}`; }
+    function handleLoginSuccess(userData){ window.location.href = `/profile`; }
 
     // Exports
     if (!window.isAuthenticated) window.isAuthenticated = isAuthenticated;

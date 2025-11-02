@@ -538,11 +538,8 @@ function openLoginModal() {
 function openLoginModalSafe() {
   // Check if already logged in
   if (window.isAuthenticated && window.isAuthenticated()) {
-    const user = window.getCurrentUser();
-    if (user && user.id) {
-      window.location.href = `/dashboard/${user.id}`;
-      return;
-    }
+    window.location.href = '/profile';
+    return;
   }
   openLoginModal();
 }
