@@ -398,6 +398,29 @@ function getAdminDashboardHTML() {
         </div>
       </div>
 
+      <!-- 2FA Verification -->
+      <div id="twofaContainer" class="login-container" style="display: none;">
+        <div class="info">
+          Two-factor authentication is required for your account
+        </div>
+        <div id="twofaErrorMessage" class="error" style="display: none;"></div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="twofa-code" style="display: block; margin-bottom: 8px; color: #333; font-weight: 600;">
+            Enter your 6-digit code or backup code:
+          </label>
+          <input
+            type="text"
+            id="twofa-code"
+            placeholder="000000"
+            maxlength="9"
+            autocomplete="off"
+            style="width: 100%; padding: 14px; background: #f8f9fa; border: 2px solid #e0e0e0; border-radius: 8px; color: #333; font-size: 1.2rem; text-align: center; letter-spacing: 0.2em; font-family: 'Courier New', monospace;"
+          />
+        </div>
+        <button id="verify-2fa-btn" class="btn" onclick="verify2FA()">Verify</button>
+      </div>
+
       <!-- Dashboard -->
       <div id="dashboard" class="dashboard">
         <div class="stats-grid">
@@ -444,6 +467,7 @@ function getAdminDashboardHTML() {
 
   <script>
     let authToken = null;
+    let pendingAuthData = null;
 
     // Initiate OAuth login with specified provider
     function initiateOAuth(provider) {
@@ -465,7 +489,8 @@ function getAdminDashboardHTML() {
       if (hash) {
         try {
           const data = JSON.parse(atob(hash));
-          if (data.token) {
+          // Handle 2FA requirement or regular token callback
+          if (data.requires2FA || data.token) {
             handleOAuthCallback(data);
             return;
           }
@@ -488,6 +513,20 @@ function getAdminDashboardHTML() {
       try {
         // Clear the hash from URL
         window.location.hash = '';
+
+        // Handle 2FA requirement
+        if (data.requires2FA) {
+          // Store pending auth data
+          pendingAuthData = data;
+
+          // Hide login container, show 2FA container
+          document.getElementById('loginContainer').style.display = 'none';
+          document.getElementById('twofaContainer').style.display = 'block';
+
+          // Focus on input
+          document.getElementById('twofa-code').focus();
+          return;
+        }
 
         if (data.success && data.token) {
           // Decode JWT to check role and email
@@ -589,6 +628,140 @@ function getAdminDashboardHTML() {
       }
     }
 
+    // Verify 2FA code
+    async function verify2FA() {
+      if (!pendingAuthData) {
+        const errorDiv = document.getElementById('twofaErrorMessage');
+        errorDiv.textContent = 'No pending authentication found';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      const code = document.getElementById('twofa-code').value.trim();
+
+      if (!code) {
+        const errorDiv = document.getElementById('twofaErrorMessage');
+        errorDiv.textContent = 'Please enter your verification code';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      // Disable button
+      const btn = document.getElementById('verify-2fa-btn');
+      btn.disabled = true;
+      btn.textContent = 'Verifying...';
+
+      try {
+        const response = await fetch('https://auth.cybersmrt.org/2fa/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            userId: pendingAuthData.userId,
+            code: code,
+            pendingAuthId: pendingAuthData.pendingAuthId,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Verification failed');
+        }
+
+        if (result.success && result.verified && result.tokens && result.tokens.accessToken) {
+          // Clear the hash from URL
+          window.location.hash = '';
+
+          // Decode JWT to check role and email
+          const payload = JSON.parse(atob(result.tokens.accessToken.split('.')[1]));
+
+          // Verify user email is @cybersmrt.org
+          if (!payload.email || !payload.email.endsWith('@cybersmrt.org')) {
+            await fetch('/log-oauth-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventType: 'admin_login_failed_invalid_email',
+                severity: 'critical',
+                email: payload.email,
+                reason: 'Non-@cybersmrt.org email attempted admin access via 2FA'
+              })
+            }).catch(console.error);
+
+            const errorDiv = document.getElementById('twofaErrorMessage');
+            errorDiv.textContent = 'Access denied - @cybersmrt.org email required';
+            errorDiv.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Verify';
+            return;
+          }
+
+          // Verify user has admin or super_admin role
+          if (payload.role !== 'admin' && payload.role !== 'super_admin') {
+            await fetch('/log-oauth-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventType: 'admin_login_failed_invalid_role',
+                severity: 'critical',
+                email: payload.email,
+                reason: \`User with role '\${payload.role}' attempted admin access via 2FA\`
+              })
+            }).catch(console.error);
+
+            const errorDiv = document.getElementById('twofaErrorMessage');
+            errorDiv.textContent = 'Access denied - admin privileges required';
+            errorDiv.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Verify';
+            return;
+          }
+
+          // Log successful admin login
+          await fetch('/log-oauth-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              eventType: 'admin_login_success',
+              severity: 'info',
+              email: payload.email,
+              reason: 'Successful admin dashboard login with 2FA'
+            })
+          }).catch(console.error);
+
+          // Store token and show dashboard
+          authToken = result.tokens.accessToken;
+          localStorage.setItem('adminToken', authToken);
+
+          // Hide 2FA form, show dashboard
+          document.getElementById('twofaContainer').style.display = 'none';
+          showDashboard();
+          loadDashboardStats();
+        } else {
+          throw new Error('Verification failed');
+        }
+      } catch (error) {
+        console.error('2FA verification error:', error);
+        const errorDiv = document.getElementById('twofaErrorMessage');
+        errorDiv.textContent = error.message || 'Invalid verification code. Please try again.';
+        errorDiv.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Verify';
+      }
+    }
+
+    // Allow Enter key to submit 2FA
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('twofa-code')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          verify2FA();
+        }
+      });
+    });
+
     async function verifyAndShowDashboard() {
       try {
         const response = await fetch('/api/verify', {
@@ -611,6 +784,7 @@ function getAdminDashboardHTML() {
 
     function showDashboard() {
       document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('twofaContainer').style.display = 'none';
       document.getElementById('dashboard').classList.add('active');
     }
 
