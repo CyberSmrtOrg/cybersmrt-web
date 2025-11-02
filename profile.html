@@ -697,11 +697,11 @@
 
           // Get real-time 2FA status from the 2FA API
           try {
-            if (!window.apiRequest) {
-              console.error('apiRequest not available for Profile tab 2FA check');
+            if (!window.authRequest) {
+              console.error('authRequest not available for Profile tab 2FA check');
               document.getElementById('2fa-status').innerHTML = '<span class="badge warning">?</span>';
             } else {
-              const tfaResponse = await window.apiRequest('/settings/2fa/status');
+              const tfaResponse = await window.authRequest('/settings/2fa/status');
               const tfaData = await tfaResponse.json();
               console.log('Profile tab - 2FA status response:', tfaData);
               if (tfaData.success && tfaData.enabled) {
@@ -1070,13 +1070,13 @@
         // Get real-time 2FA status from the 2FA API
         const tfaBadge = document.getElementById('2fa-badge');
         try {
-          // Ensure apiRequest is available
-          if (!window.apiRequest) {
-            console.error('apiRequest not available');
+          // Ensure authRequest is available
+          if (!window.authRequest) {
+            console.error('authRequest not available');
             tfaBadge.textContent = '⚠ 2FA Status Unknown';
             tfaBadge.classList.add('warning');
           } else {
-            const tfaResponse = await window.apiRequest('/settings/2fa/status');
+            const tfaResponse = await window.authRequest('/settings/2fa/status');
             const tfaData = await tfaResponse.json();
             console.log('2FA status response:', tfaData);
             if (tfaData.success && tfaData.enabled) {
@@ -1220,7 +1220,7 @@
       }
 
       try {
-        const response = await window.apiRequest('/settings');
+        const response = await window.authRequest('/settings');
         const data = await response.json();
 
         if (data.success) {
