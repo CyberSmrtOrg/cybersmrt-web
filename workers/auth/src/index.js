@@ -20,17 +20,22 @@ function buildCorsHeaders(request, env, includeCredentials = false) {
   const origin = request.headers.get('Origin') || request.headers.get('origin') || null;
   const allowedOrigin = env.FRONTEND_ORIGIN || null; // set this in production to your front-end URL
 
-  // Allow both www and non-www variants of the origin
-  const isAllowedOrigin = origin && allowedOrigin && (
-    origin === allowedOrigin ||
-    origin === `https://www.${new URL(allowedOrigin).hostname}` ||
-    origin.replace('://www.', '://') === allowedOrigin
+  // Define allowed origins
+  const allowedOrigins = [
+    allowedOrigin,
+    'https://admin.cybersmrt.org',
+    allowedOrigin ? `https://www.${new URL(allowedOrigin).hostname}` : null,
+  ].filter(Boolean);
+
+  // Check if the request origin is in the allowed list
+  const isAllowedOrigin = origin && allowedOrigins.some(allowed =>
+    origin === allowed || origin.replace('://www.', '://') === allowed
   );
 
   const headers = {};
   if (includeCredentials) {
     // When credentials are set, Access-Control-Allow-Origin must be a specific origin, not '*'
-    if (isAllowedOrigin || origin === allowedOrigin) {
+    if (isAllowedOrigin) {
       headers['Access-Control-Allow-Origin'] = origin; // Echo back the actual origin
     } else if (allowedOrigin) {
       headers['Access-Control-Allow-Origin'] = allowedOrigin;
