@@ -139,7 +139,7 @@ function getAdminDashboardHTML() {
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #000000;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -163,14 +163,17 @@ function getAdminDashboardHTML() {
       text-align: center;
     }
 
-    .header h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
+    .header-logo {
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 15px;
     }
 
-    .header p {
-      opacity: 0.9;
-      font-size: 1.1rem;
+    .header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      font-weight: 400;
+      opacity: 0.95;
     }
 
     .content {
@@ -351,15 +354,15 @@ function getAdminDashboardHTML() {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🛡️ CyberSmrt Admin</h1>
-      <p>Administrative Dashboard</p>
+      <img src="https://cybersmrt.org/assets/images/logo-white.svg" alt="CyberSmrt" class="header-logo">
+      <h1>Administrative Dashboard</h1>
     </div>
 
     <div class="content">
       <!-- OAuth Login -->
       <div id="loginContainer" class="login-container">
         <div class="info">
-          Please sign in with your admin account
+          Please sign in with your @cybersmrt.org account
         </div>
         <div id="errorMessage" class="error" style="display: none;"></div>
 
@@ -478,8 +481,20 @@ function getAdminDashboardHTML() {
         window.location.hash = '';
 
         if (data.success && data.token) {
-          // Decode JWT to check role
+          // Decode JWT to check role and email
           const payload = JSON.parse(atob(data.token.split('.')[1]));
+
+          // Verify user email is @cybersmrt.org
+          if (!payload.email || !payload.email.endsWith('@cybersmrt.org')) {
+            errorDiv.textContent = 'Access denied - @cybersmrt.org email required';
+            errorDiv.style.display = 'block';
+
+            // Redirect back to login after 3 seconds
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 3000);
+            return;
+          }
 
           // Verify user has admin or super_admin role
           if (payload.role !== 'admin' && payload.role !== 'super_admin') {
