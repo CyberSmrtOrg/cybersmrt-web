@@ -22,6 +22,23 @@
     const mount = document.getElementById(MOUNT_ID);
     if (!mount) return console.warn('[footer-loader] #footer-mount not found');
     mount.innerHTML = html;
+
+    // Execute inline scripts (innerHTML doesn't execute them automatically)
+    const scripts = mount.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      // Copy attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
     postInit();
   }
 
