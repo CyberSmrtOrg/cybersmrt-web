@@ -177,34 +177,44 @@ function getAdminDashboardHTML() {
       padding: 40px;
     }
 
-    .login-form {
-      max-width: 400px;
+    .login-container {
+      max-width: 450px;
       margin: 0 auto;
     }
 
-    .form-group {
-      margin-bottom: 20px;
+    .oauth-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 16px;
+    .oauth-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 20px;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
+      background: white;
+      color: #333;
       font-size: 1rem;
-      transition: border-color 0.3s;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
     }
 
-    .form-group input:focus {
-      outline: none;
+    .oauth-btn:hover {
       border-color: #667eea;
+      background: #f8f9ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .oauth-btn svg {
+      width: 24px;
+      height: 24px;
     }
 
     .btn {
@@ -346,23 +356,34 @@ function getAdminDashboardHTML() {
     </div>
 
     <div class="content">
-      <!-- Login Form -->
-      <div id="loginForm" class="login-form">
+      <!-- OAuth Login -->
+      <div id="loginContainer" class="login-container">
         <div class="info">
-          Please log in with your admin credentials
+          Please sign in with your admin account
         </div>
         <div id="errorMessage" class="error" style="display: none;"></div>
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" required placeholder="admin@cybersmrt.org">
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required placeholder="Enter your password">
-          </div>
-          <button type="submit" class="btn">Sign In</button>
-        </form>
+
+        <div class="oauth-buttons">
+          <a href="#" onclick="initiateOAuth('google'); return false;" class="oauth-btn">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Sign in with Google
+          </a>
+
+          <a href="#" onclick="initiateOAuth('github'); return false;" class="oauth-btn">
+            <svg viewBox="0 0 24 24"><path fill="#181717" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            Sign in with GitHub
+          </a>
+
+          <a href="#" onclick="initiateOAuth('microsoft'); return false;" class="oauth-btn">
+            <svg viewBox="0 0 24 24"><path fill="#F25022" d="M1 1h10v10H1z"/><path fill="#00A4EF" d="M13 1h10v10H13z"/><path fill="#7FBA00" d="M1 13h10v10H1z"/><path fill="#FFB900" d="M13 13h10v10H13z"/></svg>
+            Sign in with Microsoft
+          </a>
+
+          <a href="#" onclick="initiateOAuth('apple'); return false;" class="oauth-btn">
+            <svg viewBox="0 0 24 24"><path fill="#000000" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            Sign in with Apple
+          </a>
+        </div>
       </div>
 
       <!-- Dashboard -->
@@ -412,8 +433,36 @@ function getAdminDashboardHTML() {
   <script>
     let authToken = null;
 
-    // Check for existing session
+    // Initiate OAuth login with specified provider
+    function initiateOAuth(provider) {
+      // Store state to identify admin dashboard return
+      const state = btoa(JSON.stringify({
+        returnUrl: 'https://admin.cybersmrt.org/',
+        timestamp: Date.now()
+      }));
+      sessionStorage.setItem('oauth_state', state);
+
+      // Redirect to OAuth provider
+      window.location.href = \`https://auth.cybersmrt.org/oauth/\${provider}?state=\${encodeURIComponent(state)}\`;
+    }
+
+    // Check for existing session or OAuth callback
     window.addEventListener('DOMContentLoaded', () => {
+      // Check if we have a token from OAuth callback in URL hash
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        try {
+          const data = JSON.parse(atob(hash));
+          if (data.token) {
+            handleOAuthCallback(data);
+            return;
+          }
+        } catch (e) {
+          console.error('Failed to parse OAuth callback data:', e);
+        }
+      }
+
+      // Check for existing session
       const token = localStorage.getItem('adminToken');
       if (token) {
         authToken = token;
@@ -421,32 +470,26 @@ function getAdminDashboardHTML() {
       }
     });
 
-    async function handleLogin(event) {
-      event.preventDefault();
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    async function handleOAuthCallback(data) {
       const errorDiv = document.getElementById('errorMessage');
 
       try {
-        // Call auth API to login
-        const response = await fetch('https://auth.cybersmrt.org/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
+        // Clear the hash from URL
+        window.location.hash = '';
 
         if (data.success && data.token) {
-          // Verify user has admin role
+          // Decode JWT to check role
           const payload = JSON.parse(atob(data.token.split('.')[1]));
 
-          if (payload.role !== 'admin') {
+          // Verify user has admin or super_admin role
+          if (payload.role !== 'admin' && payload.role !== 'super_admin') {
             errorDiv.textContent = 'Access denied - admin privileges required';
             errorDiv.style.display = 'block';
+
+            // Redirect back to login after 3 seconds
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 3000);
             return;
           }
 
@@ -455,11 +498,12 @@ function getAdminDashboardHTML() {
           showDashboard();
           loadDashboardStats();
         } else {
-          errorDiv.textContent = data.error || 'Login failed';
+          errorDiv.textContent = data.error || 'OAuth login failed';
           errorDiv.style.display = 'block';
         }
       } catch (error) {
-        errorDiv.textContent = 'Network error - please try again';
+        console.error('OAuth callback error:', error);
+        errorDiv.textContent = 'Authentication error - please try again';
         errorDiv.style.display = 'block';
       }
     }
@@ -485,17 +529,15 @@ function getAdminDashboardHTML() {
     }
 
     function showDashboard() {
-      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('loginContainer').style.display = 'none';
       document.getElementById('dashboard').classList.add('active');
     }
 
     function handleLogout() {
       localStorage.removeItem('adminToken');
       authToken = null;
-      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('loginContainer').style.display = 'block';
       document.getElementById('dashboard').classList.remove('active');
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
     }
 
     async function loadDashboardStats() {
