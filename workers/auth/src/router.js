@@ -39,15 +39,20 @@ function generateState() {
 
 /**
  * Store OAuth state in KV (prevent CSRF)
+ * @param {string} state - The state token
+ * @param {object} stateData - Optional state data (e.g., returnUrl)
+ * @param {object} env - Worker environment
  */
-async function storeState(state, env) {
-  await env.RATE_LIMIT_KV.put(`oauth_state:${state}`, 'valid', {
+async function storeState(state, env, stateData = null) {
+  const value = stateData ? JSON.stringify(stateData) : 'valid';
+  await env.RATE_LIMIT_KV.put(`oauth_state:${state}`, value, {
     expirationTtl: 600,  // 10 minutes
   });
 }
 
 /**
- * Verify OAuth state
+ * Verify OAuth state and return any stored state data
+ * @returns {object|null} - Stored state data or null
  */
 async function verifyState(state, env) {
   const value = await env.RATE_LIMIT_KV.get(`oauth_state:${state}`);
@@ -56,6 +61,13 @@ async function verifyState(state, env) {
   }
   // Delete state after use (one-time use)
   await env.RATE_LIMIT_KV.delete(`oauth_state:${state}`);
+
+  // Try to parse as JSON, otherwise return null
+  try {
+    return value === 'valid' ? null : JSON.parse(value);
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -154,9 +166,25 @@ export class AuthRouter {
   async handleOAuthInit(provider) {
     await checkOAuthRateLimit(this.request, this.env);
 
-    // Generate and store state
+    // Check if incoming state parameter contains returnUrl (from admin dashboard, etc.)
+    const incomingState = this.url.searchParams.get('state');
+    let stateData = null;
+
+    if (incomingState) {
+      try {
+        // Try to parse the incoming state to extract returnUrl
+        const decoded = JSON.parse(atob(incomingState));
+        if (decoded.returnUrl) {
+          stateData = { returnUrl: decoded.returnUrl };
+        }
+      } catch {
+        // If parsing fails, ignore and use default behavior
+      }
+    }
+
+    // Generate and store state with optional returnUrl data
     const state = generateState();
-    await storeState(state, this.env);
+    await storeState(state, this.env, stateData);
 
     // Get authorization URL
     let authUrl;
@@ -194,8 +222,8 @@ export class AuthRouter {
         throw new Error('Missing code or state parameter');
       }
 
-      // Verify state (CSRF protection)
-      await verifyState(state, this.env);
+      // Verify state (CSRF protection) and get stored state data
+      const stateData = await verifyState(state, this.env);
 
       // Exchange code for tokens and get user profile
       let result;
@@ -245,7 +273,9 @@ export class AuthRouter {
 
         // Redirect to 2FA verification page
         const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
-        const twoFAUrl = new URL(frontend + '/callback');
+        const returnUrl = stateData?.returnUrl || frontend;
+        const callbackPath = returnUrl.includes('/callback') ? '' : '/callback';
+        const twoFAUrl = new URL(returnUrl + callbackPath);
 
         // Pass pending auth ID and user info in hash
         const pendingData = {
@@ -299,8 +329,12 @@ export class AuthRouter {
       const encodedData = btoa(dataString);
 
       // Redirect to frontend callback page with data in hash
+      // Use returnUrl from state if provided, otherwise default to FRONTEND_ORIGIN
       const frontend = this.env.FRONTEND_ORIGIN || 'https://cybersmrt.org';
-      const callbackUrl = new URL(frontend + '/callback');
+      const returnUrl = stateData?.returnUrl || frontend;
+
+      // Admin dashboard already has path, don't append /callback
+      const callbackUrl = returnUrl.endsWith('/') ? new URL(returnUrl) : new URL(returnUrl);
       callbackUrl.hash = encodedData;
 
       // Set session cookie (HttpOnly, Secure)
