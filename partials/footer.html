@@ -544,7 +544,9 @@ function openLoginModalSafe() {
     return;
   }
   // Save current page URL before opening login modal
-  localStorage.setItem('loginReturnUrl', window.location.href);
+  const returnUrl = window.location.href;
+  console.log('[openLoginModalSafe] Saving return URL:', returnUrl);
+  localStorage.setItem('loginReturnUrl', returnUrl);
   openLoginModal();
 }
 
@@ -626,10 +628,16 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
 // OAuth initiation with return URL
 function initiateOAuth(provider) {
   // Save current page URL before redirecting to OAuth
-  localStorage.setItem('loginReturnUrl', window.location.href);
+  const returnUrl = window.location.href;
+  console.log('[initiateOAuth] Provider:', provider);
+  console.log('[initiateOAuth] Saving return URL:', returnUrl);
+  localStorage.setItem('loginReturnUrl', returnUrl);
+  console.log('[initiateOAuth] Saved to localStorage:', localStorage.getItem('loginReturnUrl'));
 
   // Redirect to auth provider
-  window.location.href = `https://auth.cybersmrt.org/${provider}`;
+  const authUrl = `https://auth.cybersmrt.org/${provider}`;
+  console.log('[initiateOAuth] Redirecting to:', authUrl);
+  window.location.href = authUrl;
 }
 
 // Make functions globally available
