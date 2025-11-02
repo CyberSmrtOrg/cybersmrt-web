@@ -266,8 +266,8 @@ export class AuthRouter {
       // Create session
       const session = await createSession(user.id, this.request, this.env);
 
-      // Generate JWT tokens
-      const accessToken = await generateAccessToken(user.id, user.email, this.env);
+      // Generate JWT tokens (include role for admin access)
+      const accessToken = await generateAccessToken(user.id, user.email, this.env, user.role || 'user');
       const refreshToken = await generateRefreshToken(user.id, this.env);
 
       // Log successful login
@@ -332,8 +332,8 @@ export class AuthRouter {
     // Create session
     const session = await createSession(user.userId, this.request, this.env);
 
-    // Generate tokens
-    const accessToken = await generateAccessToken(user.userId, user.email, this.env);
+    // Generate tokens (new users default to 'user' role)
+    const accessToken = await generateAccessToken(user.userId, user.email, this.env, 'user');
     const refreshToken = await generateRefreshToken(user.userId, this.env);
 
     return new Response(JSON.stringify({
@@ -396,8 +396,8 @@ export class AuthRouter {
     // Create session
     const session = await createSession(user.id, this.request, this.env);
 
-    // Generate tokens
-    const accessToken = await generateAccessToken(user.id, user.email, this.env);
+    // Generate tokens (include role for admin access)
+    const accessToken = await generateAccessToken(user.id, user.email, this.env, user.role || 'user');
     const refreshToken = await generateRefreshToken(user.id, this.env);
 
     return new Response(JSON.stringify({
@@ -802,8 +802,8 @@ export class AuthRouter {
     // 2FA verified - create session and return tokens
     const session = await createSession(user.id, this.request, this.env);
 
-    // Generate tokens
-    const accessToken = await generateAccessToken(user.id, user.email, this.env);
+    // Generate tokens (include role for admin access)
+    const accessToken = await generateAccessToken(user.id, user.email, this.env, user.role || 'user');
     const refreshToken = await generateRefreshToken(user.id, this.env);
 
     return new Response(JSON.stringify({

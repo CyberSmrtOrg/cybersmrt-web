@@ -8,12 +8,13 @@ import * as jose from 'jose';
 /**
  * Generate JWT access token
  */
-export async function generateAccessToken(userId, email, env) {
+export async function generateAccessToken(userId, email, env, role = 'user') {
   const secret = new TextEncoder().encode(env.JWT_SECRET);
 
   const jwt = await new jose.SignJWT({
     sub: userId,
     email: email,
+    role: role,
     type: 'access',
   })
     .setProtectedHeader({ alg: 'HS256' })
@@ -75,9 +76,9 @@ export async function refreshAccessToken(refreshToken, env) {
     throw new Error('Invalid token type');
   }
 
-  // Get user from database
+  // Get user from database (including role)
   const user = await env.DB
-    .prepare('SELECT id, email, is_active FROM users WHERE id = ?')
+    .prepare('SELECT id, email, role, is_active FROM users WHERE id = ?')
     .bind(payload.sub)
     .first();
 
@@ -89,8 +90,8 @@ export async function refreshAccessToken(refreshToken, env) {
     throw new Error('User account is disabled');
   }
 
-  // Generate new access token
-  return await generateAccessToken(user.id, user.email, env);
+  // Generate new access token with role
+  return await generateAccessToken(user.id, user.email, env, user.role || 'user');
 }
 
 /**
