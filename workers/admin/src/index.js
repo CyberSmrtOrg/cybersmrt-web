@@ -271,20 +271,21 @@ function getAdminDashboardHTML() {
     }
 
     .logout-btn {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #ef4444;
+      background: #ef4444;
+      border: none;
+      color: white;
       padding: 8px 16px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.2s ease;
     }
 
     .logout-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.5);
+      background: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
     }
 
     .content {
@@ -395,33 +396,6 @@ function getAdminDashboardHTML() {
     .stat-card .label {
       opacity: 0.8;
       font-size: 0.9rem;
-    }
-
-    .nav-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .nav-btn {
-      padding: 20px;
-      background: white;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .nav-btn:hover {
-      border-color: #667eea;
-      background: #f8f9ff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
 
     .section {
@@ -801,23 +775,12 @@ function getAdminDashboardHTML() {
           </div>
         </div>
 
-        <div class="nav-buttons">
-          <button class="nav-btn" onclick="loadSection('users')">👥 User Management</button>
-          <button class="nav-btn" onclick="loadSection('analytics')">📊 Analytics</button>
-          <button class="nav-btn" onclick="loadSection('security')">🔒 Security Logs</button>
-          <button class="nav-btn" onclick="loadSection('content')">📝 Content Management</button>
-          <button class="nav-btn" onclick="loadSection('monitoring')">📈 System Monitoring</button>
-          <button class="nav-btn" onclick="loadSection('settings')">⚙️ Settings</button>
-        </div>
-
         <div id="content-area" class="content-area">
           <div class="section">
-            <h2>Quick Actions</h2>
-            <p>Select a section above to manage your CyberSmrt platform.</p>
+            <h2>Welcome to Admin Dashboard</h2>
+            <p>Use the navigation menu above to manage your CyberSmrt platform.</p>
           </div>
         </div>
-
-        <button class="btn logout-btn" onclick="handleLogout()">Sign Out</button>
       </div>
     </div>
   </div>
@@ -1229,8 +1192,8 @@ function getAdminDashboardHTML() {
         case 'dashboard':
           contentArea.innerHTML = \`
             <div class="section">
-              <h2>Quick Actions</h2>
-              <p>Select a section above to manage your CyberSmrt platform.</p>
+              <h2>Welcome to CyberSmrt Admin</h2>
+              <p>Use the navigation menu in the header to manage users, view analytics, and monitor security.</p>
             </div>
           \`;
           break;
