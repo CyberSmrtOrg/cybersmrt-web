@@ -36,9 +36,11 @@
     /* Hero Section */
     .program-hero {
       background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
-      padding: 5rem 2rem 4rem;
+      padding: 4rem 2rem;
       text-align: center;
-      margin-top: 80px;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
 
     .hero-content {
@@ -383,9 +385,14 @@
     /* CTA Section */
     .cta-section {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 5rem 2rem;
+      padding: 4rem 2rem;
       text-align: center;
       margin-top: 4rem;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
     }
 
     .cta-section h2 {
@@ -419,6 +426,11 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      .program-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+
       .program-hero h1 {
         font-size: 2.2rem;
       }
@@ -449,6 +461,10 @@
 
       .stat-number {
         font-size: 2.2rem;
+      }
+
+      .cta-section {
+        padding: 3rem 1.5rem;
       }
     }
   </style>
@@ -826,7 +842,7 @@
         "When we did the packet relay activity, I finally understood why my video games lag sometimes.
         Now I know it's not just 'slow internet'—it's packets waiting at routers! This is the coolest class ever."
       </p>
-      <p style="color: var(--text-secondary); margin-top: 1rem;">— Maya R., 5th Grade Student, NEAAAT Charter School</p>
+      <p style="color: var(--text-secondary); margin-top: 1rem;">— Ella R., 6th Grade Student, Poulsbo Middle School</p>
     </div>
   </section>
 

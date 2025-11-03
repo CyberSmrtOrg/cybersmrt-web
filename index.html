@@ -773,10 +773,16 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
+    a.program-card {
+      cursor: pointer;
+      display: block;
+    }
+
     .program-card:hover {
       background: var(--card-bg-hover);
       border-color: var(--card-border-hover);
       box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
     }
 
     [data-theme="light"] .program-card:hover {
@@ -1572,7 +1578,7 @@
   <section id="programs" class="programs section">
     <h2 class="section-title">Our Programs</h2>
     <div class="program-grid">
-      <div class="program-card">
+      <a href="/pages/programs/k12-curriculum.html" class="program-card" style="text-decoration: none; color: inherit;">
         <div class="program-icon">
           <img src="/assets/images/icons/programs/k12-curriculum.png" alt="K-12 Curriculum icon" width="90" height="90">
         </div>
@@ -1584,7 +1590,7 @@
         <div class="program-highlight">
           ✓ Hands-on, project-based learning<br/>✓ Portfolio-driven assessment<br/>✓ Family engagement
         </div>
-      </div>
+      </a>
 
       <div class="program-card">
         <div class="program-icon">
@@ -1625,6 +1631,18 @@
         </p>
         <div class="program-highlight">
           ✓ Age-inclusive<br/>✓ Culturally responsive<br/>✓ Free resources
+        </div>
+      </div>
+
+      <div class="program-card" style="border: 2px dashed rgba(102, 126, 234, 0.3); background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);">
+        <div class="program-icon" style="font-size: 4rem; opacity: 0.6;">✨</div>
+        <h3 class="program-title">More Coming Soon</h3>
+        <p class="program-description">
+          We're developing additional programs to expand our impact. Stay tuned for new offerings in
+          enterprise training, threat intelligence, and specialized security services.
+        </p>
+        <div class="program-highlight">
+          ✓ Enterprise training<br/>✓ Threat intelligence<br/>✓ Specialized services
         </div>
       </div>
     </div>
