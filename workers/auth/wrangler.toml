@@ -47,6 +47,7 @@ head_sampling_rate = 1
 invocation_logs = true
 
 # Secrets (set with: wrangler secret put SECRET_NAME)
+# Authentication:
 # - JWT_SECRET
 # - GOOGLE_CLIENT_ID
 # - GOOGLE_CLIENT_SECRET
@@ -57,12 +58,29 @@ invocation_logs = true
 # - APPLE_CLIENT_ID
 # - APPLE_PRIVATE_KEY
 # - RESEND_API_KEY
+#
+# Social Media (for content posting):
+# - LINKEDIN_CLIENT_ID
+# - LINKEDIN_CLIENT_SECRET
+# - FACEBOOK_CLIENT_ID
+# - FACEBOOK_CLIENT_SECRET
+# - TIKTOK_CLIENT_KEY
+# - TIKTOK_CLIENT_SECRET
+# - TWITTER_CLIENT_ID
+# - TWITTER_CLIENT_SECRET
 
 # OAuth Callback URLs (update in OAuth provider dashboards):
+# Authentication OAuth:
 # Google: https://auth.cybersmrt.org/callback/google
 # GitHub: https://auth.cybersmrt.org/callback/github
 # Microsoft: https://auth.cybersmrt.org/callback/microsoft
 # Apple: https://auth.cybersmrt.org/callback/apple
+#
+# Social Media OAuth:
+# LinkedIn: https://auth.cybersmrt.org/callback/social/linkedin
+# Facebook: https://auth.cybersmrt.org/callback/social/facebook
+# TikTok: https://auth.cybersmrt.org/callback/social/tiktok
+# Twitter: https://auth.cybersmrt.org/callback/social/twitter
 
 # Scheduled events for cleanup
 [triggers]

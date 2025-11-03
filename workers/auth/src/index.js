@@ -6,6 +6,7 @@
 
 import { AuthRouter } from './router.js';
 import { AdminRouter } from './admin-router.js';
+import { SocialMediaRouter } from './social-media-router.js';
 import { cleanupExpiredSessions } from './utils/session.js';
 import { cleanupExpiredTokens, cleanupExpiredVerificationTokens } from './utils/password.js';
 import { withRateLimit, identifiers, createRateLimitResponse } from './utils/rate-limit.js';
@@ -203,6 +204,42 @@ Disallow: /
       }
       if (path === '/callback/apple') {
         return await router.handleOAuthCallback('apple');
+      }
+
+      // Social Media OAuth callbacks
+      if (path.startsWith('/callback/social/')) {
+        const platform = path.replace('/callback/social/', '');
+        const url = new URL(request.url);
+        const code = url.searchParams.get('code');
+        const state = url.searchParams.get('state');
+
+        if (!code || !state) {
+          return new Response('Missing code or state parameter', { status: 400 });
+        }
+
+        // Get user from state
+        const stateData = await env.SESSIONS.get(`oauth_state:${state}`);
+        if (!stateData) {
+          return new Response('Invalid or expired state', { status: 400 });
+        }
+
+        const { userId } = JSON.parse(stateData);
+        const user = await env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(userId).first();
+
+        if (!user) {
+          return new Response('User not found', { status: 404 });
+        }
+
+        const socialRouter = new SocialMediaRouter(env, request, user);
+        const result = await socialRouter.handleCallback(platform, code, state);
+
+        if (result.success) {
+          // Redirect back to admin dashboard with success message
+          return Response.redirect(`https://admin.cybersmrt.org/?social_connected=${platform}`, 302);
+        } else {
+          // Redirect with error
+          return Response.redirect(`https://admin.cybersmrt.org/?social_error=${encodeURIComponent(result.error)}`, 302);
+        }
       }
 
       // Email/Password authentication
@@ -546,6 +583,54 @@ Disallow: /
         }
         if (path === "/admin/monitoring/errors" && request.method === "GET") {
           return await router.handleAdminErrorLogs();
+        }
+
+        // Social Media Connection Management Endpoints (Admin only)
+        if (path === '/admin/social/connections' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const socialRouter = new SocialMediaRouter(env, req, ctx.adminUser);
+              const result = await socialRouter.getConnections();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        if (path === '/admin/social/connect' && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const body = await req.json();
+              const socialRouter = new SocialMediaRouter(env, req, ctx.adminUser);
+              const result = await socialRouter.initiateOAuth(body.platform);
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        if (path === '/admin/social/disconnect' && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const body = await req.json();
+              const socialRouter = new SocialMediaRouter(env, req, ctx.adminUser);
+              const result = await socialRouter.disconnect(body.connectionId);
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
+        if (path === '/admin/social/post' && request.method === 'POST') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const body = await req.json();
+              const socialRouter = new SocialMediaRouter(env, req, ctx.adminUser);
+              const result = await socialRouter.post(body.content, body.platforms, body.mediaUrls);
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
         }
       }
 
