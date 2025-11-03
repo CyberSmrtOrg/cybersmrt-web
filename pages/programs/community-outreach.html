@@ -1,60 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Cloudflare Turnstile API -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Outreach | Digital Safety for Underserved Communities | CyberSmrt</title>
+  <meta name="description" content="Free cybersecurity and digital literacy programs for underserved communities. Senior digital safety, youth workshops, rural training, and multilingual resources to bridge the digital divide.">
 
-  <!-- Turnstile Gate Loader -->
-
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
-
-  <!-- Orbitron font for header + page -->
+  <!-- Orbitron font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
-  <!-- Base minimal styles so the placeholder looks OK -->
+  <!-- Theme System -->
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <script src="/assets/js/theme.js"></script>
+
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    /* Hero Section */
+    .program-hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .program-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--hero-text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .program-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
+    }
+
+    .program-hero .tagline {
+      font-size: 1.4rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: var(--hero-text);
+      box-shadow: none;
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--brand-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Content Sections */
+    .content-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .content-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--text-heading);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .section-intro {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+
+    /* Program Cards */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .program-card-detail {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .program-card-detail:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .program-icon-large {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .program-card-detail h3 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .program-card-detail .program-subtitle {
+      color: var(--brand-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .program-card-detail p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .program-card-detail ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .program-card-detail li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .program-card-detail li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    /* Two Column Layout */
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .column h3 {
+      font-size: 1.6rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .column p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .column li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .column li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    /* Callout Box */
+    .callout {
+      background: var(--bg-elevated);
+      border-left: 4px solid var(--brand-primary);
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+
+    .callout h3 {
+      font-size: 1.4rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .callout p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .callout ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .callout li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .callout li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    /* Impact Stats */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .impact-item {
+      text-align: center;
+      padding: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .impact-number {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--brand-primary);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .impact-label {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      margin-top: 4rem;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
+    }
+
+    .cta-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 1.5rem;
+      -webkit-text-fill-color: white;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-section .cta-btn {
+      background: white;
+      color: #667eea;
+    }
+
+    .cta-section .cta-btn:hover {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .program-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+
+      .program-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .program-hero .tagline {
+        font-size: 1.1rem;
+      }
+
+      .programs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .program-icon-large {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+
+      .stat-number {
+        font-size: 2.2rem;
+      }
+
+      .cta-section {
+        padding: 3rem 1.5rem;
+      }
+    }
   </style>
+
+  <!-- Google Analytics -->
+  <script src="/assets/js/analytics-config.js"></script>
+  <script src="/assets/js/analytics.js" defer></script>
 </head>
 <body>
   <a id="top"></a>
@@ -63,88 +449,432 @@
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
 
+  <!-- Hero Section -->
+  <section class="program-hero">
+    <div class="hero-content">
+      <span class="program-badge">COMMUNITY OUTREACH</span>
+      <h1>Bridging the Digital Divide</h1>
+      <p class="tagline">Free cybersecurity and digital literacy programs for underserved communities</p>
 
-  <!-- No-JS header fallback -->
-  <noscript>
-    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
-      <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
-      <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
-      <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
-      <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
-      <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
-      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
-    </nav>
-  </noscript>
-
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+      <div class="hero-cta-group">
+        <a href="/pages/contact.html" class="cta-btn">Request a Workshop</a>
+        <a href="#programs" class="cta-btn secondary">See Programs</a>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Free Programs</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Target Communities</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">10+</span>
+        <span class="stat-label">Languages Supported</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">24/7</span>
+        <span class="stat-label">Resource Access</span>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+  <!-- Mission Section -->
+  <section class="content-section">
+    <h2>Our Mission</h2>
+    <p class="section-intro">
+      Digital safety shouldn't be a privilege. We provide free cybersecurity education and digital literacy
+      training to communities traditionally excluded from technology resources—delivered in accessible formats,
+      multiple languages, and culturally relevant contexts.
+    </p>
 
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
+    <div class="callout">
+      <h3>The Digital Divide Is a Security Issue</h3>
+      <p>
+        Underserved communities face disproportionate cybersecurity risks. Seniors lose $3 billion annually
+        to online scams. Rural communities lack access to security training. Non-English speakers navigate
+        technology without language support. Youth inherit digital habits without guidance. We're changing that.
+      </p>
+    </div>
+  </section>
 
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      } catch (e) { /* noop */ }
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      } catch (e) { /* noop */ }
-    }
+  <!-- Programs Section -->
+  <section class="content-section" id="programs">
+    <h2>Our Community Programs</h2>
+    <p class="section-intro">
+      Each program is tailored to the specific needs, challenges, and cultural contexts of the communities we serve.
+      All workshops are 100% free and designed for accessibility.
+    </p>
 
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
+    <div class="programs-grid">
+      <!-- Seniors Program -->
+      <div class="program-card-detail">
+        <div class="program-icon-large">👴</div>
+        <span class="program-subtitle">Ages 65+</span>
+        <h3>Senior Digital Safety</h3>
+        <p>
+          Empowering older adults to navigate the digital world safely. We cover scam prevention, online banking
+          security, social media privacy, and device protection through patient, judgment-free instruction.
+        </p>
+        <ul>
+          <li>Recognizing phishing and romance scams</li>
+          <li>Protecting financial accounts and personal info</li>
+          <li>Safe social media and video chat practices</li>
+          <li>Managing passwords and two-factor authentication</li>
+          <li>Spotting fake websites and tech support scams</li>
+          <li>Privacy settings for smartphones and tablets</li>
+        </ul>
+        <div class="callout">
+          <p style="margin: 0; font-size: 0.95rem;">
+            <strong>Delivery:</strong> In-person workshops at senior centers, libraries, and community centers.
+            Large print materials. Patient, hands-on instruction. Family members welcome.
+          </p>
+        </div>
+      </div>
 
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
-  <noscript>
-    <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
-      <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
-      <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
-      <a href="/pages/about" style="color:#8ab4ff">About</a> ·
-      <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
-    </footer>
-  </noscript>
+      <!-- Youth Program -->
+      <div class="program-card-detail">
+        <div class="program-icon-large">🎓</div>
+        <span class="program-subtitle">Ages 13-18</span>
+        <h3>Youth Digital Citizenship</h3>
+        <p>
+          Teaching young people to build healthy, safe digital habits. Interactive workshops on privacy, online
+          harassment, digital footprints, and critical thinking about online content.
+        </p>
+        <ul>
+          <li>Understanding your digital footprint and reputation</li>
+          <li>Privacy settings across social platforms</li>
+          <li>Recognizing and responding to cyberbullying</li>
+          <li>Critical evaluation of online information</li>
+          <li>Protecting personal data and accounts</li>
+          <li>Ethical use of AI and emerging technologies</li>
+        </ul>
+        <div class="callout">
+          <p style="margin: 0; font-size: 0.95rem;">
+            <strong>Delivery:</strong> After-school programs, summer camps, youth groups, and community centers.
+            Peer-led discussions. Interactive activities. Parent resources included.
+          </p>
+        </div>
+      </div>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+      <!-- Rural Communities Program -->
+      <div class="program-card-detail">
+        <div class="program-icon-large">🌾</div>
+        <span class="program-subtitle">Rural Access</span>
+        <h3>Rural Digital Literacy</h3>
+        <p>
+          Bringing cybersecurity training to rural and geographically isolated communities. We travel to you
+          with mobile training programs and offline resources.
+        </p>
+        <ul>
+          <li>Basic internet safety and scam awareness</li>
+          <li>Protecting farm data and precision agriculture systems</li>
+          <li>Secure online banking and e-commerce</li>
+          <li>Small business cybersecurity fundamentals</li>
+          <li>Telehealth privacy and security</li>
+          <li>Offline resource access for limited connectivity</li>
+        </ul>
+        <div class="callout">
+          <p style="margin: 0; font-size: 0.95rem;">
+            <strong>Delivery:</strong> Mobile training units, pop-up workshops at farmers markets and county fairs,
+            partnerships with rural libraries, downloadable offline resources.
+          </p>
+        </div>
+      </div>
+
+      <!-- Multilingual Program -->
+      <div class="program-card-detail">
+        <div class="program-icon-large">🌍</div>
+        <span class="program-subtitle">10+ Languages</span>
+        <h3>Multilingual Resources</h3>
+        <p>
+          Cybersecurity education in your native language. We provide translated materials, bilingual instructors,
+          and culturally adapted content for non-English speaking communities.
+        </p>
+        <ul>
+          <li>Materials in Spanish, Mandarin, Vietnamese, Arabic, and more</li>
+          <li>Bilingual instructors and interpreters available</li>
+          <li>Culturally adapted examples and scenarios</li>
+          <li>Immigration-related security topics (visa scams, etc.)</li>
+          <li>Remittance and financial service safety</li>
+          <li>Resources for supporting family members abroad</li>
+        </ul>
+        <div class="callout">
+          <p style="margin: 0; font-size: 0.95rem;">
+            <strong>Delivery:</strong> Partnerships with cultural centers, religious organizations, and immigrant
+            service providers. Translation services available for all materials.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How We Deliver Section -->
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>How We Deliver Programs</h2>
+    <p class="section-intro">
+      We meet communities where they are—literally and figuratively. Our approach prioritizes accessibility,
+      cultural relevance, and dignity.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Free and Accessible</h3>
+        <p>
+          All programs are 100% free with no hidden costs. We provide materials, handouts, and follow-up
+          resources at no charge to participants or partner organizations.
+        </p>
+        <ul>
+          <li>No registration fees or material costs</li>
+          <li>Free printed guides and checklists to take home</li>
+          <li>Accessible formats (large print, audio, translated)</li>
+          <li>Virtual and in-person options available</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Culturally Responsive</h3>
+        <p>
+          We adapt content to reflect the specific contexts, concerns, and communication styles of each
+          community we serve.
+        </p>
+        <ul>
+          <li>Examples and scenarios relevant to community</li>
+          <li>Multilingual instruction and materials</li>
+          <li>Respect for varying technology literacy levels</li>
+          <li>Trauma-informed approaches when needed</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Partnership-Driven</h3>
+        <p>
+          We partner with trusted community organizations rather than parachuting in as outsiders.
+          Local leaders help shape content and delivery.
+        </p>
+        <ul>
+          <li>Senior centers and retirement communities</li>
+          <li>Libraries and community centers</li>
+          <li>Faith-based organizations</li>
+          <li>Schools and youth programs</li>
+          <li>Cultural and immigrant service organizations</li>
+          <li>Rural cooperatives and agricultural extensions</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Hands-On and Interactive</h3>
+        <p>
+          Forget boring PowerPoint lectures. Our workshops are interactive, participatory, and designed
+          for learners of all technology backgrounds.
+        </p>
+        <ul>
+          <li>Live demonstrations on real devices</li>
+          <li>Guided practice with instructor support</li>
+          <li>Q&A sessions tailored to group concerns</li>
+          <li>Take-home action checklists</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Section -->
+  <section class="content-section">
+    <h2>Community Impact</h2>
+    <p class="section-intro">
+      We measure success by lives protected and communities empowered. Here's what participants say
+      about our programs.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-item">
+        <span class="impact-number">95%</span>
+        <span class="impact-label">Changed at least one security habit after workshop</span>
+      </div>
+      <div class="impact-item">
+        <span class="impact-number">87%</span>
+        <span class="impact-label">Reported feeling more confident online</span>
+      </div>
+      <div class="impact-item">
+        <span class="impact-number">92%</span>
+        <span class="impact-label">Shared learnings with family members</span>
+      </div>
+      <div class="impact-item">
+        <span class="impact-number">100%</span>
+        <span class="impact-label">Would recommend to others in their community</span>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 3rem;">
+      <h3>What Participants Say</h3>
+      <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--text-primary);">
+        "I almost wired $5,000 to a scammer claiming to be my grandson. After attending the senior safety workshop,
+        I recognized all the red flags. The training literally saved me from losing my savings."
+      </p>
+      <p style="color: var(--text-secondary); margin-bottom: 2rem;">— Margaret S., Age 72, Senior Center Workshop Participant</p>
+
+      <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--text-primary);">
+        "This was the first cybersecurity class I've ever taken that was actually in my language. I finally
+        understand how to protect my business and my family online. Thank you for respecting our community."
+      </p>
+      <p style="color: var(--text-secondary);">— José R., Small Business Owner, Multilingual Workshop Participant</p>
+    </div>
+  </section>
+
+  <!-- Request a Workshop Section -->
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>Request a Workshop for Your Community</h2>
+    <p class="section-intro">
+      We're actively seeking partnerships with organizations serving underserved communities.
+      No group too small, no location too remote.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>For Organizations</h3>
+        <p>
+          If you serve seniors, youth, rural communities, or non-English speakers, we'd love to bring free
+          cybersecurity training to your members.
+        </p>
+        <ul>
+          <li>Senior centers and retirement communities</li>
+          <li>Public libraries and community centers</li>
+          <li>Schools and after-school programs</li>
+          <li>Faith-based organizations</li>
+          <li>Cultural centers and immigrant services</li>
+          <li>Rural cooperatives and agricultural groups</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>What We Provide</h3>
+        <p>
+          We handle everything—you just provide the space and participants. We bring the expertise,
+          materials, and enthusiasm.
+        </p>
+        <ul>
+          <li>Expert instructors (background-checked)</li>
+          <li>All workshop materials and handouts</li>
+          <li>Flexible scheduling around your community</li>
+          <li>Virtual or in-person delivery options</li>
+          <li>Follow-up resources and support</li>
+          <li>Completely free—no hidden costs</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Workshop Formats</h3>
+        <ul>
+          <li>Single 90-minute sessions</li>
+          <li>Multi-week series (2-4 sessions)</li>
+          <li>Drop-in "office hours" for questions</li>
+          <li>Train-the-trainer for your staff</li>
+          <li>Custom topics based on community needs</li>
+          <li>Virtual or in-person delivery</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>How to Get Started</h3>
+        <p>
+          Contact us to discuss your community's needs. We'll work with you to design a program that
+          fits your members' schedules, concerns, and learning preferences.
+        </p>
+        <ul>
+          <li>Initial consultation (30 minutes)</li>
+          <li>Customize workshop content and format</li>
+          <li>Schedule at your convenience</li>
+          <li>Deliver engaging, accessible training</li>
+          <li>Provide follow-up resources</li>
+          <li>Gather feedback for continuous improvement</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <section class="content-section">
+    <h2>Free Resources</h2>
+    <p class="section-intro">
+      Can't host a workshop? Download our free guides and checklists for your community members.
+      Available in multiple languages.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Senior Safety Guides</h3>
+        <ul>
+          <li>Spotting Common Scams Checklist (Large Print)</li>
+          <li>Safe Online Banking Guide</li>
+          <li>Social Media Privacy Settings Walkthrough</li>
+          <li>Password Manager Setup Guide</li>
+          <li>What To Do If You've Been Scammed</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Family Resources</h3>
+        <ul>
+          <li>Talking to Kids About Online Safety</li>
+          <li>Social Media Safety Conversation Starters</li>
+          <li>Setting Up Parental Controls</li>
+          <li>Digital Citizenship Family Agreement Template</li>
+          <li>Responding to Cyberbullying: A Parent's Guide</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Multilingual Materials</h3>
+        <ul>
+          <li>Basic Cybersecurity Checklist (10+ Languages)</li>
+          <li>Protecting Your Money Online (Spanish/Vietnamese)</li>
+          <li>Immigration Scam Awareness (Multiple Languages)</li>
+          <li>Safe Remittance Services Guide</li>
+          <li>Creating Strong Passwords (Pictorial Guide)</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Quick Reference Cards</h3>
+        <ul>
+          <li>Is This Email Safe? Decision Tree</li>
+          <li>Before You Click: Safety Checklist</li>
+          <li>Signs of a Phishing Attack (Wallet Card)</li>
+          <li>Emergency Contacts for Scam Reporting</li>
+          <li>Your Digital Safety To-Do List</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 2rem;">
+      <p style="margin: 0;">
+        <strong>Coming Soon:</strong> Our community resource library is currently being developed.
+        Contact us to request specific materials or to be notified when resources are available.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Bring Digital Safety to Your Community</h2>
+    <p>
+      Partner with us to deliver free, accessible cybersecurity education to the communities that need it most.
+      Let's bridge the digital divide together.
+    </p>
+    <a href="/pages/contact.html" class="cta-btn">Request a Workshop</a>
+  </section>
+
+  <div id="top"></div>
+
+  <!-- Shared footer mount + loader -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 </body>
 </html>

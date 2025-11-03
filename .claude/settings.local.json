@@ -15,7 +15,9 @@
       "Bash(nul)",
       "Bash(del nul 2)",
       "Bash(python scripts/setup-phd-clickup.py:*)",
-      "Bash(npx wrangler:*)"
+      "Bash(npx wrangler:*)",
+      "Bash(dir /s /b *.html)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

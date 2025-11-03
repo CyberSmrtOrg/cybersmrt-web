@@ -339,6 +339,116 @@
       font-size: 1.2rem;
     }
 
+    /* Grade Accordion */
+    .grade-accordion {
+      margin-top: 3rem;
+    }
+
+    .grade-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .grade-item:hover {
+      border-color: #667eea;
+    }
+
+    .grade-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      cursor: pointer;
+      background: var(--card-bg);
+      transition: all 0.3s;
+      user-select: none;
+    }
+
+    .grade-header:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    }
+
+    .grade-header.active {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.08) 100%);
+    }
+
+    .grade-title-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .grade-level {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .grade-info h3 {
+      font-size: 1.4rem;
+      color: var(--text-heading);
+      margin-bottom: 0.25rem;
+      font-weight: 700;
+    }
+
+    .competency-level {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .accordion-arrow {
+      width: 24px;
+      height: 24px;
+      color: #667eea;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .grade-header.active .accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    .grade-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .grade-content.active {
+      max-height: 10000px;
+    }
+
+    .grade-content-inner {
+      padding: 0 2rem 2rem 2rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .quarters-section {
+      margin-top: 2rem;
+    }
+
+    .quarter-title {
+      font-size: 1.3rem;
+      color: #667eea;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .quarter-title:first-child {
+      margin-top: 0;
+    }
+
     /* Two-Column Layout */
     .two-column {
       display: grid;
@@ -380,6 +490,20 @@
       color: #667eea;
       font-weight: 700;
       font-size: 1.2rem;
+    }
+
+    /* Problem/Solution Box Styling */
+    .problem-solution-box {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s;
+    }
+
+    .problem-solution-box:hover {
+      border-color: #667eea;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
     }
 
     /* CTA Section */
@@ -469,6 +593,28 @@
     }
   </style>
 
+  <script>
+    // Toggle grade accordion
+    function toggleGrade(element) {
+      const gradeItem = element.closest('.grade-item');
+      const header = gradeItem.querySelector('.grade-header');
+      const content = gradeItem.querySelector('.grade-content');
+      const isActive = header.classList.contains('active');
+
+      // Close all other grade items
+      document.querySelectorAll('.grade-header.active').forEach(activeHeader => {
+        if (activeHeader !== header) {
+          activeHeader.classList.remove('active');
+          activeHeader.closest('.grade-item').querySelector('.grade-content').classList.remove('active');
+        }
+      });
+
+      // Toggle this grade item
+      header.classList.toggle('active');
+      content.classList.toggle('active');
+    }
+  </script>
+
   <!-- Google Analytics -->
   <script src="/assets/js/analytics-config.js"></script>
   <script src="/assets/js/analytics.js" defer></script>
@@ -536,7 +682,7 @@
     </p>
 
     <div class="two-column">
-      <div class="column">
+      <div class="column problem-solution-box">
         <h3>The Problem</h3>
         <p>Traditional cybersecurity education either:</p>
         <ul>
@@ -547,7 +693,7 @@
         </ul>
       </div>
 
-      <div class="column">
+      <div class="column problem-solution-box">
         <h3>Our Solution</h3>
         <p>We built a curriculum that:</p>
         <ul>
@@ -624,13 +770,32 @@
 
   <!-- Curriculum Modules -->
   <section class="content-section" id="curriculum">
-    <h2>Quarter 1: Digital Safety & Citizenship (Weeks 1-9)</h2>
+    <h2>Curriculum by Grade Level</h2>
     <p class="section-intro">
-      Our pilot program at NEAAAT Charter School covers 18 modules across two quarters.
-      Here's what students learn in Quarter 1:
+      Our competency-based curriculum progresses from beginner (5th grade) through expert (12th grade).
+      Click on each grade level to explore the detailed module descriptions.
     </p>
 
-    <div class="modules-list">
+    <div class="grade-accordion">
+      <!-- Grade 5 - Beginner -->
+      <div class="grade-item">
+        <div class="grade-header active" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 5</span>
+            <div class="grade-info">
+              <h3>Digital Safety & Citizenship</h3>
+              <span class="competency-level">Beginner Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content active">
+          <div class="grade-content-inner">
+            <div class="quarters-section">
+              <h4 class="quarter-title">Quarter 1: Digital Safety & Citizenship (Weeks 1-9)</h4>
+              <div class="modules-list">
       <div class="module">
         <div class="module-number">01</div>
         <div class="module-content">
@@ -782,22 +947,196 @@
             <li>Present learning outcomes to authentic audiences</li>
           </ul>
         </div>
-      </div>
-    </div>
+              </div>
+              </div>
 
-    <div class="callout">
-      <h3>Quarter 2: Computer Systems & Networking (Weeks 10-18)</h3>
-      <ul>
-        <li><strong>Week 10:</strong> Computer Hardware Exploration (hands-on station rotations)</li>
-        <li><strong>Week 11:</strong> Operating Systems & File Management</li>
-        <li><strong>Week 12:</strong> Troubleshooting Basics (5-step checklist practice)</li>
-        <li><strong>Week 13:</strong> How the Internet Works (Packet Relay activity)</li>
-        <li><strong>Week 14:</strong> IP Addresses & DNS (role-play demonstrations)</li>
-        <li><strong>Week 15:</strong> Wi-Fi & Home Network Safety</li>
-        <li><strong>Week 16:</strong> Email Safety & Netiquette</li>
-        <li><strong>Week 17:</strong> Social Media Safety & Digital Well-Being</li>
-        <li><strong>Week 18:</strong> Final Review & Portfolio Showcase</li>
-      </ul>
+              <h4 class="quarter-title">Quarter 2: Computer Systems & Networking (Weeks 10-18)</h4>
+              <div class="callout">
+                <ul>
+                  <li><strong>Week 10:</strong> Computer Hardware Exploration (hands-on station rotations)</li>
+                  <li><strong>Week 11:</strong> Operating Systems & File Management</li>
+                  <li><strong>Week 12:</strong> Troubleshooting Basics (5-step checklist practice)</li>
+                  <li><strong>Week 13:</strong> How the Internet Works (Packet Relay activity)</li>
+                  <li><strong>Week 14:</strong> IP Addresses & DNS (role-play demonstrations)</li>
+                  <li><strong>Week 15:</strong> Wi-Fi & Home Network Safety</li>
+                  <li><strong>Week 16:</strong> Email Safety & Netiquette</li>
+                  <li><strong>Week 17:</strong> Social Media Safety & Digital Well-Being</li>
+                  <li><strong>Week 18:</strong> Final Review & Portfolio Showcase</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 6 - Beginner+ -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 6</span>
+            <div class="grade-info">
+              <h3>Network Fundamentals & Security</h3>
+              <span class="competency-level">Beginner+ Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 6 will build on foundational concepts with deeper exploration
+              of network architecture, secure communication protocols, and introductory coding for security.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 7 - Intermediate -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 7</span>
+            <div class="grade-info">
+              <h3>Cryptography & Data Protection</h3>
+              <span class="competency-level">Intermediate Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 7 will introduce cryptographic concepts, encryption methods,
+              secure data transmission, and the mathematics behind cybersecurity.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 8 - Intermediate+ -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 8</span>
+            <div class="grade-info">
+              <h3>System Security & Threat Analysis</h3>
+              <span class="competency-level">Intermediate+ Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 8 will cover operating system security, vulnerability assessment,
+              threat modeling, and hands-on labs with virtual machines.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 9 - Advanced Beginner -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 9</span>
+            <div class="grade-info">
+              <h3>Web Security & Application Testing</h3>
+              <span class="competency-level">Advanced Beginner Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 9 will introduce web application security, OWASP Top 10 vulnerabilities,
+              basic penetration testing techniques, and secure coding practices.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 10 - Advanced -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 10</span>
+            <div class="grade-info">
+              <h3>Network Defense & Incident Response</h3>
+              <span class="competency-level">Advanced Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 10 will cover defensive security strategies, Security Operations Center (SOC)
+              fundamentals, incident response procedures, and security monitoring tools.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 11 - Expert -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 11</span>
+            <div class="grade-info">
+              <h3>Penetration Testing & Ethical Hacking</h3>
+              <span class="competency-level">Expert Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 11 will provide intensive training in penetration testing methodologies,
+              exploit development, red team operations, and preparation for certifications like CEH and eJPT.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade 12 - Expert+ -->
+      <div class="grade-item">
+        <div class="grade-header" onclick="toggleGrade(this)">
+          <div class="grade-title-group">
+            <span class="grade-level">Grade 12</span>
+            <div class="grade-info">
+              <h3>Governance, Risk & Compliance (GRC)</h3>
+              <span class="competency-level">Expert+ Level</span>
+            </div>
+          </div>
+          <svg class="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="grade-content">
+          <div class="grade-content-inner">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin: 2rem 0;">
+              Curriculum in development. Grade 12 will cover cybersecurity governance frameworks (NIST, ISO 27001),
+              risk assessment methodologies, compliance requirements, security policy development, and career readiness
+              preparation for entering the cybersecurity workforce.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

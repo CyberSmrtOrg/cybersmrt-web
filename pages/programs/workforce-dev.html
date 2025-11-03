@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Cloudflare Turnstile API -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workforce Development | Cybersecurity Career Training | CyberSmrt</title>
+  <meta name="description" content="Launch your cybersecurity career with hands-on training aligned to industry certifications. Three career tracks: Red Team (Offensive Security), Blue Team (Defensive Security), and GRC (Governance, Risk & Compliance).">
 
-  <!-- Turnstile Gate Loader -->
-
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
-
-  <!-- Orbitron font for header + page -->
+  <!-- Orbitron font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
@@ -21,43 +15,428 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
-  <!-- Base minimal styles so the placeholder looks OK -->
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);color:var(--text-primary);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    /* Hero Section */
+    .program-hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .program-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--hero-text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .program-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
+    }
+
+    .program-hero .tagline {
+      font-size: 1.4rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: var(--hero-text);
+      box-shadow: none;
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--brand-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Content Sections */
+    .content-section {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .content-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--text-heading);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .section-intro {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+
+    /* Track Cards */
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .track-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .track-card:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .track-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .track-card h3 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .track-card .track-subtitle {
+      color: var(--brand-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .track-card p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .track-card ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .track-card li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .track-card li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    .certifications {
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .certifications h4 {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cert-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .cert-badge {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .column h3 {
+      font-size: 1.6rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .column p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .column li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .column li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    /* Callout Box */
+    .callout {
+      background: var(--bg-elevated);
+      border-left: 4px solid var(--brand-primary);
+      padding: 2rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+
+    .callout h3 {
+      font-size: 1.4rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .callout p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .callout ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .callout li {
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .callout li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--brand-primary);
+      font-weight: bold;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      margin-top: 4rem;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
+    }
+
+    .cta-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 1.5rem;
+      -webkit-text-fill-color: white;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-section .cta-btn {
+      background: white;
+      color: #667eea;
+    }
+
+    .cta-section .cta-btn:hover {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .program-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+
+      .program-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .program-hero .tagline {
+        font-size: 1.1rem;
+      }
+
+      .tracks-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .track-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+
+      .stat-number {
+        font-size: 2.2rem;
+      }
+
+      .cta-section {
+        padding: 3rem 1.5rem;
+      }
+    }
   </style>
 
   <!-- Google Analytics -->
@@ -71,88 +450,415 @@
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
 
+  <!-- Hero Section -->
+  <section class="program-hero">
+    <div class="hero-content">
+      <span class="program-badge">WORKFORCE DEVELOPMENT</span>
+      <h1>Launch Your Cybersecurity Career</h1>
+      <p class="tagline">Hands-on training aligned to industry certifications across three career tracks</p>
 
-  <!-- No-JS header fallback -->
-  <noscript>
-    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
-      <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
-      <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
-      <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
-      <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
-      <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
-      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
-    </nav>
-  </noscript>
-
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+      <div class="hero-cta-group">
+        <a href="/pages/contact.html" class="cta-btn">Apply Now</a>
+        <a href="#tracks" class="cta-btn secondary">Explore Tracks</a>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Career Tracks</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Hands-On Training</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Industry Certifications</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">$0</span>
+        <span class="stat-label">Tuition Cost</span>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+  <!-- Overview Section -->
+  <section class="content-section">
+    <h2>Breaking Barriers to Cybersecurity Careers</h2>
+    <p class="section-intro">
+      The cybersecurity workforce gap stands at 3.5 million unfilled positions globally. Meanwhile, traditional training
+      costs $5,000-$20,000 and excludes underrepresented communities. Our free, hands-on programs provide clear pathways
+      to industry certifications and high-paying careers—no degree required.
+    </p>
 
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
+    <div class="callout">
+      <h3>Who This Program Serves</h3>
+      <div class="two-column" style="margin-top: 1rem;">
+        <div>
+          <ul>
+            <li>Veterans and military spouses transitioning to civilian careers</li>
+            <li>Career changers from non-technical backgrounds</li>
+            <li>High school graduates seeking alternatives to college</li>
+            <li>Underemployed workers looking to upskill</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li>Individuals from underserved communities</li>
+            <li>People with criminal justice backgrounds seeking second chances</li>
+            <li>Self-taught technologists ready to formalize their skills</li>
+            <li>Anyone passionate about cybersecurity, regardless of background</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      } catch (e) { /* noop */ }
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      } catch (e) { /* noop */ }
-    }
+  <!-- Three Tracks Section -->
+  <section class="content-section" id="tracks">
+    <h2>Choose Your Career Track</h2>
+    <p class="section-intro">
+      Each track provides comprehensive training, hands-on labs, mentorship, and clear pathways to
+      industry-recognized certifications. All programs are 100% free with sliding-scale support for exam fees.
+    </p>
 
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
+    <div class="tracks-grid">
+      <!-- Red Team Track -->
+      <div class="track-card">
+        <div class="track-icon">🎯</div>
+        <span class="track-subtitle">Offensive Security</span>
+        <h3>Red Team Track</h3>
+        <p>
+          Learn to think like an attacker. Master penetration testing, exploit development, and ethical hacking
+          to help organizations identify vulnerabilities before bad actors do.
+        </p>
+        <ul>
+          <li>Penetration testing methodologies</li>
+          <li>Network exploitation and post-exploitation</li>
+          <li>Web application security testing</li>
+          <li>Social engineering and physical security</li>
+          <li>Wireless and mobile security testing</li>
+          <li>Report writing and client communication</li>
+        </ul>
+        <div class="certifications">
+          <h4>Target Certifications</h4>
+          <div class="cert-badges">
+            <span class="cert-badge">CEH</span>
+            <span class="cert-badge">OSCP</span>
+            <span class="cert-badge">PNPT</span>
+            <span class="cert-badge">eJPT</span>
+            <span class="cert-badge">Security+</span>
+          </div>
+        </div>
+      </div>
 
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
-  <noscript>
-    <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
-      <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
-      <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
-      <a href="/pages/about" style="color:#8ab4ff">About</a> ·
-      <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
-    </footer>
-  </noscript>
+      <!-- Blue Team Track -->
+      <div class="track-card">
+        <div class="track-icon">🛡️</div>
+        <span class="track-subtitle">Defensive Security</span>
+        <h3>Blue Team Track</h3>
+        <p>
+          Become a defender. Learn to monitor, detect, and respond to cyber threats through security operations,
+          incident response, and threat hunting.
+        </p>
+        <ul>
+          <li>Security operations center (SOC) operations</li>
+          <li>SIEM tools and log analysis (Elastic, Splunk)</li>
+          <li>Incident detection and response</li>
+          <li>Threat hunting and threat intelligence</li>
+          <li>Digital forensics and malware analysis</li>
+          <li>Security monitoring and alerting</li>
+        </ul>
+        <div class="certifications">
+          <h4>Target Certifications</h4>
+          <div class="cert-badges">
+            <span class="cert-badge">Security+</span>
+            <span class="cert-badge">CySA+</span>
+            <span class="cert-badge">BTL1</span>
+            <span class="cert-badge">GCIH</span>
+            <span class="cert-badge">GCIA</span>
+          </div>
+        </div>
+      </div>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+      <!-- GRC Track -->
+      <div class="track-card">
+        <div class="track-icon">📋</div>
+        <span class="track-subtitle">Governance, Risk & Compliance</span>
+        <h3>GRC Track</h3>
+        <p>
+          Bridge technical and business worlds. Learn to assess risk, ensure compliance, and develop security
+          programs that align with organizational goals.
+        </p>
+        <ul>
+          <li>Risk assessment and management frameworks</li>
+          <li>Compliance standards (HIPAA, PCI-DSS, SOC 2)</li>
+          <li>Security policy and procedure development</li>
+          <li>Third-party risk management</li>
+          <li>Security awareness and training programs</li>
+          <li>Audit preparation and remediation</li>
+        </ul>
+        <div class="certifications">
+          <h4>Target Certifications</h4>
+          <div class="cert-badges">
+            <span class="cert-badge">Security+</span>
+            <span class="cert-badge">CISM</span>
+            <span class="cert-badge">CRISC</span>
+            <span class="cert-badge">CGRC</span>
+            <span class="cert-badge">CISSP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Program Structure -->
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>How the Program Works</h2>
+    <p class="section-intro">
+      Our programs blend self-paced online learning with hands-on labs, live mentorship sessions,
+      and real-world projects. Learn at your own pace while building a portfolio that demonstrates your skills to employers.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Phase 1: Foundations (8-12 weeks)</h3>
+        <p>
+          Build core technical skills through guided labs and online coursework. Cover networking fundamentals,
+          Linux/Windows administration, and introductory security concepts.
+        </p>
+        <ul>
+          <li>Self-paced modules with hands-on virtual labs</li>
+          <li>Weekly live Q&A sessions with instructors</li>
+          <li>Peer study groups and Discord community</li>
+          <li>Foundational certification preparation (Security+)</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Phase 2: Specialization (12-16 weeks)</h3>
+        <p>
+          Deep dive into your chosen track with advanced labs, capture-the-flag competitions, and mentorship
+          from practicing security professionals.
+        </p>
+        <ul>
+          <li>Track-specific technical training</li>
+          <li>Real-world scenario simulations</li>
+          <li>1-on-1 mentorship with industry professionals</li>
+          <li>Advanced certification preparation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two-column" style="margin-top: 3rem;">
+      <div class="column">
+        <h3>Phase 3: Career Launch (4-8 weeks)</h3>
+        <p>
+          Prepare for job interviews, build your professional brand, and connect with hiring partners.
+          We support you until you land your first role.
+        </p>
+        <ul>
+          <li>Resume and LinkedIn profile optimization</li>
+          <li>Mock interviews and technical screenings</li>
+          <li>Portfolio project development</li>
+          <li>Job placement assistance and networking</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Ongoing Support</h3>
+        <p>
+          Your journey doesn't end when you get hired. We provide continued mentorship, certification support,
+          and career advancement guidance.
+        </p>
+        <ul>
+          <li>Alumni network and peer mentorship</li>
+          <li>Continued access to labs and resources</li>
+          <li>Career advancement coaching</li>
+          <li>Exam voucher assistance (sliding scale)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="content-section">
+    <h2>Why Train with CyberSmrt?</h2>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>100% Free Training</h3>
+        <p>
+          No tuition, no hidden fees, no income share agreements. We provide free training and sliding-scale
+          support for certification exam costs. Education should not create debt.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Veteran-Led Instruction</h3>
+        <p>
+          Learn from instructors with real-world experience defending critical infrastructure and national security
+          systems. Our founder brings 21+ years of Navy cybersecurity expertise.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Hands-On, Not Theory</h3>
+        <p>
+          Forget boring lectures. Every concept is reinforced with hands-on labs, CTF challenges, and real-world
+          scenarios. Build a portfolio that proves your skills to employers.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Industry Partnerships</h3>
+        <p>
+          Train on the same tools used by Fortune 500 companies through partnerships with Elastic, Tenable, and other
+          industry leaders. Access to enterprise-grade lab environments.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Flexible, Self-Paced Learning</h3>
+        <p>
+          Balance training with work and family commitments. Learn on your schedule with 24/7 access to materials,
+          plus live sessions scheduled around working adults.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Community-Driven</h3>
+        <p>
+          Join a supportive community of learners, mentors, and alumni. Get help when stuck, celebrate wins together,
+          and build professional relationships that last throughout your career.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>Program Outcomes</h2>
+    <p class="section-intro">
+      We measure success by career outcomes, not course completions. Our goal is to help you land
+      a cybersecurity role and build a sustainable career in this high-demand field.
+    </p>
+
+    <div class="callout">
+      <h3>What Graduates Can Expect</h3>
+      <div class="two-column" style="margin-top: 1.5rem;">
+        <div>
+          <ul>
+            <li>Entry-level cybersecurity positions ($60K-$80K)</li>
+            <li>Industry-recognized certifications</li>
+            <li>Professional portfolio demonstrating practical skills</li>
+            <li>Network of mentors and industry connections</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li>Continued access to training resources</li>
+            <li>Alumni community for career support</li>
+            <li>Clear pathway to advanced roles and certifications</li>
+            <li>Skills that transfer across industries and sectors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-column" style="margin-top: 3rem;">
+      <div class="column">
+        <h3>Common Career Paths</h3>
+        <ul>
+          <li>Security Operations Center (SOC) Analyst</li>
+          <li>Junior Penetration Tester</li>
+          <li>Security Analyst</li>
+          <li>GRC Analyst / Compliance Specialist</li>
+          <li>Incident Response Analyst</li>
+          <li>Threat Intelligence Analyst</li>
+          <li>Security Engineer</li>
+          <li>IT Auditor</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>Salary Expectations</h3>
+        <p>
+          According to Cybersecurity Ventures, the average cybersecurity salary in the U.S. is $102,600.
+          Even entry-level positions offer strong compensation:
+        </p>
+        <ul>
+          <li>SOC Analyst I: $55K-$75K</li>
+          <li>Junior Penetration Tester: $65K-$85K</li>
+          <li>GRC Analyst: $60K-$80K</li>
+          <li>Security Analyst: $65K-$85K</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application Process -->
+  <section class="content-section">
+    <h2>How to Apply</h2>
+    <p class="section-intro">
+      No prerequisites required beyond basic computer literacy and a commitment to learning.
+      We welcome applicants from all backgrounds—no degree or prior technical experience needed.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Step 1: Submit Application</h3>
+        <p>
+          Fill out our simple application form. We ask about your background, motivations, and career goals.
+          There are no "right" answers—we're looking for genuine interest and commitment.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Step 2: Intro Call</h3>
+        <p>
+          Schedule a 30-minute video call with our team. We'll discuss the program structure, answer your questions,
+          and help you choose the right track for your goals.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Step 3: Start Learning</h3>
+        <p>
+          Get immediate access to foundational materials while we finalize your enrollment. Join our Discord community
+          and start building relationships with other learners.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Step 4: Cohort Kickoff</h3>
+        <p>
+          Attend the live cohort kickoff session to meet your instructors, mentors, and fellow learners.
+          Set goals and create your personalized learning roadmap.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to Launch Your Cybersecurity Career?</h2>
+    <p>
+      Join our next cohort and get the training, certifications, and support you need to break into
+      this high-demand field—regardless of your background or financial situation.
+    </p>
+    <a href="/pages/contact.html" class="cta-btn">Apply Now</a>
+  </section>
+
+  <div id="top"></div>
+
+  <!-- Shared footer mount + loader -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 </body>
 </html>

@@ -1,158 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Cloudflare Turnstile API -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner With Us | CyberSmrt Partnerships</title>
+  <meta name="description" content="Partner with CyberSmrt to expand cybersecurity education and services. Corporate partnerships, technology vendors, schools, and nonprofit collaboration opportunities.">
 
-  <!-- Turnstile Gate Loader -->
-
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
-
-  <!-- Orbitron font for header + page -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
-  <!-- Theme System -->
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
-  <!-- Base minimal styles so the placeholder looks OK -->
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);color:var(--text-primary);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    .program-hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    .hero-content { max-width: 900px; margin: 0 auto; }
+
+    .program-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--hero-text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .program-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .program-hero .tagline {
+      font-size: 1.4rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: none;
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .content-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .content-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-intro {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 800px;
+    }
+
+    .partnership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .partnership-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 3rem;
+      transition: all 0.3s;
+    }
+
+    .partnership-card:hover {
+      transform: translateY(-5px);
+      border-color: #667eea;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .partnership-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .partnership-card h3 {
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .partnership-card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .partnership-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .partnership-card li {
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    .partnership-card li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: 700;
+    }
+
+    .callout {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+    }
+
+    .callout h3 {
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .callout p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .column h3 {
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .column p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .column ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .column li {
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    .column li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .program-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+      .program-hero h1 {
+        font-size: 2.2rem;
+      }
+      .program-hero .tagline {
+        font-size: 1.1rem;
+      }
+      .content-section h2 {
+        font-size: 2rem;
+      }
+    }
   </style>
 
-  <!-- Google Analytics -->
   <script src="/assets/js/analytics-config.js"></script>
   <script src="/assets/js/analytics.js" defer></script>
 </head>
 <body>
-  <a id="top"></a>
-
-  <!-- Shared header mount + loader -->
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
 
-
-  <!-- No-JS header fallback -->
   <noscript>
     <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
       <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
       <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
       <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
-      <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
-      <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
-      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+      <a href="/pages/blog/" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/pages/about/" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="/pages/contact.html" style="color:#cbd5e1">Contact</a>
     </nav>
   </noscript>
 
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+  <section class="program-hero">
+    <div class="hero-content">
+      <span class="program-badge">GET INVOLVED</span>
+      <h1>Partner With CyberSmrt</h1>
+      <p class="tagline">Join us in closing the cybersecurity skills gap through strategic partnerships</p>
+      <div class="hero-cta-group">
+        <a href="/pages/contact.html" class="cta-btn">Become a Partner</a>
+        <a href="#opportunities" class="cta-btn secondary">Partnership Options</a>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
+  <section class="content-section">
+    <h2>Why Partner With Us?</h2>
+    <p class="section-intro">
+      CyberSmrt's mission-driven approach creates unique partnership opportunities for organizations
+      that want to make a measurable impact in cybersecurity education and community protection.
+    </p>
 
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+    <div class="callout">
+      <h3>Our Partnership Model</h3>
+      <p>
+        We believe in mutually beneficial relationships that advance cybersecurity education, provide
+        real-world learning opportunities, and strengthen community security. Our partners gain brand
+        alignment with a mission-driven nonprofit, access to emerging talent, and opportunities to
+        give back to underserved communities.
+      </p>
+    </div>
+  </section>
 
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
+  <section class="content-section" id="opportunities" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>Partnership Opportunities</h2>
+    <p class="section-intro">
+      We work with diverse organizations to amplify our impact. Find the partnership model that fits your goals.
+    </p>
 
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      } catch (e) { /* noop */ }
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      } catch (e) { /* noop */ }
-    }
+    <div class="partnership-grid">
+      <div class="partnership-card">
+        <span class="partnership-icon">🏢</span>
+        <h3>Corporate Sponsors</h3>
+        <p>
+          Align your brand with our mission while supporting cybersecurity education and workforce development.
+          Corporate sponsorships fund program expansion, student scholarships, and community initiatives.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Brand recognition on website and materials</li>
+          <li>Employee volunteer opportunities</li>
+          <li>Access to job-ready talent pipeline</li>
+          <li>Tax deduction for charitable contributions</li>
+          <li>Annual impact reports and recognition</li>
+        </ul>
+      </div>
 
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
+      <div class="partnership-card">
+        <span class="partnership-icon">💻</span>
+        <h3>Technology Vendors</h3>
+        <p>
+          Technology companies can provide in-kind donations of software, training platforms, or cybersecurity
+          tools. We integrate partner technologies into our curriculum and MSSP operations.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Product exposure to students and nonprofits</li>
+          <li>Early talent recruitment opportunities</li>
+          <li>Community goodwill and brand building</li>
+          <li>Co-branded educational content</li>
+          <li>Partnership recognition and case studies</li>
+        </ul>
+      </div>
 
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
-  <noscript>
-    <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
-      <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
-      <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
-      <a href="/pages/about" style="color:#8ab4ff">About</a> ·
-      <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
-    </footer>
-  </noscript>
+      <div class="partnership-card">
+        <span class="partnership-icon">🏫</span>
+        <h3>Schools & Districts</h3>
+        <p>
+          Educational institutions can adopt our K-12 cybersecurity curriculum at no cost or on a sliding scale.
+          We provide teacher training, materials, and ongoing support.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Free or low-cost curriculum licensing</li>
+          <li>Professional development for educators</li>
+          <li>Standards-aligned content (CISA, NICE)</li>
+          <li>Career pathway development for students</li>
+          <li>Community and industry connections</li>
+        </ul>
+      </div>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+      <div class="partnership-card">
+        <span class="partnership-icon">🤝</span>
+        <h3>Nonprofit Organizations</h3>
+        <p>
+          Nonprofits can access our MSSP-lite services on a sliding scale and collaborate on community
+          cybersecurity education initiatives.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Affordable managed security services</li>
+          <li>Joint community outreach programs</li>
+          <li>Resource sharing and collaboration</li>
+          <li>Donor and beneficiary data protection</li>
+          <li>Mission-aligned partnership</li>
+        </ul>
+      </div>
+
+      <div class="partnership-card">
+        <span class="partnership-icon">🎓</span>
+        <h3>Higher Education</h3>
+        <p>
+          Colleges and universities can collaborate on curriculum development, student internships,
+          and research initiatives in cybersecurity education.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Student internship and research opportunities</li>
+          <li>Faculty collaboration on curriculum</li>
+          <li>K-12 to higher ed pathway development</li>
+          <li>Community engagement programs</li>
+          <li>Joint grant proposals and funding</li>
+        </ul>
+      </div>
+
+      <div class="partnership-card">
+        <span class="partnership-icon">🏛️</span>
+        <h3>Government & Foundations</h3>
+        <p>
+          Government agencies and foundations can fund program expansion, research initiatives,
+          and community impact through grants and contracts.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">Benefits include:</h4>
+        <ul>
+          <li>Measurable community impact metrics</li>
+          <li>Alignment with workforce development goals</li>
+          <li>Evidence-based program evaluation</li>
+          <li>Equity-focused service delivery</li>
+          <li>Comprehensive reporting and accountability</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2>Current Partners</h2>
+    <p class="section-intro">
+      We're proud to work with industry leaders who share our commitment to expanding cybersecurity access.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Strategic Partners</h3>
+        <ul>
+          <li><strong>Tenable:</strong> Vulnerability management tools and training</li>
+          <li><strong>CompTIA:</strong> Certification pathways and curriculum alignment</li>
+          <li><strong>CloudRange:</strong> Hands-on cyber range environments</li>
+          <li><strong>NEAAAT Charter School:</strong> K-12 curriculum pilot program</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <h3>What Partners Say</h3>
+        <p style="font-style: italic; color: var(--text-primary);">
+          "CyberSmrt's equity-focused approach and veteran leadership make them an ideal partner
+          for organizations committed to building a diverse cybersecurity workforce."
+        </p>
+        <p style="color: var(--text-secondary); margin-top: 1rem;">— Partner Organization</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>How to Get Started</h2>
+    <p class="section-intro">
+      Ready to explore a partnership? Here's how to begin the conversation.
+    </p>
+
+    <div class="callout">
+      <h3>Partnership Process</h3>
+      <p style="margin-bottom: 2rem;">
+        Contact us using the form below or email info@cybersmrt.org to discuss partnership opportunities.
+        We'll schedule a call to understand your goals and explore how we can work together to advance
+        cybersecurity education and community protection.
+      </p>
+      <div style="text-align: center;">
+        <a href="/pages/contact.html" class="cta-btn" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+          Contact Us About Partnerships
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div id="top"></div>
+
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 </body>
 </html>

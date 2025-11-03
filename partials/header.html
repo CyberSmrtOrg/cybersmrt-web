@@ -304,6 +304,94 @@
       opacity: 0.8;
     }
 
+    /* Programs Dropdown - Same styling as Tools */
+    .programs-dropdown-container {
+      position: relative;
+    }
+
+    .programs-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--hdr-text);
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      padding-bottom: 2px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+    }
+
+    .programs-dropdown-trigger:hover {
+      color: var(--hdr-text-hover);
+      opacity: 1;
+    }
+
+    .programs-dropdown-arrow {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .programs-dropdown-container.open .programs-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .programs-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--hdr-bg);
+      border: 1px solid var(--hdr-border);
+      border-radius: 12px;
+      width: 260px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .programs-dropdown-container.open .programs-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .programs-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      color: var(--hdr-text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .programs-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .programs-dropdown a:hover {
+      background: var(--card-bg-hover);
+      color: var(--hdr-text-hover);
+    }
+
+    .programs-dropdown svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+    }
+
     .site-header .nav-toggle{
       display:none; width:40px; height:40px; border:0; background:transparent; position:relative;
     }
@@ -356,7 +444,49 @@
 
     <div class="nav-links" role="navigation" aria-label="Primary">
       <a href="/">Home</a>
-      <a href="/#programs">Programs</a>
+
+      <!-- Programs Dropdown -->
+      <div class="programs-dropdown-container">
+        <button class="programs-dropdown-trigger" onclick="toggleProgramsDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          Programs
+          <svg class="programs-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="programs-dropdown">
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+            All Programs
+          </a>
+          <a href="/pages/programs/k12-curriculum.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            K-12 Curriculum
+          </a>
+          <a href="/pages/programs/mssp-lite.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            MSSP-lite Services
+          </a>
+          <a href="/pages/programs/workforce-dev.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Workforce Development
+          </a>
+          <a href="/pages/programs/community-outreach.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Community Outreach
+          </a>
+        </div>
+      </div>
+
       <a href="/pages/blog/">Blog</a>
 
       <!-- Tools Dropdown -->

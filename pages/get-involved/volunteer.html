@@ -4,15 +4,12 @@
   <!-- Cloudflare Turnstile API -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <!-- Turnstile Gate Loader -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer | Join the CyberSmrt Team</title>
+  <meta name="description" content="Share your expertise and make an impact. Volunteer opportunities in cybersecurity education, mentorship, curriculum development, and MSSP operations.">
 
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page Title • CyberSmrt</title>
-  <meta name="description" content="Coming soon." />
-
-  <!-- Orbitron font for header + page -->
+  <!-- Orbitron font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
@@ -21,43 +18,335 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
-  <!-- Base minimal styles so the placeholder looks OK -->
   <style>
-    :root{
-      --bg:#0a0d18; --fg:#e5e7eb; --muted:#94a3b8;
-      --card:#0f1424; --stroke:rgba(148,163,184,.18);
-      --accent:#60a5fa; --accent2:#a78bfa;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    *{box-sizing:border-box}
-    html{scrollbar-gutter:stable both-edges}
-    body{margin:0;background:linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);color:var(--text-primary);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif}
-    main{min-height:70vh;display:grid;place-items:center;padding:clamp(24px,4vw,40px)}
-    .wrap{width:min(1100px,92vw);margin-inline:auto}
-    .placeholder{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)), var(--card);
-      border-radius:16px; padding:clamp(20px,3vw,28px);
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    .placeholder h1{
-      margin:0 0 .25rem 0; font-weight:900; letter-spacing:.02em;
-      font-size:clamp(1.4rem,3.6vw,2.2rem);
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+
+    /* Hero Section */
+    .program-hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 20px;
+      max-width: 1200px;
+      margin: 80px auto 0;
     }
-    .placeholder p{margin:.25rem 0; color:var(--muted)}
-    .dots{display:inline-flex;gap:6px;margin-left:6px}
-    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7;animation:b 1.2s infinite}
-    .dot:nth-child(2){animation-delay:.15s;background:#7dd3fc}
-    .dot:nth-child(3){animation-delay:.3s;background:#c4b5fd}
-    @keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-3px)}}
-    .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      display:inline-block;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;
-      border:1px solid var(--stroke); color:var(--fg); background:transparent;
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .btn:hover{border-color:rgba(96,165,250,.45)}
-    footer{border-top:1px solid var(--stroke);padding:20px;text-align:center;color:var(--muted)}
+
+    .program-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--hero-text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .program-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
+    }
+
+    .program-hero .tagline {
+      font-size: 1.4rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: var(--hero-text);
+      box-shadow: none;
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Content Sections */
+    .content-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .content-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-intro {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 800px;
+    }
+
+    /* Volunteer Opportunity Cards */
+    .opportunities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .opportunity-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 3rem;
+      transition: all 0.3s;
+    }
+
+    .opportunity-card:hover {
+      transform: translateY(-5px);
+      border-color: #667eea;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .opportunity-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .opportunity-card h3 {
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .commitment-badge {
+      display: inline-block;
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      padding: 0.4rem 1rem;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .opportunity-card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .opportunity-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+
+    .opportunity-card li {
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    .opportunity-card li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: 700;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Callout Box */
+    .callout {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+    }
+
+    .callout h3 {
+      font-size: 1.8rem;
+      color: #667eea;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .callout p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+
+    .callout ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1.5rem;
+    }
+
+    .callout li {
+      color: var(--text-secondary);
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    .callout li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* Two-Column Layout */
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .column h3 {
+      font-size: 1.8rem;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .column p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .program-hero {
+        margin-top: 60px;
+        padding: 3rem 1.5rem;
+      }
+
+      .program-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .program-hero .tagline {
+        font-size: 1.1rem;
+      }
+
+      .content-section h2 {
+        font-size: 2rem;
+      }
+
+      .stat-number {
+        font-size: 2.2rem;
+      }
+
+      .opportunities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 
   <!-- Google Analytics -->
@@ -65,12 +354,9 @@
   <script src="/assets/js/analytics.js" defer></script>
 </head>
 <body>
-  <a id="top"></a>
-
   <!-- Shared header mount + loader -->
   <div id="header-mount"></div>
   <script defer src="/assets/js/header-loader.js"></script>
-
 
   <!-- No-JS header fallback -->
   <noscript>
@@ -78,81 +364,268 @@
       <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
       <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
       <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
-      <a href="/pages/blog" style="color:#cbd5e1;margin-right:1rem">Blog</a>
-      <a href="/pages/about" style="color:#cbd5e1;margin-right:1rem">About</a>
-      <a href="mailto:tony@cybersmrt.org" style="color:#cbd5e1">Contact</a>
+      <a href="/pages/blog/" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/pages/about/" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="/pages/contact.html" style="color:#cbd5e1">Contact</a>
     </nav>
   </noscript>
 
-  <main>
-    <div class="wrap">
-      <section class="placeholder" aria-live="polite">
-        <h1>
-          Coming soon
-          <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-        </h1>
-        <p>This page is being built. The layout will load here once the final HTML/CSS/JS is ready.</p>
-        <div class="links">
-          <a class="btn" href="/">← Back to home</a>
-          <a class="btn" href="/pages/blog">Visit the blog</a>
-        </div>
-      </section>
+  <!-- Hero Section -->
+  <section class="program-hero">
+    <div class="hero-content">
+      <span class="program-badge">GET INVOLVED</span>
+      <h1>Volunteer With Us</h1>
+      <p class="tagline">Share your expertise and help close the cybersecurity skills gap</p>
+      <div class="hero-cta-group">
+        <a href="/pages/contact.html" class="cta-btn">Apply to Volunteer</a>
+        <a href="#opportunities" class="cta-btn secondary">View Opportunities</a>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    © <span id="y"></span> CyberSmrt • Service-Disabled Veteran-Owned 501(c)(3)
-  </footer>
+  <!-- Volunteer Impact -->
+  <section class="content-section">
+    <div class="stats-bar">
+      <div class="stats-container">
+        <div class="stat">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Active Volunteers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Students Impacted</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">30+</span>
+          <span class="stat-label">Organizations Secured</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">1,200+</span>
+          <span class="stat-label">Volunteer Hours</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    // Auto-year for the simple footer
-    (document.getElementById('y')||{}).textContent = new Date().getFullYear();
+  <!-- Why Volunteer -->
+  <section class="content-section">
+    <h2>Why Volunteer With CyberSmrt?</h2>
+    <p class="section-intro">
+      Our mission-driven work requires expertise, passion, and dedication from cybersecurity professionals
+      who believe in building pathways for underserved communities. Your knowledge can change lives.
+    </p>
 
-    /**
-     * OPTIONAL asset loader — only injects CSS/JS if they exist,
-     * so you don’t get 404s while the page is unfinished.
-     * Update these when the real assets are ready.
-     */
-    const OPTIONAL_CSS = '/assets/css/this-page.css';
-    const OPTIONAL_JS  = '/assets/js/this-page.js';
+    <div class="callout">
+      <h3>The Volunteer Experience</h3>
+      <ul>
+        <li><strong>Flexible commitment:</strong> Choose opportunities that fit your schedule—from one-time workshops to ongoing mentorship</li>
+        <li><strong>Real impact:</strong> See direct results from your work with students, nonprofits, and community organizations</li>
+        <li><strong>Professional growth:</strong> Develop teaching, mentorship, and leadership skills while giving back</li>
+        <li><strong>Community connection:</strong> Join a network of like-minded cybersecurity professionals committed to service</li>
+        <li><strong>Resume builder:</strong> Add meaningful volunteer experience to your professional portfolio</li>
+      </ul>
+    </div>
+  </section>
 
-    async function injectOptionalCSS(href){
-      try{
-        const res = await fetch(href, { method:'HEAD' });
-        if(!res.ok) return;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet'; link.href = href;
-        document.head.appendChild(link);
-      } catch (e) { /* noop */ }
-    }
-    async function injectOptionalModule(src){
-      try{
-        const res = await fetch(src, { method:'HEAD' });
-        if(!res.ok) return;
-        await import(src);
-      } catch (e) { /* noop */ }
-    }
+  <!-- Volunteer Opportunities -->
+  <section class="content-section" id="opportunities" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>Volunteer Opportunities</h2>
+    <p class="section-intro">
+      We offer diverse roles for cybersecurity professionals at all career stages. Find the right fit for your expertise and availability.
+    </p>
 
-    injectOptionalCSS(OPTIONAL_CSS);
-    injectOptionalModule(OPTIONAL_JS);
+    <div class="opportunities-grid">
+      <!-- Student Mentor -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">🎓</span>
+        <h3>Student Mentor</h3>
+        <span class="commitment-badge">2-4 hours/month</span>
+        <p>
+          Guide middle and high school students through their cybersecurity learning journey. Provide career
+          advice, answer technical questions, and inspire the next generation of security professionals.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>One-on-one or small group mentorship sessions</li>
+          <li>Career pathway guidance and certification planning</li>
+          <li>Resume reviews and interview preparation</li>
+          <li>Real-world cybersecurity stories and insights</li>
+        </ul>
+      </div>
 
-    // No-op hook your future module can override
-    window.Page = Object.assign({ ready(){/* no-op */} }, window.Page || {});
-    window.Page.ready();
-  </script>
-  <noscript>
-    <footer style="background:#0a0a0a;border-top:1px solid #333;padding:1rem;text-align:center;color:#cbd5e1">
-      © 2025 CyberSmrt • <a href="/" style="color:#8ab4ff">Home</a> ·
-      <a href="/#programs" style="color:#8ab4ff">Programs</a> ·
-      <a href="/pages/blog" style="color:#8ab4ff">Blog</a> ·
-      <a href="/pages/about" style="color:#8ab4ff">About</a> ·
-      <a href="mailto:tony@cybersmrt.org" style="color:#8ab4ff">Contact</a>
-    </footer>
-  </noscript>
+      <!-- Curriculum Developer -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">📚</span>
+        <h3>Curriculum Developer</h3>
+        <span class="commitment-badge">5-10 hours/month</span>
+        <p>
+          Help design and refine our K-12 cybersecurity curriculum. Create hands-on activities, write learning
+          modules, and ensure content stays current with industry trends.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>Writing lesson plans and activity guides</li>
+          <li>Developing hands-on lab exercises</li>
+          <li>Creating assessment rubrics and competency frameworks</li>
+          <li>Reviewing and updating existing content</li>
+        </ul>
+      </div>
 
-  <!-- Shared footer mount + loader (optional: keep your simple footer above as a baseline) -->
+      <!-- Workshop Facilitator -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">🎤</span>
+        <h3>Workshop Facilitator</h3>
+        <span class="commitment-badge">3-6 hours/event</span>
+        <p>
+          Lead interactive cybersecurity workshops for students, educators, or community members. Share your
+          expertise on topics like phishing, password security, or career pathways.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>Presenting technical topics in accessible ways</li>
+          <li>Facilitating hands-on demonstrations and activities</li>
+          <li>Answering participant questions</li>
+          <li>Adapting content for different audiences</li>
+        </ul>
+      </div>
+
+      <!-- MSSP Operations -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">🔐</span>
+        <h3>MSSP Operations Support</h3>
+        <span class="commitment-badge">4-8 hours/month</span>
+        <p>
+          Support our MSSP-lite services for nonprofits and community organizations. Help with security
+          assessments, monitoring, incident response, or technical documentation.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>Vulnerability scanning and assessment reviews</li>
+          <li>Security monitoring and alert triage</li>
+          <li>Writing security documentation and runbooks</li>
+          <li>Client education and best practices guidance</li>
+        </ul>
+      </div>
+
+      <!-- Technical Reviewer -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">🔍</span>
+        <h3>Technical Reviewer</h3>
+        <span class="commitment-badge">2-4 hours/month</span>
+        <p>
+          Review curriculum content, blog posts, and educational materials for technical accuracy.
+          Ensure our content meets industry standards and best practices.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>Reviewing lesson plans for technical accuracy</li>
+          <li>Fact-checking cybersecurity content</li>
+          <li>Providing expert feedback on materials</li>
+          <li>Suggesting improvements and updates</li>
+        </ul>
+      </div>
+
+      <!-- Board Advisor -->
+      <div class="opportunity-card">
+        <span class="opportunity-icon">🌟</span>
+        <h3>Board Member / Advisor</h3>
+        <span class="commitment-badge">3-5 hours/month</span>
+        <p>
+          Join our Board of Directors or Advisory Board to provide strategic guidance, leverage your network,
+          and help shape CyberSmrt's long-term direction and growth.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll help with:</h4>
+        <ul>
+          <li>Strategic planning and organizational direction</li>
+          <li>Fundraising and partnership development</li>
+          <li>Industry connections and networking</li>
+          <li>Governance and oversight</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We're Looking For -->
+  <section class="content-section">
+    <h2>Who We're Looking For</h2>
+    <p class="section-intro">
+      We welcome volunteers from diverse backgrounds and experience levels. Here's what makes a great CyberSmrt volunteer.
+    </p>
+
+    <div class="two-column">
+      <div class="column">
+        <h3>Experience & Skills</h3>
+        <p>
+          <strong>Cybersecurity professionals</strong> with industry certifications (Security+, CISSP, CEH, etc.)
+          or practical experience in any security domain—red team, blue team, GRC, cloud security, AppSec, or beyond.
+        </p>
+        <p>
+          <strong>Educators and trainers</strong> who understand how to break down complex concepts for diverse audiences,
+          especially those new to cybersecurity.
+        </p>
+        <p>
+          <strong>IT professionals</strong> with adjacent skills in networking, systems administration, or software development
+          who want to contribute to security education.
+        </p>
+      </div>
+
+      <div class="column">
+        <h3>Values & Mindset</h3>
+        <p>
+          <strong>Mission-driven:</strong> You believe in expanding access to cybersecurity careers for underserved communities
+          and closing the industry's diversity and skills gaps.
+        </p>
+        <p>
+          <strong>Patient and approachable:</strong> You can explain technical concepts clearly and meet people where they are,
+          whether they're 5th graders or nonprofit staff.
+        </p>
+        <p>
+          <strong>Committed to equity:</strong> You understand that systemic barriers prevent many talented individuals from
+          entering cybersecurity, and you want to help remove those barriers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Apply -->
+  <section class="content-section" style="background: var(--bg-elevated); padding-top: 5rem; padding-bottom: 5rem;">
+    <h2>How to Get Started</h2>
+    <p class="section-intro">
+      Ready to make an impact? Here's how to join our volunteer team.
+    </p>
+
+    <div class="callout">
+      <h3>Application Process</h3>
+      <ul>
+        <li><strong>Step 1:</strong> Contact us using the form below or email us directly at info@cybersmrt.org with your area of interest</li>
+        <li><strong>Step 2:</strong> We'll schedule a brief video call to discuss opportunities and answer your questions</li>
+        <li><strong>Step 3:</strong> Complete a simple background check (required for student-facing roles)</li>
+        <li><strong>Step 4:</strong> Attend a volunteer orientation session</li>
+        <li><strong>Step 5:</strong> Start making an impact in the cybersecurity community</li>
+      </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="/pages/contact.html" class="cta-btn" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+        Apply to Volunteer
+      </a>
+    </div>
+
+    <div class="callout" style="margin-top: 3rem;">
+      <h3>Questions?</h3>
+      <p>
+        Not sure which role is right for you? Want to discuss custom volunteer arrangements?
+        Email us at <a href="mailto:info@cybersmrt.org" style="color: #667eea; text-decoration: none;">info@cybersmrt.org</a>
+        or use our contact form. We're happy to find the right fit for your skills and availability.
+      </p>
+    </div>
+  </section>
+
+  <div id="top"></div>
+
+  <!-- Shared footer mount + loader -->
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
-<script defer src="/assets/js/footer-init.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
 </body>
 </html>

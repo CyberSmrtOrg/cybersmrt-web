@@ -360,6 +360,20 @@
       font-size: 1.2rem;
     }
 
+    /* Problem/Solution Box Styling */
+    .problem-solution-box {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s;
+    }
+
+    .problem-solution-box:hover {
+      border-color: #667eea;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+
     /* Callout Box */
     .callout {
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
@@ -571,7 +585,7 @@
     </p>
 
     <div class="two-column">
-      <div class="column">
+      <div class="column problem-solution-box">
         <h3>The Reality</h3>
         <ul>
           <li>47% of nonprofits have zero cybersecurity budget</li>
@@ -582,7 +596,7 @@
         </ul>
       </div>
 
-      <div class="column">
+      <div class="column problem-solution-box">
         <h3>Our Solution</h3>
         <ul>
           <li>Same security services at 10-20% of traditional cost</li>
