@@ -119,8 +119,14 @@ async function verifyAdminToken(request, env) {
     }
 
     // Check admin role
-    if (payload.role !== 'admin') {
+    if (payload.role !== 'admin' && payload.role !== 'super_admin') {
       return { valid: false, error: 'Insufficient permissions - admin role required' };
+    }
+
+    // Check email domain - must be @cybersmrt.org
+    const email = payload.email || '';
+    if (!email.endsWith('@cybersmrt.org')) {
+      return { valid: false, error: 'Access denied - must use @cybersmrt.org email' };
     }
 
     return { valid: true, userId: payload.userId, email: payload.email };
@@ -166,21 +172,119 @@ function getAdminDashboardHTML() {
     .header {
       background: #000000;
       color: white;
-      padding: 30px;
-      text-align: center;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
 
     .header-logo {
-      max-width: 200px;
+      max-width: 120px;
       height: auto;
-      margin-bottom: 15px;
     }
 
     .header h1 {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       margin: 0;
-      font-weight: 400;
-      opacity: 0.95;
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .header-nav-btn {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .header-nav-btn:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+    }
+
+    .header-nav-btn.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #667eea;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .user-email {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
     }
 
     .content {
@@ -596,8 +700,26 @@ function getAdminDashboardHTML() {
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://cybersmrt.org/assets/logos/cybersmrt-logo-stacked.png" alt="CyberSmrt" class="header-logo">
-      <h1>Administrative Dashboard</h1>
+      <div class="header-left">
+        <img src="https://cybersmrt.org/assets/logos/cybersmrt-logo-stacked.png" alt="CyberSmrt" class="header-logo">
+        <h1>Admin Dashboard</h1>
+      </div>
+      <div class="header-nav" id="headerNav" style="display: none;">
+        <button class="header-nav-btn active" onclick="loadSection('dashboard')" data-section="dashboard">Dashboard</button>
+        <button class="header-nav-btn" onclick="loadSection('users')" data-section="users">Users</button>
+        <button class="header-nav-btn" onclick="loadSection('analytics')" data-section="analytics">Analytics</button>
+        <button class="header-nav-btn" onclick="loadSection('security')" data-section="security">Security</button>
+      </div>
+      <div class="header-right" id="headerRight" style="display: none;">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">?</div>
+          <div class="user-details">
+            <div class="user-name" id="userName">Loading...</div>
+            <div class="user-email" id="userEmail"></div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
     </div>
 
     <div class="content">
@@ -1018,16 +1140,52 @@ function getAdminDashboardHTML() {
     }
 
     function showDashboard() {
+      // Decode JWT to get user info
+      try {
+        const tokenParts = authToken.split('.');
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+          // Populate user info
+          const email = payload.email || '';
+          const name = payload.displayName || payload.name || email.split('@')[0];
+          const initials = name.charAt(0).toUpperCase();
+
+          document.getElementById('userName').textContent = name;
+          document.getElementById('userEmail').textContent = email;
+          document.getElementById('userAvatar').textContent = initials;
+
+          // Show header elements
+          document.getElementById('headerNav').style.display = 'flex';
+          document.getElementById('headerRight').style.display = 'flex';
+        }
+      } catch (e) {
+        console.error('Failed to decode user info:', e);
+      }
+
       document.getElementById('loginContainer').style.display = 'none';
       document.getElementById('twofaContainer').style.display = 'none';
       document.getElementById('dashboard').classList.add('active');
     }
 
-    function handleLogout() {
+    function logout() {
       localStorage.removeItem('adminToken');
       authToken = null;
+
+      // Hide header elements
+      document.getElementById('headerNav').style.display = 'none';
+      document.getElementById('headerRight').style.display = 'none';
+
+      // Show login, hide dashboard
       document.getElementById('loginContainer').style.display = 'block';
       document.getElementById('dashboard').classList.remove('active');
+
+      // Reload to reset state
+      window.location.reload();
+    }
+
+    function handleLogout() {
+      logout();
     }
 
     async function loadDashboardStats() {
@@ -1054,7 +1212,28 @@ function getAdminDashboardHTML() {
     async function loadSection(section) {
       const contentArea = document.getElementById('content-area');
 
+      // Update active nav button
+      document.querySelectorAll('.header-nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.section === section) {
+          btn.classList.add('active');
+        }
+      });
+
+      // Update active old nav button for backwards compatibility
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
       switch(section) {
+        case 'dashboard':
+          contentArea.innerHTML = \`
+            <div class="section">
+              <h2>Quick Actions</h2>
+              <p>Select a section above to manage your CyberSmrt platform.</p>
+            </div>
+          \`;
+          break;
         case 'users':
           await loadUserManagement(contentArea);
           break;
