@@ -1,5 +1,9 @@
 <!-- /partials/footer.html -->
 <link rel="stylesheet" href="/assets/css/cookie-consent.css"/>
+
+<!-- Givebutter Widget -->
+<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=yKi99SLgYazIM9U0&p=other"></script>
+
 <footer class="site-footer" role="contentinfo">
   <style>
     /* Footer theme variables - adapt to light/dark mode */
@@ -132,6 +136,40 @@
       font-size: .9rem;
     }
 
+    /* Footer Donation Widget Section */
+    .footer-donate-section {
+      background: var(--ft-bg);
+      border-top: 1px solid var(--ft-border);
+      padding: 2.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .footer-donate-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .footer-donate-container h3 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.75rem;
+      color: var(--ft-link);
+      margin-bottom: 0.75rem;
+    }
+    .footer-donate-container p {
+      color: var(--ft-text);
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.95;
+    }
+    .footer-widget-wrapper {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--ft-border);
+    }
+    [data-theme="light"] .footer-widget-wrapper {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
     @media (max-width: 700px) {
       .site-footer .footer-inner {
         grid-template-columns: 1fr;
@@ -142,8 +180,25 @@
         flex-wrap: wrap;
         padding: 1rem 0;
       }
+      .footer-donate-section {
+        padding: 2rem 1rem;
+      }
+      .footer-donate-container h3 {
+        font-size: 1.5rem;
+      }
     }
   </style>
+
+  <!-- Footer Donation Widget -->
+  <div class="footer-donate-section">
+    <div class="footer-donate-container">
+      <h3>Support Our Mission</h3>
+      <p>Help us bridge the cybersecurity skills gap for underserved communities</p>
+      <div class="footer-widget-wrapper">
+        <givebutter-widget id="yKi99SLgYazIM9U0"></givebutter-widget>
+      </div>
+    </div>
+  </div>
 
   <div class="footer-inner">
     <div class="footer-left">

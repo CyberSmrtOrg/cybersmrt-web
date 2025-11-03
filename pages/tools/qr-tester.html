@@ -622,10 +622,26 @@
     <script defer src="/assets/js/footer-init.js"></script>
 
     <!-- QR Scanner Library -->
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"
+            integrity="sha384-xfWSxhj/wP+lEKfIvg/wPhJ4W/1ZHaXN+AJa/aJ3q7sN6E9N8cEqCqVqR6Ucy0Ic"
+            crossorigin="anonymous"
+            onerror="console.error('Failed to load jsQR library from CDN')"></script>
 
     <!-- QR Tester Logic -->
     <script>
+        // Check if jsQR library loaded successfully
+        window.addEventListener('DOMContentLoaded', function() {
+            if (typeof jsQR === 'undefined') {
+                console.error('jsQR library failed to load!');
+                const warningDiv = document.createElement('div');
+                warningDiv.style.cssText = 'background: #f44336; color: white; padding: 1rem; text-align: center; font-weight: bold;';
+                warningDiv.textContent = '⚠️ QR Scanner library failed to load. Please check your internet connection and refresh the page.';
+                document.body.insertBefore(warningDiv, document.body.firstChild);
+            } else {
+                console.log('✅ jsQR library loaded successfully');
+            }
+        });
+
         let currentURL = null;
 
         // HTML escape utility
@@ -704,7 +720,9 @@
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 let code = null;
                 if (typeof jsQR !== 'undefined') {
-                    code = jsQR(imageData.data, imageData.width, imageData.height);
+                    code = jsQR(imageData.data, imageData.width, imageData.height, {
+                        inversionAttempts: "attemptBoth"
+                    });
                 } else {
                     console.warn('jsQR library not available; cannot scan camera frame');
                 }
@@ -763,15 +781,23 @@
                     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     let code = null;
                     if (typeof jsQR !== 'undefined') {
-                        code = jsQR(imageData.data, imageData.width, imageData.height);
+                        console.log('Scanning image for QR code...', {width: imageData.width, height: imageData.height});
+                        code = jsQR(imageData.data, imageData.width, imageData.height, {
+                            inversionAttempts: "attemptBoth"
+                        });
+                        console.log('Scan result:', code);
                     } else {
-                        console.warn('jsQR library not available; cannot scan uploaded image');
+                        console.error('jsQR library not loaded! Check CDN connection.');
+                        alert('QR scanner library failed to load. Please check your internet connection and try refreshing the page.');
+                        return;
                     }
 
-                    if (code) {
+                    if (code && code.data) {
+                        console.log('QR code detected:', code.data);
                         analyzeURL(code.data);
                     } else {
-                        alert('No QR code detected in this image. Please try another image.');
+                        console.warn('No QR code detected in image');
+                        alert('No QR code detected in this image. Please ensure:\n• The image contains a clear QR code\n• The QR code is not blurry or distorted\n• The entire QR code is visible\n\nTry uploading a different image or use the camera scanner.');
                     }
                 };
                 img.src = e.target.result;

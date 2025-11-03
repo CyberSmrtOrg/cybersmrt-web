@@ -1,4 +1,7 @@
 <!-- /partials/header.html -->
+<!-- Givebutter Widget -->
+<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=yKi99SLgYazIM9U0&p=other"></script>
+
 <header class="site-header" role="banner">
   <style>
     /* Header theme variables - adapt to light/dark mode */
@@ -78,6 +81,38 @@
     .header-signin-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Donate Button */
+    .header-donate-btn {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: white;
+      padding: 0.625rem 1.75rem;
+      min-height: 44px;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      -webkit-tap-highlight-color: rgba(245, 158, 11, 0.3);
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .header-donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+    }
+    .header-donate-btn svg {
+      width: 18px;
+      height: 18px;
     }
 
     /* User Menu Dropdown Container */
@@ -411,12 +446,13 @@
         display:none; flex-direction:column; padding:.75rem 1rem; gap:.9rem;
       }
       .site-header .nav-links.show{ display:flex; }
-      .header-signin-btn {
+      .header-signin-btn, .header-donate-btn {
         width: 100%;
         max-width: 250px;
         min-height: 52px; /* Larger touch target on mobile */
         padding: 0.875rem 1.75rem;
         font-size: 1rem;
+        justify-content: center;
       }
       .user-dropdown {
         right: 1rem;
@@ -527,6 +563,14 @@
 
       <a href="/pages/about/">About</a>
       <a href="/pages/contact">Contact</a>
+
+      <!-- Donate Button -->
+      <a href="/pages/get-involved/donate.html" class="header-donate-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+        </svg>
+        Donate
+      </a>
 
       <!-- Sign In Button (shown when NOT logged in) -->
       <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide>
