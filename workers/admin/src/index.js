@@ -358,6 +358,133 @@ function getAdminDashboardHTML() {
     .logout-btn:hover {
       box-shadow: 0 10px 20px rgba(231, 76, 60, 0.4);
     }
+
+    .content-area {
+      min-height: 400px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .data-table thead {
+      background: #f8f9fa;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #555;
+    }
+
+    .data-table tr:hover {
+      background: #f8f9ff;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge.admin {
+      background: #667eea;
+      color: white;
+    }
+
+    .badge.super_admin {
+      background: #764ba2;
+      color: white;
+    }
+
+    .badge.user {
+      background: #e0e0e0;
+      color: #666;
+    }
+
+    .badge.success {
+      background: #10b981;
+      color: white;
+    }
+
+    .badge.warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .badge.danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .badge.info {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      margin: 0 4px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #f0f0f0;
+      border-color: #667eea;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
   </style>
 </head>
 <body>
@@ -455,9 +582,11 @@ function getAdminDashboardHTML() {
           <button class="nav-btn" onclick="loadSection('settings')">⚙️ Settings</button>
         </div>
 
-        <div class="section">
-          <h2>Quick Actions</h2>
-          <p>Select a section above to manage your CyberSmrt platform.</p>
+        <div id="content-area" class="content-area">
+          <div class="section">
+            <h2>Quick Actions</h2>
+            <p>Select a section above to manage your CyberSmrt platform.</p>
+          </div>
         </div>
 
         <button class="btn logout-btn" onclick="handleLogout()">Sign Out</button>
@@ -816,9 +945,296 @@ function getAdminDashboardHTML() {
       }
     }
 
-    function loadSection(section) {
-      alert(\`Loading \${section} section... (Coming soon)\`);
-      // Future: Load section-specific interfaces
+    async function loadSection(section) {
+      const contentArea = document.getElementById('content-area');
+
+      switch(section) {
+        case 'users':
+          await loadUserManagement(contentArea);
+          break;
+        case 'security':
+          await loadSecurityLogs(contentArea);
+          break;
+        case 'analytics':
+          await loadAnalytics(contentArea);
+          break;
+        case 'content':
+          contentArea.innerHTML = '<div class="section"><h2>📝 Content Management</h2><p>Coming soon...</p></div>';
+          break;
+        case 'monitoring':
+          contentArea.innerHTML = '<div class="section"><h2>📈 System Monitoring</h2><p>Coming soon...</p></div>';
+          break;
+        case 'settings':
+          contentArea.innerHTML = '<div class="section"><h2>⚙️ Settings</h2><p>Coming soon...</p></div>';
+          break;
+        default:
+          contentArea.innerHTML = '<div class="section"><h2>Unknown Section</h2><p>Section not found</p></div>';
+      }
+    }
+
+    async function loadUserManagement(container) {
+      container.innerHTML = \`
+        <div class="section">
+          <h2>👥 User Management</h2>
+          <input type="text" class="search-box" id="user-search" placeholder="Search users by name or email..." onkeyup="filterUsers()">
+          <div class="loading">Loading users...</div>
+        </div>
+      \`;
+
+      try {
+        const response = await fetch('/api/users', {
+          headers: {
+            'Authorization': \`Bearer \${authToken}\`,
+          },
+        });
+
+        if (!response.ok) throw new Error('Failed to load users');
+
+        const data = await response.json();
+
+        if (data.success && data.users && data.users.length > 0) {
+          container.innerHTML = \`
+            <div class="section">
+              <h2>👥 User Management</h2>
+              <p style="color: #666; margin-bottom: 20px;">Total Users: \${data.total || data.users.length}</p>
+              <input type="text" class="search-box" id="user-search" placeholder="Search users by name or email..." onkeyup="filterUsers()">
+              <table class="data-table" id="users-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  \${data.users.map(user => \`
+                    <tr>
+                      <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <div style="width: 32px; height: 32px; border-radius: 50%; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            \${(user.displayName || user.email || '?').charAt(0).toUpperCase()}
+                          </div>
+                          <span>\${user.displayName || 'No name'}</span>
+                        </div>
+                      </td>
+                      <td>\${user.email || 'N/A'}</td>
+                      <td><span class="badge \${user.role || 'user'}">\${user.role || 'user'}</span></td>
+                      <td><span class="badge \${user.banned ? 'danger' : 'success'}">\${user.banned ? 'Banned' : 'Active'}</span></td>
+                      <td>\${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</td>
+                      <td>
+                        <button class="action-btn" onclick="viewUser('\${user.id}')">View</button>
+                        <button class="action-btn" onclick="editUserRole('\${user.id}', '\${user.role}')">Role</button>
+                        <button class="action-btn" onclick="toggleUserBan('\${user.id}', \${user.banned || false})">\${user.banned ? 'Unban' : 'Ban'}</button>
+                      </td>
+                    </tr>
+                  \`).join('')}
+                </tbody>
+              </table>
+            </div>
+          \`;
+        } else {
+          container.innerHTML = \`
+            <div class="section">
+              <h2>👥 User Management</h2>
+              <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <p>No users found</p>
+              </div>
+            </div>
+          \`;
+        }
+      } catch (error) {
+        console.error('Failed to load users:', error);
+        container.innerHTML = \`
+          <div class="section">
+            <h2>👥 User Management</h2>
+            <div class="error">Failed to load users: \${error.message}</div>
+          </div>
+        \`;
+      }
+    }
+
+    async function loadSecurityLogs(container) {
+      container.innerHTML = \`
+        <div class="section">
+          <h2>🔒 Security Logs</h2>
+          <div class="loading">Loading security events...</div>
+        </div>
+      \`;
+
+      try {
+        const response = await fetch('/api/security-logs?limit=50', {
+          headers: {
+            'Authorization': \`Bearer \${authToken}\`,
+          },
+        });
+
+        if (!response.ok) throw new Error('Failed to load security logs');
+
+        const data = await response.json();
+
+        if (data.success && data.logs && data.logs.length > 0) {
+          container.innerHTML = \`
+            <div class="section">
+              <h2>🔒 Security Logs</h2>
+              <p style="color: #666; margin-bottom: 20px;">Showing last 50 events</p>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Event Type</th>
+                    <th>Severity</th>
+                    <th>User/IP</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  \${data.logs.map(log => \`
+                    <tr>
+                      <td>\${new Date(log.timestamp).toLocaleString()}</td>
+                      <td style="font-family: monospace; font-size: 12px;">\${log.eventType || 'unknown'}</td>
+                      <td><span class="badge \${log.severity === 'critical' ? 'danger' : log.severity === 'warning' ? 'warning' : 'info'}">\${log.severity || 'info'}</span></td>
+                      <td>\${log.email || log.ipAddress || 'N/A'}</td>
+                      <td style="font-size: 13px; color: #666;">\${log.reason || log.details || '-'}</td>
+                    </tr>
+                  \`).join('')}
+                </tbody>
+              </table>
+            </div>
+          \`;
+        } else {
+          container.innerHTML = \`
+            <div class="section">
+              <h2>🔒 Security Logs</h2>
+              <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <p>No security events found</p>
+              </div>
+            </div>
+          \`;
+        }
+      } catch (error) {
+        console.error('Failed to load security logs:', error);
+        container.innerHTML = \`
+          <div class="section">
+            <h2>🔒 Security Logs</h2>
+            <div class="error">Failed to load security logs: \${error.message}</div>
+          </div>
+        \`;
+      }
+    }
+
+    async function loadAnalytics(container) {
+      container.innerHTML = \`
+        <div class="section">
+          <h2>📊 Analytics</h2>
+          <div class="loading">Loading analytics data...</div>
+        </div>
+      \`;
+
+      try {
+        const response = await fetch('/api/analytics', {
+          headers: {
+            'Authorization': \`Bearer \${authToken}\`,
+          },
+        });
+
+        if (!response.ok) throw new Error('Failed to load analytics');
+
+        const data = await response.json();
+
+        container.innerHTML = \`
+          <div class="section">
+            <h2>📊 Analytics</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>New Users (7d)</h3>
+                <div class="value">\${data.newUsersWeek || 0}</div>
+                <div class="label">Last 7 days</div>
+              </div>
+              <div class="stat-card">
+                <h3>Active Users (30d)</h3>
+                <div class="value">\${data.activeUsersMonth || 0}</div>
+                <div class="label">Last 30 days</div>
+              </div>
+              <div class="stat-card">
+                <h3>Login Success Rate</h3>
+                <div class="value">\${data.loginSuccessRate || '0'}%</div>
+                <div class="label">Last 30 days</div>
+              </div>
+              <div class="stat-card">
+                <h3>2FA Adoption</h3>
+                <div class="value">\${data.twoFAAdoption || '0'}%</div>
+                <div class="label">Users with 2FA enabled</div>
+              </div>
+            </div>
+            <p style="margin-top: 30px; color: #999; text-align: center;">More detailed analytics coming soon...</p>
+          </div>
+        \`;
+      } catch (error) {
+        console.error('Failed to load analytics:', error);
+        container.innerHTML = \`
+          <div class="section">
+            <h2>📊 Analytics</h2>
+            <div class="error">Failed to load analytics: \${error.message}</div>
+          </div>
+        \`;
+      }
+    }
+
+    function filterUsers() {
+      const searchInput = document.getElementById('user-search');
+      const filter = searchInput.value.toUpperCase();
+      const table = document.getElementById('users-table');
+      if (!table) return;
+
+      const tr = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < tr.length; i++) {
+        const tdName = tr[i].getElementsByTagName('td')[0];
+        const tdEmail = tr[i].getElementsByTagName('td')[1];
+
+        if (tdName || tdEmail) {
+          const nameValue = tdName.textContent || tdName.innerText;
+          const emailValue = tdEmail.textContent || tdEmail.innerText;
+
+          if (nameValue.toUpperCase().indexOf(filter) > -1 || emailValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = '';
+          } else {
+            tr[i].style.display = 'none';
+          }
+        }
+      }
+    }
+
+    function viewUser(userId) {
+      alert(\`View user details for: \${userId}\nFull user profile modal coming soon...\`);
+    }
+
+    function editUserRole(userId, currentRole) {
+      const newRole = prompt(\`Enter new role for user \${userId}:\n\nAvailable roles:\n- user\n- admin\n- super_admin\`, currentRole);
+
+      if (newRole && ['user', 'admin', 'super_admin'].includes(newRole)) {
+        alert(\`Role update functionality coming soon...\nWould update user \${userId} to role: \${newRole}\`);
+        // TODO: Implement role update API call
+      } else if (newRole) {
+        alert('Invalid role. Please use: user, admin, or super_admin');
+      }
+    }
+
+    function toggleUserBan(userId, currentlyBanned) {
+      const action = currentlyBanned ? 'unban' : 'ban';
+      if (confirm(\`Are you sure you want to \${action} this user?\`)) {
+        alert(\`User \${action} functionality coming soon...\nWould \${action} user: \${userId}\`);
+        // TODO: Implement ban/unban API call
+      }
     }
   </script>
 </body>
@@ -929,15 +1345,40 @@ Disallow: /
           userId: auth.userId,
         });
 
-        // TODO: Query actual stats from database
-        // For now, return placeholder data
-        return successResponse(request, env, {
-          stats: {
-            totalUsers: 0,
-            activeSessions: 0,
-            securityEvents: 0,
-          },
-        });
+        try {
+          // Fetch stats from auth worker
+          const authUrl = new URL('/admin/stats', env.AUTH_API_URL || 'https://auth.cybersmrt.org');
+          const authResponse = await fetch(authUrl.toString(), {
+            method: 'GET',
+            headers: {
+              'Authorization': request.headers.get('Authorization'),
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (authResponse.ok) {
+            const data = await authResponse.json();
+            return successResponse(request, env, data);
+          }
+
+          // Fallback to placeholder data if auth service unavailable
+          return successResponse(request, env, {
+            stats: {
+              totalUsers: 0,
+              activeSessions: 0,
+              securityEvents: 0,
+            },
+          });
+        } catch (error) {
+          console.error('Error fetching stats:', error);
+          return successResponse(request, env, {
+            stats: {
+              totalUsers: 0,
+              activeSessions: 0,
+              securityEvents: 0,
+            },
+          });
+        }
       }
 
       // User management endpoints
@@ -949,11 +1390,27 @@ Disallow: /
             userId: auth.userId,
           });
 
-          // TODO: List users from database
-          return successResponse(request, env, {
-            users: [],
-            total: 0,
-          });
+          // Fetch users from auth worker
+          try {
+            const authUrl = new URL('/admin/users', env.AUTH_API_URL || 'https://auth.cybersmrt.org');
+            const authResponse = await fetch(authUrl.toString(), {
+              method: 'GET',
+              headers: {
+                'Authorization': request.headers.get('Authorization'),
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (!authResponse.ok) {
+              throw new Error('Failed to fetch users from auth service');
+            }
+
+            const data = await authResponse.json();
+            return successResponse(request, env, data);
+          } catch (error) {
+            console.error('Error fetching users:', error);
+            return errorResponse(request, env, 'Failed to load users', 500);
+          }
         }
       }
 
@@ -967,11 +1424,77 @@ Disallow: /
             action: 'view_security_logs',
           });
 
-          // TODO: Query security logs from database
-          return successResponse(request, env, {
-            logs: [],
-            total: 0,
+          // Fetch security logs from KV store
+          try {
+            const limit = parseInt(new URL(request.url).searchParams.get('limit') || '50');
+            const logs = [];
+
+            // Fetch recent security logs from SECURITY_LOGS KV
+            const logsList = await env.SECURITY_LOGS.list({ limit: Math.min(limit, 100) });
+
+            for (const key of logsList.keys) {
+              try {
+                const logData = await env.SECURITY_LOGS.get(key.name);
+                if (logData) {
+                  const log = JSON.parse(logData);
+                  logs.push(log);
+                }
+              } catch (e) {
+                console.error('Failed to parse log:', e);
+              }
+            }
+
+            // Sort logs by timestamp (most recent first)
+            logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            return successResponse(request, env, {
+              logs: logs.slice(0, limit),
+              total: logs.length,
+            });
+          } catch (error) {
+            console.error('Error fetching security logs:', error);
+            return errorResponse(request, env, 'Failed to load security logs', 500);
+          }
+        }
+      }
+
+      // Analytics endpoint
+      if (path === '/api/analytics') {
+        if (request.method === 'GET') {
+          await logSecurityEvent(env, EVENT_TYPE.API_ACCESS_SUCCESS, SEVERITY.INFO, {
+            ...requestContext,
+            email: auth.email,
+            userId: auth.userId,
+            action: 'view_analytics',
           });
+
+          // Fetch analytics from auth worker
+          try {
+            const authUrl = new URL('/admin/analytics', env.AUTH_API_URL || 'https://auth.cybersmrt.org');
+            const authResponse = await fetch(authUrl.toString(), {
+              method: 'GET',
+              headers: {
+                'Authorization': request.headers.get('Authorization'),
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (!authResponse.ok) {
+              throw new Error('Failed to fetch analytics from auth service');
+            }
+
+            const data = await authResponse.json();
+            return successResponse(request, env, data);
+          } catch (error) {
+            console.error('Error fetching analytics:', error);
+            // Return placeholder data
+            return successResponse(request, env, {
+              newUsersWeek: 0,
+              activeUsersMonth: 0,
+              loginSuccessRate: 0,
+              twoFAAdoption: 0,
+            });
+          }
         }
       }
 
