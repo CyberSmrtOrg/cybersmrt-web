@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Builder - CyberSmrt Admin</title>
+
+    <!-- GrapesJS Core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+
+    <!-- GrapesJS Preset Webpage CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/grapesjs-preset-webpage/dist/grapesjs-preset-webpage.min.css">
+
+    <!-- Theme System -->
+    <link rel="stylesheet" href="/assets/css/theme.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Page Builder Header */
+        .builder-header {
+            background: rgba(6, 10, 22, 0.95);
+            border-bottom: 1px solid rgba(148,163,184,.18);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .builder-header h1 {
+            font-family: "Orbitron", system-ui, sans-serif;
+            font-size: 1.5rem;
+            color: #8ab4ff;
+            margin: 0;
+        }
+
+        .builder-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.5rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        /* GrapesJS Editor Container */
+        #gjs {
+            height: calc(100vh - 70px);
+            overflow: hidden;
+        }
+
+        /* Custom GrapesJS Theme */
+        .gjs-one-bg {
+            background-color: #0f172a !important;
+        }
+
+        .gjs-two-color {
+            color: #cbd5e1 !important;
+        }
+
+        .gjs-three-bg {
+            background-color: #1e293b !important;
+        }
+
+        .gjs-four-color,
+        .gjs-four-color-h:hover {
+            color: #8ab4ff !important;
+        }
+
+        /* Custom Block Styling */
+        .gjs-block {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+        }
+
+        .gjs-block:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        /* Page selector */
+        #page-selector {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .status-indicator.saved {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <!-- Builder Header -->
+    <div class="builder-header">
+        <h1>🎨 Page Builder</h1>
+
+        <div class="builder-actions">
+            <select id="page-selector">
+                <option value="new">+ New Page</option>
+                <option value="home">Home Page</option>
+                <option value="about">About Page</option>
+                <option value="custom">Custom Page</option>
+            </select>
+
+            <span class="status-indicator" id="save-status">Unsaved</span>
+
+            <button class="btn btn-secondary" onclick="previewPage()">
+                👁️ Preview
+            </button>
+
+            <button class="btn btn-success" onclick="savePage()">
+                💾 Save
+            </button>
+
+            <button class="btn btn-secondary" onclick="exportCode()">
+                📄 Export HTML
+            </button>
+
+            <a href="/admin.html" class="btn btn-secondary">
+                ← Back to Admin
+            </a>
+        </div>
+    </div>
+
+    <!-- GrapesJS Editor -->
+    <div id="gjs"></div>
+
+    <!-- GrapesJS Core -->
+    <script src="https://unpkg.com/grapesjs"></script>
+
+    <!-- GrapesJS Preset Webpage Plugin -->
+    <script src="https://unpkg.com/grapesjs-preset-webpage"></script>
+
+    <script>
+        // Initialize GrapesJS Editor
+        const editor = grapesjs.init({
+            container: '#gjs',
+            height: '100%',
+            width: 'auto',
+
+            // Storage
+            storageManager: {
+                type: 'local',
+                autosave: true,
+                autoload: true,
+                stepsBeforeSave: 1
+            },
+
+            // Plugins
+            plugins: ['gjs-preset-webpage'],
+            pluginsOpts: {
+                'gjs-preset-webpage': {
+                    modalImportTitle: 'Import Template',
+                    modalImportLabel: '<div style="margin-bottom: 10px; font-size: 13px;">Paste your HTML/CSS here</div>',
+                    modalImportContent: function(editor) {
+                        return editor.getHtml() + '<style>' + editor.getCss() + '</style>';
+                    }
+                }
+            },
+
+            // Canvas
+            canvas: {
+                styles: [
+                    '/assets/css/theme.css'
+                ],
+                scripts: [
+                    '/assets/js/theme.js'
+                ]
+            },
+
+            // Panels
+            panels: {
+                defaults: [
+                    {
+                        id: 'layers',
+                        el: '.panel__right',
+                        resizable: {
+                            maxDim: 350,
+                            minDim: 200,
+                            tc: 0,
+                            cl: 1,
+                            cr: 0,
+                            bc: 0,
+                            keyWidth: 'flex-basis',
+                        },
+                    },
+                    {
+                        id: 'panel-switcher',
+                        el: '.panel__switcher',
+                        buttons: [
+                            {
+                                id: 'show-layers',
+                                active: true,
+                                label: 'Layers',
+                                command: 'show-layers',
+                                togglable: false,
+                            },
+                            {
+                                id: 'show-style',
+                                active: true,
+                                label: 'Styles',
+                                command: 'show-styles',
+                                togglable: false,
+                            },
+                            {
+                                id: 'show-traits',
+                                active: true,
+                                label: 'Settings',
+                                command: 'show-traits',
+                                togglable: false,
+                            },
+                        ],
+                    },
+                    {
+                        id: 'panel-devices',
+                        el: '.panel__devices',
+                        buttons: [
+                            {
+                                id: 'device-desktop',
+                                label: '💻',
+                                command: 'set-device-desktop',
+                                active: true,
+                                togglable: false,
+                            },
+                            {
+                                id: 'device-tablet',
+                                label: '📱',
+                                command: 'set-device-tablet',
+                                togglable: false,
+                            },
+                            {
+                                id: 'device-mobile',
+                                label: '📞',
+                                command: 'set-device-mobile',
+                                togglable: false,
+                            },
+                        ],
+                    },
+                ],
+            },
+
+            // Device Manager
+            deviceManager: {
+                devices: [
+                    {
+                        name: 'Desktop',
+                        width: '',
+                    },
+                    {
+                        name: 'Tablet',
+                        width: '768px',
+                        widthMedia: '992px',
+                    },
+                    {
+                        name: 'Mobile',
+                        width: '320px',
+                        widthMedia: '480px',
+                    },
+                ],
+            },
+
+            // Block Manager
+            blockManager: {
+                appendTo: '#blocks',
+            }
+        });
+
+        // Add CyberSmrt Custom Blocks
+        editor.BlockManager.add('cybersmrt-hero', {
+            label: 'Hero Section',
+            category: 'CyberSmrt',
+            content: `
+                <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 2rem; text-align: center; color: white;">
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <span style="display: inline-block; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; margin-bottom: 1rem;">FEATURED</span>
+                        <h1 style="font-size: 3rem; margin-bottom: 1rem; font-weight: 900;">Your Hero Title</h1>
+                        <p style="font-size: 1.2rem; opacity: 0.95; margin-bottom: 2rem;">Your compelling subtitle goes here</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <a href="#" style="background: white; color: #667eea; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Started</a>
+                            <a href="#" style="background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Learn More</a>
+                        </div>
+                    </div>
+                </section>
+            `
+        });
+
+        editor.BlockManager.add('cybersmrt-card-grid', {
+            label: 'Card Grid',
+            category: 'CyberSmrt',
+            content: `
+                <section style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+                    <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">Our Services</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Service One</h3>
+                            <p>Description of your first service goes here.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Service Two</h3>
+                            <p>Description of your second service goes here.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Service Three</h3>
+                            <p>Description of your third service goes here.</p>
+                        </div>
+                    </div>
+                </section>
+            `
+        });
+
+        editor.BlockManager.add('cybersmrt-cta', {
+            label: 'Call to Action',
+            category: 'CyberSmrt',
+            content: `
+                <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 2rem; text-align: center; margin: 4rem 0; border-radius: 20px;">
+                    <div style="max-width: 800px; margin: 0 auto; color: white;">
+                        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Get Started?</h2>
+                        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">Join thousands of organizations securing their future</p>
+                        <a href="#" style="background: white; color: #667eea; padding: 1rem 3rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Get Started Today</a>
+                    </div>
+                </section>
+            `
+        });
+
+        editor.BlockManager.add('cybersmrt-stats', {
+            label: 'Stats Bar',
+            category: 'CyberSmrt',
+            content: `
+                <section style="background: rgba(102, 126, 234, 0.1); padding: 3rem 2rem; margin: 2rem 0;">
+                    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+                        <div>
+                            <div style="font-size: 3rem; font-weight: 900; color: #667eea;">500+</div>
+                            <div style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem;">Students Trained</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 3rem; font-weight: 900; color: #667eea;">30+</div>
+                            <div style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem;">Organizations</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 3rem; font-weight: 900; color: #667eea;">1,200+</div>
+                            <div style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem;">Hours of Training</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 3rem; font-weight: 900; color: #667eea;">50+</div>
+                            <div style="font-size: 1rem; opacity: 0.8; margin-top: 0.5rem;">Volunteers</div>
+                        </div>
+                    </div>
+                </section>
+            `
+        });
+
+        editor.BlockManager.add('cybersmrt-two-column', {
+            label: 'Two Columns',
+            category: 'CyberSmrt',
+            content: `
+                <section style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                        <div>
+                            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">The Problem</h2>
+                            <p style="font-size: 1.1rem; line-height: 1.6;">Describe the problem your solution addresses. Make it compelling and relatable.</p>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Our Solution</h2>
+                            <p style="font-size: 1.1rem; line-height: 1.6;">Explain how your solution solves the problem effectively.</p>
+                        </div>
+                    </div>
+                </section>
+            `
+        });
+
+        // Commands for device switching
+        editor.Commands.add('set-device-desktop', {
+            run: editor => editor.setDevice('Desktop')
+        });
+        editor.Commands.add('set-device-tablet', {
+            run: editor => editor.setDevice('Tablet')
+        });
+        editor.Commands.add('set-device-mobile', {
+            run: editor => editor.setDevice('Mobile')
+        });
+
+        // Save Page Function
+        function savePage() {
+            const html = editor.getHtml();
+            const css = editor.getCss();
+            const js = editor.getJs();
+
+            // Get current page
+            const pageSelector = document.getElementById('page-selector');
+            const pageName = pageSelector.value;
+
+            // Save to localStorage (in production, this would be an API call)
+            const pageData = {
+                html: html,
+                css: css,
+                js: js,
+                timestamp: new Date().toISOString()
+            };
+
+            localStorage.setItem(`cybersmrt_page_${pageName}`, JSON.stringify(pageData));
+
+            // Update status
+            const status = document.getElementById('save-status');
+            status.textContent = 'Saved ✓';
+            status.classList.add('saved');
+
+            setTimeout(() => {
+                status.classList.remove('saved');
+                status.textContent = 'Unsaved';
+            }, 3000);
+
+            alert(`Page "${pageName}" saved successfully!`);
+        }
+
+        // Preview Page Function
+        function previewPage() {
+            const html = editor.getHtml();
+            const css = editor.getCss();
+            const js = editor.getJs();
+
+            // Create preview in new window
+            const previewWindow = window.open('', '_blank');
+            previewWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Preview - CyberSmrt</title>
+                    <link rel="stylesheet" href="/assets/css/theme.css">
+                    <style>${css}</style>
+                </head>
+                <body>
+                    ${html}
+                    <script src="/assets/js/theme.js"></script>
+                    <script>${js}</script>
+                </body>
+                </html>
+            `);
+            previewWindow.document.close();
+        }
+
+        // Export Code Function
+        function exportCode() {
+            const html = editor.getHtml();
+            const css = editor.getCss();
+            const js = editor.getJs();
+
+            const fullCode = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page - CyberSmrt</title>
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <style>
+${css}
+    </style>
+</head>
+<body>
+${html}
+    <script src="/assets/js/theme.js"></script>
+    <script>
+${js}
+    </script>
+</body>
+</html>`;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(fullCode).then(() => {
+                alert('Full HTML code copied to clipboard!');
+            }).catch(() => {
+                // Fallback: download as file
+                const blob = new Blob([fullCode], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'page-export.html';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // Load page when selector changes
+        document.getElementById('page-selector').addEventListener('change', function(e) {
+            const pageName = e.target.value;
+
+            if (pageName === 'new') {
+                if (confirm('Start a new page? Any unsaved changes will be lost.')) {
+                    editor.setComponents('');
+                    editor.setStyle('');
+                }
+                return;
+            }
+
+            const savedPage = localStorage.getItem(`cybersmrt_page_${pageName}`);
+            if (savedPage) {
+                const pageData = JSON.parse(savedPage);
+                editor.setComponents(pageData.html);
+                editor.setStyle(pageData.css);
+                if (pageData.js) {
+                    editor.setScript(pageData.js);
+                }
+                alert(`Loaded page: ${pageName}`);
+            }
+        });
+
+        // Auto-save every 30 seconds
+        setInterval(() => {
+            const pageSelector = document.getElementById('page-selector');
+            if (pageSelector.value !== 'new') {
+                savePage();
+            }
+        }, 30000);
+
+        console.log('✅ GrapesJS Page Builder initialized');
+    </script>
+</body>
+</html>
