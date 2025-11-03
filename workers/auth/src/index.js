@@ -439,6 +439,18 @@ Disallow: /
           );
         }
 
+        // Admin: Get analytics data
+        if (path === '/admin/analytics' && request.method === 'GET') {
+          return await withAdminAuth(
+            async (req, env, ctx) => {
+              const adminRouter = new AdminRouter(env, req, ctx.adminUser);
+              const result = await adminRouter.handleGetAnalytics();
+              return jsonResponse(req, env, result);
+            },
+            request, env, _ctx, ROLES.ADMIN
+          );
+        }
+
         // Admin: Get admin action logs
         if (path === '/admin/logs' && request.method === 'GET') {
           return await withAdminAuth(

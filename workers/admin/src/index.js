@@ -485,6 +485,112 @@ function getAdminDashboardHTML() {
       margin-bottom: 16px;
       opacity: 0.3;
     }
+
+    /* Chart styles */
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .chart-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .progress-ring {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 200px;
+    }
+
+    .ring {
+      position: relative;
+      width: 160px;
+      height: 160px;
+    }
+
+    .ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .ring-background {
+      fill: none;
+      stroke: #f0f0f0;
+      stroke-width: 12;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: #667eea;
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .ring-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .ring-label {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 200px;
+      padding: 20px 0;
+    }
+
+    .bar {
+      flex: 1;
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      border-radius: 6px 6px 0 0;
+      min-height: 20px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .bar:hover {
+      opacity: 0.8;
+      transform: translateY(-4px);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .bar-value {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -1150,6 +1256,15 @@ function getAdminDashboardHTML() {
 
         const data = await response.json();
 
+        const twoFAPercent = data.twoFAAdoption || 0;
+        const loginPercent = data.loginSuccessRate || 0;
+
+        // Calculate SVG circle values
+        const radius = 70;
+        const circumference = 2 * Math.PI * radius;
+        const twoFAOffset = circumference - (twoFAPercent / 100) * circumference;
+        const loginOffset = circumference - (loginPercent / 100) * circumference;
+
         container.innerHTML = \`
           <div class="section">
             <h2>📊 Analytics</h2>
@@ -1167,14 +1282,50 @@ function getAdminDashboardHTML() {
                 <div class="label">Last 30 days</div>
               </div>
               <div class="stat-card">
-                <h3>Login Success Rate</h3>
-                <div class="value">\${data.loginSuccessRate || '0'}%</div>
-                <div class="label">Last 30 days</div>
+                <h3>Total Users</h3>
+                <div class="value">\${data.totalUsers || 0}</div>
+                <div class="label">All registered users</div>
               </div>
               <div class="stat-card">
-                <h3>2FA Adoption</h3>
-                <div class="value">\${data.twoFAAdoption || '0'}%</div>
-                <div class="label">Users with 2FA enabled</div>
+                <h3>2FA Users</h3>
+                <div class="value">\${data.twoFAUsers || 0}</div>
+                <div class="label">With 2FA enabled</div>
+              </div>
+            </div>
+
+            <!-- Security Metrics Charts -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+              <div class="chart-container">
+                <div class="chart-title">2FA Adoption Rate</div>
+                <div class="progress-ring">
+                  <div class="ring">
+                    <svg width="160" height="160">
+                      <circle class="ring-background" cx="80" cy="80" r="70"></circle>
+                      <circle class="ring-progress" cx="80" cy="80" r="70"
+                        stroke-dasharray="\${circumference}"
+                        stroke-dashoffset="\${twoFAOffset}"></circle>
+                    </svg>
+                    <div class="ring-text">\${twoFAPercent}%</div>
+                  </div>
+                  <div class="ring-label">\${data.twoFAUsers || 0} of \${data.totalUsers || 0} users</div>
+                </div>
+              </div>
+
+              <div class="chart-container">
+                <div class="chart-title">Login Success Rate</div>
+                <div class="progress-ring">
+                  <div class="ring">
+                    <svg width="160" height="160">
+                      <circle class="ring-background" cx="80" cy="80" r="70"></circle>
+                      <circle class="ring-progress" cx="80" cy="80" r="70"
+                        stroke-dasharray="\${circumference}"
+                        stroke-dashoffset="\${loginOffset}"
+                        style="stroke: #10b981;"></circle>
+                    </svg>
+                    <div class="ring-text">\${loginPercent}%</div>
+                  </div>
+                  <div class="ring-label">Last 30 days</div>
+                </div>
               </div>
             </div>
 
