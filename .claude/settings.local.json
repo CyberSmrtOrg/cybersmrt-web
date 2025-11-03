@@ -9,7 +9,13 @@
       "Bash(npx wrangler deploy:*)",
       "Bash(find:*)",
       "Bash(npm run deploy:*)",
-      "Bash(npx wrangler secret put:*)"
+      "Bash(npx wrangler secret put:*)",
+      "Bash(npx wrangler tail:*)",
+      "Bash(timeout /t 10 /nobreak)",
+      "Bash(nul)",
+      "Bash(del nul 2)",
+      "Bash(python scripts/setup-phd-clickup.py:*)",
+      "Bash(npx wrangler:*)"
     ],
     "deny": [],
     "ask": []
