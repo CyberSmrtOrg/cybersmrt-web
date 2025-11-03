@@ -1153,6 +1153,8 @@ function getAdminDashboardHTML() {
         container.innerHTML = \`
           <div class="section">
             <h2>📊 Analytics</h2>
+
+            <h3 style="margin-top: 20px; margin-bottom: 15px; color: #333;">User Analytics</h3>
             <div class="stats-grid">
               <div class="stat-card">
                 <h3>New Users (7d)</h3>
@@ -1175,7 +1177,63 @@ function getAdminDashboardHTML() {
                 <div class="label">Users with 2FA enabled</div>
               </div>
             </div>
-            <p style="margin-top: 30px; color: #999; text-align: center;">More detailed analytics coming soon...</p>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #333;">Cloudflare Analytics (7d)</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>Page Views</h3>
+                <div class="value">\${(data.cloudflare?.pageViews || 0).toLocaleString()}</div>
+                <div class="label">Total page views</div>
+              </div>
+              <div class="stat-card">
+                <h3>Unique Visitors</h3>
+                <div class="value">\${(data.cloudflare?.uniqueVisitors || 0).toLocaleString()}</div>
+                <div class="label">Unique visitors</div>
+              </div>
+              <div class="stat-card">
+                <h3>Bandwidth</h3>
+                <div class="value">\${(data.cloudflare?.bandwidth || 0).toLocaleString()} MB</div>
+                <div class="label">Total bandwidth used</div>
+              </div>
+              <div class="stat-card">
+                <h3>Total Requests</h3>
+                <div class="value">\${(data.cloudflare?.requests || 0).toLocaleString()}</div>
+                <div class="label">All requests</div>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #333;">Google Analytics</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>Sessions</h3>
+                <div class="value">\${(data.googleAnalytics?.sessions || 0).toLocaleString()}</div>
+                <div class="label">Total sessions</div>
+              </div>
+              <div class="stat-card">
+                <h3>Users</h3>
+                <div class="value">\${(data.googleAnalytics?.users || 0).toLocaleString()}</div>
+                <div class="label">Unique users</div>
+              </div>
+              <div class="stat-card">
+                <h3>Pageviews</h3>
+                <div class="value">\${(data.googleAnalytics?.pageviews || 0).toLocaleString()}</div>
+                <div class="label">Total pageviews</div>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #333;">Microsoft Clarity</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h3>Session Recordings</h3>
+                <div class="value">\${(data.clarity?.recordings || 0).toLocaleString()}</div>
+                <div class="label">Total recordings</div>
+              </div>
+              <div class="stat-card">
+                <h3>Dead Clicks</h3>
+                <div class="value">\${(data.clarity?.deadClicks || 0).toLocaleString()}</div>
+                <div class="label">UX issues detected</div>
+              </div>
+            </div>
           </div>
         \`;
       } catch (error) {
