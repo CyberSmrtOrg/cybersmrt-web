@@ -86,6 +86,19 @@ export class AdminRouter {
 
       const result = await preparedQuery.all();
 
+      // Transform snake_case to camelCase for frontend compatibility
+      const users = result.results.map(user => ({
+        id: user.id,
+        email: user.email,
+        displayName: user.display_name,
+        role: user.role,
+        emailVerified: user.email_verified === 1,
+        isActive: user.is_active === 1,
+        banned: user.is_active === 0,
+        createdAt: user.created_at,
+        lastLoginAt: user.last_login_at,
+      }));
+
       // Log admin action
       await logAdminAction(
         this.adminUser.id,
@@ -99,7 +112,8 @@ export class AdminRouter {
 
       return {
         success: true,
-        users: result.results,
+        users: users,
+        total,
         pagination: {
           page,
           limit,
