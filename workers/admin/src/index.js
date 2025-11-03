@@ -1402,14 +1402,16 @@ Disallow: /
             });
 
             if (!authResponse.ok) {
-              throw new Error('Failed to fetch users from auth service');
+              const errorText = await authResponse.text();
+              console.error('Auth service error:', authResponse.status, errorText);
+              throw new Error('Failed to fetch users from auth service: ' + authResponse.status + ' - ' + errorText);
             }
 
             const data = await authResponse.json();
             return successResponse(request, env, data);
           } catch (error) {
             console.error('Error fetching users:', error);
-            return errorResponse(request, env, 'Failed to load users', 500);
+            return errorResponse(request, env, error.message || 'Failed to load users', 500);
           }
         }
       }
@@ -1468,31 +1470,74 @@ Disallow: /
             action: 'view_analytics',
           });
 
-          // Fetch analytics from auth worker
           try {
-            const authUrl = new URL('/admin/analytics', env.AUTH_API_URL || 'https://auth.cybersmrt.org');
-            const authResponse = await fetch(authUrl.toString(), {
-              method: 'GET',
-              headers: {
-                'Authorization': request.headers.get('Authorization'),
-                'Content-Type': 'application/json',
-              },
-            });
+            const analyticsData = {
+              newUsersWeek: 0,
+              activeUsersMonth: 0,
+              loginSuccessRate: 0,
+              twoFAAdoption: 0,
+              cloudflare: { pageViews: 0, uniqueVisitors: 0, bandwidth: 0, requests: 0 },
+              googleAnalytics: { sessions: 0, users: 0, pageviews: 0 },
+              clarity: { recordings: 0, deadClicks: 0 },
+            };
 
-            if (!authResponse.ok) {
-              throw new Error('Failed to fetch analytics from auth service');
+            // Fetch user analytics from auth worker
+            try {
+              const authUrl = new URL('/admin/analytics', env.AUTH_API_URL || 'https://auth.cybersmrt.org');
+              const authResponse = await fetch(authUrl.toString(), {
+                method: 'GET',
+                headers: {
+                  'Authorization': request.headers.get('Authorization'),
+                  'Content-Type': 'application/json',
+                },
+              });
+
+              if (authResponse.ok) {
+                const authData = await authResponse.json();
+                Object.assign(analyticsData, authData);
+              }
+            } catch (error) {
+              console.error('Error fetching auth analytics:', error);
             }
 
-            const data = await authResponse.json();
-            return successResponse(request, env, data);
+            // Fetch Cloudflare Analytics (last 7 days)
+            if (env.CLOUDFLARE_API_TOKEN) {
+              try {
+                const zoneId = '9c1eb0e5c42b7d90cbb1c0e3c3da3d85';
+                const cfUrl = 'https://api.cloudflare.com/client/v4/zones/' + zoneId + '/analytics/dashboard?since=-10080&until=0';
+
+                const cfResponse = await fetch(cfUrl, {
+                  headers: {
+                    'Authorization': 'Bearer ' + env.CLOUDFLARE_API_TOKEN,
+                    'Content-Type': 'application/json',
+                  },
+                });
+
+                if (cfResponse.ok) {
+                  const cfData = await cfResponse.json();
+                  if (cfData.success && cfData.result) {
+                    analyticsData.cloudflare = {
+                      pageViews: cfData.result.totals?.pageviews?.all || 0,
+                      uniqueVisitors: cfData.result.totals?.uniques?.all || 0,
+                      bandwidth: Math.round((cfData.result.totals?.bandwidth?.all || 0) / 1024 / 1024), // Convert to MB
+                      requests: cfData.result.totals?.requests?.all || 0,
+                    };
+                  }
+                }
+              } catch (error) {
+                console.error('Error fetching Cloudflare analytics:', error);
+              }
+            }
+
+            return successResponse(request, env, analyticsData);
           } catch (error) {
             console.error('Error fetching analytics:', error);
-            // Return placeholder data
             return successResponse(request, env, {
               newUsersWeek: 0,
               activeUsersMonth: 0,
               loginSuccessRate: 0,
               twoFAAdoption: 0,
+              cloudflare: { pageViews: 0, uniqueVisitors: 0 },
             });
           }
         }

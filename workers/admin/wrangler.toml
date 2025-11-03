@@ -31,3 +31,4 @@ head_sampling_rate = 1
 # - JWT_SECRET: Secret key for verifying JWT tokens
 # - SLACK_SECURITY_WEBHOOK: Slack webhook URL for #security-alerts channel
 # - RESEND_API_KEY: API key for sending email alerts to security-alerts@cybersmrt.org
+# - CLOUDFLARE_API_TOKEN: API token for fetching Cloudflare Analytics

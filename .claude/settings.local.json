@@ -6,7 +6,10 @@
       "Bash(git pull:*)",
       "Bash(git push)",
       "Bash(git stash:*)",
-      "Bash(npx wrangler deploy:*)"
+      "Bash(npx wrangler deploy:*)",
+      "Bash(find:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(npx wrangler secret put:*)"
     ],
     "deny": [],
     "ask": []
