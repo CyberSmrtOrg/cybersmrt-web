@@ -773,22 +773,51 @@
             reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
+                    // Try multiple sizes for better detection
+                    const sizes = [
+                        {w: img.width, h: img.height},
+                        {w: 1000, h: 1000},
+                        {w: 500, h: 500},
+                        {w: 2000, h: 2000}
+                    ];
 
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     let code = null;
-                    if (typeof jsQR !== 'undefined') {
-                        console.log('Scanning image for QR code...', {width: imageData.width, height: imageData.height});
-                        code = jsQR(imageData.data, imageData.width, imageData.height, {
-                            inversionAttempts: "attemptBoth"
-                        });
-                        console.log('Scan result:', code);
-                    } else {
-                        console.error('jsQR library not loaded! Check CDN connection.');
-                        alert('QR scanner library failed to load. Please check your internet connection and try refreshing the page.');
-                        return;
+
+                    for (const size of sizes) {
+                        if (code) break;
+
+                        canvas.width = size.w;
+                        canvas.height = size.h;
+                        ctx.drawImage(img, 0, 0, size.w, size.h);
+
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                        if (typeof jsQR !== 'undefined') {
+                            console.log(`Scanning at ${size.w}x${size.h}...`);
+                            code = jsQR(imageData.data, imageData.width, imageData.height, {
+                                inversionAttempts: "attemptBoth"
+                            });
+
+                            if (!code) {
+                                // Try with increased contrast
+                                const contrastData = increaseContrast(imageData);
+                                code = jsQR(contrastData.data, contrastData.width, contrastData.height, {
+                                    inversionAttempts: "attemptBoth"
+                                });
+                            }
+
+                            if (!code) {
+                                // Try with grayscale conversion
+                                const grayData = toGrayscale(imageData);
+                                code = jsQR(grayData.data, grayData.width, grayData.height, {
+                                    inversionAttempts: "attemptBoth"
+                                });
+                            }
+                        } else {
+                            console.error('jsQR library not loaded! Check CDN connection.');
+                            alert('QR scanner library failed to load. Please check your internet connection and try refreshing the page.');
+                            return;
+                        }
                     }
 
                     if (code && code.data) {
@@ -796,12 +825,40 @@
                         analyzeURL(code.data);
                     } else {
                         console.warn('No QR code detected in image');
-                        alert('No QR code detected in this image. Please ensure:\n• The image contains a clear QR code\n• The QR code is not blurry or distorted\n• The entire QR code is visible\n\nTry uploading a different image or use the camera scanner.');
+                        alert('No QR code detected in this image. Please ensure:\n• The image contains a clear QR code\n• The QR code is not blurry or distorted\n• The entire QR code is visible\n• Artistic/gradient QR codes may not scan reliably\n\nTry uploading a different image or use the camera scanner.');
                     }
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        // Image preprocessing functions
+        function increaseContrast(imageData) {
+            const data = new Uint8ClampedArray(imageData.data);
+            const contrast = 2.0;
+            const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+            for (let i = 0; i < data.length; i += 4) {
+                data[i] = factor * (data[i] - 128) + 128;
+                data[i + 1] = factor * (data[i + 1] - 128) + 128;
+                data[i + 2] = factor * (data[i + 2] - 128) + 128;
+            }
+
+            return new ImageData(data, imageData.width, imageData.height);
+        }
+
+        function toGrayscale(imageData) {
+            const data = new Uint8ClampedArray(imageData.data);
+
+            for (let i = 0; i < data.length; i += 4) {
+                const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+                data[i] = gray;
+                data[i + 1] = gray;
+                data[i + 2] = gray;
+            }
+
+            return new ImageData(data, imageData.width, imageData.height);
         }
 
         // Analyze URL using the worker

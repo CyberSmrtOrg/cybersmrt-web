@@ -1,0 +1,479 @@
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import Stripe from 'stripe';
+
+const app = new Hono();
+
+// CORS for cybersmrt.org
+app.use('/*', cors({
+  origin: ['https://cybersmrt.org', 'https://www.cybersmrt.org', 'http://localhost:8787'],
+  credentials: true,
+}));
+
+// ======================
+// Stripe & Printify Helpers
+// ======================
+
+function getStripe(env) {
+  return new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-11-20.acacia',
+  });
+}
+
+async function printifyRequest(env, endpoint, method = 'GET', body = null) {
+  const url = `https://api.printify.com/v1${endpoint}`;
+  const options = {
+    method,
+    headers: {
+      'Authorization': `Bearer ${env.PRINTIFY_API_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Printify API Error: ${response.status} - ${error}`);
+  }
+
+  return response.json();
+}
+
+// ======================
+// Routes
+// ======================
+
+// Health check
+app.get('/health', (c) => {
+  return c.json({ status: 'ok', service: 'cybersmrt-merch-api' });
+});
+
+// Get all products (catalog)
+app.get('/api/merch/products', async (c) => {
+  try {
+    const { DB, PRODUCT_CACHE } = c.env;
+
+    // Try cache first (KV)
+    const cached = await PRODUCT_CACHE.get('products', 'json');
+    if (cached) {
+      return c.json({ products: cached, source: 'cache' });
+    }
+
+    // Get from D1
+    const result = await DB.prepare(
+      'SELECT * FROM products WHERE is_active = 1 ORDER BY created_at DESC'
+    ).all();
+
+    const products = result.results || [];
+
+    // Parse JSON fields
+    const parsedProducts = products.map(p => ({
+      ...p,
+      images: JSON.parse(p.images || '[]'),
+      variants: JSON.parse(p.variants || '[]'),
+    }));
+
+    // Cache for 5 minutes
+    await PRODUCT_CACHE.put('products', JSON.stringify(parsedProducts), {
+      expirationTtl: 300,
+    });
+
+    return c.json({ products: parsedProducts, source: 'database' });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return c.json({ error: 'Failed to fetch products' }, 500);
+  }
+});
+
+// Get single product
+app.get('/api/merch/products/:id', async (c) => {
+  try {
+    const { DB } = c.env;
+    const productId = c.req.param('id');
+
+    const result = await DB.prepare(
+      'SELECT * FROM products WHERE id = ? AND is_active = 1'
+    ).bind(productId).first();
+
+    if (!result) {
+      return c.json({ error: 'Product not found' }, 404);
+    }
+
+    const product = {
+      ...result,
+      images: JSON.parse(result.images || '[]'),
+      variants: JSON.parse(result.variants || '[]'),
+    };
+
+    return c.json({ product });
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return c.json({ error: 'Failed to fetch product' }, 500);
+  }
+});
+
+// Get Printify catalog (for admin/setup)
+app.get('/api/merch/printify/blueprints', async (c) => {
+  try {
+    const blueprints = await printifyRequest(c.env, '/catalog/blueprints.json');
+    return c.json({ blueprints });
+  } catch (error) {
+    console.error('Error fetching Printify blueprints:', error);
+    return c.json({ error: 'Failed to fetch blueprints' }, 500);
+  }
+});
+
+// Get blueprint variants
+app.get('/api/merch/printify/blueprints/:blueprintId/variants', async (c) => {
+  try {
+    const { blueprintId } = c.req.param();
+    const { printProviderId } = c.req.query();
+
+    if (!printProviderId) {
+      return c.json({ error: 'printProviderId required' }, 400);
+    }
+
+    const variants = await printifyRequest(
+      c.env,
+      `/catalog/blueprints/${blueprintId}/print_providers/${printProviderId}/variants.json`
+    );
+
+    return c.json({ variants });
+  } catch (error) {
+    console.error('Error fetching variants:', error);
+    return c.json({ error: 'Failed to fetch variants' }, 500);
+  }
+});
+
+// Create Stripe Checkout Session
+app.post('/api/merch/checkout', async (c) => {
+  try {
+    const { DB } = c.env;
+    const stripe = getStripe(c.env);
+    const body = await c.req.json();
+
+    const { items, customerEmail, shippingAddress } = body;
+
+    if (!items || !items.length || !customerEmail || !shippingAddress) {
+      return c.json({ error: 'Missing required fields' }, 400);
+    }
+
+    // Calculate totals
+    let subtotal = 0;
+    const lineItems = [];
+
+    for (const item of items) {
+      const product = await DB.prepare(
+        'SELECT * FROM products WHERE id = ? AND is_active = 1'
+      ).bind(item.productId).first();
+
+      if (!product) {
+        return c.json({ error: `Product ${item.productId} not found` }, 404);
+      }
+
+      const itemTotal = product.markup_price * item.quantity;
+      subtotal += itemTotal;
+
+      lineItems.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: product.title,
+            description: item.variantTitle || '',
+            images: JSON.parse(product.images || '[]').slice(0, 1),
+          },
+          unit_amount: product.markup_price, // Stripe expects cents
+        },
+        quantity: item.quantity,
+      });
+    }
+
+    // TODO: Calculate actual shipping cost from Printify API
+    const shippingCost = 500; // $5.00 flat rate for now
+
+    // Add shipping as line item
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: 'Shipping',
+        },
+        unit_amount: shippingCost,
+      },
+      quantity: 1,
+    });
+
+    const totalAmount = subtotal + shippingCost;
+
+    // Create checkout session
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      customer_email: customerEmail,
+      line_items: lineItems,
+      shipping_address_collection: {
+        allowed_countries: ['US', 'CA'], // Adjust based on Printify providers
+      },
+      success_url: `https://cybersmrt.org/pages/merch/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://cybersmrt.org/pages/merch/`,
+      metadata: {
+        orderType: 'merch',
+        items: JSON.stringify(items),
+      },
+    });
+
+    // Create pending order
+    const orderId = `ORD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    await DB.prepare(`
+      INSERT INTO orders (
+        id, stripe_checkout_session_id, customer_email,
+        shipping_address, line_items, subtotal, shipping_cost, total_amount,
+        status, payment_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'unpaid')
+    `).bind(
+      orderId,
+      session.id,
+      customerEmail,
+      JSON.stringify(shippingAddress),
+      JSON.stringify(items),
+      subtotal,
+      shippingCost,
+      totalAmount
+    ).run();
+
+    return c.json({
+      sessionId: session.id,
+      url: session.url,
+      orderId,
+    });
+  } catch (error) {
+    console.error('Error creating checkout session:', error);
+    return c.json({ error: 'Failed to create checkout session', details: error.message }, 500);
+  }
+});
+
+// Stripe webhook handler
+app.post('/api/merch/webhooks/stripe', async (c) => {
+  try {
+    const { DB } = c.env;
+    const stripe = getStripe(c.env);
+
+    const signature = c.req.header('stripe-signature');
+    const body = await c.req.text();
+
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        c.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err.message);
+      return c.json({ error: 'Invalid signature' }, 400);
+    }
+
+    // Log webhook event
+    await DB.prepare(`
+      INSERT INTO webhook_events (source, event_type, event_id, payload)
+      VALUES ('stripe', ?, ?, ?)
+    `).bind(event.type, event.id, JSON.stringify(event)).run();
+
+    // Handle checkout.session.completed
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      // Update order status
+      await DB.prepare(`
+        UPDATE orders
+        SET payment_status = 'paid',
+            status = 'processing',
+            stripe_payment_intent_id = ?,
+            customer_name = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE stripe_checkout_session_id = ?
+      `).bind(
+        session.payment_intent,
+        session.customer_details?.name || '',
+        session.id
+      ).run();
+
+      // Get order details
+      const order = await DB.prepare(
+        'SELECT * FROM orders WHERE stripe_checkout_session_id = ?'
+      ).bind(session.id).first();
+
+      if (order) {
+        // Submit order to Printify (on-demand)
+        try {
+          await submitOrderToPrintify(c.env, order);
+        } catch (printifyError) {
+          console.error('Failed to submit to Printify:', printifyError);
+          // Don't fail the webhook - we'll retry later
+        }
+      }
+    }
+
+    return c.json({ received: true });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    return c.json({ error: 'Webhook handler failed' }, 500);
+  }
+});
+
+// Submit order to Printify (on-demand product creation)
+async function submitOrderToPrintify(env, order) {
+  const { DB, PRINTIFY_SHOP_ID } = env;
+  const lineItems = JSON.parse(order.line_items);
+  const shippingAddress = JSON.parse(order.shipping_address);
+
+  // Create Printify order with on-demand products
+  const printifyLineItems = [];
+
+  for (const item of lineItems) {
+    const product = await DB.prepare(
+      'SELECT * FROM products WHERE id = ?'
+    ).bind(item.productId).first();
+
+    if (!product) continue;
+
+    // Build line item for Printify
+    printifyLineItems.push({
+      product_id: product.id, // This will be created on-the-fly
+      variant_id: item.variantId,
+      quantity: item.quantity,
+      print_provider_id: product.printify_print_provider_id,
+      blueprint_id: product.printify_blueprint_id,
+      print_areas: item.printAreas || {},
+    });
+  }
+
+  const printifyOrder = {
+    external_id: order.id,
+    label: `CyberSmrt Order ${order.id}`,
+    line_items: printifyLineItems,
+    shipping_method: 1, // Standard shipping
+    send_shipping_notification: true,
+    address_to: {
+      first_name: shippingAddress.firstName || order.customer_name?.split(' ')[0] || '',
+      last_name: shippingAddress.lastName || order.customer_name?.split(' ').slice(1).join(' ') || '',
+      email: order.customer_email,
+      phone: shippingAddress.phone || '',
+      country: shippingAddress.country || 'US',
+      region: shippingAddress.state || '',
+      address1: shippingAddress.address1 || '',
+      address2: shippingAddress.address2 || '',
+      city: shippingAddress.city || '',
+      zip: shippingAddress.zip || '',
+    },
+  };
+
+  const response = await printifyRequest(
+    env,
+    `/shops/${PRINTIFY_SHOP_ID}/orders.json`,
+    'POST',
+    printifyOrder
+  );
+
+  // Update order with Printify ID
+  await DB.prepare(`
+    UPDATE orders
+    SET printify_order_id = ?,
+        printify_response = ?,
+        status = 'fulfilled',
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `).bind(response.id, JSON.stringify(response), order.id).run();
+
+  return response;
+}
+
+// Printify webhook handler
+app.post('/api/merch/webhooks/printify', async (c) => {
+  try {
+    const { DB } = c.env;
+    const event = await c.req.json();
+
+    // Log webhook event
+    await DB.prepare(`
+      INSERT INTO webhook_events (source, event_type, event_id, payload)
+      VALUES ('printify', ?, ?, ?)
+    `).bind(event.type, event.id || '', JSON.stringify(event)).run();
+
+    // Handle order status updates
+    if (event.type === 'order:shipment:created') {
+      const { order_id, tracking_number, tracking_url } = event.data;
+
+      await DB.prepare(`
+        UPDATE orders
+        SET status = 'shipped',
+            tracking_number = ?,
+            tracking_url = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE printify_order_id = ?
+      `).bind(tracking_number, tracking_url, order_id).run();
+    }
+
+    return c.json({ received: true });
+  } catch (error) {
+    console.error('Printify webhook error:', error);
+    return c.json({ error: 'Webhook handler failed' }, 500);
+  }
+});
+
+// Admin: Add product to catalog
+app.post('/api/merch/admin/products', async (c) => {
+  try {
+    const { DB, PRODUCT_CACHE } = c.env;
+    const body = await c.req.json();
+
+    const {
+      blueprintId,
+      printProviderId,
+      title,
+      description,
+      basePrice,
+      markupPrice,
+      images,
+      variants,
+    } = body;
+
+    if (!blueprintId || !printProviderId || !title || !markupPrice) {
+      return c.json({ error: 'Missing required fields' }, 400);
+    }
+
+    const productId = `PROD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    await DB.prepare(`
+      INSERT INTO products (
+        id, printify_blueprint_id, printify_print_provider_id,
+        title, description, base_price, markup_price, images, variants
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      productId,
+      blueprintId,
+      printProviderId,
+      title,
+      description || '',
+      basePrice || 0,
+      markupPrice,
+      JSON.stringify(images || []),
+      JSON.stringify(variants || [])
+    ).run();
+
+    // Clear cache
+    await PRODUCT_CACHE.delete('products');
+
+    return c.json({ success: true, productId });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    return c.json({ error: 'Failed to add product' }, 500);
+  }
+});
+
+export default app;
