@@ -406,8 +406,8 @@ async function proceedToCheckout() {
           variant_id: item.variantId,
           quantity: item.quantity
         })),
-        success_url: `${window.location.origin}/pages/get-involved/merch-success.html`,
-        cancel_url: `${window.location.origin}/pages/get-involved/merch.html`
+        success_url: `${window.location.origin}/pages/merch/success.html`,
+        cancel_url: `${window.location.origin}/pages/merch/`
       })
     });
 
