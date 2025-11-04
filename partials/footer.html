@@ -599,6 +599,18 @@ function toggleToolsDropdown(event) {
   button.setAttribute('aria-expanded', isOpen);
 }
 
+// Programs dropdown toggle
+function toggleProgramsDropdown(event) {
+  event.stopPropagation();
+  const container = event.currentTarget.closest('.programs-dropdown-container');
+  container.classList.toggle('open');
+
+  // Update aria-expanded
+  const button = container.querySelector('.programs-dropdown-trigger');
+  const isOpen = container.classList.contains('open');
+  button.setAttribute('aria-expanded', isOpen);
+}
+
 // Close dropdowns when clicking outside
 document.addEventListener('click', () => {
   // Close user menu
@@ -614,6 +626,14 @@ document.addEventListener('click', () => {
   openToolsDropdowns.forEach(dropdown => {
     dropdown.classList.remove('open');
     const button = dropdown.querySelector('.tools-dropdown-trigger');
+    button.setAttribute('aria-expanded', 'false');
+  });
+
+  // Close programs dropdown
+  const openProgramsDropdowns = document.querySelectorAll('.programs-dropdown-container.open');
+  openProgramsDropdowns.forEach(dropdown => {
+    dropdown.classList.remove('open');
+    const button = dropdown.querySelector('.programs-dropdown-trigger');
     button.setAttribute('aria-expanded', 'false');
   });
 });
@@ -651,5 +671,6 @@ window.closeLoginModal = closeLoginModal;
 window.closeLoginModalOnOverlay = closeLoginModalOnOverlay;
 window.toggleUserMenu = toggleUserMenu;
 window.toggleToolsDropdown = toggleToolsDropdown;
+window.toggleProgramsDropdown = toggleProgramsDropdown;
 window.initiateOAuth = initiateOAuth;
 </script>
