@@ -146,6 +146,13 @@
 /tools/qr-tester.html
   X-Frame-Options: DENY
 
+# Partials - Short-term caching, allow fetch
+/partials/*
+  Cache-Control: public, max-age=300
+  CDN-Cache-Control: public, max-age=300
+  Content-Type: text/html; charset=utf-8
+  Cross-Origin-Resource-Policy: same-origin
+
 # Blog content - Short-term caching (1 hour)
 /pages/blog/*
   X-Frame-Options: SAMEORIGIN
