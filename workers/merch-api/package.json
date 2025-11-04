@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "hono": "^4.10.4",
     "stripe": "^19.2.0"
   }

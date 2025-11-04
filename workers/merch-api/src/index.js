@@ -54,7 +54,7 @@ app.get('/health', (c) => {
 });
 
 // Get all products (catalog)
-app.get('/api/merch/products', async (c) => {
+app.get('/products', async (c) => {
   try {
     const { DB, PRODUCT_CACHE } = c.env;
 
@@ -91,7 +91,7 @@ app.get('/api/merch/products', async (c) => {
 });
 
 // Get single product
-app.get('/api/merch/products/:id', async (c) => {
+app.get('/products/:id', async (c) => {
   try {
     const { DB } = c.env;
     const productId = c.req.param('id');
@@ -151,7 +151,7 @@ app.get('/api/merch/printify/blueprints/:blueprintId/variants', async (c) => {
 });
 
 // Create Stripe Checkout Session
-app.post('/api/merch/checkout', async (c) => {
+app.post('/checkout/create', async (c) => {
   try {
     const { DB } = c.env;
     const stripe = getStripe(c.env);
@@ -218,7 +218,7 @@ app.post('/api/merch/checkout', async (c) => {
       shipping_address_collection: {
         allowed_countries: ['US', 'CA'], // Adjust based on Printify providers
       },
-      success_url: `https://cybersmrt.org/pages/merch/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `https://cybersmrt.org/pages/merch/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://cybersmrt.org/pages/merch/`,
       metadata: {
         orderType: 'merch',
@@ -248,12 +248,38 @@ app.post('/api/merch/checkout', async (c) => {
 
     return c.json({
       sessionId: session.id,
-      url: session.url,
+      checkout_url: session.url,
       orderId,
     });
   } catch (error) {
     console.error('Error creating checkout session:', error);
     return c.json({ error: 'Failed to create checkout session', details: error.message }, 500);
+  }
+});
+
+// Get checkout session details (for success page)
+app.get('/checkout/session/:sessionId', async (c) => {
+  try {
+    const { DB } = c.env;
+    const stripe = getStripe(c.env);
+    const sessionId = c.req.param('sessionId');
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    const order = await DB.prepare(
+      'SELECT id, status, customer_email FROM orders WHERE stripe_checkout_session_id = ?'
+    ).bind(sessionId).first();
+
+    return c.json({
+      order_id: order?.id,
+      status: order?.status || 'processing',
+      customer_email: session.customer_details?.email || order?.customer_email,
+      amount_total: session.amount_total,
+      currency: session.currency
+    });
+  } catch (error) {
+    console.error('Error fetching session:', error);
+    return c.json({ error: 'Failed to fetch session' }, 500);
   }
 });
 
