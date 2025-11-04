@@ -35,20 +35,18 @@ for (const product of products) {
   sql += `
 -- ${product.title}
 INSERT INTO products (
-  id, printify_blueprint_id, printify_print_provider_id, printify_product_id,
-  title, description, base_price, markup_price, images, variants, category, is_active
+  id, printify_blueprint_id, printify_print_provider_id,
+  title, description, base_price, markup_price, images, variants, is_active
 ) VALUES (
   '${product.id}',
   ${product.printify_blueprint_id || 'NULL'},
-  NULL,
-  '${product.printify_product_id}',
+  99,
   '${title}',
   '${description}',
   ${product.price},
   ${product.price},
   '${images}',
   '${variants}',
-  '${product.category}',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -56,7 +54,6 @@ INSERT INTO products (
   markup_price = excluded.markup_price,
   images = excluded.images,
   variants = excluded.variants,
-  category = excluded.category,
   updated_at = CURRENT_TIMESTAMP;
 
 `;
