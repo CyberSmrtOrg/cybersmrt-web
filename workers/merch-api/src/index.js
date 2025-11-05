@@ -158,10 +158,10 @@ app.post('/checkout/create', async (c) => {
     const stripe = getStripe(c.env);
     const body = await c.req.json();
 
-    const { items, customerEmail, shippingAddress } = body;
+    const { items } = body;
 
-    if (!items || !items.length || !customerEmail || !shippingAddress) {
-      return c.json({ error: 'Missing required fields' }, 400);
+    if (!items || !items.length) {
+      return c.json({ error: 'No items in cart' }, 400);
     }
 
     // Calculate totals
@@ -177,48 +177,64 @@ app.post('/checkout/create', async (c) => {
         return c.json({ error: `Product ${item.productId} not found` }, 404);
       }
 
-      const itemTotal = product.markup_price * item.quantity;
+      const variants = JSON.parse(product.variants || '[]');
+      const variant = variants.find(v => v.id === item.variantId);
+      const price = variant?.price || product.markup_price;
+
+      const itemTotal = price * item.quantity;
       subtotal += itemTotal;
+
+      // Get first image from images_by_color
+      const images = JSON.parse(product.images || '{}');
+      const firstColorImages = Object.values(images)[0] || [];
+      const imageUrl = firstColorImages[0] || '';
 
       lineItems.push({
         price_data: {
           currency: 'usd',
           product_data: {
             name: product.title,
-            description: item.variantTitle || '',
-            images: JSON.parse(product.images || '[]').slice(0, 1),
+            description: variant ? `${variant.color || ''} ${variant.size || ''}`.trim() : '',
+            images: imageUrl ? [imageUrl.startsWith('http') ? imageUrl : `https://cybersmrt.org${imageUrl}`] : [],
           },
-          unit_amount: product.markup_price, // Stripe expects cents
+          unit_amount: price, // Stripe expects cents
         },
         quantity: item.quantity,
       });
     }
 
-    // TODO: Calculate actual shipping cost from Printify API
-    const shippingCost = 500; // $5.00 flat rate for now
-
-    // Add shipping as line item
-    lineItems.push({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: 'Shipping',
-        },
-        unit_amount: shippingCost,
-      },
-      quantity: 1,
-    });
-
-    const totalAmount = subtotal + shippingCost;
-
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      customer_email: customerEmail,
       line_items: lineItems,
-      shipping_address_collection: {
-        allowed_countries: ['US', 'CA'], // Adjust based on Printify providers
+      phone_number_collection: {
+        enabled: true,
       },
+      shipping_address_collection: {
+        allowed_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'IT', 'ES'], // Common Printify destinations
+      },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 500, // $5.00 flat rate shipping
+              currency: 'usd',
+            },
+            display_name: 'Standard Shipping',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 5,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 10,
+              },
+            },
+          },
+        },
+      ],
       success_url: `https://cybersmrt.org/pages/merch/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://cybersmrt.org/pages/merch/`,
       metadata: {
@@ -239,12 +255,12 @@ app.post('/checkout/create', async (c) => {
     `).bind(
       orderId,
       session.id,
-      customerEmail,
-      JSON.stringify(shippingAddress),
+      '', // Email will be filled in from webhook
+      '{}', // Shipping address will be filled in from webhook
       JSON.stringify(items),
       subtotal,
-      shippingCost,
-      totalAmount
+      500, // Flat shipping
+      subtotal + 500
     ).run();
 
     return c.json({
@@ -315,18 +331,27 @@ app.post('/webhooks/stripe', async (c) => {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
 
-      // Update order status
+      // Get full session details (includes shipping)
+      const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
+        expand: ['shipping_details'],
+      });
+
+      // Update order with customer info and shipping
       await DB.prepare(`
         UPDATE orders
         SET payment_status = 'paid',
             status = 'processing',
             stripe_payment_intent_id = ?,
             customer_name = ?,
+            customer_email = ?,
+            shipping_address = ?,
             updated_at = CURRENT_TIMESTAMP
         WHERE stripe_checkout_session_id = ?
       `).bind(
         session.payment_intent,
-        session.customer_details?.name || '',
+        fullSession.customer_details?.name || '',
+        fullSession.customer_details?.email || '',
+        JSON.stringify(fullSession.shipping_details || {}),
         session.id
       ).run();
 

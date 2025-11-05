@@ -590,6 +590,21 @@ const MerchStore = {
     card.setAttribute('data-current-color', color);
   },
 
+  // Change size on product card
+  changeCardSize(productId, size) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return;
+
+    // Update internal state
+    product._cardSize = size;
+
+    // Update data attribute
+    const card = document.querySelector(`[data-product-id="${productId}"]`);
+    if (card) {
+      card.setAttribute('data-current-size', size);
+    }
+  },
+
   // Open product detail modal
   openProductModal(productId) {
     const product = this.products.find(p => p.id === productId);
@@ -837,22 +852,18 @@ const MerchStore = {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
-    // Check if product has size variants
-    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
-
-    // If has sizes, open modal for selection
-    if (sizes.length > 0) {
-      this.openProductModal(productId);
-      return;
-    }
-
-    // Otherwise, add directly with current color selection
+    // Get current selections from card
     const currentColor = product._cardColor || Object.keys(product.images_by_color || {})[0];
-    const variant = product.variants?.find(v => v.color === currentColor);
+    const currentSize = product._cardSize;
+
+    // Find matching variant
+    const variant = product.variants?.find(v =>
+      v.color === currentColor &&
+      (currentSize ? v.size === currentSize : !v.size)
+    );
 
     if (!variant) {
-      // No variant found, open modal
-      this.openProductModal(productId);
+      console.error('No variant found for', { productId, currentColor, currentSize });
       return;
     }
 
@@ -862,7 +873,7 @@ const MerchStore = {
       price: variant.price || product.price,
       image: product.images_by_color[currentColor]?.[0],
       variantId: variant.id,
-      size: null,
+      size: currentSize || null,
       color: currentColor,
       quantity: 1
     };
@@ -924,42 +935,14 @@ function filterCategory(category) {
 
 async function proceedToCheckout() {
   const btn = document.getElementById('checkoutBtn');
-  const emailInput = document.getElementById('checkoutEmail');
 
   if (!btn || btn.disabled) return;
 
   try {
-    // Validate email from input field
-    const email = emailInput?.value.trim();
-    if (!email || !email.includes('@')) {
-      // Visual feedback instead of alert popup
-      emailInput?.classList.add('error');
-      emailInput?.focus();
-
-      // Show error message below input
-      let errorMsg = emailInput?.parentElement.querySelector('.email-error-message');
-      if (!errorMsg) {
-        errorMsg = document.createElement('div');
-        errorMsg.className = 'email-error-message';
-        errorMsg.textContent = 'Please enter a valid email address';
-        emailInput?.parentElement.appendChild(errorMsg);
-      }
-
-      // Remove error styling after user starts typing
-      const clearError = () => {
-        emailInput?.classList.remove('error');
-        errorMsg?.remove();
-        emailInput?.removeEventListener('input', clearError);
-      };
-      emailInput?.addEventListener('input', clearError);
-
-      return;
-    }
-
     btn.disabled = true;
     btn.textContent = 'Creating checkout session...';
 
-    // Create checkout session with email (Stripe will collect shipping)
+    // Create checkout session (Stripe will collect email and shipping)
     const response = await fetch(`${API_BASE_URL}/checkout/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -968,9 +951,7 @@ async function proceedToCheckout() {
           productId: item.productId,
           variantId: item.variantId,
           quantity: item.quantity
-        })),
-        customerEmail: email,
-        shippingAddress: {} // Stripe will collect this
+        }))
       })
     });
 
