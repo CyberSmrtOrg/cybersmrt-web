@@ -170,9 +170,38 @@ async function processProduct(product) {
 
   for (const [color, variantId] of colorMap.entries()) {
     // Find images for this specific variant/color
-    const colorImages = images.filter(img =>
+    let colorImages = images.filter(img =>
       img.variant_ids && img.variant_ids.includes(variantId)
-    ).slice(0, 4); // Limit to 4 images per color
+    );
+
+    // Filter out images that only show the back (no design visible)
+    // Prioritize: model images, front views, then product-only shots
+    colorImages = colorImages.filter(img => {
+      const position = (img.position || '').toLowerCase();
+      const isBack = position.includes('back');
+      // Only exclude pure back shots - keep everything else
+      return !isBack || img.is_default;
+    });
+
+    // Sort to prioritize: default first, then model shots, then front views
+    colorImages.sort((a, b) => {
+      if (a.is_default) return -1;
+      if (b.is_default) return 1;
+
+      const aPos = (a.position || '').toLowerCase();
+      const bPos = (b.position || '').toLowerCase();
+
+      const aHasModel = aPos.includes('front') || aPos.includes('model');
+      const bHasModel = bPos.includes('front') || bPos.includes('model');
+
+      if (aHasModel && !bHasModel) return -1;
+      if (bHasModel && !aHasModel) return 1;
+
+      return 0;
+    });
+
+    // Limit to 3 best images per color
+    colorImages = colorImages.slice(0, 3);
 
     if (colorImages.length === 0) continue;
 

@@ -118,15 +118,17 @@ const MerchStore = {
 
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
-    // Get all images from first color for card preview
-    const firstColor = Object.keys(product.images_by_color || {})[0];
-    const previewImages = product.images_by_color?.[firstColor] || [product.image_url];
+    // Get all colors and use first as default
+    const colors = Object.keys(product.images_by_color || {});
+    const currentCardColor = product._cardColor || colors[0];
+    const previewImages = product.images_by_color?.[currentCardColor] || [product.image_url];
     const hasMultipleImages = previewImages.length > 1;
+    const hasMultipleColors = colors.length > 1;
 
     const defaultPrice = product.price || 0;
 
     return `
-      <article class="product-card" data-product-id="${product.id}" onclick="MerchStore.openProductModal('${product.id}')">
+      <article class="product-card" data-product-id="${product.id}" data-current-color="${currentCardColor}" onclick="MerchStore.openProductModal('${product.id}')">
         <div class="product-image-carousel">
           ${hasMultipleImages ? `
             <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); MerchStore.cardCarouselPrev('${product.id}')">
@@ -160,6 +162,17 @@ const MerchStore = {
           <span class="product-category-tag">${this.formatCategory(product.category)}</span>
           <h3 class="product-title-simple">${product.name}</h3>
           <div class="product-price-simple">$${(defaultPrice / 100).toFixed(2)}</div>
+          ${hasMultipleColors ? `
+            <div class="card-color-selector">
+              ${colors.map(color => `
+                <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
+                        onclick="event.stopPropagation(); MerchStore.changeCardColor('${product.id}', '${color}')"
+                        title="${color}"
+                        aria-label="View ${color} variant">
+                </button>
+              `).join('')}
+            </div>
+          ` : ''}
         </div>
       </article>
     `;
@@ -459,6 +472,44 @@ const MerchStore = {
     });
   },
 
+  // Change color on product card
+  changeCardColor(productId, color) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return;
+
+    // Update internal state
+    product._cardColor = color;
+    product._cardImageIndex = 0;
+
+    // Find and update the card
+    const card = document.querySelector(`[data-product-id="${productId}"]`);
+    if (!card) return;
+
+    // Update images
+    const carousel = card.querySelector('[data-carousel]');
+    const newImages = product.images_by_color[color] || [];
+
+    carousel.innerHTML = newImages.map((img, idx) => `
+      <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="lazy">
+    `).join('');
+
+    // Update carousel dots if multiple images
+    const dotsContainer = card.querySelector('.carousel-dots');
+    if (dotsContainer && newImages.length > 1) {
+      dotsContainer.innerHTML = newImages.map((_, idx) => `
+        <span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); MerchStore.cardCarouselGoto('${productId}', ${idx})"></span>
+      `).join('');
+    }
+
+    // Update color selector active state
+    card.querySelectorAll('.card-color-dot').forEach(btn => {
+      btn.classList.toggle('active', btn.title === color);
+    });
+
+    // Update data attribute
+    card.setAttribute('data-current-color', color);
+  },
+
   // Open product detail modal
   openProductModal(productId) {
     const product = this.products.find(p => p.id === productId);
@@ -732,21 +783,28 @@ async function proceedToCheckout() {
   if (!btn || btn.disabled) return;
 
   try {
+    // Prompt for email
+    const email = prompt('Please enter your email address for order confirmation:');
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
     btn.disabled = true;
     btn.textContent = 'Creating checkout session...';
 
-    // Create checkout session
+    // Create checkout session with email (Stripe will collect shipping)
     const response = await fetch(`${API_BASE_URL}/checkout/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         items: MerchStore.cart.map(item => ({
-          product_id: item.productId,
-          variant_id: item.variantId,
+          productId: item.productId,
+          variantId: item.variantId,
           quantity: item.quantity
         })),
-        success_url: `${window.location.origin}/pages/merch/success.html`,
-        cancel_url: `${window.location.origin}/pages/merch/`
+        customerEmail: email,
+        shippingAddress: {} // Stripe will collect this
       })
     });
 
