@@ -52,13 +52,23 @@ const MerchStore = {
       const data = await response.json();
 
       // Transform API response to match frontend expectations
-      this.products = (data.products || []).map(p => ({
-        ...p,
-        name: p.title,
-        price: p.markup_price,
-        image_url: (p.images && p.images.length > 0) ? p.images[0].src : null,
-        category: this.detectCategory(p.title)
-      }));
+      this.products = (data.products || []).map(p => {
+        // Parse images_by_color from JSON string if needed
+        const imagesByColor = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+
+        // Get first color's first image as default
+        const firstColor = Object.keys(imagesByColor)[0];
+        const defaultImage = imagesByColor[firstColor]?.[0] || null;
+
+        return {
+          ...p,
+          name: p.title,
+          price: p.markup_price,
+          image_url: defaultImage,
+          images_by_color: imagesByColor,
+          category: this.detectCategory(p.title)
+        };
+      });
 
       this.renderProducts();
     } catch (error) {
@@ -106,40 +116,50 @@ const MerchStore = {
     grid.innerHTML = filtered.map(product => this.renderProductCard(product)).join('');
   },
 
-  // Render single product card
+  // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
-    const hasVariants = product.variants && product.variants.length > 0;
-    const defaultPrice = hasVariants ? product.variants[0].price : (product.price || 0);
+    // Get all images from first color for card preview
+    const firstColor = Object.keys(product.images_by_color || {})[0];
+    const previewImages = product.images_by_color?.[firstColor] || [product.image_url];
+    const hasMultipleImages = previewImages.length > 1;
+
+    const defaultPrice = product.price || 0;
 
     return `
-      <article class="product-card" data-product-id="${product.id}" data-category="${product.category}">
-        <div class="product-image">
-          ${product.image_url ? `<img src="${product.image_url}" alt="${product.name}" loading="lazy">` : ''}
-          ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-        </div>
+      <article class="product-card" data-product-id="${product.id}" onclick="MerchStore.openProductModal('${product.id}')">
+        <div class="product-image-carousel">
+          ${hasMultipleImages ? `
+            <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); MerchStore.cardCarouselPrev('${product.id}')">
+              <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+          ` : ''}
 
-        <div class="product-info">
-          <div class="product-category">${this.formatCategory(product.category)}</div>
-          <h3 class="product-title">${product.name}</h3>
-          <p class="product-description">${product.description}</p>
-
-          <div class="product-pricing">
-            <span class="product-price" data-product-price="${product.id}">$${(defaultPrice / 100).toFixed(2)}</span>
-            <span class="product-impact">Funds ${product.impact || 'our mission'}</span>
+          <div class="carousel-images" data-carousel="${product.id}">
+            ${previewImages.map((img, idx) => `
+              <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="lazy">
+            `).join('')}
           </div>
 
-          ${hasVariants ? this.renderVariantOptions(product) : ''}
+          ${hasMultipleImages ? `
+            <button class="carousel-btn carousel-next" onclick="event.stopPropagation(); MerchStore.cardCarouselNext('${product.id}')">
+              <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="carousel-dots">
+              ${previewImages.map((_, idx) => `
+                <span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); MerchStore.cardCarouselGoto('${product.id}', ${idx})"></span>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
 
-          <button
-            class="add-to-cart-btn"
-            onclick="MerchStore.addToCart('${product.id}')"
-            data-product-btn="${product.id}"
-          >
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            Add to Cart
-          </button>
+        <div class="product-info-simple">
+          <span class="product-category-tag">${this.formatCategory(product.category)}</span>
+          <h3 class="product-title-simple">${product.name}</h3>
+          <div class="product-price-simple">$${(defaultPrice / 100).toFixed(2)}</div>
         </div>
       </article>
     `;
@@ -386,6 +406,298 @@ const MerchStore = {
         <button class="cta-btn" onclick="MerchStore.loadProducts()" style="margin-top: 1rem;">Retry</button>
       </div>
     `;
+  },
+
+  // Card carousel navigation
+  cardCarouselPrev(productId) {
+    const carousel = document.querySelector(`[data-carousel="${productId}"]`);
+    if (!carousel) return;
+
+    const images = carousel.querySelectorAll('img');
+    const activeIdx = Array.from(images).findIndex(img => img.classList.contains('active'));
+    const newIdx = activeIdx === 0 ? images.length - 1 : activeIdx - 1;
+
+    images[activeIdx].classList.remove('active');
+    images[newIdx].classList.add('active');
+
+    this.updateCarouselDots(productId, newIdx);
+  },
+
+  cardCarouselNext(productId) {
+    const carousel = document.querySelector(`[data-carousel="${productId}"]`);
+    if (!carousel) return;
+
+    const images = carousel.querySelectorAll('img');
+    const activeIdx = Array.from(images).findIndex(img => img.classList.contains('active'));
+    const newIdx = (activeIdx + 1) % images.length;
+
+    images[activeIdx].classList.remove('active');
+    images[newIdx].classList.add('active');
+
+    this.updateCarouselDots(productId, newIdx);
+  },
+
+  cardCarouselGoto(productId, index) {
+    const carousel = document.querySelector(`[data-carousel="${productId}"]`);
+    if (!carousel) return;
+
+    const images = carousel.querySelectorAll('img');
+    images.forEach((img, idx) => {
+      img.classList.toggle('active', idx === index);
+    });
+
+    this.updateCarouselDots(productId, index);
+  },
+
+  updateCarouselDots(productId, activeIndex) {
+    const card = document.querySelector(`[data-product-id="${productId}"]`);
+    if (!card) return;
+
+    const dots = card.querySelectorAll('.carousel-dots .dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === activeIndex);
+    });
+  },
+
+  // Open product detail modal
+  openProductModal(productId) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return;
+
+    // Store current modal state
+    this.modalProduct = product;
+    this.modalSelectedColor = Object.keys(product.images_by_color || {})[0];
+    this.modalSelectedSize = null;
+    this.modalImageIndex = 0;
+
+    // Render and show modal
+    const modalHTML = this.renderProductModal(product);
+    const modalContainer = document.getElementById('productModal');
+    if (modalContainer) {
+      modalContainer.innerHTML = modalHTML;
+      modalContainer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  },
+
+  // Close product modal
+  closeProductModal() {
+    const modalContainer = document.getElementById('productModal');
+    if (modalContainer) {
+      modalContainer.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    this.modalProduct = null;
+  },
+
+  // Render product modal
+  renderProductModal(product) {
+    const colors = Object.keys(product.images_by_color || {});
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+
+    const currentImages = product.images_by_color[this.modalSelectedColor] || [];
+
+    return `
+      <div class="modal-overlay" onclick="MerchStore.closeProductModal()"></div>
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="MerchStore.closeProductModal()">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <div class="modal-grid">
+          <!-- Left: Image Carousel -->
+          <div class="modal-image-section">
+            <div class="modal-carousel">
+              ${currentImages.length > 1 ? `
+                <button class="modal-carousel-btn modal-carousel-prev" onclick="MerchStore.modalPrevImage()">
+                  <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+              ` : ''}
+
+              <img id="modalMainImage" src="${currentImages[this.modalImageIndex] || product.image_url}" alt="${product.name}">
+
+              ${currentImages.length > 1 ? `
+                <button class="modal-carousel-btn modal-carousel-next" onclick="MerchStore.modalNextImage()">
+                  <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              ` : ''}
+            </div>
+
+            ${currentImages.length > 1 ? `
+              <div class="modal-thumbnails">
+                ${currentImages.map((img, idx) => `
+                  <img src="${img}"
+                       class="modal-thumbnail ${idx === this.modalImageIndex ? 'active' : ''}"
+                       onclick="MerchStore.modalGotoImage(${idx})"
+                       alt="View ${idx + 1}">
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Right: Product Details -->
+          <div class="modal-details-section">
+            <h2 class="modal-title">${product.name}</h2>
+            <div class="modal-price">$${(product.price / 100).toFixed(2)}</div>
+            <p class="modal-description">${product.description || ''}</p>
+
+            ${colors.length > 1 ? `
+              <div class="modal-option-group">
+                <label class="modal-option-label">Color</label>
+                <div class="modal-color-options">
+                  ${colors.map(color => `
+                    <button class="modal-color-btn ${color === this.modalSelectedColor ? 'selected' : ''}"
+                            onclick="MerchStore.selectModalColor('${color}')"
+                            title="${color}">
+                      ${color}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            ${sizes.length > 0 ? `
+              <div class="modal-option-group">
+                <label class="modal-option-label">Size</label>
+                <div class="modal-size-options">
+                  ${sizes.map(size => `
+                    <button class="modal-size-btn ${size === this.modalSelectedSize ? 'selected' : ''}"
+                            onclick="MerchStore.selectModalSize('${size}')">
+                      ${size}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <button class="modal-add-to-cart" onclick="MerchStore.addToCartFromModal()">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  // Modal image navigation
+  modalPrevImage() {
+    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    this.modalImageIndex = this.modalImageIndex === 0 ? images.length - 1 : this.modalImageIndex - 1;
+    this.updateModalImage();
+  },
+
+  modalNextImage() {
+    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    this.modalImageIndex = (this.modalImageIndex + 1) % images.length;
+    this.updateModalImage();
+  },
+
+  modalGotoImage(index) {
+    this.modalImageIndex = index;
+    this.updateModalImage();
+  },
+
+  updateModalImage() {
+    const img = document.getElementById('modalMainImage');
+    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    if (img && images) {
+      img.src = images[this.modalImageIndex];
+
+      // Update thumbnail active state
+      document.querySelectorAll('.modal-thumbnail').forEach((thumb, idx) => {
+        thumb.classList.toggle('active', idx === this.modalImageIndex);
+      });
+    }
+  },
+
+  // Select color in modal (changes images)
+  selectModalColor(color) {
+    this.modalSelectedColor = color;
+    this.modalImageIndex = 0; // Reset to first image of new color
+
+    // Update color buttons
+    document.querySelectorAll('.modal-color-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.textContent.trim() === color);
+    });
+
+    // Update images
+    const images = this.modalProduct.images_by_color[color];
+    const img = document.getElementById('modalMainImage');
+    if (img && images) {
+      img.src = images[0];
+
+      // Update thumbnails
+      const thumbnailsContainer = document.querySelector('.modal-thumbnails');
+      if (thumbnailsContainer && images.length > 1) {
+        thumbnailsContainer.innerHTML = images.map((imgSrc, idx) => `
+          <img src="${imgSrc}"
+               class="modal-thumbnail ${idx === 0 ? 'active' : ''}"
+               onclick="MerchStore.modalGotoImage(${idx})"
+               alt="View ${idx + 1}">
+        `).join('');
+      }
+    }
+  },
+
+  // Select size in modal
+  selectModalSize(size) {
+    this.modalSelectedSize = size;
+    document.querySelectorAll('.modal-size-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.textContent.trim() === size);
+    });
+  },
+
+  // Add to cart from modal
+  addToCartFromModal() {
+    if (!this.modalProduct) return;
+
+    // Find matching variant
+    const variant = this.modalProduct.variants?.find(v =>
+      v.color === this.modalSelectedColor &&
+      (this.modalSelectedSize ? v.size === this.modalSelectedSize : true)
+    );
+
+    if (!variant && this.modalSelectedSize) {
+      alert('Please select a size');
+      return;
+    }
+
+    const cartItem = {
+      productId: this.modalProduct.id,
+      name: this.modalProduct.name,
+      price: variant?.price || this.modalProduct.price,
+      image: this.modalProduct.images_by_color[this.modalSelectedColor]?.[0],
+      variantId: variant?.id,
+      size: this.modalSelectedSize,
+      color: this.modalSelectedColor,
+      quantity: 1
+    };
+
+    // Check if item already in cart
+    const existingIndex = this.cart.findIndex(item =>
+      item.productId === cartItem.productId &&
+      item.variantId === cartItem.variantId
+    );
+
+    if (existingIndex >= 0) {
+      this.cart[existingIndex].quantity += 1;
+    } else {
+      this.cart.push(cartItem);
+    }
+
+    this.saveCart();
+    this.updateCartUI();
+    this.closeProductModal();
+    openCart(); // Open cart sidebar to show added item
   }
 };
 
