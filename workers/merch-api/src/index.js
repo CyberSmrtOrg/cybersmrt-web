@@ -2,8 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import Stripe from 'stripe';
 
-// Base path for all merch routes: /merch/*
-const app = new Hono({ strict: false }).basePath('/merch');
+// Merch store API on dedicated subdomain: store.cybersmrt.org
+const app = new Hono({ strict: false });
 
 // CORS for cybersmrt.org
 app.use('/*', cors({

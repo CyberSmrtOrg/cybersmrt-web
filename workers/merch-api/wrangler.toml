@@ -5,9 +5,9 @@ compatibility_date = "2024-01-01"
 # Enable workers.dev subdomain for testing
 workers_dev = true
 
-# Custom domain for merch API endpoints
+# Custom domain for merch store API
 routes = [
-  { pattern = "api.cybersmrt.org/merch/*", zone_name = "cybersmrt.org" }
+  { pattern = "store.cybersmrt.org/*", zone_name = "cybersmrt.org" }
 ]
 
 [vars]

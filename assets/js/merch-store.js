@@ -5,7 +5,7 @@
 // ============================================
 // Configuration
 // ============================================
-const API_BASE_URL = 'https://api.cybersmrt.org/merch';
+const API_BASE_URL = 'https://store.cybersmrt.org';
 
 // ============================================
 // State Management

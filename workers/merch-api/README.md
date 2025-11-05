@@ -112,7 +112,7 @@ npx wrangler secret put PRINTIFY_SHOP_ID
 
 1. Go to [Stripe Webhooks](https://dashboard.stripe.com/webhooks)
 2. Click **Add endpoint**
-3. Enter endpoint URL: `https://pay.cybersmrt.org/api/merch/webhooks/stripe`
+3. Enter endpoint URL: `https://store.cybersmrt.org/webhooks/stripe`
 4. Select events to listen for:
    - `checkout.session.completed`
    - `payment_intent.succeeded`
@@ -123,7 +123,7 @@ npx wrangler secret put PRINTIFY_SHOP_ID
 
 1. Go to [Printify Settings](https://printify.com/app/account/webhooks)
 2. Add new webhook
-3. Enter URL: `https://pay.cybersmrt.org/api/merch/webhooks/printify`
+3. Enter URL: `https://store.cybersmrt.org/webhooks/printify`
 4. Select events:
    - `order:shipment:created`
    - `order:shipment:delivered`
@@ -263,12 +263,12 @@ This starts a local server at `http://localhost:8787`
 
 Health check:
 ```bash
-curl https://pay.cybersmrt.org/health
+curl https://store.cybersmrt.org/health
 ```
 
 Get products (requires DB setup):
 ```bash
-curl https://pay.cybersmrt.org/api/merch/products
+curl https://store.cybersmrt.org/products
 ```
 
 ### Test with Stripe CLI
@@ -276,7 +276,7 @@ curl https://pay.cybersmrt.org/api/merch/products
 Install Stripe CLI and forward webhooks to local development:
 
 ```bash
-stripe listen --forward-to localhost:8787/api/merch/webhooks/stripe
+stripe listen --forward-to localhost:8787/webhooks/stripe
 stripe trigger checkout.session.completed
 ```
 
