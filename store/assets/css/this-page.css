@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Page CSS Scaffold
+   File: /assets/css/this-page.css
+   Purpose: Safe defaults and slots you can fill later
+   ========================================================================== */
+
+/* --- Theme tokens (override as needed) --- */
+:root {
+  --bg: #0a0d18;
+  --fg: #e5e7eb;
+  --muted: #94a3b8;
+  --card: #0f1424;
+  --stroke: rgba(148,163,184,.18);
+  --accent: #60a5fa;
+  --accent-2: #a78bfa;
+}
+
+/* --- Page wrapper (optional) --- */
+.page {
+  min-height: 70vh;
+  padding: clamp(20px, 4vw, 40px);
+  display: grid;
+  place-items: center;
+}
+
+/* --- Card shell you can reuse --- */
+.page-card {
+  width: min(1100px, 92vw);
+  margin-inline: auto;
+  border: 1px solid var(--stroke);
+  background:
+    linear-gradient(180deg, rgba(96,165,250,.06), rgba(167,139,250,.04)),
+    var(--card);
+  border-radius: 16px;
+  padding: clamp(20px, 3vw, 28px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+/* --- Headings --- */
+.page-title {
+  margin: 0 0 .35rem 0;
+  font-weight: 900;
+  letter-spacing: .02em;
+  font-size: clamp(1.4rem, 3.6vw, 2.2rem);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.page-subtitle {
+  color: var(--muted);
+  margin: .25rem 0 1rem;
+}
+
+/* --- Layout helpers --- */
+.stack { display: grid; gap: clamp(12px, 2.2vw, 18px); }
+.row   { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* --- Buttons --- */
+.btn {
+  display: inline-block;
+  padding: .6rem 1.1rem;
+  border-radius: 999px;
+  color: var(--fg);
+  text-decoration: none;
+  border: 1px solid var(--stroke);
+  transition: border-color .2s, transform .15s;
+}
+.btn:hover { border-color: rgba(96,165,250,.45); transform: translateY(-1px); }
+
+/* --- Placeholder section blocks --- */
+.section {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px dashed var(--stroke);
+  border-radius: 12px;
+  color: var(--muted);
+}
+
+/* --- Media queries ready-to-fill --- */
+@media (max-width: 900px) {
+  /* mobile tweaks go here */
+}
