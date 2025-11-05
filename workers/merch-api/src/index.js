@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import Stripe from 'stripe';
 
-const app = new Hono();
+// Base path for all merch routes: /merch/*
+const app = new Hono({ strict: false }).basePath('/merch');
 
 // CORS for cybersmrt.org
 app.use('/*', cors({
@@ -118,7 +119,7 @@ app.get('/products/:id', async (c) => {
 });
 
 // Get Printify catalog (for admin/setup)
-app.get('/api/merch/printify/blueprints', async (c) => {
+app.get('/printify/blueprints', async (c) => {
   try {
     const blueprints = await printifyRequest(c.env, '/catalog/blueprints.json');
     return c.json({ blueprints });
@@ -129,7 +130,7 @@ app.get('/api/merch/printify/blueprints', async (c) => {
 });
 
 // Get blueprint variants
-app.get('/api/merch/printify/blueprints/:blueprintId/variants', async (c) => {
+app.get('/printify/blueprints/:blueprintId/variants', async (c) => {
   try {
     const { blueprintId } = c.req.param();
     const { printProviderId } = c.req.query();
@@ -284,7 +285,7 @@ app.get('/checkout/session/:sessionId', async (c) => {
 });
 
 // Stripe webhook handler
-app.post('/api/merch/webhooks/stripe', async (c) => {
+app.post('/webhooks/stripe', async (c) => {
   try {
     const { DB } = c.env;
     const stripe = getStripe(c.env);
@@ -420,7 +421,7 @@ async function submitOrderToPrintify(env, order) {
 }
 
 // Printify webhook handler
-app.post('/api/merch/webhooks/printify', async (c) => {
+app.post('/webhooks/printify', async (c) => {
   try {
     const { DB } = c.env;
     const event = await c.req.json();
@@ -453,7 +454,7 @@ app.post('/api/merch/webhooks/printify', async (c) => {
 });
 
 // Admin: Add product to catalog
-app.post('/api/merch/admin/products', async (c) => {
+app.post('/admin/products', async (c) => {
   try {
     const { DB, PRODUCT_CACHE } = c.env;
     const body = await c.req.json();
