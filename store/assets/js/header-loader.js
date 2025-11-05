@@ -1,5 +1,9 @@
 /* /assets/js/header-loader.js */
 
+// Prevent duplicate execution
+if (typeof window.HEADER_LOADER_EXECUTED === 'undefined') {
+window.HEADER_LOADER_EXECUTED = true;
+
 // ============================================
 // Auth & UI Functions - Define First
 // ============================================
@@ -273,3 +277,5 @@ function waitForAuthAndUpdate() {
 
   document.head.appendChild(script);
 })();
+
+} // End duplicate check
