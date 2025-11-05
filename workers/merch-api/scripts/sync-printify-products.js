@@ -250,36 +250,35 @@ function detectCategory(title, tags = []) {
 
 /**
  * Extract size from variant title
- * Format: "Color / Size" or just "Size"
+ * Handles both formats: "Color / Size" and "Size / Color"
  */
 function extractSize(title) {
-  const parts = title.split('/').map(p => p.trim());
-
-  // If there's a /, size is the second part
-  if (parts.length > 1) {
-    const sizeMatch = parts[1].match(/\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i);
-    return sizeMatch ? sizeMatch[1].toUpperCase() : parts[1];
-  }
-
-  // Otherwise try to match size in the whole title
-  const sizeMatch = title.match(/\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i);
+  const sizePattern = /\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i;
+  const sizeMatch = title.match(sizePattern);
   return sizeMatch ? sizeMatch[1].toUpperCase() : null;
 }
 
 /**
  * Extract color from variant title
- * Format: "Color / Size" - color comes BEFORE the /
+ * Handles both formats: "Color / Size" and "Size / Color"
  */
 function extractColor(title) {
   const parts = title.split('/').map(p => p.trim());
 
-  // If there's a /, color is the first part
-  if (parts.length > 1) {
-    return parts[0];
+  if (parts.length !== 2) {
+    return null; // No color variant
   }
 
-  // If no /, might just be a size (no color variant)
-  return null;
+  // Check which part is the size
+  const sizePattern = /\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i;
+
+  if (sizePattern.test(parts[0])) {
+    // Format: "Size / Color" - color is second part
+    return parts[1];
+  } else {
+    // Format: "Color / Size" - color is first part
+    return parts[0];
+  }
 }
 
 /**

@@ -13,432 +13,432 @@
         "id": 24644,
         "sku": "46039488698255593821",
         "price": 3000,
-        "size": "Black",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 24833,
         "sku": "52085593091482512580",
         "price": 3000,
-        "size": "White",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 32419,
         "sku": "33975321271689735891",
         "price": 3000,
-        "size": "Navy",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 24794,
         "sku": "26710947181283951213",
         "price": 3000,
-        "size": "Red",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 24734,
         "sku": "85644469398757313393",
         "price": 3000,
-        "size": "Leaf",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Leaf",
         "is_available": false
       },
       {
         "id": 24728,
         "sku": "22782660286236236261",
         "price": 3000,
-        "size": "Kelly",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Kelly",
         "is_available": false
       },
       {
         "id": 24626,
         "sku": "33480286587160367175",
         "price": 3000,
-        "size": "Athletic Heather",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Athletic Heather",
         "is_available": true
       },
       {
         "id": 24674,
         "sku": "13220067929426116399",
         "price": 3000,
-        "size": "Dark Grey",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24875,
         "sku": "33048979447195662996",
         "price": 3000,
-        "size": "True Royal",
-        "color": "2XL",
+        "size": "2XL",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24641,
         "sku": "31281935053812470329",
         "price": 2500,
-        "size": "Black",
-        "color": "S",
+        "size": "S",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 24793,
         "sku": "79971284248006465437",
         "price": 2500,
-        "size": "Red",
-        "color": "XS",
+        "size": "XS",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 24831,
         "sku": "25025169315960483372",
         "price": 2500,
-        "size": "White",
-        "color": "XL",
+        "size": "XL",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 24828,
         "sku": "27425114931825288708",
         "price": 2500,
-        "size": "White",
-        "color": "L",
+        "size": "L",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 24832,
         "sku": "32152848893742339456",
         "price": 2500,
-        "size": "White",
-        "color": "XS",
+        "size": "XS",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 24639,
         "sku": "35580860938182935260",
         "price": 2500,
-        "size": "Black",
-        "color": "L",
+        "size": "L",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 32417,
         "sku": "83296286078802773497",
         "price": 2500,
-        "size": "Navy",
-        "color": "L",
+        "size": "L",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 24829,
         "sku": "80225498713613901877",
         "price": 2500,
-        "size": "White",
-        "color": "M",
+        "size": "M",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 24640,
         "sku": "24876676734083143921",
         "price": 2500,
-        "size": "Black",
-        "color": "M",
+        "size": "M",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 24643,
         "sku": "21715137960380841268",
         "price": 2500,
-        "size": "Black",
-        "color": "XS",
+        "size": "XS",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 24791,
         "sku": "33451292786589074507",
         "price": 2500,
-        "size": "Red",
-        "color": "S",
+        "size": "S",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 32415,
         "sku": "32597285651917728680",
         "price": 2500,
-        "size": "Navy",
-        "color": "S",
+        "size": "S",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 32418,
         "sku": "23324714663497113850",
         "price": 2500,
-        "size": "Navy",
-        "color": "XL",
+        "size": "XL",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 24642,
         "sku": "11572819669918999892",
         "price": 2500,
-        "size": "Black",
-        "color": "XL",
+        "size": "XL",
+        "color": "Black",
         "is_available": true
       },
       {
         "id": 24790,
         "sku": "12705330773301571939",
         "price": 2500,
-        "size": "Red",
-        "color": "M",
+        "size": "M",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 32416,
         "sku": "57805797119962104024",
         "price": 2500,
-        "size": "Navy",
-        "color": "M",
+        "size": "M",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 32414,
         "sku": "19212477221091828707",
         "price": 2500,
-        "size": "Navy",
-        "color": "XS",
+        "size": "XS",
+        "color": "Navy",
         "is_available": true
       },
       {
         "id": 24792,
         "sku": "18001102691618475406",
         "price": 2500,
-        "size": "Red",
-        "color": "XL",
+        "size": "XL",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 24830,
         "sku": "20913919004668535026",
         "price": 2500,
-        "size": "White",
-        "color": "S",
+        "size": "S",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 24789,
         "sku": "33104769703354426500",
         "price": 2500,
-        "size": "Red",
-        "color": "L",
+        "size": "L",
+        "color": "Red",
         "is_available": true
       },
       {
         "id": 24730,
         "sku": "17099620275996166555",
         "price": 2500,
-        "size": "Leaf",
-        "color": "M",
+        "size": "M",
+        "color": "Leaf",
         "is_available": true
       },
       {
         "id": 24673,
         "sku": "31736858101870948592",
         "price": 2500,
-        "size": "Dark Grey",
-        "color": "XS",
+        "size": "XS",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24873,
         "sku": "23291296332684711876",
         "price": 2500,
-        "size": "True Royal",
-        "color": "XL",
+        "size": "XL",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24672,
         "sku": "21248411435430340512",
         "price": 2500,
-        "size": "Dark Grey",
-        "color": "XL",
+        "size": "XL",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24726,
         "sku": "17896136536038132473",
         "price": 2500,
-        "size": "Kelly",
-        "color": "XL",
+        "size": "XL",
+        "color": "Kelly",
         "is_available": false
       },
       {
         "id": 24669,
         "sku": "13248014190280299237",
         "price": 2500,
-        "size": "Dark Grey",
-        "color": "L",
+        "size": "L",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24624,
         "sku": "65174356617633208108",
         "price": 2500,
-        "size": "Athletic Heather",
-        "color": "XL",
+        "size": "XL",
+        "color": "Athletic Heather",
         "is_available": true
       },
       {
         "id": 24723,
         "sku": "25092079602712760057",
         "price": 2500,
-        "size": "Kelly",
-        "color": "L",
+        "size": "L",
+        "color": "Kelly",
         "is_available": false
       },
       {
         "id": 24725,
         "sku": "91001990186176764194",
         "price": 2500,
-        "size": "Kelly",
-        "color": "S",
+        "size": "S",
+        "color": "Kelly",
         "is_available": true
       },
       {
         "id": 24727,
         "sku": "21339584327164508187",
         "price": 2500,
-        "size": "Kelly",
-        "color": "XS",
+        "size": "XS",
+        "color": "Kelly",
         "is_available": true
       },
       {
         "id": 24670,
         "sku": "20757249632720590289",
         "price": 2500,
-        "size": "Dark Grey",
-        "color": "M",
+        "size": "M",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24821,
         "sku": "14370813717889908094",
         "price": 2500,
-        "size": "True Royal",
-        "color": "XS",
+        "size": "XS",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24819,
         "sku": "32745899721939129903",
         "price": 2500,
-        "size": "True Royal",
-        "color": "M",
+        "size": "M",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24671,
         "sku": "48756821048712430438",
         "price": 2500,
-        "size": "Dark Grey",
-        "color": "S",
+        "size": "S",
+        "color": "Dark Grey",
         "is_available": true
       },
       {
         "id": 24724,
         "sku": "13437919867722297881",
         "price": 2500,
-        "size": "Kelly",
-        "color": "M",
+        "size": "M",
+        "color": "Kelly",
         "is_available": false
       },
       {
         "id": 24729,
         "sku": "28266479410749030203",
         "price": 2500,
-        "size": "Leaf",
-        "color": "L",
+        "size": "L",
+        "color": "Leaf",
         "is_available": false
       },
       {
         "id": 24733,
         "sku": "18931502313406112805",
         "price": 2500,
-        "size": "Leaf",
-        "color": "XS",
+        "size": "XS",
+        "color": "Leaf",
         "is_available": true
       },
       {
         "id": 24625,
         "sku": "28061293582961005503",
         "price": 2500,
-        "size": "Athletic Heather",
-        "color": "XS",
+        "size": "XS",
+        "color": "Athletic Heather",
         "is_available": true
       },
       {
         "id": 24623,
         "sku": "17963835134025762874",
         "price": 2500,
-        "size": "Athletic Heather",
-        "color": "S",
+        "size": "S",
+        "color": "Athletic Heather",
         "is_available": true
       },
       {
         "id": 24622,
         "sku": "17141599290296651962",
         "price": 2500,
-        "size": "Athletic Heather",
-        "color": "M",
+        "size": "M",
+        "color": "Athletic Heather",
         "is_available": true
       },
       {
         "id": 24820,
         "sku": "18868768660305681712",
         "price": 2500,
-        "size": "True Royal",
-        "color": "S",
+        "size": "S",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24732,
         "sku": "30410329386600240325",
         "price": 2500,
-        "size": "Leaf",
-        "color": "XL",
+        "size": "XL",
+        "color": "Leaf",
         "is_available": false
       },
       {
         "id": 24870,
         "sku": "24793718429972841384",
         "price": 2500,
-        "size": "True Royal",
-        "color": "L",
+        "size": "L",
+        "color": "True Royal",
         "is_available": true
       },
       {
         "id": 24731,
         "sku": "29216682615599667703",
         "price": 2500,
-        "size": "Leaf",
-        "color": "S",
+        "size": "S",
+        "color": "Leaf",
         "is_available": true
       },
       {
         "id": 24621,
         "sku": "16418361464147226232",
         "price": 2500,
-        "size": "Athletic Heather",
-        "color": "L",
+        "size": "L",
+        "color": "Athletic Heather",
         "is_available": true
       }
     ],
@@ -455,7 +455,7 @@
       "Summer Picks",
       "TikTok"
     ],
-    "created_at": "2025-11-05T01:19:15.860Z"
+    "created_at": "2025-11-05T01:21:55.631Z"
   },
   {
     "id": "690a2d5a7bb612279a0805f9",
@@ -471,7 +471,7 @@
         "id": 45750,
         "sku": "67947620222760172901",
         "price": 300,
-        "size": "White",
+        "size": null,
         "color": "3\" × 3\"",
         "is_available": true
       }
@@ -485,7 +485,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-05T01:19:16.521Z"
+    "created_at": "2025-11-05T01:21:56.456Z"
   },
   {
     "id": "690a2d089473e932c707f313",
@@ -602,7 +602,7 @@
       "Polo",
       "Polo shirt"
     ],
-    "created_at": "2025-11-05T01:19:17.319Z"
+    "created_at": "2025-11-05T01:21:57.331Z"
   },
   {
     "id": "690a2bd79473e932c707f2df",
@@ -966,6 +966,6 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-05T01:19:18.380Z"
+    "created_at": "2025-11-05T01:21:58.490Z"
   }
 ]
