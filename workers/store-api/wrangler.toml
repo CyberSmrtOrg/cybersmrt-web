@@ -1,11 +1,11 @@
-name = "cybersmrt-merch-api"
+name = "cybersmrt-store-api"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
 # Enable workers.dev subdomain for testing
 workers_dev = true
 
-# Custom domain for merch store API
+# Custom domain for store API
 routes = [
   { pattern = "store.cybersmrt.org/*", zone_name = "cybersmrt.org" }
 ]
@@ -17,7 +17,7 @@ STRIPE_PUBLISHABLE_KEY = ""  # Will be set via secrets
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"
-database_name = "cybersmrt-merch"
+database_name = "cybersmrt-store"
 database_id = "b6469b14-e613-44fc-aa9a-75d86c46a911"
 
 # KV namespace for product catalog cache
@@ -26,7 +26,7 @@ binding = "PRODUCT_CACHE"
 id = "89d8c4f59d794c36888770244e4bdbbf"
 
 [env.development]
-name = "cybersmrt-merch-api-dev"
+name = "cybersmrt-store-api-dev"
 
 [env.development.vars]
 ENVIRONMENT = "development"

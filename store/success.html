@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed | CyberSmrt Store</title>
+  <meta name="description" content="Thank you for your purchase! Your order has been confirmed and will be processed shortly.">
+
+  <!-- Orbitron font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Theme System -->
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <script src="/assets/js/theme.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      margin-top: 80px;
+    }
+
+    .success-container {
+      max-width: 700px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 4rem 3rem;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 2rem;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-icon svg {
+      width: 50px;
+      height: 50px;
+      color: white;
+      stroke-width: 3;
+    }
+
+    .success-container h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .success-container p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .order-info {
+      background: var(--bg-elevated);
+      border: 1px solid var(--card-border);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+
+    .order-info h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .order-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .order-detail:last-child {
+      border-bottom: none;
+    }
+
+    .order-detail-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .order-detail-value {
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--card-border);
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .impact-message {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .impact-message h3 {
+      font-size: 1.5rem;
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .impact-message p {
+      font-size: 1.05rem;
+      margin-bottom: 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--card-border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .next-steps {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--card-border);
+    }
+
+    .next-steps h3 {
+      font-size: 1.3rem;
+      color: var(--text-heading);
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .next-steps ul {
+      text-align: left;
+      list-style: none;
+      padding: 0;
+    }
+
+    .next-steps li {
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .next-steps li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        margin-top: 60px;
+      }
+
+      .success-container {
+        padding: 3rem 1.5rem;
+      }
+
+      .success-container h1 {
+        font-size: 2rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <!-- Google Analytics -->
+  <script src="/assets/js/analytics-config.js"></script>
+  <script src="/assets/js/analytics.js" defer></script>
+</head>
+<body>
+  <!-- Shared header mount + loader -->
+  <div id="header-mount"></div>
+  <script defer src="/assets/js/header-loader.js"></script>
+
+  <!-- No-JS header fallback -->
+  <noscript>
+    <nav style="background:#0a0a0a;border-bottom:1px solid #333;padding:.75rem 1rem">
+      <a href="/" style="color:#8ab4ff;font-weight:900;margin-right:1rem">CYBERSMRT</a>
+      <a href="/" style="color:#cbd5e1;margin-right:1rem">Home</a>
+      <a href="/#programs" style="color:#cbd5e1;margin-right:1rem">Programs</a>
+      <a href="/pages/blog/" style="color:#cbd5e1;margin-right:1rem">Blog</a>
+      <a href="/pages/about/" style="color:#cbd5e1;margin-right:1rem">About</a>
+      <a href="/pages/contact.html" style="color:#cbd5e1">Contact</a>
+    </nav>
+  </noscript>
+
+  <main>
+    <div class="success-container">
+      <div class="success-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <h1>Order Confirmed!</h1>
+      <p>
+        Thank you for supporting our mission! Your order has been confirmed and payment was successful.
+        We'll send you an email confirmation shortly with all the details.
+      </p>
+
+      <div class="order-info" id="orderInfo">
+        <h2>Order Details</h2>
+        <div class="order-detail">
+          <span class="order-detail-label">Order ID:</span>
+          <span class="order-detail-value" id="orderId">
+            <span class="loading-spinner"></span>
+          </span>
+        </div>
+        <div class="order-detail">
+          <span class="order-detail-label">Status:</span>
+          <span class="order-detail-value" id="orderStatus">Processing</span>
+        </div>
+        <div class="order-detail">
+          <span class="order-detail-label">Email:</span>
+          <span class="order-detail-value" id="orderEmail">
+            <span class="loading-spinner"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="impact-message">
+        <h3>🎯 Your Impact</h3>
+        <p>
+          100% of profits from this purchase go directly to funding K-12 cybersecurity programs,
+          free student resources, and sliding-scale security services for nonprofits. Thank you
+          for helping us bridge the cybersecurity skills gap!
+        </p>
+      </div>
+
+      <div class="next-steps">
+        <h3>What Happens Next?</h3>
+        <ul>
+          <li>You'll receive an order confirmation email within minutes</li>
+          <li>Your order will be printed and processed within 2-3 business days</li>
+          <li>Shipping typically takes 5-7 business days (US orders)</li>
+          <li>You'll receive tracking information via email once shipped</li>
+        </ul>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-primary">Continue Shopping</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="top"></div>
+
+  <!-- Shared footer mount + loader -->
+  <div id="footer-mount"></div>
+  <script defer src="/assets/js/footer-loader.js"></script>
+  <script defer src="/assets/js/footer-init.js"></script>
+
+  <script>
+    // Clear cart after successful purchase
+    localStorage.removeItem('cybersmrt_cart');
+
+    // Extract session ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+
+    if (sessionId) {
+      // Fetch order details from API
+      fetch(`https://pay.cybersmrt.org/checkout/session/${sessionId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.order_id) {
+            document.getElementById('orderId').textContent = data.order_id;
+          }
+          if (data.customer_email) {
+            document.getElementById('orderEmail').textContent = data.customer_email;
+          }
+          if (data.status) {
+            document.getElementById('orderStatus').textContent = data.status === 'complete' ? 'Confirmed' : 'Processing';
+          }
+        })
+        .catch(err => {
+          console.error('Failed to fetch order details:', err);
+          document.getElementById('orderId').textContent = sessionId.substring(0, 16) + '...';
+          document.getElementById('orderEmail').textContent = 'Check your email';
+        });
+    } else {
+      document.getElementById('orderId').textContent = 'Not available';
+      document.getElementById('orderEmail').textContent = 'Check your email';
+    }
+  </script>
+</body>
+</html>

@@ -2,12 +2,12 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import Stripe from 'stripe';
 
-// Merch store API on dedicated subdomain: store.cybersmrt.org
+// Store API on dedicated subdomain: store.cybersmrt.org
 const app = new Hono({ strict: false });
 
 // CORS for cybersmrt.org
 app.use('/*', cors({
-  origin: ['https://cybersmrt.org', 'https://www.cybersmrt.org', 'http://localhost:8787'],
+  origin: ['https://cybersmrt.org', 'https://www.cybersmrt.org', 'https://store.cybersmrt.org', 'http://localhost:8787'],
   credentials: true,
 }));
 
@@ -51,7 +51,7 @@ async function printifyRequest(env, endpoint, method = 'GET', body = null) {
 
 // Health check
 app.get('/health', (c) => {
-  return c.json({ status: 'ok', service: 'cybersmrt-merch-api' });
+  return c.json({ status: 'ok', service: 'cybersmrt-store-api' });
 });
 
 // Get all products (catalog)
@@ -235,10 +235,10 @@ app.post('/checkout/create', async (c) => {
           },
         },
       ],
-      success_url: `https://cybersmrt.org/pages/merch/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://cybersmrt.org/pages/merch/`,
+      success_url: `https://store.cybersmrt.org/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://store.cybersmrt.org/`,
       metadata: {
-        orderType: 'merch',
+        orderType: 'store',
         items: JSON.stringify(items),
       },
     });
