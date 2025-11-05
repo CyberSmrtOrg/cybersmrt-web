@@ -173,17 +173,20 @@ const MerchStore = {
 
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
-    // Get all colors and use first as default
+    // Get all colors and sizes
     const colors = Object.keys(product.images_by_color || {});
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
     const currentCardColor = product._cardColor || colors[0];
+    const currentCardSize = product._cardSize || sizes[0];
     const previewImages = product.images_by_color?.[currentCardColor] || [product.image_url];
     const hasMultipleImages = previewImages.length > 1;
     const hasMultipleColors = colors.length > 1;
+    const hasSizes = sizes.length > 0;
 
     const defaultPrice = product.price || 0;
 
     return `
-      <article class="product-card" data-product-id="${product.id}" data-current-color="${currentCardColor}" onclick="MerchStore.openProductModal('${product.id}')">
+      <article class="product-card" data-product-id="${product.id}" data-current-color="${currentCardColor}" data-current-size="${currentCardSize}" onclick="MerchStore.openProductModal('${product.id}')">
         <div class="product-image-carousel">
           ${hasMultipleImages ? `
             <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); MerchStore.cardCarouselPrev('${product.id}')">
@@ -217,18 +220,33 @@ const MerchStore = {
           <span class="product-category-tag">${this.formatCategory(product.category)}</span>
           <h3 class="product-title-simple">${product.name}</h3>
           <div class="product-price-simple">$${(defaultPrice / 100).toFixed(2)}</div>
-          ${hasMultipleColors ? `
-            <div class="card-color-selector">
-              ${colors.map(color => `
-                <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
-                        style="background-color: ${this.getColorHex(color)};"
-                        onclick="event.stopPropagation(); MerchStore.changeCardColor('${product.id}', '${color}')"
-                        title="${color}"
-                        aria-label="View ${color} variant">
-                </button>
-              `).join('')}
-            </div>
-          ` : ''}
+
+          <div class="card-options-row">
+            ${hasMultipleColors ? `
+              <div class="card-color-selector">
+                ${colors.map(color => `
+                  <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
+                          style="background-color: ${this.getColorHex(color)};"
+                          onclick="event.stopPropagation(); MerchStore.changeCardColor('${product.id}', '${color}')"
+                          title="${color}"
+                          aria-label="View ${color} variant">
+                  </button>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            ${hasSizes ? `
+              <select class="card-size-selector"
+                      data-product-id="${product.id}"
+                      onclick="event.stopPropagation();"
+                      onchange="MerchStore.changeCardSize('${product.id}', this.value)">
+                ${sizes.map(size => `
+                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
+                `).join('')}
+              </select>
+            ` : ''}
+          </div>
+
           <button class="card-add-to-cart-btn" onclick="event.stopPropagation(); MerchStore.quickAddToCart('${product.id}')">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>

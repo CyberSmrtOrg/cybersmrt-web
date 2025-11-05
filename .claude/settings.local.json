@@ -25,7 +25,11 @@
       "Bash(git mv:*)",
       "Bash(node unpublish-all.js:*)",
       "Bash(node sync-printify-products.js:*)",
-      "Bash(node generate-import-sql.js:*)"
+      "Bash(node generate-import-sql.js:*)",
+      "Bash(set CLOUDFLARE_API_TOKEN=%CLOUDFLARE_D1_TOKEN%)",
+      "Bash(node scripts/import-to-d1.js:*)",
+      "Bash(set CLOUDFLARE_API_TOKEN=-BvAaMBulwPgIYz0MlWhOWSFUbo4Z3QUbBXETEBA)",
+      "Bash(node import-to-d1.js:*)"
     ],
     "deny": [],
     "ask": []

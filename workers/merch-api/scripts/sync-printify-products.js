@@ -169,33 +169,48 @@ async function processProduct(product) {
   let totalImagesDownloaded = 0;
 
   for (const [color, variantId] of colorMap.entries()) {
-    // Find images for this specific variant/color
-    let colorImages = images.filter(img =>
-      img.variant_ids && img.variant_ids.includes(variantId)
-    );
+    // Find ALL images for this product (Printify often doesn't tag variant_ids properly)
+    let colorImages = [...images];
 
-    // Filter out images that only show the back (no design visible)
-    // Prioritize: model images, front views, then product-only shots
+    // Filter out pure back shots (keep front, model, default)
     colorImages = colorImages.filter(img => {
       const position = (img.position || '').toLowerCase();
-      const isBack = position.includes('back');
-      // Only exclude pure back shots - keep everything else
-      return !isBack || img.is_default;
+      const src = (img.src || '').toLowerCase();
+
+      // Keep default/primary image always
+      if (img.is_default) return true;
+
+      // Exclude if explicitly marked as back
+      if (position.includes('back') && !position.includes('front')) {
+        return false;
+      }
+
+      return true;
     });
 
-    // Sort to prioritize: default first, then model shots, then front views
+    // Sort to prioritize: default first, then model/lifestyle, then product shots
     colorImages.sort((a, b) => {
-      if (a.is_default) return -1;
-      if (b.is_default) return 1;
+      if (a.is_default && !b.is_default) return -1;
+      if (b.is_default && !a.is_default) return 1;
 
       const aPos = (a.position || '').toLowerCase();
       const bPos = (b.position || '').toLowerCase();
+      const aSrc = (a.src || '').toLowerCase();
+      const bSrc = (b.src || '').toLowerCase();
 
-      const aHasModel = aPos.includes('front') || aPos.includes('model');
-      const bHasModel = bPos.includes('front') || bPos.includes('model');
+      // Prioritize lifestyle/model shots
+      const aHasModel = aPos.includes('model') || aSrc.includes('lifestyle') || aSrc.includes('model');
+      const bHasModel = bPos.includes('model') || bSrc.includes('lifestyle') || bSrc.includes('model');
 
       if (aHasModel && !bHasModel) return -1;
       if (bHasModel && !aHasModel) return 1;
+
+      // Then front views
+      const aHasFront = aPos.includes('front');
+      const bHasFront = bPos.includes('front');
+
+      if (aHasFront && !bHasFront) return -1;
+      if (bHasFront && !aHasFront) return 1;
 
       return 0;
     });
