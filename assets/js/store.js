@@ -1,5 +1,10 @@
 /* /assets/js/store.js */
 
+// Prevent duplicate execution
+if (typeof window.STORE_LOADED === 'undefined') {
+window.STORE_LOADED = true;
+
+(function() {
 'use strict';
 
 // ============================================
@@ -1029,3 +1034,6 @@ window.filterCategory = filterCategory;
 window.proceedToCheckout = proceedToCheckout;
 window.openImageZoom = openImageZoom;
 window.closeImageZoom = closeImageZoom;
+
+})(); // End IIFE
+} // End duplicate check
