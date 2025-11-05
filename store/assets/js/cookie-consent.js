@@ -1,4 +1,9 @@
 // Cookie Consent Management
+
+// Prevent duplicate execution
+if (typeof window.COOKIE_CONSENT_LOADED === 'undefined') {
+window.COOKIE_CONSENT_LOADED = true;
+
 (function() {
   'use strict';
 
@@ -299,3 +304,5 @@
     hasConsented: hasConsented
   };
 })();
+
+} // End duplicate check

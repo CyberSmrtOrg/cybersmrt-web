@@ -1,4 +1,9 @@
 // footer-init.js
+
+// Prevent duplicate execution
+if (typeof window.FOOTER_INIT_LOADED === 'undefined') {
+window.FOOTER_INIT_LOADED = true;
+
 (function() {
   'use strict';
 
@@ -65,3 +70,5 @@
     initFooter();
   }
 })();
+
+} // End duplicate check
