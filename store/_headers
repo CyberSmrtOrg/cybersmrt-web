@@ -1,7 +1,0 @@
-# Cloudflare Pages custom headers for proper MIME types
-
-/assets/css/*.css
-  Content-Type: text/css
-
-/assets/js/*.js
-  Content-Type: application/javascript
