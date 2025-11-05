@@ -1,5 +1,8 @@
 # Cloudflare Pages redirects for store.cybersmrt.org
-# Serve all requests from this directory
+# NOTE: When building from /store, this file handles routing
 
-# SPA routing - serve index.html for all other paths (but NOT for asset files)
-/* /index.html 200
+# Serve index.html for root
+/ /index.html 200
+
+# Serve success page
+/success.html /success.html 200
