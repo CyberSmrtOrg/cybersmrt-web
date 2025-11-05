@@ -95,6 +95,61 @@ const MerchStore = {
     return 'apparel'; // default
   },
 
+  // Convert color name to hex value for display
+  getColorHex(colorName) {
+    const colorMap = {
+      // Basic colors
+      'Black': '#000000',
+      'White': '#FFFFFF',
+      'Navy': '#001F3F',
+      'Gray': '#808080',
+      'Grey': '#808080',
+      'Red': '#FF0000',
+      'Blue': '#0074D9',
+      'Green': '#2ECC40',
+      'Yellow': '#FFDC00',
+      'Orange': '#FF851B',
+      'Pink': '#FF69B4',
+      'Purple': '#B10DC9',
+      'Brown': '#8B4513',
+      'Beige': '#F5F5DC',
+      'Maroon': '#800000',
+      'Olive': '#808000',
+      'Teal': '#008080',
+      'Cyan': '#00FFFF',
+      'Magenta': '#FF00FF',
+      'Lime': '#00FF00',
+      'Silver': '#C0C0C0',
+      'Gold': '#FFD700',
+
+      // Printify-specific colors
+      'Leaf': '#4A7C59',
+      'Kelly': '#006B3C',
+      'Kelly Green': '#006B3C',
+      'Athletic Heather': '#B3B3B3',
+      'Dark Grey': '#505050',
+      'Dark Gray': '#505050',
+      'True Royal': '#1E3A8A',
+      'Royal Blue': '#4169E1',
+      'Heather Blue': '#8FB4D9',
+      'Light Blue': '#87CEEB',
+      'Heather Grey': '#D3D3D3',
+      'Heather Gray': '#D3D3D3',
+      'Ash': '#B2BEB5',
+      'Ash Grey': '#B2BEB5',
+      'Sport Grey': '#B3B3B3',
+      'Charcoal': '#36454F',
+      'Forest Green': '#228B22',
+      'Irish Green': '#009A63',
+      'Military Green': '#5A7247',
+      'Cardinal': '#C41E3A',
+      'Burgundy': '#800020',
+      'Team Purple': '#764ba2',
+      'Heather Prism Lilac': '#C8A2D0'
+    };
+    return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
+  },
+
   // Render products grid
   renderProducts() {
     const grid = document.getElementById('productGrid');
@@ -166,6 +221,7 @@ const MerchStore = {
             <div class="card-color-selector">
               ${colors.map(color => `
                 <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
+                        style="background-color: ${this.getColorHex(color)};"
                         onclick="event.stopPropagation(); MerchStore.changeCardColor('${product.id}', '${color}')"
                         title="${color}"
                         aria-label="View ${color} variant">
@@ -173,6 +229,12 @@ const MerchStore = {
               `).join('')}
             </div>
           ` : ''}
+          <button class="card-add-to-cart-btn" onclick="event.stopPropagation(); MerchStore.quickAddToCart('${product.id}')">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Add to Cart
+          </button>
         </div>
       </article>
     `;
@@ -569,7 +631,7 @@ const MerchStore = {
                 </button>
               ` : ''}
 
-              <img id="modalMainImage" src="${currentImages[this.modalImageIndex] || product.image_url}" alt="${product.name}">
+              <img id="modalMainImage" src="${currentImages[this.modalImageIndex] || product.image_url}" alt="${product.name}" onclick="openImageZoom('${currentImages[this.modalImageIndex] || product.image_url}')">
 
               ${currentImages.length > 1 ? `
                 <button class="modal-carousel-btn modal-carousel-next" onclick="MerchStore.modalNextImage()">
@@ -662,6 +724,7 @@ const MerchStore = {
     const images = this.modalProduct.images_by_color[this.modalSelectedColor];
     if (img && images) {
       img.src = images[this.modalImageIndex];
+      img.onclick = () => openImageZoom(images[this.modalImageIndex]);
 
       // Update thumbnail active state
       document.querySelectorAll('.modal-thumbnail').forEach((thumb, idx) => {
@@ -749,6 +812,69 @@ const MerchStore = {
     this.updateCartUI();
     this.closeProductModal();
     openCart(); // Open cart sidebar to show added item
+  },
+
+  // Quick add to cart from product card
+  quickAddToCart(productId) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product) return;
+
+    // Check if product has size variants
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+
+    // If has sizes, open modal for selection
+    if (sizes.length > 0) {
+      this.openProductModal(productId);
+      return;
+    }
+
+    // Otherwise, add directly with current color selection
+    const currentColor = product._cardColor || Object.keys(product.images_by_color || {})[0];
+    const variant = product.variants?.find(v => v.color === currentColor);
+
+    if (!variant) {
+      // No variant found, open modal
+      this.openProductModal(productId);
+      return;
+    }
+
+    const cartItem = {
+      productId: product.id,
+      name: product.name,
+      price: variant.price || product.price,
+      image: product.images_by_color[currentColor]?.[0],
+      variantId: variant.id,
+      size: null,
+      color: currentColor,
+      quantity: 1
+    };
+
+    // Check if item already in cart
+    const existingIndex = this.cart.findIndex(item =>
+      item.productId === cartItem.productId &&
+      item.variantId === cartItem.variantId
+    );
+
+    if (existingIndex >= 0) {
+      this.cart[existingIndex].quantity += 1;
+    } else {
+      this.cart.push(cartItem);
+    }
+
+    this.saveCart();
+    this.updateCartUI();
+    openCart(); // Open cart sidebar to show added item
+  },
+
+  // Empty the cart
+  emptyCart() {
+    if (this.cart.length === 0) return;
+
+    if (confirm('Are you sure you want to empty your cart?')) {
+      this.cart = [];
+      this.saveCart();
+      this.updateCartUI();
+    }
   }
 };
 
@@ -780,13 +906,35 @@ function filterCategory(category) {
 
 async function proceedToCheckout() {
   const btn = document.getElementById('checkoutBtn');
+  const emailInput = document.getElementById('checkoutEmail');
+
   if (!btn || btn.disabled) return;
 
   try {
-    // Prompt for email
-    const email = prompt('Please enter your email address for order confirmation:');
+    // Validate email from input field
+    const email = emailInput?.value.trim();
     if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address');
+      // Visual feedback instead of alert popup
+      emailInput?.classList.add('error');
+      emailInput?.focus();
+
+      // Show error message below input
+      let errorMsg = emailInput?.parentElement.querySelector('.email-error-message');
+      if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.className = 'email-error-message';
+        errorMsg.textContent = 'Please enter a valid email address';
+        emailInput?.parentElement.appendChild(errorMsg);
+      }
+
+      // Remove error styling after user starts typing
+      const clearError = () => {
+        emailInput?.classList.remove('error');
+        errorMsg?.remove();
+        emailInput?.removeEventListener('input', clearError);
+      };
+      emailInput?.addEventListener('input', clearError);
+
       return;
     }
 
@@ -845,9 +993,38 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ============================================
+// Image Zoom Functions
+// ============================================
+function openImageZoom(imageSrc) {
+  const zoomModal = document.getElementById('imageZoomModal');
+  const zoomImage = document.getElementById('zoomImage');
+
+  if (zoomModal && zoomImage) {
+    zoomImage.src = imageSrc;
+    zoomModal.classList.add('active');
+  }
+}
+
+function closeImageZoom() {
+  const zoomModal = document.getElementById('imageZoomModal');
+  if (zoomModal) {
+    zoomModal.classList.remove('active');
+  }
+}
+
+// Close zoom on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeImageZoom();
+  }
+});
+
 // Expose globally for inline event handlers
 window.MerchStore = MerchStore;
 window.openCart = openCart;
 window.closeCart = closeCart;
 window.filterCategory = filterCategory;
 window.proceedToCheckout = proceedToCheckout;
+window.openImageZoom = openImageZoom;
+window.closeImageZoom = closeImageZoom;

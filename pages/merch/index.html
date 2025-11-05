@@ -380,6 +380,35 @@
       color: var(--text-heading);
     }
 
+    .cart-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .empty-cart-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .empty-cart-btn:hover {
+      color: #dc2626;
+      background: rgba(220, 38, 38, 0.1);
+    }
+
+    .empty-cart-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
     .close-cart-btn {
       background: none;
       border: none;
@@ -494,6 +523,65 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       font-size: 2rem;
+    }
+
+    .checkout-email-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .checkout-email-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .checkout-email-input {
+      width: 100%;
+      padding: 0.875rem;
+      border: 2px solid var(--card-border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .checkout-email-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .checkout-email-input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+
+    .checkout-email-input.error {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .checkout-email-input.error:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .email-error-message {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .email-error-message::before {
+      content: '⚠';
+      font-size: 1rem;
     }
 
     .checkout-btn {
@@ -716,10 +804,10 @@
       height: 24px;
       border-radius: 50%;
       border: 2px solid var(--card-border);
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       cursor: pointer;
       transition: all 0.2s;
       padding: 0;
+      /* Background color set inline via style attribute */
     }
 
     .card-color-dot:hover {
@@ -731,6 +819,33 @@
       border-color: #667eea;
       box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
       transform: scale(1.2);
+    }
+
+    .card-add-to-cart-btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .card-add-to-cart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .card-add-to-cart-btn:active {
+      transform: translateY(0);
     }
 
     .product-card {
@@ -831,6 +946,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: zoom-in;
+      transition: transform 0.2s;
+    }
+
+    .modal-carousel img:hover {
+      transform: scale(1.02);
     }
 
     .modal-carousel-btn {
@@ -1097,6 +1218,82 @@
       }
     }
 
+    /* Image Zoom Modal */
+    #imageZoomModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4000;
+      display: none;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    #imageZoomModal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .zoom-image-container {
+      position: relative;
+      max-width: 95vw;
+      max-height: 95vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zoom-image {
+      max-width: 100%;
+      max-height: 95vh;
+      object-fit: contain;
+      cursor: zoom-out;
+      animation: zoomIn 0.3s ease;
+    }
+
+    .zoom-close-btn {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.2s;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .zoom-close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: scale(1.1);
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     /* Loading State */
     .loading {
       text-align: center;
@@ -1156,7 +1353,14 @@
   <aside class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h2>Your Cart</h2>
-      <button class="close-cart-btn" onclick="closeCart()" aria-label="Close cart">✕</button>
+      <div class="cart-header-actions">
+        <button class="empty-cart-btn" onclick="MerchStore.emptyCart()" title="Empty cart">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
+        <button class="close-cart-btn" onclick="closeCart()" aria-label="Close cart">✕</button>
+      </div>
     </div>
 
     <div class="cart-items" id="cartItems">
@@ -1171,6 +1375,16 @@
       <div class="cart-total">
         <span class="cart-total-label">Total:</span>
         <span class="cart-total-amount" id="cartTotal">$0.00</span>
+      </div>
+      <div class="checkout-email-group">
+        <label for="checkoutEmail" class="checkout-email-label">Email for order confirmation:</label>
+        <input
+          type="email"
+          id="checkoutEmail"
+          class="checkout-email-input"
+          placeholder="your@email.com"
+          required
+        />
       </div>
       <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()" disabled>
         Proceed to Checkout
@@ -1229,6 +1443,14 @@
 
   <!-- Product Modal Container -->
   <div id="productModal"></div>
+
+  <!-- Image Zoom Modal -->
+  <div id="imageZoomModal" onclick="closeImageZoom()">
+    <button class="zoom-close-btn" onclick="closeImageZoom()" aria-label="Close zoom">✕</button>
+    <div class="zoom-image-container">
+      <img id="zoomImage" class="zoom-image" src="" alt="Zoomed product image" onclick="event.stopPropagation()">
+    </div>
+  </div>
 
   <!-- Shared footer mount + loader -->
   <div id="footer-mount"></div>
