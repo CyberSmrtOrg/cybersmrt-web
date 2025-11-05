@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects for store.cybersmrt.org
+# Serve all requests from this directory
+
+/* /index.html 200
