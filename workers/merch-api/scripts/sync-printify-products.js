@@ -149,21 +149,63 @@ async function processProduct(product) {
   // Get full product details
   const details = await fetchProductDetails(product.id);
 
-  // Download primary mockup image
-  const images = details.images || [];
-  const primaryImage = images.find(img => img.is_default) || images[0];
-
-  if (primaryImage) {
-    const filename = `${product.id}.jpg`;
-    const filepath = path.join(imagesDir, filename);
-
-    console.log(`   📸 Downloading mockup: ${primaryImage.src}`);
-    await downloadImage(primaryImage.src, filepath);
-    console.log(`   ✅ Saved to: ${filepath}`);
-  }
-
   // Extract variant information
   const variants = details.variants?.filter(v => v.is_enabled) || [];
+
+  // Group variants by color to get unique colors
+  const colorMap = new Map();
+  variants.forEach(v => {
+    const color = extractColor(v.title);
+    if (color && !colorMap.has(color)) {
+      colorMap.set(color, v.id);
+    }
+  });
+
+  console.log(`   🎨 Found ${colorMap.size} unique colors`);
+
+  // Download multiple mockups for each color (up to 4 images per color)
+  const images = details.images || [];
+  const imagesByColor = {};
+  let totalImagesDownloaded = 0;
+
+  for (const [color, variantId] of colorMap.entries()) {
+    // Find images for this specific variant/color
+    const colorImages = images.filter(img =>
+      img.variant_ids && img.variant_ids.includes(variantId)
+    ).slice(0, 4); // Limit to 4 images per color
+
+    if (colorImages.length === 0) continue;
+
+    // Sanitize color name for filename (remove invalid characters)
+    const colorSlug = color.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric with dash
+      .replace(/^-+|-+$/g, '');     // Remove leading/trailing dashes
+    const colorImagePaths = [];
+
+    for (let i = 0; i < colorImages.length; i++) {
+      const img = colorImages[i];
+      const filename = `${product.id}_${colorSlug}_${i + 1}.jpg`;
+      const filepath = path.join(imagesDir, filename);
+
+      try {
+        await downloadImage(img.src, filepath);
+        colorImagePaths.push(`/assets/images/merch/${filename}`);
+        totalImagesDownloaded++;
+      } catch (error) {
+        console.warn(`   ⚠️  Failed to download ${filename}:`, error.message);
+      }
+    }
+
+    if (colorImagePaths.length > 0) {
+      imagesByColor[color] = colorImagePaths;
+    }
+  }
+
+  console.log(`   📸 Downloaded ${totalImagesDownloaded} mockup images`);
+
+  // Get first color's first image as the default
+  const firstColor = Array.from(colorMap.keys())[0];
+  const defaultImage = imagesByColor[firstColor]?.[0] || null;
 
   // Prepare product data for database
   const productData = {
@@ -172,7 +214,8 @@ async function processProduct(product) {
     description: cleanDescription(details.description),
     price: variants[0]?.price || 0,
     category: detectCategory(details.title, details.tags),
-    image_url: primaryImage ? `/assets/images/merch/${product.id}.jpg` : null,
+    image_url: defaultImage,
+    images_by_color: imagesByColor, // NEW: Images organized by color
     printify_blueprint_id: details.blueprint_id,
     printify_product_id: details.id,
     variants: variants.map(v => ({

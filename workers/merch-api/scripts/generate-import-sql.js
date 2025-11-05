@@ -29,7 +29,9 @@ for (const product of products) {
     .trim()
     .substring(0, 500);
 
-  const images = JSON.stringify([{ src: product.image_url, is_default: true }]).replace(/'/g, "''");
+  // Store images_by_color for frontend carousel functionality
+  const imagesData = product.images_by_color || {};
+  const images = JSON.stringify(imagesData).replace(/'/g, "''");
   const variants = JSON.stringify(product.variants).replace(/'/g, "''");
 
   sql += `
