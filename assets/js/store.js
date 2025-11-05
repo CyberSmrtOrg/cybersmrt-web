@@ -60,7 +60,7 @@ const Store = {
 
       // Transform API response to match frontend expectations
       this.products = (data.products || []).map(p => {
-        // Parse images_by_color from JSON string if needed
+        // Parse images from JSON string if needed
         const imagesByColor = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
 
         // Get first color's first image as default
@@ -72,7 +72,7 @@ const Store = {
           name: p.title,
           price: p.markup_price,
           image_url: defaultImage,
-          images_by_color: imagesByColor,
+          images: imagesByColor,
           category: this.detectCategory(p.title)
         };
       });
@@ -181,11 +181,11 @@ const Store = {
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
     // Get all colors and sizes
-    const colors = Object.keys(product.images_by_color || {});
+    const colors = Object.keys(product.images || {});
     const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
     const currentCardColor = product._cardColor || colors[0];
     const currentCardSize = product._cardSize || sizes[0];
-    const previewImages = product.images_by_color?.[currentCardColor] || [product.image_url];
+    const previewImages = product.images?.[currentCardColor] || [product.image_url];
     const hasMultipleImages = previewImages.length > 1;
     const hasMultipleColors = colors.length > 1;
     const hasSizes = sizes.length > 0;
@@ -574,7 +574,7 @@ const Store = {
 
     // Update images
     const carousel = card.querySelector('[data-carousel]');
-    const newImages = product.images_by_color[color] || [];
+    const newImages = product.images[color] || [];
 
     carousel.innerHTML = newImages.map((img, idx) => `
       <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="lazy">
@@ -619,7 +619,7 @@ const Store = {
 
     // Store current modal state
     this.modalProduct = product;
-    this.modalSelectedColor = Object.keys(product.images_by_color || {})[0];
+    this.modalSelectedColor = Object.keys(product.images || {})[0];
     this.modalSelectedSize = null;
     this.modalImageIndex = 0;
 
@@ -645,10 +645,10 @@ const Store = {
 
   // Render product modal
   renderProductModal(product) {
-    const colors = Object.keys(product.images_by_color || {});
+    const colors = Object.keys(product.images || {});
     const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
 
-    const currentImages = product.images_by_color[this.modalSelectedColor] || [];
+    const currentImages = product.images[this.modalSelectedColor] || [];
 
     return `
       <div class="modal-overlay" onclick="Store.closeProductModal()"></div>
@@ -743,13 +743,13 @@ const Store = {
 
   // Modal image navigation
   modalPrevImage() {
-    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    const images = this.modalProduct.images[this.modalSelectedColor];
     this.modalImageIndex = this.modalImageIndex === 0 ? images.length - 1 : this.modalImageIndex - 1;
     this.updateModalImage();
   },
 
   modalNextImage() {
-    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    const images = this.modalProduct.images[this.modalSelectedColor];
     this.modalImageIndex = (this.modalImageIndex + 1) % images.length;
     this.updateModalImage();
   },
@@ -761,7 +761,7 @@ const Store = {
 
   updateModalImage() {
     const img = document.getElementById('modalMainImage');
-    const images = this.modalProduct.images_by_color[this.modalSelectedColor];
+    const images = this.modalProduct.images[this.modalSelectedColor];
     if (img && images) {
       img.src = images[this.modalImageIndex];
       img.onclick = () => openImageZoom(images[this.modalImageIndex]);
@@ -784,7 +784,7 @@ const Store = {
     });
 
     // Update images
-    const images = this.modalProduct.images_by_color[color];
+    const images = this.modalProduct.images[color];
     const img = document.getElementById('modalMainImage');
     if (img && images) {
       img.src = images[0];
@@ -829,7 +829,7 @@ const Store = {
       productId: this.modalProduct.id,
       name: this.modalProduct.name,
       price: variant?.price || this.modalProduct.price,
-      image: this.modalProduct.images_by_color[this.modalSelectedColor]?.[0],
+      image: this.modalProduct.images[this.modalSelectedColor]?.[0],
       variantId: variant?.id,
       size: this.modalSelectedSize,
       color: this.modalSelectedColor,
@@ -860,7 +860,7 @@ const Store = {
     if (!product) return;
 
     // Get current selections from card
-    const currentColor = product._cardColor || Object.keys(product.images_by_color || {})[0];
+    const currentColor = product._cardColor || Object.keys(product.images || {})[0];
     const currentSize = product._cardSize;
 
     // Find matching variant
@@ -878,7 +878,7 @@ const Store = {
       productId: product.id,
       name: product.name,
       price: variant.price || product.price,
-      image: product.images_by_color[currentColor]?.[0],
+      image: product.images[currentColor]?.[0],
       variantId: variant.id,
       size: currentSize || null,
       color: currentColor,
