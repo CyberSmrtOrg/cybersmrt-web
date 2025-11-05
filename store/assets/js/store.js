@@ -6,7 +6,8 @@
 // Configuration
 // ============================================
 // Temporarily using workers.dev URL while Pages DNS propagates
-const API_BASE_URL = 'https://cybersmrt-store-api.tony-398.workers.dev';
+window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
+const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
 // State Management
