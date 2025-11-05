@@ -1,3 +1,9 @@
+-- CyberSmrt Product Catalog Import
+-- Generated: 2025-11-05T22:37:34.364Z
+-- Products: 4
+
+
+-- CyberSmrt Tank Top - Sun's Out, Firewall's Up
 INSERT INTO products (
   id, printify_blueprint_id, printify_print_provider_id,
   title, description, base_price, markup_price, images, variants, is_active
@@ -5,7 +11,7 @@ INSERT INTO products (
   '690a3876af1cb82d8d09e50b',
   39,
   99,
-  'Tank Top: Sun''s out, Firewall''s up - Geek Computer Humor',
+  'CyberSmrt Tank Top - Sun''s Out, Firewall''s Up',
   'This tank top features a funny play on the popular saying ''Sun''s out, Guns out'' with a geeky twist as ''Sun''s out, Firewall''s up''. Perfect for computer enthusiasts who enjoy humor in their wardrobe. Ideal for casual wear during the summer season or for tech-related events and gatherings. Product features - Side seams for structural support - Self fabric binding for a clean look - Made from 100% Airlume combed and ring-spun cotton - Light fabric for a comfortable fit - Retail fit for a styl',
   3000,
   3000,
@@ -19,6 +25,9 @@ INSERT INTO products (
   images = excluded.images,
   variants = excluded.variants,
   updated_at = CURRENT_TIMESTAMP;
+
+
+-- CyberSmrt Logo Sticker
 INSERT INTO products (
   id, printify_blueprint_id, printify_print_provider_id,
   title, description, base_price, markup_price, images, variants, is_active
@@ -26,7 +35,7 @@ INSERT INTO products (
   '690a2d5a7bb612279a0805f9',
   400,
   99,
-  'Cyber Smart Kiss-Cut Stickers | Tech-Inspired Laptop Decals, Cybersecurity Gifts, Digital Nomad Accessories, Cool Stickers, Unique [...]',
+  'CyberSmrt Logo Sticker',
   'Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product f',
   300,
   300,
@@ -40,6 +49,9 @@ INSERT INTO products (
   images = excluded.images,
   variants = excluded.variants,
   updated_at = CURRENT_TIMESTAMP;
+
+
+-- CyberSmrt Polo Shirt
 INSERT INTO products (
   id, printify_blueprint_id, printify_print_provider_id,
   title, description, base_price, markup_price, images, variants, is_active
@@ -47,7 +59,7 @@ INSERT INTO products (
   '690a2d089473e932c707f313',
   1402,
   99,
-  'CyberSmrt Men''s Piqué Polo Shirt - Professional Cybersecurity Apparel',
+  'CyberSmrt Polo Shirt',
   'This classic men&#39;s piqué polo combines professional style with comfort, perfect for cybersecurity conferences, nonprofit events, teaching sessions, or casual wear. Whether you&#39;re mentoring students, attending board meetings, or enjoying weekend activities, this polo lets you proudly support accessible cybersecurity education for underserved communities. Made from soft, breathable fabric with a timeless design featuring a welt knit collar and ribbed sleeve bands, this versatile shirt work',
   3500,
   3500,
@@ -61,6 +73,9 @@ INSERT INTO products (
   images = excluded.images,
   variants = excluded.variants,
   updated_at = CURRENT_TIMESTAMP;
+
+
+-- CyberSmrt Logo T-Shirt
 INSERT INTO products (
   id, printify_blueprint_id, printify_print_provider_id,
   title, description, base_price, markup_price, images, variants, is_active
@@ -68,7 +83,7 @@ INSERT INTO products (
   '690a2bd79473e932c707f2df',
   12,
   99,
-  'Cybersecurity Awareness Tee - Unisex Jersey Short Sleeve Shirt, Tech Shirt, Gift for Tech Lovers, Cybersecurity Awareness, Geek Apparel',
+  'CyberSmrt Logo T-Shirt',
   'This premium unisex jersey tee combines exceptional comfort with CyberSmrt&#39;s mission of making cyber awareness accessible to everyone. Made from 100% Airlume combed and ring-spun cotton, it offers a lightweight feel perfect for classroom sessions, tech conferences, community outreach events, or everyday wear. The classic crew neckline and retail fit make it versatile for any setting—whether you&#39;re teaching students, attending industry events, or showing your support for underserved commu',
   1882,
   1882,
@@ -82,3 +97,4 @@ INSERT INTO products (
   images = excluded.images,
   variants = excluded.variants,
   updated_at = CURRENT_TIMESTAMP;
+
