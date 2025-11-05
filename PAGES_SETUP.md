@@ -1,50 +1,72 @@
 # Cloudflare Pages Configuration for store.cybersmrt.org
 
-## Current Setup Issue
-The store subdomain currently has duplicate asset files that need to be manually synced with root assets, which is maintenance-heavy and error-prone.
+## ✅ Current Setup (Completed)
 
-## Required Configuration Change
+The store subdomain is now properly configured to serve from the repository root with shared assets.
 
-To fix this, you need to update the Cloudflare Pages project settings in the dashboard:
+### Configuration Details
 
-### Steps:
+**Cloudflare Pages Settings:**
+- **Build output directory**: `.` (repository root)
+- **Custom domain**: `store.cybersmrt.org`
 
-1. Go to **Cloudflare Dashboard** → **Workers & Pages** → Select your Pages project for `store.cybersmrt.org`
+**Repository Structure:**
+```
+cybersmrt-web/
+├── _redirects          # Routes store.cybersmrt.org to /store/*
+├── _headers            # Sets proper MIME types for assets
+├── assets/             # Shared assets for all sites
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── store/              # Store HTML pages
+    ├── index.html
+    └── success.html
+```
 
-2. Go to **Settings** → **Build configuration**
+**Redirect Configuration (`_redirects`):**
+```
+/success.html /store/success.html 200
+/ /store/index.html 200
+```
 
-3. Update these settings:
-   - **Build output directory**: Change from `/store` to `.` (root directory)
-   - This allows Pages to serve from the entire repository root
+**Headers Configuration (`_headers`):**
+```
+/assets/css/*.css
+  Content-Type: text/css
 
-4. The `_redirects` file in `/store` will handle routing:
-   - Routes `/` to `/store/index.html`
-   - Routes `/success.html` to `/store/success.html`
-   - Allows `/assets/*` to be served from the root `/assets` directory
+/assets/js/*.js
+  Content-Type: application/javascript
+```
 
-5. The `_headers` file ensures proper MIME types for all assets
-
-## Benefits
+## Benefits Achieved
 
 ✅ **Single source of truth**: Assets only exist in `/assets` at root level
 ✅ **No duplication**: Changes to CSS/JS only need to be made once
 ✅ **Automatic updates**: Store automatically gets latest asset versions
 ✅ **Easier maintenance**: No manual copying or syncing required
+✅ **Proper MIME types**: All assets served with correct Content-Type headers
 
-## Alternative: If You Can't Change Build Directory
+## How It Works
 
-If you need to keep the build directory as `/store`, you have two options:
+1. **User visits** `store.cybersmrt.org/`
+2. **Cloudflare Pages** serves from repository root (build directory: `.`)
+3. **`_redirects` file** routes `/` → `/store/index.html`
+4. **HTML page loads** assets from `/assets/*`
+5. **`_headers` file** ensures assets have correct MIME types
+6. **Store displays** with full functionality
 
-### Option A: Manual Sync Script
-Create a build script that copies assets before deployment:
-```bash
-#!/bin/bash
-mkdir -p store/assets
-cp -r assets/* store/assets/
-```
+## Maintenance
 
-### Option B: Symbolic Links (Git doesn't support well)
-Not recommended as Git doesn't handle symlinks consistently across platforms.
+When updating CSS, JavaScript, or other assets:
+1. Edit files in `/assets/` directory only
+2. Commit and push changes
+3. Cloudflare Pages automatically rebuilds
+4. Store receives updates immediately - no manual syncing needed!
 
-## Recommended: Use Root Build Directory
-The root build directory approach (described above) is the cleanest and most maintainable solution.
+## Future Considerations
+
+If you want to migrate the main site (cybersmrt.org) to use similar routing:
+- Could use the same approach with a root `index.html` redirect
+- Keep all shared assets in `/assets`
+- Use `_redirects` to route different subdomains to different directories
