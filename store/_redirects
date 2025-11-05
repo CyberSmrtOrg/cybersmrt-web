@@ -1,8 +1,5 @@
 # Cloudflare Pages redirects for store.cybersmrt.org
 # Serve all requests from this directory
 
-# Redirect /assets/* to local assets directory
-/assets/* /assets/:splat 200
-
-# SPA routing - serve index.html for all other paths
+# SPA routing - serve index.html for all other paths (but NOT for asset files)
 /* /index.html 200
