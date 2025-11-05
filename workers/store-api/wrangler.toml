@@ -6,9 +6,11 @@ compatibility_date = "2024-01-01"
 workers_dev = true
 
 # Custom domain for store API
-routes = [
-  { pattern = "store.cybersmrt.org/*", zone_name = "cybersmrt.org" }
-]
+# Temporarily disabled - Pages is serving the frontend at store.cybersmrt.org
+# Will re-enable with specific API path pattern (e.g., store.cybersmrt.org/api/*)
+# routes = [
+#   { pattern = "store.cybersmrt.org/*", zone_name = "cybersmrt.org" }
+# ]
 
 [vars]
 ENVIRONMENT = "production"
