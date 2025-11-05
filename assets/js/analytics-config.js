@@ -5,10 +5,10 @@
  */
 
 // Google Analytics Measurement ID from environment
-const GOOGLE_ANALYTICS_ID = 'G-YQX74NVNGK';
+window.GOOGLE_ANALYTICS_ID = 'G-YQX74NVNGK';
 
 // Cloudflare Web Analytics Token from environment
-const CLOUDFLARE_ANALYTICS_TOKEN = 'd0fe0147a3c34908aa73ac1454899a3e';
+window.CLOUDFLARE_ANALYTICS_TOKEN = 'd0fe0147a3c34908aa73ac1454899a3e';
 
 // Microsoft Clarity Project ID from environment
-const MICROSOFT_CLARITY_ID = 'tz1ak68dux';
+window.MICROSOFT_CLARITY_ID = 'tz1ak68dux';
