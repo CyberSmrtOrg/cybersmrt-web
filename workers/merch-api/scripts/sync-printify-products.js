@@ -169,7 +169,7 @@ async function processProduct(product) {
   const productData = {
     id: details.id,
     title: details.title,
-    description: details.description?.replace(/<[^>]*>/g, ''), // Strip HTML
+    description: cleanDescription(details.description),
     price: variants[0]?.price || 0,
     category: detectCategory(details.title, details.tags),
     image_url: primaryImage ? `/assets/images/merch/${product.id}.jpg` : null,
@@ -191,6 +191,35 @@ async function processProduct(product) {
   console.log(`   📦 Variants: ${variants.length}`);
 
   return productData;
+}
+
+/**
+ * Clean product description - strip HTML and extract meaningful text
+ */
+function cleanDescription(description) {
+  if (!description) return '';
+
+  // Strip all HTML tags
+  let cleaned = description.replace(/<[^>]*>/g, ' ');
+
+  // Remove extra whitespace and newlines
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+  // Try to extract the actual product description (usually after size table data)
+  // Look for common description patterns
+  const descMatch = cleaned.match(/(?:This|Made from|Features|Perfect for|Ideal for)[^.]+\./);
+  if (descMatch) {
+    // Found a sentence-like description, extract from there to end
+    const startIdx = cleaned.indexOf(descMatch[0]);
+    cleaned = cleaned.substring(startIdx);
+  }
+
+  // Limit to reasonable length (first 500 chars of actual description)
+  if (cleaned.length > 500) {
+    cleaned = cleaned.substring(0, 500) + '...';
+  }
+
+  return cleaned;
 }
 
 /**
@@ -221,21 +250,35 @@ function detectCategory(title, tags = []) {
 
 /**
  * Extract size from variant title
+ * Format: "Color / Size" or just "Size"
  */
 function extractSize(title) {
-  const sizeMatch = title.match(/\b(XS|S|M|L|XL|2XL|3XL|4XL)\b/i);
+  const parts = title.split('/').map(p => p.trim());
+
+  // If there's a /, size is the second part
+  if (parts.length > 1) {
+    const sizeMatch = parts[1].match(/\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i);
+    return sizeMatch ? sizeMatch[1].toUpperCase() : parts[1];
+  }
+
+  // Otherwise try to match size in the whole title
+  const sizeMatch = title.match(/\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i);
   return sizeMatch ? sizeMatch[1].toUpperCase() : null;
 }
 
 /**
  * Extract color from variant title
+ * Format: "Color / Size" - color comes BEFORE the /
  */
 function extractColor(title) {
-  // Color usually comes after the size, separated by /
   const parts = title.split('/').map(p => p.trim());
+
+  // If there's a /, color is the first part
   if (parts.length > 1) {
-    return parts[1];
+    return parts[0];
   }
+
+  // If no /, might just be a size (no color variant)
   return null;
 }
 

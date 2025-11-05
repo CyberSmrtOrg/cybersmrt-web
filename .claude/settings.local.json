@@ -20,7 +20,13 @@
       "Bash(findstr:*)",
       "Bash(npm install:*)",
       "Bash(curl https://pay.cybersmrt.org/health)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(if exist nul del nul)",
+      "Bash(git restore:*)",
+      "Bash(nslookup:*)",
+      "Bash(node scripts/sync-printify-products.js:*)",
+      "Bash(node -e:*)",
+      "Bash(node scripts/generate-import-sql.js:*)"
     ],
     "deny": [],
     "ask": []
