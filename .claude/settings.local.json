@@ -29,7 +29,9 @@
       "Bash(set CLOUDFLARE_API_TOKEN=%CLOUDFLARE_D1_TOKEN%)",
       "Bash(node scripts/import-to-d1.js:*)",
       "Bash(set CLOUDFLARE_API_TOKEN=-BvAaMBulwPgIYz0MlWhOWSFUbo4Z3QUbBXETEBA)",
-      "Bash(node import-to-d1.js:*)"
+      "Bash(node import-to-d1.js:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []
