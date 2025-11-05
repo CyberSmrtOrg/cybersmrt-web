@@ -31,7 +31,10 @@
       "Bash(set CLOUDFLARE_API_TOKEN=-BvAaMBulwPgIYz0MlWhOWSFUbo4Z3QUbBXETEBA)",
       "Bash(node import-to-d1.js:*)",
       "Bash(git ls-tree:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(cat:*)",
+      "Bash(set:*)",
+      "Bash(bash sync-store-assets.sh:*)"
     ],
     "deny": [],
     "ask": []
