@@ -50,12 +50,39 @@ const MerchStore = {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       const data = await response.json();
-      this.products = data.products || [];
+
+      // Transform API response to match frontend expectations
+      this.products = (data.products || []).map(p => ({
+        ...p,
+        name: p.title,
+        price: p.markup_price,
+        image_url: (p.images && p.images.length > 0) ? p.images[0].src : null,
+        category: this.detectCategory(p.title)
+      }));
+
       this.renderProducts();
     } catch (error) {
       console.error('Failed to load products:', error);
       this.renderProductError();
     }
+  },
+
+  // Detect category from product title
+  detectCategory(title) {
+    const lower = title.toLowerCase();
+    if (lower.includes('shirt') || lower.includes('tee') || lower.includes('tank') || lower.includes('polo')) {
+      return 'apparel';
+    }
+    if (lower.includes('sticker')) {
+      return 'stickers';
+    }
+    if (lower.includes('hat') || lower.includes('cap') || lower.includes('bag')) {
+      return 'accessories';
+    }
+    if (lower.includes('tech') || lower.includes('usb') || lower.includes('mouse')) {
+      return 'tech';
+    }
+    return 'apparel'; // default
   },
 
   // Render products grid
