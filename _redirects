@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects for store.cybersmrt.org
+# Store pages are served from /store directory
+
+/success.html /store/success.html 200
+/ /store/index.html 200
