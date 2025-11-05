@@ -1,9 +1,0 @@
-# Cloudflare Pages redirects for store subdomain
-# Serve store HTML from /store directory, but allow /assets to be accessed from root
-
-# Store pages only
-/index.html /store/index.html 200
-/success.html /store/success.html 200
-
-# Homepage - must be last
-/ /store/index.html 200
