@@ -5,7 +5,7 @@
 // ============================================
 // Configuration
 // ============================================
-const API_BASE_URL = 'https://pay.cybersmrt.org';
+const API_BASE_URL = 'https://api.cybersmrt.org';
 
 // ============================================
 // State Management

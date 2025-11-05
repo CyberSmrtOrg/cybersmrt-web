@@ -5,9 +5,9 @@ compatibility_date = "2024-01-01"
 # Enable workers.dev subdomain for testing
 workers_dev = true
 
-# Custom domain for Stripe checkout
+# Custom domain for API endpoints
 routes = [
-  { pattern = "pay.cybersmrt.org/*", zone_name = "cybersmrt.org" }
+  { pattern = "api.cybersmrt.org/*", zone_name = "cybersmrt.org" }
 ]
 
 [vars]
