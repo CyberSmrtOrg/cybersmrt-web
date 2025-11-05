@@ -9,6 +9,10 @@
  * All services respect user privacy and cookie consent.
  */
 
+// Prevent duplicate execution
+if (typeof window.ANALYTICS_LOADED === 'undefined') {
+window.ANALYTICS_LOADED = true;
+
 (function() {
   'use strict';
 
@@ -170,3 +174,5 @@
     }
   };
 })();
+
+} // End duplicate check

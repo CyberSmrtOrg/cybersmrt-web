@@ -9,6 +9,10 @@
   - updateAuthUI
   /* Consolidated CyberSmrt auth helper (single implementation) */
 
+  // Prevent duplicate execution
+  if (typeof window.AUTH_LOADED === 'undefined') {
+  window.AUTH_LOADED = true;
+
   (function () {
     'use strict';
 
@@ -118,3 +122,5 @@
     console.log('✅ Auth helper loaded');
 
   })();
+
+  } // End duplicate check
