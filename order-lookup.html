@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Lookup - CyberSmrt</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/fix-dark-bar.css">
+
+  <!-- Theme System -->
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <script src="/assets/js/theme.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding-top: 90px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .lookup-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .lookup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--text-bright);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group label svg {
+      width: 18px;
+      height: 18px;
+      color: #60a5fa;
+    }
+
+    .form-group input {
+      padding: 0.875rem 1.25rem;
+      background: rgba(96, 165, 250, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #60a5fa;
+      background: rgba(96, 165, 250, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #64748b;
+    }
+
+    .submit-button {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .submit-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .submit-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .error-message svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .order-result {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .order-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      font-family: 'Orbitron', monospace;
+    }
+
+    .order-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .order-status.pending {
+      background: rgba(250, 204, 21, 0.1);
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+    }
+
+    .order-status.processing {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .order-status.fulfilled,
+    .order-status.shipped {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .order-status.cancelled {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .order-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .order-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-meta-item svg {
+      width: 18px;
+      height: 18px;
+      color: #60a5fa;
+    }
+
+    .order-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .order-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .order-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-section h3 svg {
+      width: 20px;
+      height: 20px;
+      color: #60a5fa;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      background: rgba(96, 165, 250, 0.03);
+      border: 1px solid rgba(96, 165, 250, 0.1);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .order-item-info {
+      flex: 1;
+    }
+
+    .order-item-title {
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 0.25rem;
+    }
+
+    .order-item-variant {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .order-item-quantity {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .order-item-price {
+      text-align: right;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .shipping-address {
+      padding: 1rem 1.25rem;
+      background: rgba(96, 165, 250, 0.03);
+      border: 1px solid rgba(96, 165, 250, 0.1);
+      border-radius: 8px;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .tracking-info {
+      padding: 1.25rem;
+      background: rgba(34, 197, 94, 0.05);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .tracking-number {
+      font-family: 'Orbitron', monospace;
+      font-weight: 600;
+      color: #22c55e;
+      font-size: 1.1rem;
+    }
+
+    .track-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .track-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .track-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .order-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.25rem;
+      background: rgba(167, 139, 250, 0.05);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .order-total .label {
+      color: #94a3b8;
+    }
+
+    .order-total .amount {
+      color: #a78bfa;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .help-text {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(96, 165, 250, 0.03);
+      border: 1px solid rgba(96, 165, 250, 0.1);
+      border-radius: 12px;
+      color: #94a3b8;
+    }
+
+    .help-text svg {
+      width: 48px;
+      height: 48px;
+      color: #60a5fa;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .lookup-card {
+        padding: 1.5rem;
+      }
+
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .order-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header will be loaded here -->
+  <script src="/assets/js/header-loader.js"></script>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Order Lookup</h1>
+      <p>Track your CyberSmrt store order</p>
+    </div>
+
+    <div class="lookup-card">
+      <form id="lookup-form" class="lookup-form">
+        <div id="error-container"></div>
+
+        <div class="form-group">
+          <label for="order-number">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+            </svg>
+            Order Number
+          </label>
+          <input
+            type="text"
+            id="order-number"
+            name="order-number"
+            placeholder="CS-20250106-12345"
+            required
+            pattern="CS-\d{8}-\d{5}"
+            title="Order number format: CS-YYYYMMDD-XXXXX"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="email">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <button type="submit" class="submit-button" id="submit-button">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          Look Up Order
+        </button>
+      </form>
+    </div>
+
+    <div id="order-result-container"></div>
+
+    <div class="help-text">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <p>Your order number was sent to your email after purchase.<br>
+      It's in the format: CS-YYYYMMDD-XXXXX</p>
+    </div>
+  </div>
+
+  <!-- Footer will be loaded here -->
+  <script src="/assets/js/footer-loader.js"></script>
+
+  <script>
+    const STORE_API_URL = 'https://store-api.cybersmrt.workers.dev';
+
+    // Format currency
+    function formatCurrency(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Show error
+    function showError(message) {
+      const errorContainer = document.getElementById('error-container');
+      errorContainer.innerHTML = `
+        <div class="error-message">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>${message}</span>
+        </div>
+      `;
+    }
+
+    // Clear error
+    function clearError() {
+      document.getElementById('error-container').innerHTML = '';
+    }
+
+    // Render order
+    function renderOrder(order) {
+      const shippingAddr = order.shipping_address || {};
+      const addressLines = [
+        shippingAddr.name,
+        shippingAddr.address?.line1,
+        shippingAddr.address?.line2,
+        [shippingAddr.address?.city, shippingAddr.address?.state, shippingAddr.address?.postal_code].filter(Boolean).join(', '),
+        shippingAddr.address?.country
+      ].filter(Boolean);
+
+      const trackingSection = order.tracking_number ? `
+        <div class="order-section">
+          <h3>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+            </svg>
+            Tracking Information
+          </h3>
+          <div class="tracking-info">
+            <div>
+              <div style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 0.25rem;">Tracking Number</div>
+              <div class="tracking-number">${order.tracking_number}</div>
+            </div>
+            ${order.tracking_url ? `
+              <a href="${order.tracking_url}" target="_blank" rel="noopener" class="track-button">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                Track Package
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      ` : '';
+
+      const resultContainer = document.getElementById('order-result-container');
+      resultContainer.innerHTML = `
+        <div class="order-result">
+          <div class="order-header">
+            <div class="order-number">${order.order_number || 'Order #' + order.id.substring(0, 8)}</div>
+            <div class="order-status ${order.status}">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                ${order.status === 'shipped' || order.status === 'fulfilled' ?
+                  '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>' :
+                  '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+                }
+              </svg>
+              ${order.status}
+            </div>
+          </div>
+
+          <div class="order-meta">
+            <div class="order-meta-item">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              ${formatDate(order.created_at)}
+            </div>
+            <div class="order-meta-item">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              ${order.customer_email}
+            </div>
+          </div>
+
+          <div class="order-section">
+            <h3>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+              Order Items
+            </h3>
+            ${order.items.map(item => `
+              <div class="order-item">
+                <div class="order-item-info">
+                  <div class="order-item-title">${item.product_title}</div>
+                  <div class="order-item-variant">${item.variant_title}</div>
+                  <div class="order-item-quantity">Quantity: ${item.quantity}</div>
+                </div>
+                <div class="order-item-price">
+                  ${formatCurrency(item.total_price)}
+                  <div class="order-item-quantity">${formatCurrency(item.unit_price)} each</div>
+                </div>
+              </div>
+            `).join('')}
+            <div class="order-total">
+              <span class="label">Total</span>
+              <span class="amount">${formatCurrency(order.total_amount)}</span>
+            </div>
+          </div>
+
+          <div class="order-section">
+            <h3>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Shipping Address
+            </h3>
+            <div class="shipping-address">
+              ${addressLines.join('<br>')}
+            </div>
+          </div>
+
+          ${trackingSection}
+        </div>
+      `;
+
+      // Scroll to result
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Handle form submission
+    document.getElementById('lookup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const orderNumber = document.getElementById('order-number').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const submitButton = document.getElementById('submit-button');
+
+      // Disable button and show loading
+      submitButton.disabled = true;
+      const originalContent = submitButton.innerHTML;
+      submitButton.innerHTML = '<div class="spinner"></div> Looking up...';
+
+      try {
+        const response = await fetch(
+          `${STORE_API_URL}/api/orders/${encodeURIComponent(orderNumber)}?email=${encodeURIComponent(email)}`
+        );
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            showError('Order not found or email does not match. Please check your information and try again.');
+          } else {
+            const errorData = await response.json();
+            showError(errorData.error || 'Failed to look up order. Please try again.');
+          }
+          return;
+        }
+
+        const data = await response.json();
+        renderOrder(data.order);
+
+      } catch (error) {
+        console.error('Error looking up order:', error);
+        showError('Failed to look up order. Please try again later.');
+      } finally {
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalContent;
+      }
+    });
+  </script>
+
+</body>
+</html>

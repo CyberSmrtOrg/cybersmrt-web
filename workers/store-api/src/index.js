@@ -45,6 +45,20 @@ async function printifyRequest(env, endpoint, method = 'GET', body = null) {
   return response.json();
 }
 
+// Generate order number in format: CS-YYYYMMDD-XXXXX
+function generateOrderNumber() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const dateStr = `${year}${month}${day}`;
+
+  // Generate 5-digit random number
+  const randomNum = String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+
+  return `CS-${dateStr}-${randomNum}`;
+}
+
 // ======================
 // Routes
 // ======================
@@ -336,7 +350,13 @@ app.post('/webhooks/stripe', async (c) => {
         expand: ['shipping_details'],
       });
 
-      // Update order with customer info and shipping
+      // Generate unique order number
+      const orderNumber = generateOrderNumber();
+
+      // Extract user_id from metadata if user was signed in during checkout
+      const userId = fullSession.metadata?.user_id || null;
+
+      // Update order with customer info, shipping, order number, and user_id
       await DB.prepare(`
         UPDATE orders
         SET payment_status = 'paid',
@@ -345,6 +365,8 @@ app.post('/webhooks/stripe', async (c) => {
             customer_name = ?,
             customer_email = ?,
             shipping_address = ?,
+            order_number = ?,
+            user_id = ?,
             updated_at = CURRENT_TIMESTAMP
         WHERE stripe_checkout_session_id = ?
       `).bind(
@@ -352,6 +374,8 @@ app.post('/webhooks/stripe', async (c) => {
         fullSession.customer_details?.name || '',
         fullSession.customer_details?.email || '',
         JSON.stringify(fullSession.shipping_details || {}),
+        orderNumber,
+        userId,
         session.id
       ).run();
 
@@ -525,6 +549,153 @@ app.post('/admin/products', async (c) => {
   } catch (error) {
     console.error('Error adding product:', error);
     return c.json({ error: 'Failed to add product' }, 500);
+  }
+});
+
+// Get all orders for authenticated user
+app.get('/api/orders', async (c) => {
+  try {
+    const { DB } = c.env;
+
+    // Get user_id from Authorization header (JWT token)
+    const authHeader = c.req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return c.json({ error: 'Unauthorized - Please sign in to view your purchases' }, 401);
+    }
+
+    const token = authHeader.substring(7);
+    // TODO: Verify JWT token and extract user_id
+    // For now, we'll accept the token as the user_id
+    // This should be replaced with proper JWT verification
+    const userId = token;
+
+    // Fetch all orders for this user
+    const ordersResult = await DB.prepare(`
+      SELECT
+        o.id,
+        o.order_number,
+        o.customer_email,
+        o.customer_name,
+        o.shipping_address,
+        o.subtotal,
+        o.shipping_cost,
+        o.total_amount,
+        o.status,
+        o.payment_status,
+        o.tracking_number,
+        o.tracking_url,
+        o.stripe_payment_intent_id,
+        o.created_at,
+        o.updated_at
+      FROM orders o
+      WHERE o.user_id = ?
+      ORDER BY o.created_at DESC
+    `).bind(userId).all();
+
+    if (!ordersResult.results || ordersResult.results.length === 0) {
+      return c.json({ orders: [] });
+    }
+
+    // Fetch line items for each order
+    const ordersWithItems = await Promise.all(
+      ordersResult.results.map(async (order) => {
+        const itemsResult = await DB.prepare(`
+          SELECT
+            product_title,
+            variant_title,
+            quantity,
+            unit_price,
+            total_price,
+            print_areas
+          FROM order_items
+          WHERE order_id = ?
+        `).bind(order.id).all();
+
+        return {
+          ...order,
+          shipping_address: JSON.parse(order.shipping_address || '{}'),
+          items: itemsResult.results.map(item => ({
+            ...item,
+            print_areas: JSON.parse(item.print_areas || '[]')
+          }))
+        };
+      })
+    );
+
+    return c.json({ orders: ordersWithItems });
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    return c.json({ error: 'Failed to fetch orders' }, 500);
+  }
+});
+
+// Get specific order by order number (with email verification)
+app.get('/api/orders/:order_number', async (c) => {
+  try {
+    const { DB } = c.env;
+    const orderNumber = c.req.param('order_number');
+    const email = c.req.query('email');
+
+    if (!orderNumber) {
+      return c.json({ error: 'Order number is required' }, 400);
+    }
+
+    if (!email) {
+      return c.json({ error: 'Email is required for order lookup' }, 400);
+    }
+
+    // Fetch order with email verification
+    const orderResult = await DB.prepare(`
+      SELECT
+        o.id,
+        o.order_number,
+        o.customer_email,
+        o.customer_name,
+        o.shipping_address,
+        o.subtotal,
+        o.shipping_cost,
+        o.total_amount,
+        o.status,
+        o.payment_status,
+        o.tracking_number,
+        o.tracking_url,
+        o.stripe_payment_intent_id,
+        o.created_at,
+        o.updated_at
+      FROM orders o
+      WHERE o.order_number = ? AND LOWER(o.customer_email) = LOWER(?)
+    `).bind(orderNumber, email).first();
+
+    if (!orderResult) {
+      return c.json({ error: 'Order not found or email does not match' }, 404);
+    }
+
+    // Fetch line items for this order
+    const itemsResult = await DB.prepare(`
+      SELECT
+        product_title,
+        variant_title,
+        quantity,
+        unit_price,
+        total_price,
+        print_areas
+      FROM order_items
+      WHERE order_id = ?
+    `).bind(orderResult.id).all();
+
+    const order = {
+      ...orderResult,
+      shipping_address: JSON.parse(orderResult.shipping_address || '{}'),
+      items: itemsResult.results.map(item => ({
+        ...item,
+        print_areas: JSON.parse(item.print_areas || '[]')
+      }))
+    };
+
+    return c.json({ order });
+  } catch (error) {
+    console.error('Error fetching order by number:', error);
+    return c.json({ error: 'Failed to fetch order' }, 500);
   }
 });
 
