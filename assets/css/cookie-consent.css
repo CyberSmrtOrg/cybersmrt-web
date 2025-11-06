@@ -160,7 +160,11 @@
 }
 
 .cookie-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
+  gap: 12px;
 }
 
 .cookie-label {
@@ -355,4 +359,230 @@
 
 .cookie-popup-content::-webkit-scrollbar-thumb:hover {
   background: rgba(102, 126, 234, 0.7);
+}
+
+/* Cookie Details Button */
+.cookie-details-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 6px;
+  color: #8b94ff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cookie-details-btn:hover {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+  color: #a5b4fc;
+}
+
+.cookie-details-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Cookie Details Flyout */
+.cookie-details-flyout {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 480px;
+  max-width: 90vw;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.cookie-details-flyout.show {
+  transform: translateX(0);
+}
+
+.cookie-details-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cookie-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  flex-shrink: 0;
+}
+
+.cookie-details-header h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.cookie-details-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cookie-details-close:hover {
+  background: rgba(148, 163, 184, 0.1);
+  color: white;
+}
+
+.cookie-details-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  color: #cbd5e1;
+}
+
+.cookie-details-body p {
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  font-size: 15px;
+}
+
+.cookie-details-body h5 {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 24px 0 12px 0;
+}
+
+.cookie-details-body h5:first-child {
+  margin-top: 0;
+}
+
+/* Cookie Details Table */
+.cookie-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px 0;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cookie-details-table th,
+.cookie-details-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.cookie-details-table th {
+  background: rgba(15, 23, 42, 0.8);
+  color: #8b94ff;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cookie-details-table td {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.cookie-details-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cookie-details-table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+/* Cookie Details Lists */
+.cookie-details-body ul {
+  margin: 12px 0 20px 0;
+  padding-left: 20px;
+}
+
+.cookie-details-body li {
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.cookie-details-body li:last-child {
+  margin-bottom: 0;
+}
+
+/* Risk items styling */
+.cookie-details-body li strong {
+  color: #ef4444;
+}
+
+/* Cookie Details Scrollbar */
+.cookie-details-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cookie-details-body::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 4px;
+}
+
+.cookie-details-body::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.5);
+  border-radius: 4px;
+}
+
+.cookie-details-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 126, 234, 0.7);
+}
+
+/* Mobile adjustments for flyout */
+@media (max-width: 640px) {
+  .cookie-details-flyout {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .cookie-details-header {
+    padding: 20px;
+  }
+
+  .cookie-details-header h4 {
+    font-size: 18px;
+  }
+
+  .cookie-details-body {
+    padding: 20px;
+  }
+
+  .cookie-details-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
 }

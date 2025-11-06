@@ -18,6 +18,140 @@ window.COOKIE_CONSENT_LOADED = true;
     marketing: { name: 'Marketing', required: false, enabled: false }
   };
 
+  // Detailed cookie information
+  const cookieDetails = {
+    necessary: {
+      title: 'Necessary Cookies',
+      description: 'These cookies are essential for the website to function and cannot be disabled.',
+      cookies: [
+        {
+          name: 'cybersmrt_cookie_consent',
+          purpose: 'Stores your cookie preferences across all subdomains',
+          storage: 'HTTP Cookie (domain: .cybersmrt.org)',
+          expiry: '365 days',
+          data: 'JSON object containing: timestamp, preference flags (necessary, functional, analytics, marketing)',
+          security: 'Stored as a secure, HttpOnly cookie with SameSite=Lax protection'
+        }
+      ],
+      howTheyWork: 'Necessary cookies are set when you first visit the site or interact with core features. They enable basic functionality like remembering your cookie preferences, maintaining your session, and ensuring security features work correctly.',
+      potentialRisks: [
+        'Session hijacking: If an attacker intercepts your session cookie, they could impersonate you',
+        'Cookie theft: XSS vulnerabilities could expose cookies if not properly secured',
+        'CSRF attacks: Without proper SameSite attributes, cookies could be sent in cross-site requests'
+      ],
+      mitigation: 'We use Secure flag (HTTPS only), SameSite=Lax attribute, and HttpOnly flags where appropriate to minimize these risks.'
+    },
+    functional: {
+      title: 'Functional Cookies',
+      description: 'These cookies enhance your experience by remembering your preferences.',
+      cookies: [
+        {
+          name: 'theme_preference',
+          purpose: 'Remembers your light/dark mode preference',
+          storage: 'LocalStorage',
+          expiry: 'Persistent (until manually cleared)',
+          data: 'String: "light" or "dark"',
+          security: 'Not transmitted over network, stored client-side only'
+        },
+        {
+          name: 'language_preference',
+          purpose: 'Remembers your language selection',
+          storage: 'LocalStorage',
+          expiry: 'Persistent',
+          data: 'String: language code (e.g., "en", "es")',
+          security: 'Client-side only'
+        }
+      ],
+      howTheyWork: 'Functional cookies store your customization preferences in your browser. When you return to the site, we read these preferences to apply your chosen settings automatically.',
+      potentialRisks: [
+        'User fingerprinting: Preferences could be used to identify you across sessions',
+        'Data leakage: If using third-party functional services, your preferences might be shared',
+        'Storage poisoning: Malicious scripts could modify preferences to cause unexpected behavior'
+      ],
+      mitigation: 'We store preferences locally when possible and validate all stored values before applying them. We do not share preference data with third parties.'
+    },
+    analytics: {
+      title: 'Analytics Cookies',
+      description: 'Help us understand how visitors interact with our website.',
+      cookies: [
+        {
+          name: '_ga',
+          purpose: 'Google Analytics: Distinguishes unique users',
+          storage: 'HTTP Cookie',
+          expiry: '2 years',
+          data: 'Random client identifier',
+          security: 'Anonymized, pseudonymous identifier'
+        },
+        {
+          name: '_gid',
+          purpose: 'Google Analytics: Distinguishes unique users for 24 hours',
+          storage: 'HTTP Cookie',
+          expiry: '24 hours',
+          data: 'Random client identifier',
+          security: 'Anonymized, pseudonymous identifier'
+        },
+        {
+          name: '_gat',
+          purpose: 'Google Analytics: Throttle request rate',
+          storage: 'HTTP Cookie',
+          expiry: '1 minute',
+          data: 'Throttle flag',
+          security: 'Minimal data'
+        }
+      ],
+      howTheyWork: 'Analytics cookies track page views, time spent on pages, and navigation patterns. This data is sent to analytics services (like Google Analytics) to create aggregated reports about site usage. We use this to improve content and user experience.',
+      potentialRisks: [
+        'Tracking across sites: Analytics providers may track you across multiple websites',
+        'User profiling: Long-lived identifiers enable building detailed behavioral profiles',
+        'Third-party data sharing: Analytics providers may use your data for their own purposes',
+        'Re-identification: Combined with other data, analytics IDs could identify individuals',
+        'Ad targeting: Analytics data may be combined with advertising platforms'
+      ],
+      mitigation: 'We use IP anonymization, have configured data retention limits, and have a Data Processing Agreement with analytics providers. You can also use browser privacy features like Do Not Track.'
+    },
+    marketing: {
+      title: 'Marketing Cookies',
+      description: 'Used to deliver personalized advertising and track campaign effectiveness.',
+      cookies: [
+        {
+          name: '_fbp',
+          purpose: 'Facebook Pixel: Tracks conversions and remarketing',
+          storage: 'HTTP Cookie',
+          expiry: '90 days',
+          data: 'Browser identifier, timestamp',
+          security: 'Shared with Facebook'
+        },
+        {
+          name: 'IDE',
+          purpose: 'Google DoubleClick: Ad serving and tracking',
+          storage: 'HTTP Cookie',
+          expiry: '1 year',
+          data: 'User identifier for ad targeting',
+          security: 'Shared with Google advertising network'
+        },
+        {
+          name: 'test_cookie',
+          purpose: 'Checks if browser accepts cookies',
+          storage: 'HTTP Cookie',
+          expiry: '15 minutes',
+          data: 'Test value',
+          security: 'Minimal risk'
+        }
+      ],
+      howTheyWork: 'Marketing cookies track your behavior to build an advertising profile. They enable features like remarketing (showing ads based on pages you visited), conversion tracking (measuring ad effectiveness), and personalized advertising across the web.',
+      potentialRisks: [
+        'Invasive tracking: Detailed behavioral profiles across many websites',
+        'Data broker sales: Your profile may be sold to data brokers',
+        'Price discrimination: Could be used for dynamic pricing based on behavior',
+        'Political manipulation: Targeted advertising based on psychological profiling',
+        'Privacy violations: Extensive data collection without full user awareness',
+        'Data breaches: Advertising networks are targets for hackers',
+        'Persistent tracking: Difficult to fully opt out across all platforms'
+      ],
+      mitigation: 'By disabling marketing cookies, you prevent these tracking mechanisms. We recommend rejecting marketing cookies unless you specifically want personalized advertising. Use ad blockers and privacy-focused browsers for additional protection.'
+    }
+  };
+
   // Helper: Set cookie with domain for cross-subdomain sharing
   function setCookie(name, value, days) {
     const expires = new Date();
@@ -150,6 +284,13 @@ window.COOKIE_CONSENT_LOADED = true;
                   <span class="cookie-name">Necessary Cookies</span>
                   <span class="cookie-required">Required</span>
                 </label>
+                <button class="cookie-details-btn" onclick="showCookieDetails('necessary'); event.stopPropagation();" aria-label="Show details">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                  </svg>
+                  Details
+                </button>
               </div>
               <p class="cookie-category-desc">
                 Essential for the website to function properly. Cannot be disabled.
@@ -162,6 +303,13 @@ window.COOKIE_CONSENT_LOADED = true;
                   <input type="checkbox" id="cookie-functional">
                   <span class="cookie-name">Functional Cookies</span>
                 </label>
+                <button class="cookie-details-btn" onclick="showCookieDetails('functional'); event.stopPropagation();" aria-label="Show details">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                  </svg>
+                  Details
+                </button>
               </div>
               <p class="cookie-category-desc">
                 Remember your preferences and settings for a better experience.
@@ -174,6 +322,13 @@ window.COOKIE_CONSENT_LOADED = true;
                   <input type="checkbox" id="cookie-analytics">
                   <span class="cookie-name">Analytics Cookies</span>
                 </label>
+                <button class="cookie-details-btn" onclick="showCookieDetails('analytics'); event.stopPropagation();" aria-label="Show details">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                  </svg>
+                  Details
+                </button>
               </div>
               <p class="cookie-category-desc">
                 Help us understand how visitors use our website to improve it.
@@ -186,10 +341,28 @@ window.COOKIE_CONSENT_LOADED = true;
                   <input type="checkbox" id="cookie-marketing">
                   <span class="cookie-name">Marketing Cookies</span>
                 </label>
+                <button class="cookie-details-btn" onclick="showCookieDetails('marketing'); event.stopPropagation();" aria-label="Show details">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                  </svg>
+                  Details
+                </button>
               </div>
               <p class="cookie-category-desc">
                 Used to deliver personalized content and track campaign effectiveness.
               </p>
+            </div>
+          </div>
+
+          <!-- Cookie Details Flyout -->
+          <div id="cookie-details-flyout" class="cookie-details-flyout">
+            <div class="cookie-details-content">
+              <div class="cookie-details-header">
+                <h4 id="cookie-details-title"></h4>
+                <button class="cookie-details-close" onclick="hideCookieDetails()" aria-label="Close details">×</button>
+              </div>
+              <div id="cookie-details-body" class="cookie-details-body"></div>
             </div>
           </div>
         </div>
@@ -264,6 +437,89 @@ window.COOKIE_CONSENT_LOADED = true;
     if (popup) {
       popup.classList.remove('show');
       document.body.style.overflow = '';
+    }
+  }
+
+  // Show cookie details flyout
+  function showCookieDetails(category) {
+    const flyout = document.getElementById('cookie-details-flyout');
+    const title = document.getElementById('cookie-details-title');
+    const body = document.getElementById('cookie-details-body');
+
+    if (!flyout || !title || !body || !cookieDetails[category]) {
+      return;
+    }
+
+    const details = cookieDetails[category];
+
+    // Set title
+    title.textContent = details.title;
+
+    // Build body content
+    let html = `<p>${details.description}</p>`;
+
+    // Add cookies table
+    if (details.cookies && details.cookies.length > 0) {
+      html += '<h5>Cookies Used</h5>';
+      html += '<table class="cookie-details-table">';
+      html += '<thead><tr><th>Name</th><th>Details</th></tr></thead>';
+      html += '<tbody>';
+
+      details.cookies.forEach(cookie => {
+        html += '<tr>';
+        html += `<td><strong>${cookie.name}</strong></td>`;
+        html += '<td>';
+        html += `<strong>Purpose:</strong> ${cookie.purpose}<br>`;
+        html += `<strong>Storage:</strong> ${cookie.storage}<br>`;
+        html += `<strong>Expiry:</strong> ${cookie.expiry}<br>`;
+        html += `<strong>Data:</strong> ${cookie.data}<br>`;
+        html += `<strong>Security:</strong> ${cookie.security}`;
+        html += '</td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+    }
+
+    // Add how they work
+    if (details.howTheyWork) {
+      html += '<h5>How They Work</h5>';
+      html += `<p>${details.howTheyWork}</p>`;
+    }
+
+    // Add potential risks
+    if (details.potentialRisks && details.potentialRisks.length > 0) {
+      html += '<h5>Potential Risks</h5>';
+      html += '<ul>';
+      details.potentialRisks.forEach(risk => {
+        // Split by colon to highlight risk type
+        const parts = risk.split(':');
+        if (parts.length > 1) {
+          html += `<li><strong>${parts[0]}:</strong>${parts.slice(1).join(':')}</li>`;
+        } else {
+          html += `<li>${risk}</li>`;
+        }
+      });
+      html += '</ul>';
+    }
+
+    // Add mitigation
+    if (details.mitigation) {
+      html += '<h5>How We Protect You</h5>';
+      html += `<p>${details.mitigation}</p>`;
+    }
+
+    body.innerHTML = html;
+
+    // Show flyout
+    flyout.classList.add('show');
+  }
+
+  // Hide cookie details flyout
+  function hideCookieDetails() {
+    const flyout = document.getElementById('cookie-details-flyout');
+    if (flyout) {
+      flyout.classList.remove('show');
     }
   }
 
@@ -346,6 +602,10 @@ window.COOKIE_CONSENT_LOADED = true;
     getConsent: getConsent,
     hasConsented: hasConsented
   };
+
+  // Export global functions for onclick handlers
+  window.showCookieDetails = showCookieDetails;
+  window.hideCookieDetails = hideCookieDetails;
 })();
 
 } // End duplicate check
