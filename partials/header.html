@@ -344,34 +344,21 @@
 
     /* Mega Menu Styles */
     .mega-menu-trigger {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
       color: var(--hdr-text);
       text-decoration: none;
       font-weight: 700;
       opacity: 0.9;
       padding-bottom: 2px;
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: inherit;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
       cursor: pointer;
     }
 
-    .mega-menu-trigger:hover {
+    .mega-menu-trigger:hover,
+    .site-header.mega-menu-open .mega-menu-trigger {
       color: var(--hdr-text-hover);
       opacity: 1;
-    }
-
-    .mega-menu-arrow {
-      width: 14px;
-      height: 14px;
-      transition: transform 0.3s ease;
-    }
-
-    .site-header.mega-menu-open .mega-menu-arrow {
-      transform: rotate(180deg);
+      border-bottom-color: var(--brand);
     }
 
     /* Mega Menu Panel */
@@ -504,42 +491,11 @@
     </button>
 
     <div class="nav-links" role="navigation" aria-label="Primary">
-      <!-- Mega Menu Triggers -->
-      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
-        Home
-        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
-      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
-        Programs
-        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
-      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
-        Blog
-        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
-      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
-        Tools
-        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
-      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
-        About
-        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
+      <a href="/" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Home</a>
+      <a href="/programs" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Programs</a>
+      <a href="/blog" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Blog</a>
+      <a href="/tools" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Tools</a>
+      <a href="/about" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">About</a>
       <a href="/pages/contact">Contact</a>
       <a href="https://store.cybersmrt.org">Store</a>
 
