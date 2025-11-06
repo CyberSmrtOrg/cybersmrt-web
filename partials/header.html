@@ -3,7 +3,6 @@
   <style>
     /* Header theme variables - adapt to light/dark mode */
     :root {
-      --hdr-util-bg: rgba(6, 10, 22, 0.95);
       --hdr-bg: rgba(6, 10, 22, 0.82);
       --hdr-border: rgba(148,163,184,.18);
       --brand: #8ab4ff;
@@ -12,7 +11,6 @@
     }
 
     [data-theme="light"] {
-      --hdr-util-bg: rgba(248, 250, 252, 0.98);
       --hdr-bg: rgba(248, 250, 252, 0.9);
       --hdr-border: rgba(148,163,184,.3);
       --brand: #4299e1;
@@ -31,146 +29,163 @@
       position: sticky; top: 0; z-index: 1000;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-    }
-
-    /* =========================== */
-    /* TOP UTILITY BAR */
-    /* =========================== */
-    .header-utility-bar {
-      background: var(--hdr-util-bg);
       border-bottom: 1px solid var(--hdr-border);
-      padding: 0.5rem 0;
+      background: var(--hdr-bg);
     }
 
-    .header-utility-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1rem;
+    .site-header .site-nav {
+      max-width: 1200px; margin: 0 auto; padding: 1rem 1rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
 
-    .header-utility-search {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--hdr-text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
+    .site-header .nav-brand {
+      display: inline-flex; align-items: center; gap: .6rem;
+      color: var(--brand); text-decoration: none;
     }
+    .site-header .nav-brand img { display:block; border-radius:6px; }
 
-    .header-utility-search:hover {
-      color: var(--hdr-text-hover);
-      background: rgba(255, 255, 255, 0.05);
+    .site-header .nav-links { display:flex; gap:1.25rem; align-items:center; }
+    .site-header .nav-links a {
+      color: var(--hdr-text); text-decoration:none; font-weight:600; opacity:.9;
+      padding-bottom: 2px;
     }
-
-    .header-utility-search svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    /* Theme Toggle in Utility Bar */
-    .header-theme-toggle {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .header-theme-toggle:hover {
-      background: var(--card-bg-hover);
-      border-color: var(--brand);
-      transform: translateY(-2px);
-    }
-
-    .header-theme-toggle .theme-toggle-icon {
-      font-size: 1.1rem;
-      display: none;
-    }
-
-    /* Show moon icon in dark mode, sun icon in light mode */
-    [data-theme="dark"] .header-theme-toggle .dark-icon {
-      display: block;
-    }
-
-    [data-theme="light"] .header-theme-toggle .light-icon {
-      display: block;
-    }
-
-    /* My Account Dropdown in Utility Bar */
-    .header-account-dropdown {
-      position: relative;
-    }
-
-    .header-account-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--hdr-text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-    }
-
-    .header-account-btn:hover {
-      color: var(--hdr-text-hover);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .header-account-btn svg {
-      width: 16px;
-      height: 16px;
-      transition: transform 0.3s ease;
-    }
-
-    .header-account-dropdown.open .header-account-btn svg {
-      transform: rotate(180deg);
+    .site-header .nav-links a:hover { color: var(--hdr-text-hover); opacity:1; }
+    .site-header .nav-links a.is-active,
+    .site-header .nav-links a[aria-current="page"] {
+      color: var(--hdr-text-hover); border-bottom:2px solid var(--brand);
     }
 
     /* Sign In Button */
     .header-signin-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 0.5rem 1.25rem;
-      border-radius: 8px;
+      padding: 0.625rem 1.75rem;
+      min-height: 44px; /* WCAG 2.1 touch target compliance */
+      border-radius: 50px;
       border: none;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      /* Improve mobile touch responsiveness */
+      -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
     }
-
     .header-signin-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
 
-    /* Account Dropdown Menu */
-    .header-account-menu {
+    /* Donate Button */
+    .header-donate-btn {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: white !important;
+      padding: 0.625rem 1.75rem;
+      min-height: 44px;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      -webkit-tap-highlight-color: rgba(245, 158, 11, 0.3);
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .header-donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+      color: white !important;
+    }
+    .header-donate-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      display: block;
+      vertical-align: middle;
+    }
+
+    /* User Menu Dropdown Container */
+    .user-menu-container {
+      position: relative;
+      z-index: 1002;
+    }
+
+    /* User Menu Button - LARGER & BETTER QUALITY */
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--hdr-text-hover);
+      font-family: inherit;
+      font-size: inherit;
+    }
+    .user-menu:hover {
+      background: var(--card-bg-hover);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      border-color: var(--brand-primary);
+    }
+
+    /* LARGER, BETTER QUALITY AVATAR */
+    .user-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2.5px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+      object-fit: cover;
+      /* Better image rendering */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: high-quality;
+      /* Smooth scaling */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .user-avatar:hover {
+      border-color: var(--brand-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+    }
+
+    /* Dropdown Arrow */
+    .user-menu-arrow {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+    .user-menu-container.open .user-menu-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* User Dropdown Menu */
+    .user-dropdown {
       position: absolute;
       top: calc(100% + 0.5rem);
       right: 0;
@@ -187,14 +202,14 @@
       z-index: 1001;
     }
 
-    .header-account-dropdown.open .header-account-menu {
+    .user-menu-container.open .user-dropdown {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
     }
 
-    .header-account-menu a,
-    .header-account-menu button {
+    .user-dropdown a,
+    .user-dropdown button {
       display: flex;
       align-items: center;
       gap: 0.75rem;
@@ -213,241 +228,38 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .header-account-menu a:last-child,
-    .header-account-menu button:last-child {
+    .user-dropdown a:last-child,
+    .user-dropdown button:last-child {
       border-bottom: none;
     }
 
-    .header-account-menu a:hover,
-    .header-account-menu button:hover {
+    .user-dropdown a:hover,
+    .user-dropdown button:hover {
       background: var(--card-bg-hover);
       color: var(--hdr-text-hover);
     }
 
-    .header-account-menu button.logout-btn {
+    .user-dropdown button.logout-btn {
       color: #f87171;
     }
 
-    .header-account-menu button.logout-btn:hover {
+    .user-dropdown button.logout-btn:hover {
       background: rgba(248, 113, 113, 0.1);
       color: #fca5a5;
     }
 
-    .header-account-menu svg {
+    .user-dropdown svg {
       width: 18px;
       height: 18px;
       opacity: 0.8;
     }
 
-    /* =========================== */
-    /* MAIN NAVIGATION BAR */
-    /* =========================== */
-    .header-nav-bar {
-      background: var(--hdr-bg);
-      border-bottom: 1px solid var(--hdr-border);
-    }
-
-    .header-nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .nav-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      color: var(--brand);
-      text-decoration: none;
-    }
-
-    .nav-brand img {
-      display:block;
-      border-radius:6px;
-    }
-
-    .nav-links {
-      display:flex;
-      gap:1.25rem;
-      align-items:center;
-    }
-
-    .nav-links a {
-      color: var(--hdr-text);
-      text-decoration:none;
-      font-weight:600;
-      opacity:.9;
-      padding-bottom: 2px;
-    }
-
-    /* Nav Link Buttons (with dropdowns) */
-    .nav-link-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      color: var(--hdr-text);
-      text-decoration:none;
-      font-weight:600;
-      opacity:.9;
-      padding-bottom: 2px;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      font-family: inherit;
-      font-size: inherit;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-link-btn:hover {
-      color: var(--hdr-text-hover);
-      opacity: 1;
-    }
-
-    .nav-link-btn.active {
-      color: var(--hdr-text-hover);
-      opacity: 1;
-      border-bottom-color: var(--brand);
-    }
-
-    .nav-dropdown-arrow {
-      width: 14px;
-      height: 14px;
-      transition: transform 0.3s ease;
-    }
-
-    .nav-link-btn.active .nav-dropdown-arrow {
-      transform: rotate(180deg);
-    }
-
-    /* Expandable Nav Dropdown Panel */
-    .nav-dropdown-panel {
-      background: var(--hdr-bg);
-      border-bottom: 1px solid var(--hdr-border);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .nav-dropdown-panel.open {
-      max-height: 500px;
-    }
-
-    .nav-dropdown-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-    }
-
-    .nav-dropdown-section {
-      display: none;
-    }
-
-    .nav-dropdown-section.active {
-      display: block;
-    }
-
-    .nav-dropdown-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .nav-dropdown-links h3 {
-      color: var(--hdr-text);
-      font-size: 0.875rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-      opacity: 0.7;
-    }
-
-    .nav-dropdown-links h3:first-child {
-      margin-top: 0;
-    }
-
-    .nav-dropdown-links a {
-      color: var(--hdr-text);
-      text-decoration: none;
-      font-weight: 500;
-      padding: 0.5rem 0.75rem;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      opacity: 0.9;
-    }
-
-    .nav-dropdown-links a:hover {
-      background: var(--hdr-hover-bg);
-      opacity: 1;
-      transform: translateX(4px);
-    }
-
-    /* Existing button styles */
-    .nav-links button {
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-size: inherit;
-      cursor: pointer;
-    }
-
-    .nav-links a:hover,
-    .nav-links button:hover {
-      color: var(--hdr-text-hover);
-      opacity:1;
-    }
-
-    .nav-links a.is-active,
-    .nav-links a[aria-current="page"] {
-      color: var(--hdr-text-hover);
-      border-bottom:2px solid var(--brand);
-    }
-
-    /* Donate Button */
-    .header-donate-btn {
-      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-      color: white !important;
-      padding: 0.625rem 1.5rem;
-      border-radius: 50px;
-      border: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .header-donate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-      color: white !important;
-      opacity: 1 !important;
-    }
-
-    .header-donate-btn svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    /* Members Dropdown Button */
-    .members-dropdown-container {
+    /* Tools Dropdown */
+    .tools-dropdown-container {
       position: relative;
     }
 
-    .members-dropdown-btn {
+    .tools-dropdown-trigger {
       display: flex;
       align-items: center;
       gap: 0.35rem;
@@ -455,225 +267,273 @@
       text-decoration: none;
       font-weight: 600;
       opacity: 0.9;
-      padding: 0.625rem 1.25rem;
-      background: rgba(102, 126, 234, 0.1);
-      border: 1px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
+      padding-bottom: 2px;
+      background: none;
+      border: none;
       font-family: inherit;
       font-size: inherit;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
-    .members-dropdown-btn:hover {
+    .tools-dropdown-trigger:hover {
       color: var(--hdr-text-hover);
       opacity: 1;
-      background: rgba(102, 126, 234, 0.2);
-      border-color: rgba(102, 126, 234, 0.5);
     }
 
-    .members-dropdown-arrow {
+    .tools-dropdown-arrow {
       width: 14px;
       height: 14px;
       transition: transform 0.3s ease;
     }
 
-    .members-dropdown-container.open .members-dropdown-arrow {
+    .tools-dropdown-container.open .tools-dropdown-arrow {
       transform: rotate(180deg);
     }
 
-    /* Members Mega Menu Panel */
-    .members-mega-menu {
+    .tools-dropdown {
       position: absolute;
       top: calc(100% + 0.5rem);
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%);
       background: var(--hdr-bg);
       border: 1px solid var(--hdr-border);
       border-radius: 12px;
-      width: 720px;
-      max-width: 90vw;
+      width: 240px;
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow-lg);
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-10px);
+      transform: translateX(-50%) translateY(-10px);
       transition: all 0.3s ease;
       z-index: 1001;
-      padding: 2rem;
     }
 
-    .members-dropdown-container.open .members-mega-menu {
+    .tools-dropdown-container.open .tools-dropdown {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
 
-    .members-mega-menu-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .tools-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.25rem;
       color: var(--hdr-text);
-      opacity: 0.7;
-      margin-bottom: 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
     }
 
-    .members-mega-menu-grid {
+    .tools-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .tools-dropdown a:hover {
+      background: var(--card-bg-hover);
+      color: var(--hdr-text-hover);
+    }
+
+    .tools-dropdown svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+    }
+
+    /* Mega Menu Styles */
+    .mega-menu-trigger {
+      color: var(--hdr-text);
+      text-decoration: none;
+      font-weight: 700;
+      opacity: 0.9;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .mega-menu-trigger:hover,
+    .site-header.mega-menu-open .mega-menu-trigger {
+      color: var(--hdr-text-hover);
+      opacity: 1;
+      border-bottom-color: var(--brand);
+    }
+
+    /* Mega Menu Panel */
+    .mega-menu-panel {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--hdr-bg);
+      border-bottom: 1px solid var(--hdr-border);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-lg);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      z-index: 999;
+    }
+
+    .site-header.mega-menu-open .mega-menu-panel {
+      max-height: 600px;
+    }
+
+    .mega-menu-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 2rem;
     }
 
-    .members-mega-menu-section h3 {
-      font-size: 1rem;
+    .mega-menu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mega-menu-section-title {
       font-weight: 700;
+      font-size: 1rem;
       color: var(--hdr-text-hover);
-      margin: 0 0 0.75rem 0;
+      margin-bottom: 0.5rem;
       padding-bottom: 0.5rem;
       border-bottom: 2px solid var(--brand);
     }
 
-    .members-mega-menu-section a {
+    .mega-menu-section a {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 0.75rem;
-      padding: 0.5rem 0;
+      padding: 0.625rem 0;
       color: var(--hdr-text);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-weight: 400;
       transition: all 0.2s ease;
     }
 
-    .members-mega-menu-section a:hover {
+    .mega-menu-section a:hover {
       color: var(--hdr-text-hover);
       transform: translateX(5px);
     }
 
-    .members-mega-menu-section svg {
-      width: 16px;
-      height: 16px;
+    .mega-menu-section svg {
+      width: 18px;
+      height: 18px;
       opacity: 0.8;
       flex-shrink: 0;
-      margin-top: 2px;
     }
 
-    /* Mobile Navigation Toggle */
-    .nav-toggle{
-      display:none;
-      width:40px;
-      height:40px;
-      border:0;
-      background:transparent;
-      position:relative;
-      z-index:1005;
-      cursor:pointer;
+    .site-header .nav-toggle{
+      display:none; width:40px; height:40px; border:0; background:transparent; position:relative; z-index:1005; cursor:pointer;
     }
-
-    .nav-toggle span{
-      position:absolute;
-      left:9px;
-      right:9px;
-      height:2px;
-      background:#e5e7eb;
-      transition:.2s;
+    .site-header .nav-toggle span{
+      position:absolute; left:9px; right:9px; height:2px; background:#e5e7eb; transition:.2s;
     }
+    .site-header .nav-toggle span:nth-child(1){ top:12px; }
+    .site-header .nav-toggle span:nth-child(2){ top:19px; }
+    .site-header .nav-toggle span:nth-child(3){ top:26px; }
 
-    .nav-toggle span:nth-child(1){ top:12px; }
-    .nav-toggle span:nth-child(2){ top:19px; }
-    .nav-toggle span:nth-child(3){ top:26px; }
-
-    /* Mobile Responsive */
     @media (max-width: 900px){
-      .header-utility-bar {
-        display: none; /* Hide utility bar on mobile */
-      }
-
-      .nav-toggle{
-        display:block;
-      }
-
-      .nav-links{
-        position:absolute;
-        top:100%;
-        right:0;
-        left:0;
+      .site-header .nav-toggle{ display:block; }
+      .site-header .nav-links{
+        position:absolute; top:100%; right:0; left:0;
         background: rgba(6,10,22,.96);
         border-bottom:1px solid var(--hdr-border);
-        display:none;
-        flex-direction:column;
-        padding:.75rem 1rem;
-        gap:.9rem;
+        display:none; flex-direction:column; padding:.75rem 1rem; gap:.9rem;
         z-index:1004;
       }
-
-      .nav-links.show{
-        display:flex;
-      }
-
-      .header-donate-btn {
+      .site-header .nav-links.show{ display:flex; }
+      .header-signin-btn, .header-donate-btn {
         width: 100%;
         max-width: 250px;
+        min-height: 52px; /* Larger touch target on mobile */
         padding: 0.875rem 1.75rem;
         font-size: 1rem;
         justify-content: center;
       }
-
-      .members-dropdown-btn {
-        width: 100%;
-        max-width: 250px;
-        justify-content: center;
+      .user-dropdown {
+        right: 1rem;
       }
-
-      .members-mega-menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
-        padding: 1.5rem 1rem;
-        overflow-y: auto;
+      .user-name {
+        display: none;
       }
-
-      .members-mega-menu-grid {
+      /* Keep avatar large on mobile */
+      .user-avatar {
+        width: 48px;
+        height: 48px;
+      }
+      /* Mega menu mobile adjustments */
+      .mega-menu-content {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        padding: 1.5rem 1rem;
       }
-
-      .header-account-menu {
-        right: 1rem;
+      .site-header.mega-menu-open .mega-menu-panel {
+        max-height: 100vh;
+        overflow-y: auto;
       }
     }
   </style>
 
-  <!-- Top Utility Bar -->
-  <div class="header-utility-bar">
-    <div class="header-utility-inner">
-      <!-- Search (placeholder for future implementation) -->
-      <button class="header-utility-search" aria-label="Search" title="Search">
+  <nav class="site-nav">
+    <a class="nav-brand" href="/" aria-label="CyberSmrt home">
+      <img src="/assets/logos/cybersmrt-logo-only.png" alt="" width="36" height="36" />
+      <span>CYBERSMRT</span>
+    </a>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" role="navigation" aria-label="Primary">
+      <a href="/" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Home</a>
+      <a href="/programs" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Programs</a>
+      <a href="/blog" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Blog</a>
+      <a href="/tools" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Tools</a>
+      <a href="/about" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">About</a>
+      <a href="https://store.cybersmrt.org">Store</a>
+
+      <!-- Donate Button -->
+      <a href="/pages/get-involved/donate.html" class="header-donate-btn">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
         </svg>
-        <span>Search</span>
+        <span>Donate</span>
+      </a>
+
+      <!-- Sign In Button (shown when NOT logged in) -->
+      <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide>
+        Sign In
       </button>
 
-      <!-- My Account Dropdown (shown when logged in) -->
-      <div class="header-account-dropdown" data-auth-show style="display: none;">
-        <button class="header-account-btn" onclick="toggleAccountDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          <span>My Account</span>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- User Menu Dropdown (shown when logged in) -->
+      <div class="user-menu-container" data-auth-show style="display: none;">
+        <button class="user-menu" onclick="toggleUserMenu(event)" aria-haspopup="true" aria-expanded="false">
+          <img data-user-avatar src="/assets/logos/cybersmrt-logo-only.png" alt="Profile" class="user-avatar">
+          <span data-user-name class="user-name">User</span>
+          <svg class="user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </button>
 
-        <div class="header-account-menu">
+        <div class="user-dropdown">
           <a href="/profile">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
-            Profile
+            Me
+          </a>
+          <a href="/my-purchases">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            My Purchases
           </a>
           <a href="/progress">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -687,11 +547,23 @@
             </svg>
             Certificates
           </a>
+          <a href="/pages/contact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            Help & Support
+          </a>
+          <a href="/activity">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            My Activity
+          </a>
           <a href="/achievements">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
             </svg>
-            Achievements
+            Achievements/Badges
           </a>
           <button onclick="logout()" class="logout-btn">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -702,323 +574,167 @@
         </div>
       </div>
 
-      <!-- Sign In Button (shown when NOT logged in) -->
-      <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide>
-        Sign In
-      </button>
-
-      <!-- Theme Toggle -->
-      <button class="header-theme-toggle" onclick="window.ThemeManager.toggle()" aria-label="Toggle theme" title="Toggle light/dark mode">
+      <!-- Theme Toggle Button (after sign in / user menu) -->
+      <button class="theme-toggle" onclick="window.ThemeManager.toggle()" aria-label="Toggle theme" title="Toggle light/dark mode">
         <div class="theme-toggle-icon dark-icon">🌙</div>
         <div class="theme-toggle-icon light-icon">☀️</div>
       </button>
     </div>
-  </div>
 
-  <!-- Main Navigation Bar -->
-  <div class="header-nav-bar">
-    <nav class="header-nav-inner">
-      <a class="nav-brand" href="/" aria-label="CyberSmrt home">
-        <img src="/assets/logos/cybersmrt-logo-only.png" alt="" width="36" height="36" />
-        <span>CYBERSMRT</span>
-      </a>
-
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <div class="nav-links" role="navigation" aria-label="Primary">
-        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'home')" aria-haspopup="true" aria-expanded="false">
-          Home
-          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'programs')" aria-haspopup="true" aria-expanded="false">
-          Programs
-          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'blog')" aria-haspopup="true" aria-expanded="false">
-          Blog
-          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'tools')" aria-haspopup="true" aria-expanded="false">
-          Tools
-          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'about')" aria-haspopup="true" aria-expanded="false">
-          About
-          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-
-        <!-- Members Dropdown -->
-        <div class="members-dropdown-container">
-          <button class="members-dropdown-btn" onclick="toggleMembersDropdown(event)" aria-haspopup="true" aria-expanded="false">
-            <span>Members</span>
-            <svg class="members-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    <!-- Mega Menu Panel -->
+    <div class="mega-menu-panel">
+      <div class="mega-menu-content">
+        <!-- Home Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Home</div>
+          <a href="/#mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-          </button>
-
-          <div class="members-mega-menu">
-            <div class="members-mega-menu-title">Membership</div>
-            <div class="members-mega-menu-grid">
-              <!-- Achieve More -->
-              <div class="members-mega-menu-section">
-                <h3>Achieve More</h3>
-                <a href="/programs">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                  </svg>
-                  Earn a Certificate
-                </a>
-                <a href="/programs">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                  </svg>
-                  Grow Your Expertise
-                </a>
-                <a href="/pages/get-involved/volunteer">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
-                  Volunteer
-                </a>
-              </div>
-
-              <!-- For Members -->
-              <div class="members-mega-menu-section">
-                <h3>For Members</h3>
-                <a href="/profile" data-auth-show style="display: none;">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                  </svg>
-                  Member Dashboard
-                </a>
-                <a href="https://store.cybersmrt.org/my-purchases" data-auth-show style="display: none;">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                  </svg>
-                  My Purchases
-                </a>
-                <a href="https://store.cybersmrt.org">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                  </svg>
-                  Store
-                </a>
-              </div>
-
-              <!-- Information -->
-              <div class="members-mega-menu-section">
-                <h3>Information</h3>
-                <a href="/pages/get-involved/membership">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  Member Policies
-                </a>
-                <a href="/pages/about/">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                  Code of Ethics
-                </a>
-                <a href="/pages/contact">
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
-                  </svg>
-                  Help & Support
-                </a>
-              </div>
-            </div>
-          </div>
+            Mission
+          </a>
+          <a href="/#who-we-serve">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Who We Serve
+          </a>
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            Our Programs
+          </a>
+          <a href="/#impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Impact
+          </a>
+          <a href="/#partners">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            Partners
+          </a>
         </div>
 
-        <!-- Donate Button -->
-        <a href="/pages/get-involved/donate.html" class="header-donate-btn">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-          </svg>
-          <span>Donate</span>
-        </a>
-      </div>
-    </nav>
-  </div>
-
-  <!-- Expandable Nav Dropdowns -->
-  <div id="nav-dropdown-panel" class="nav-dropdown-panel">
-    <div class="nav-dropdown-content">
-      <!-- Home Dropdown -->
-      <div id="dropdown-home" class="nav-dropdown-section" style="display: none;">
-        <div class="nav-dropdown-links">
-          <a href="/#mission">Our Mission</a>
-          <a href="/#who-we-serve">Who We Serve</a>
-          <a href="/#partners">Our Partners</a>
-          <a href="/#equity-gap">Fix the Equity Gap</a>
+        <!-- Programs Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Programs</div>
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+            All Programs
+          </a>
+          <a href="/pages/programs/k12-curriculum.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            K-12 Curriculum
+          </a>
+          <a href="/pages/programs/mssp-lite.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            MSSP-lite Services
+          </a>
+          <a href="/pages/programs/workforce-dev.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Workforce Development
+          </a>
+          <a href="/pages/programs/community-outreach.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Community Outreach
+          </a>
         </div>
-      </div>
 
-      <!-- Programs Dropdown -->
-      <div id="dropdown-programs" class="nav-dropdown-section" style="display: none;">
-        <div class="nav-dropdown-links">
-          <h3>Education</h3>
-          <a href="/pages/programs/education/k-12-cybersecurity">K-12 Cybersecurity</a>
-          <a href="/pages/programs/education/technical-training">Technical Training</a>
-          <a href="/pages/programs/education/awareness-training">Awareness Training</a>
-
-          <h3>Services</h3>
-          <a href="/pages/programs/services/mssp">Managed Security Services</a>
-          <a href="/pages/programs/services/consulting">Consulting</a>
-          <a href="/pages/programs/services/incident-response">Incident Response</a>
-
-          <h3>About Programs</h3>
-          <a href="/pages/programs/">All Programs</a>
-          <a href="/pages/programs/pricing">Pricing & Sliding Scale</a>
+        <!-- Blog Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Blog</div>
+          <a href="/pages/blog/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            All Posts
+          </a>
+          <a href="/pages/blog/posts/k12-curriculum-design.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            Building a K-12 Cybersecurity Curriculum
+          </a>
         </div>
-      </div>
 
-      <!-- Blog Dropdown -->
-      <div id="dropdown-blog" class="nav-dropdown-section" style="display: none;">
-        <div class="nav-dropdown-links">
-          <a href="/pages/blog/">All Posts</a>
-          <a href="/pages/blog/#category-news">News & Updates</a>
-          <a href="/pages/blog/#category-tutorials">Tutorials</a>
-          <a href="/pages/blog/#category-security">Security Insights</a>
+        <!-- Tools Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Tools</div>
+          <a href="/pages/tools/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            All Tools
+          </a>
+          <a href="/pages/tools/password-checker">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Password Checker
+          </a>
+          <a href="/pages/tools/phishing-detector">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Phishing Detector
+          </a>
+          <a href="/pages/tools/qr-tester">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            QR Code Tester
+          </a>
         </div>
-      </div>
 
-      <!-- Tools Dropdown -->
-      <div id="dropdown-tools" class="nav-dropdown-section" style="display: none;">
-        <div class="nav-dropdown-links">
-          <a href="/pages/tools/">All Tools</a>
-          <a href="/pages/tools/#security-tools">Security Tools</a>
-          <a href="/pages/tools/#calculators">Calculators</a>
-          <a href="/pages/tools/#resources">Resources</a>
-        </div>
-      </div>
-
-      <!-- About Dropdown -->
-      <div id="dropdown-about" class="nav-dropdown-section" style="display: none;">
-        <div class="nav-dropdown-links">
-          <a href="/pages/about/">About CyberSmrt</a>
-          <a href="/pages/about/#mission">Our Mission</a>
-          <a href="/pages/about/#team">Our Team</a>
-          <a href="/pages/about/#advisors">Advisory Board</a>
-          <a href="/pages/contact">Contact Us</a>
+        <!-- About Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">About</div>
+          <a href="/pages/about/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Who We Are
+          </a>
+          <a href="/pages/about/mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Our Mission
+          </a>
+          <a href="/pages/about/impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Our Impact
+          </a>
+          <a href="/pages/about/team">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Our Team
+          </a>
+          <a href="/pages/contact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Contact Us
+          </a>
         </div>
       </div>
     </div>
-  </div>
+  </nav>
 </header>
-
-<script>
-// Nav dropdown toggle (for Home, Programs, Blog, Tools, About)
-function toggleNavDropdown(event, dropdownId) {
-  event.stopPropagation();
-
-  const panel = document.getElementById('nav-dropdown-panel');
-  const section = document.getElementById(`dropdown-${dropdownId}`);
-  const button = event.currentTarget;
-
-  // Check if this dropdown is already open
-  const isCurrentlyOpen = section.classList.contains('active');
-
-  // Close all nav dropdowns
-  document.querySelectorAll('.nav-link-btn').forEach(btn => {
-    btn.classList.remove('active');
-    btn.setAttribute('aria-expanded', 'false');
-  });
-  document.querySelectorAll('.nav-dropdown-section').forEach(sec => {
-    sec.classList.remove('active');
-  });
-
-  if (isCurrentlyOpen) {
-    // Close the panel if clicking the same button again
-    panel.classList.remove('open');
-  } else {
-    // Open the clicked dropdown
-    button.classList.add('active');
-    button.setAttribute('aria-expanded', 'true');
-    section.classList.add('active');
-    panel.classList.add('open');
-  }
-}
-
-// Members dropdown toggle
-function toggleMembersDropdown(event) {
-  event.stopPropagation();
-
-  // Close nav dropdowns when opening members
-  document.getElementById('nav-dropdown-panel').classList.remove('open');
-  document.querySelectorAll('.nav-link-btn').forEach(btn => {
-    btn.classList.remove('active');
-    btn.setAttribute('aria-expanded', 'false');
-  });
-
-  const container = event.currentTarget.closest('.members-dropdown-container');
-  container.classList.toggle('open');
-
-  const button = container.querySelector('.members-dropdown-btn');
-  const isOpen = container.classList.contains('open');
-  button.setAttribute('aria-expanded', isOpen);
-}
-
-// Account dropdown toggle
-function toggleAccountDropdown(event) {
-  event.stopPropagation();
-  const container = event.currentTarget.closest('.header-account-dropdown');
-  container.classList.toggle('open');
-
-  const button = container.querySelector('.header-account-btn');
-  const isOpen = container.classList.contains('open');
-  button.setAttribute('aria-expanded', isOpen);
-}
-
-// Close dropdowns when clicking outside
-document.addEventListener('click', () => {
-  // Close nav dropdown panel
-  document.getElementById('nav-dropdown-panel').classList.remove('open');
-  document.querySelectorAll('.nav-link-btn').forEach(btn => {
-    btn.classList.remove('active');
-    btn.setAttribute('aria-expanded', 'false');
-  });
-
-  // Close members dropdown
-  const openMembersDropdowns = document.querySelectorAll('.members-dropdown-container.open');
-  openMembersDropdowns.forEach(dropdown => {
-    dropdown.classList.remove('open');
-    const button = dropdown.querySelector('.members-dropdown-btn');
-    button.setAttribute('aria-expanded', 'false');
-  });
-
-  // Close account dropdown
-  const openAccountDropdowns = document.querySelectorAll('.header-account-dropdown.open');
-  openAccountDropdowns.forEach(dropdown => {
-    dropdown.classList.remove('open');
-    const button = dropdown.querySelector('.header-account-btn');
-    button.setAttribute('aria-expanded', 'false');
-  });
-});
-
-// Mobile menu toggle
-document.querySelector('.nav-toggle')?.addEventListener('click', function() {
-  const navLinks = document.querySelector('.nav-links');
-  navLinks.classList.toggle('show');
-  const isOpen = navLinks.classList.contains('show');
-  this.setAttribute('aria-expanded', isOpen);
-});
-
-// Make functions globally available
-window.toggleNavDropdown = toggleNavDropdown;
-window.toggleMembersDropdown = toggleMembersDropdown;
-window.toggleAccountDropdown = toggleAccountDropdown;
-</script>
