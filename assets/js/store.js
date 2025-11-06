@@ -585,9 +585,17 @@ const Store = {
     const newImages = product.images[color] || [];
     console.log('[changeCardColor] Changing to color:', color, 'Images:', newImages);
 
-    carousel.innerHTML = newImages.map((img, idx) => `
+    const newHTML = newImages.map((img, idx) => `
       <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="lazy">
     `).join('');
+
+    console.log('[changeCardColor] New HTML:', newHTML);
+    carousel.innerHTML = newHTML;
+
+    // Force reflow
+    void carousel.offsetHeight;
+
+    console.log('[changeCardColor] Carousel updated. Active images:', carousel.querySelectorAll('img.active').length);
 
     // Update carousel dots if multiple images
     const dotsContainer = card.querySelector('.carousel-dots');
