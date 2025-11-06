@@ -119,7 +119,17 @@ async function fetchProducts() {
   console.log('📥 Fetching products from Printify...');
 
   const response = await printifyRequest(`/shops/${PRINTIFY_SHOP_ID}/products.json`);
-  const products = response.data || [];
+  let products = response.data || [];
+
+  // Use "Copy of CyberSmrt Logo T-Shirt" for correct mockup selection
+  // but keep original T-Shirt ID for database consistency
+  products = products.filter(p => p.id !== '690bf241c66e799d2a0647ca'); // Remove Copy product from normal flow
+
+  // Replace original T-Shirt with Copy product (which has correct mockups)
+  const tshirtIndex = products.findIndex(p => p.id === '690a2bd79473e932c707f2df');
+  if (tshirtIndex !== -1) {
+    products[tshirtIndex] = { ...products[tshirtIndex], _useCopyMockups: true };
+  }
 
   console.log(`✅ Found ${products.length} products`);
   return products;
@@ -146,8 +156,12 @@ async function processProduct(product) {
     fs.mkdirSync(imagesDir, { recursive: true });
   }
 
-  // Get full product details
-  const details = await fetchProductDetails(product.id);
+  // Get full product details - use Copy product for T-Shirt mockups
+  const fetchId = product._useCopyMockups ? '690bf241c66e799d2a0647ca' : product.id;
+  if (product._useCopyMockups) {
+    console.log(`   📸 Using mockups from "Copy of CyberSmrt Logo T-Shirt"`);
+  }
+  const details = await fetchProductDetails(fetchId);
 
   // Extract variant information
   const variants = details.variants?.filter(v => v.is_enabled) || [];
@@ -215,8 +229,8 @@ async function processProduct(product) {
       return 0;
     });
 
-    // Download all mockup images (no limit)
-    // colorImages = colorImages.slice(0, 3);
+    // Limit to 7 mockup images per color (as selected in Printify)
+    colorImages = colorImages.slice(0, 7);
 
     if (colorImages.length === 0) continue;
 
@@ -252,16 +266,20 @@ async function processProduct(product) {
   const defaultImage = imagesByColor[firstColor]?.[0] || null;
 
   // Prepare product data for database
+  // Use original product ID/title if this is the Copy product
+  const originalId = product.id; // This will be the original T-Shirt ID
+  const originalTitle = product.title; // This will be "CyberSmrt Logo T-Shirt"
+
   const productData = {
-    id: details.id,
-    title: details.title,
+    id: originalId,
+    title: originalTitle,
     description: cleanDescription(details.description),
     price: variants[0]?.price || 0,
-    category: detectCategory(details.title, details.tags),
+    category: detectCategory(originalTitle, details.tags),
     image_url: defaultImage,
     images_by_color: imagesByColor, // NEW: Images organized by color
     printify_blueprint_id: details.blueprint_id,
-    printify_product_id: details.id,
+    printify_product_id: originalId,
     variants: variants.map(v => ({
       id: v.id,
       sku: v.sku,

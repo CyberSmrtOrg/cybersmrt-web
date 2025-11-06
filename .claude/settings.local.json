@@ -34,7 +34,17 @@
       "Bash(git fetch:*)",
       "Bash(cat:*)",
       "Bash(set:*)",
-      "Bash(bash sync-store-assets.sh:*)"
+      "Bash(bash sync-store-assets.sh:*)",
+      "Bash(for color in \"black\" \"white\" \"ash\" \"team-purple\" \"heather-prism-lilac\")",
+      "Bash(done)",
+      "Bash(gh api:*)",
+      "Bash(CLOUDFLARE_API_TOKEN=4GG0_KSVv4rQsjpSJ9m5X0VTkIkIBGvag19c3ry5 npx wrangler:*)",
+      "Bash(do for i in {8..35})",
+      "Bash(do rm -f \"690a2bd79473e932c707f2df_$color_$i.jpg\")",
+      "Bash(/tmp/printify-products.json)",
+      "Bash(printify-all-products.json)",
+      "Bash(copy-tshirt.json:*)",
+      "Bash(node -pe:*)"
     ],
     "deny": [],
     "ask": []
