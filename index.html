@@ -686,7 +686,7 @@
     }
 
     .partners { background: var(--bg-solid); overflow: visible; }
-    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 150px; margin-top: -150px; }
+    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 200px; margin-top: -200px; }
     .partners-track { display: flex; animation: scroll 30s linear infinite; width: fit-content; overflow: visible; }
     .partners-track:hover { animation-play-state: paused; }
 
@@ -756,19 +756,26 @@
       bottom: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(-10px);
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
+      background: rgba(20, 20, 30, 0.98);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       padding: 1rem 1.25rem;
       max-width: 300px;
       width: max-content;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
       z-index: 1000;
       pointer-events: none;
       margin-bottom: 10px;
+    }
+
+    [data-theme="light"] .partner-tooltip {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
     .partner-card:hover .partner-tooltip {
