@@ -39,7 +39,8 @@ window.COOKIE_CONSENT_LOADED = true;
         'Cookie theft: XSS vulnerabilities could expose cookies if not properly secured',
         'CSRF attacks: Without proper SameSite attributes, cookies could be sent in cross-site requests'
       ],
-      mitigation: 'We use Secure flag (HTTPS only), SameSite=Lax attribute, and HttpOnly flags where appropriate to minimize these risks.'
+      mitigation: 'We use Secure flag (HTTPS only), SameSite=Lax attribute, and HttpOnly flags where appropriate to minimize these risks.',
+      laymanExplanation: 'In plain English: We add special locks to these cookies so they can only be sent over encrypted connections (the padlock icon in your browser). We also prevent other websites from stealing them and make sure certain cookies are invisible to malicious scripts. Think of it like putting your house key in a locked box that only opens at your front door.'
     },
     functional: {
       title: 'Functional Cookies',
@@ -68,7 +69,8 @@ window.COOKIE_CONSENT_LOADED = true;
         'Data leakage: If using third-party functional services, your preferences might be shared',
         'Storage poisoning: Malicious scripts could modify preferences to cause unexpected behavior'
       ],
-      mitigation: 'We store preferences locally when possible and validate all stored values before applying them. We do not share preference data with third parties.'
+      mitigation: 'We store preferences locally when possible and validate all stored values before applying them. We do not share preference data with third parties.',
+      laymanExplanation: 'In plain English: Your preferences stay on your computer, not on a server somewhere. We double-check every setting before using it to make sure no one tampered with it. We never sell or share what theme you like or what language you prefer. It\'s like keeping your personal notes in your own notebook instead of on someone else\'s bulletin board.'
     },
     analytics: {
       title: 'Analytics Cookies',
@@ -107,7 +109,8 @@ window.COOKIE_CONSENT_LOADED = true;
         'Re-identification: Combined with other data, analytics IDs could identify individuals',
         'Ad targeting: Analytics data may be combined with advertising platforms'
       ],
-      mitigation: 'We use IP anonymization, have configured data retention limits, and have a Data Processing Agreement with analytics providers. You can also use browser privacy features like Do Not Track.'
+      mitigation: 'We use IP anonymization, have configured data retention limits, and have a Data Processing Agreement with analytics providers. You can also use browser privacy features like Do Not Track.',
+      laymanExplanation: 'In plain English: We blur your exact location so analytics companies can\'t pinpoint your address - they only see your general region. We automatically delete old data instead of keeping it forever. We have legal contracts that restrict how analytics companies can use your information. It\'s like giving a survey company your zip code instead of your home address, and making them promise to shred the forms after 6 months.'
     },
     marketing: {
       title: 'Marketing Cookies',
@@ -148,7 +151,8 @@ window.COOKIE_CONSENT_LOADED = true;
         'Data breaches: Advertising networks are targets for hackers',
         'Persistent tracking: Difficult to fully opt out across all platforms'
       ],
-      mitigation: 'By disabling marketing cookies, you prevent these tracking mechanisms. We recommend rejecting marketing cookies unless you specifically want personalized advertising. Use ad blockers and privacy-focused browsers for additional protection.'
+      mitigation: 'By disabling marketing cookies, you prevent these tracking mechanisms. We recommend rejecting marketing cookies unless you specifically want personalized advertising. Use ad blockers and privacy-focused browsers for additional protection.',
+      laymanExplanation: 'In plain English: When you reject marketing cookies, advertisers can\'t follow you around the web showing you ads based on sites you\'ve visited. We actually recommend saying "no" to these unless you enjoy personalized ads. For even more privacy, install an ad blocker (like uBlock Origin) and use browsers focused on privacy (like Firefox or Brave). Think of it like wearing sunglasses and a hat when you go shopping - it\'s harder for stores to recognize you and follow you around.'
     }
   };
 
@@ -507,6 +511,11 @@ window.COOKIE_CONSENT_LOADED = true;
     if (details.mitigation) {
       html += '<h5>How We Protect You</h5>';
       html += `<p>${details.mitigation}</p>`;
+    }
+
+    // Add layman's explanation
+    if (details.laymanExplanation) {
+      html += `<p class="layman-explanation">${details.laymanExplanation}</p>`;
     }
 
     body.innerHTML = html;

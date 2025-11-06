@@ -543,6 +543,18 @@
   color: #ef4444;
 }
 
+/* Layman's explanation styling */
+.cookie-details-body .layman-explanation {
+  background: rgba(102, 126, 234, 0.1);
+  border-left: 3px solid #667eea;
+  padding: 16px;
+  margin: 16px 0 20px 0;
+  border-radius: 8px;
+  font-style: italic;
+  color: #e0e7ff;
+  line-height: 1.7;
+}
+
 /* Cookie Details Scrollbar */
 .cookie-details-body::-webkit-scrollbar {
   width: 8px;
