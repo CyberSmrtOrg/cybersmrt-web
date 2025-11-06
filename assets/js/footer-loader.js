@@ -1,3 +1,7 @@
+// Prevent duplicate execution
+if (typeof window.FOOTER_LOADER_EXECUTED === 'undefined') {
+window.FOOTER_LOADER_EXECUTED = true;
+
 (() => {
   const MOUNT_ID = 'footer-mount';
   const CANDIDATES = ['/partials/footer.html', 'partials/footer.html'];
@@ -78,3 +82,5 @@
     loadFooter();
   }
 })();
+
+} // End duplicate check
