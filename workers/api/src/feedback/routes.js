@@ -6,66 +6,21 @@
 import { jsonResponse, errorResponse } from '../utils/response.js';
 
 /**
- * Send feedback to Slack
+ * Send feedback to Slack Workflow Builder webhook
+ * Uses simple key-value pairs instead of deprecated block format
  */
 async function sendToSlack(webhookUrl, feedbackData) {
   const { name, email, message, page, userAgent } = feedbackData;
 
-  const blocks = [
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: '🐛 Website Feedback',
-        emoji: true
-      }
-    },
-    {
-      type: 'section',
-      fields: [
-        {
-          type: 'mrkdwn',
-          text: `*From:*\n${name}`
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Email:*\n${email}`
-        }
-      ]
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*Message:*\n${message}`
-      }
-    },
-    {
-      type: 'section',
-      fields: [
-        {
-          type: 'mrkdwn',
-          text: `*Page:*\n<${page}|${page}>`
-        }
-      ]
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: `User Agent: ${userAgent}`
-        }
-      ]
-    },
-    {
-      type: 'divider'
-    }
-  ];
-
+  // Slack Workflow Builder webhook payload uses simple key-value pairs
+  // The keys should match the variables defined in your Slack workflow
   const slackPayload = {
-    text: `Website Feedback from ${name}`,
-    blocks
+    name: name,
+    email: email,
+    message: message,
+    page: page,
+    userAgent: userAgent,
+    timestamp: new Date().toISOString()
   };
 
   const response = await fetch(webhookUrl, {
@@ -77,7 +32,9 @@ async function sendToSlack(webhookUrl, feedbackData) {
   });
 
   if (!response.ok) {
-    throw new Error(`Slack API error: ${response.status}`);
+    const errorText = await response.text();
+    console.error('Slack webhook error:', response.status, errorText);
+    throw new Error(`Slack webhook error: ${response.status}`);
   }
 
   return true;
