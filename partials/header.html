@@ -179,10 +179,14 @@
     }
 
     /* Language Selector */
-    .header-lang-selector {
+    .language-selector-container {
+      position: relative;
+    }
+
+    .language-selector-btn {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.4rem;
       padding: 0.5rem 1rem;
       background: transparent;
       border: 1px solid var(--hdr-border);
@@ -192,13 +196,127 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
+      min-height: 40px;
     }
-    .header-lang-selector:hover {
+
+    .language-selector-btn:hover {
       background: rgba(255, 255, 255, 0.05);
+      border-color: var(--brand);
     }
-    .header-lang-selector svg {
+
+    .language-selector-btn.active {
+      background: rgba(102, 126, 234, 0.1);
+      border-color: var(--brand);
+    }
+
+    .language-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .language-code {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .language-dropdown-arrow {
       width: 14px;
       height: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .language-selector-btn.active .language-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* Language Dropdown */
+    .language-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.75rem;
+      min-width: 220px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 10000;
+      backdrop-filter: blur(10px);
+    }
+
+    .language-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .language-section {
+      margin-bottom: 0.5rem;
+    }
+
+    .language-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .language-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .language-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .language-option:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: var(--brand);
+    }
+
+    .language-option.active {
+      background: rgba(102, 126, 234, 0.15);
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .language-option.cyber-lang {
+      font-family: 'Courier New', monospace;
+    }
+
+    .language-flag {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .language-name {
+      flex: 1;
+    }
+
+    .language-divider {
+      height: 1px;
+      background: var(--card-border);
+      margin: 0.5rem 0;
     }
 
     /* Theme Toggle */
@@ -265,6 +383,36 @@
       color: white !important;
     }
     .header-donate-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Store Button */
+    .header-store-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white !important;
+      padding: 0.625rem 1.75rem;
+      min-height: 44px;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .header-store-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+      color: white !important;
+    }
+    .header-store-btn svg {
       width: 18px;
       height: 18px;
     }
@@ -556,6 +704,14 @@
           <input type="search" placeholder="Search..." aria-label="Search">
         </div>
 
+        <!-- Store Button -->
+        <a href="https://store.cybersmrt.org" class="header-store-btn">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span>Store</span>
+        </a>
+
         <!-- Donate Button -->
         <a href="/pages/get-involved/donate.html" class="header-donate-btn">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -638,12 +794,65 @@
         </button>
 
         <!-- Language Selector -->
-        <button class="header-lang-selector" aria-label="Language">
-          <span>EN</span>
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
+        <div class="language-selector-container">
+          <button class="language-selector-btn" onclick="toggleLanguageMenu(event)" aria-haspopup="true" aria-expanded="false">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="language-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+            </svg>
+            <span class="language-code">EN</span>
+            <svg class="language-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <div class="language-dropdown">
+            <div class="language-section">
+              <div class="language-section-title">Real Languages</div>
+              <button class="language-option" data-lang="en" onclick="changeLanguage('en')">
+                <span class="language-flag">🇺🇸</span>
+                <span class="language-name">English</span>
+              </button>
+              <button class="language-option" data-lang="es" onclick="changeLanguage('es')">
+                <span class="language-flag">🇪🇸</span>
+                <span class="language-name">Español</span>
+              </button>
+              <button class="language-option" data-lang="fr" onclick="changeLanguage('fr')">
+                <span class="language-flag">🇫🇷</span>
+                <span class="language-name">Français</span>
+              </button>
+              <button class="language-option" data-lang="de" onclick="changeLanguage('de')">
+                <span class="language-flag">🇩🇪</span>
+                <span class="language-name">Deutsch</span>
+              </button>
+              <button class="language-option" data-lang="zh" onclick="changeLanguage('zh')">
+                <span class="language-flag">🇨🇳</span>
+                <span class="language-name">中文</span>
+              </button>
+            </div>
+
+            <div class="language-divider"></div>
+
+            <div class="language-section">
+              <div class="language-section-title">🔐 Cyber Languages</div>
+              <button class="language-option cyber-lang" data-lang="1337" onclick="changeLanguage('1337')">
+                <span class="language-flag">💻</span>
+                <span class="language-name">1337 Speak</span>
+              </button>
+              <button class="language-option cyber-lang" data-lang="binary" onclick="changeLanguage('binary')">
+                <span class="language-flag">🔢</span>
+                <span class="language-name">Binary</span>
+              </button>
+              <button class="language-option cyber-lang" data-lang="morse" onclick="changeLanguage('morse')">
+                <span class="language-flag">📡</span>
+                <span class="language-name">Morse Code</span>
+              </button>
+              <button class="language-option cyber-lang" data-lang="caesar" onclick="changeLanguage('caesar')">
+                <span class="language-flag">🔐</span>
+                <span class="language-name">Caesar Cipher</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -652,10 +861,9 @@
       <nav class="header-nav-links" role="navigation" aria-label="Primary">
         <a href="/" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Home</a>
         <a href="/programs" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Programs</a>
-        <a href="/blog" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Blog</a>
         <a href="/tools" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Tools</a>
         <a href="/about" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">About</a>
-        <a href="https://store.cybersmrt.org">Store</a>
+        <a href="/blog" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Blog</a>
       </nav>
 
       <div class="header-social-links" aria-label="Social Media">
@@ -837,3 +1045,98 @@
     </div>
   </div>
 </header>
+
+<script>
+/**
+ * Language Selector Functions
+ */
+
+// Toggle language menu
+function toggleLanguageMenu(event) {
+  event.stopPropagation();
+  const btn = event.currentTarget;
+  const dropdown = btn.nextElementSibling;
+
+  // Close user menu if open
+  const userMenu = document.querySelector('.user-menu-container .user-dropdown');
+  if (userMenu && userMenu.classList.contains('active')) {
+    userMenu.classList.remove('active');
+    userMenu.previousElementSibling.classList.remove('active');
+  }
+
+  // Toggle language menu
+  btn.classList.toggle('active');
+  dropdown.classList.toggle('active');
+
+  // Update active language option
+  if (window.cyberSmrtTranslator) {
+    const currentLang = window.cyberSmrtTranslator.currentLanguage;
+    updateActiveLanguageOption(currentLang);
+  }
+}
+
+// Change language
+async function changeLanguage(lang) {
+  // Update button text
+  const langCode = document.querySelector('.language-code');
+  if (langCode) {
+    const langCodes = {
+      'en': 'EN',
+      'es': 'ES',
+      'fr': 'FR',
+      'de': 'DE',
+      'zh': '中文',
+      '1337': '1337',
+      'binary': '01',
+      'morse': '•−',
+      'caesar': 'ROT13'
+    };
+    langCode.textContent = langCodes[lang] || lang.toUpperCase();
+  }
+
+  // Update active state
+  updateActiveLanguageOption(lang);
+
+  // Close dropdown
+  const dropdown = document.querySelector('.language-dropdown');
+  const btn = document.querySelector('.language-selector-btn');
+  if (dropdown) dropdown.classList.remove('active');
+  if (btn) btn.classList.remove('active');
+
+  // Translate page if translator is loaded
+  if (window.cyberSmrtTranslator) {
+    await window.cyberSmrtTranslator.translatePage(lang);
+  }
+}
+
+// Update active language option in dropdown
+function updateActiveLanguageOption(lang) {
+  document.querySelectorAll('.language-option').forEach(option => {
+    if (option.dataset.lang === lang) {
+      option.classList.add('active');
+    } else {
+      option.classList.remove('active');
+    }
+  });
+}
+
+// Close language dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const langContainer = document.querySelector('.language-selector-container');
+  if (langContainer && !langContainer.contains(e.target)) {
+    const dropdown = langContainer.querySelector('.language-dropdown');
+    const btn = langContainer.querySelector('.language-selector-btn');
+    if (dropdown) dropdown.classList.remove('active');
+    if (btn) btn.classList.remove('active');
+  }
+});
+
+// Initialize language selector on load
+document.addEventListener('DOMContentLoaded', () => {
+  // Set initial language display
+  if (window.cyberSmrtTranslator) {
+    const storedLang = window.cyberSmrtTranslator.getStoredLanguage() || 'en';
+    changeLanguage(storedLang);
+  }
+});
+</script>
