@@ -180,7 +180,7 @@ const Store = {
 
   // Helper function to sort sizes in proper order
   sortSizes(sizes) {
-    const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
+    const sizeOrder = ['YS', 'YM', 'YL', 'YXL', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
     return sizes.sort((a, b) => {
       const indexA = sizeOrder.indexOf(a.toUpperCase());
       const indexB = sizeOrder.indexOf(b.toUpperCase());
