@@ -1,0 +1,62 @@
+name: Sync Store Header
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'partials/header.html'
+      - 'sync-store-header.sh'
+  workflow_dispatch:
+
+jobs:
+  sync-header:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Run header sync script
+        run: |
+          chmod +x sync-store-header.sh
+          bash sync-store-header.sh
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add store/partials/header.html
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "🤖 Auto-sync: Update store header from main header
+
+          Automatically synced by GitHub Actions when partials/header.html changed.
+          URLs updated to point to main site (https://cybersmrt.org) instead of root.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          # Try to push with retry logic
+          max_attempts=3
+          attempt=1
+          while [ $attempt -le $max_attempts ]; do
+            echo "Push attempt $attempt of $max_attempts"
+            git pull --rebase origin main && git push && break
+            attempt=$((attempt + 1))
+            sleep 2
+          done
+
+          if [ $attempt -gt $max_attempts ]; then
+            echo "Failed to push after $max_attempts attempts"
+            exit 1
+          fi
