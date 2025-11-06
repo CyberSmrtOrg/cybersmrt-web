@@ -100,6 +100,16 @@
 
     .header-theme-toggle .theme-toggle-icon {
       font-size: 1.1rem;
+      display: none;
+    }
+
+    /* Show moon icon in dark mode, sun icon in light mode */
+    [data-theme="dark"] .header-theme-toggle .dark-icon {
+      display: block;
+    }
+
+    [data-theme="light"] .header-theme-toggle .light-icon {
+      display: block;
     }
 
     /* My Account Dropdown in Utility Bar */
