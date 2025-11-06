@@ -342,18 +342,24 @@
       opacity: 0.8;
     }
 
-    /* Programs Dropdown - Same styling as Tools */
-    .programs-dropdown-container {
+    /* Shared Dropdown Styles for all navigation dropdowns */
+    .home-dropdown-container,
+    .programs-dropdown-container,
+    .blog-dropdown-container,
+    .about-dropdown-container {
       position: relative;
     }
 
-    .programs-dropdown-trigger {
+    .home-dropdown-trigger,
+    .programs-dropdown-trigger,
+    .blog-dropdown-trigger,
+    .about-dropdown-trigger {
       display: flex;
       align-items: center;
       gap: 0.35rem;
       color: var(--hdr-text);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700; /* Bold main links */
       opacity: 0.9;
       padding-bottom: 2px;
       background: none;
@@ -363,22 +369,34 @@
       cursor: pointer;
     }
 
-    .programs-dropdown-trigger:hover {
+    .home-dropdown-trigger:hover,
+    .programs-dropdown-trigger:hover,
+    .blog-dropdown-trigger:hover,
+    .about-dropdown-trigger:hover {
       color: var(--hdr-text-hover);
       opacity: 1;
     }
 
-    .programs-dropdown-arrow {
+    .home-dropdown-arrow,
+    .programs-dropdown-arrow,
+    .blog-dropdown-arrow,
+    .about-dropdown-arrow {
       width: 14px;
       height: 14px;
       transition: transform 0.3s ease;
     }
 
-    .programs-dropdown-container.open .programs-dropdown-arrow {
+    .home-dropdown-container.open .home-dropdown-arrow,
+    .programs-dropdown-container.open .programs-dropdown-arrow,
+    .blog-dropdown-container.open .blog-dropdown-arrow,
+    .about-dropdown-container.open .about-dropdown-arrow {
       transform: rotate(180deg);
     }
 
-    .programs-dropdown {
+    .home-dropdown,
+    .programs-dropdown,
+    .blog-dropdown,
+    .about-dropdown {
       position: absolute;
       top: calc(100% + 0.5rem);
       left: 50%;
@@ -386,7 +404,7 @@
       background: var(--hdr-bg);
       border: 1px solid var(--hdr-border);
       border-radius: 12px;
-      width: 260px;
+      min-width: 240px;
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow-lg);
       opacity: 0;
@@ -396,38 +414,62 @@
       z-index: 1001;
     }
 
-    .programs-dropdown-container.open .programs-dropdown {
+    .programs-dropdown {
+      width: 260px;
+    }
+
+    .blog-dropdown {
+      width: 300px;
+    }
+
+    .home-dropdown-container.open .home-dropdown,
+    .programs-dropdown-container.open .programs-dropdown,
+    .blog-dropdown-container.open .blog-dropdown,
+    .about-dropdown-container.open .about-dropdown {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) translateY(0);
     }
 
-    .programs-dropdown a {
+    .home-dropdown a,
+    .programs-dropdown a,
+    .blog-dropdown a,
+    .about-dropdown a {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       padding: 0.875rem 1.25rem;
       color: var(--hdr-text);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 400; /* Regular weight for child links */
       transition: background 0.2s ease;
       border-bottom: 1px solid var(--border-color);
       white-space: nowrap;
     }
 
-    .programs-dropdown a:last-child {
+    .home-dropdown a:last-child,
+    .programs-dropdown a:last-child,
+    .blog-dropdown a:last-child,
+    .about-dropdown a:last-child {
       border-bottom: none;
     }
 
-    .programs-dropdown a:hover {
+    .home-dropdown a:hover,
+    .programs-dropdown a:hover,
+    .blog-dropdown a:hover,
+    .about-dropdown a:hover {
       background: var(--card-bg-hover);
       color: var(--hdr-text-hover);
     }
 
-    .programs-dropdown svg {
+    .home-dropdown svg,
+    .programs-dropdown svg,
+    .blog-dropdown svg,
+    .about-dropdown svg {
       width: 18px;
       height: 18px;
       opacity: 0.8;
+      flex-shrink: 0;
     }
 
     .site-header .nav-toggle{
@@ -482,7 +524,47 @@
     </button>
 
     <div class="nav-links" role="navigation" aria-label="Primary">
-      <a href="/">Home</a>
+      <!-- Home Dropdown -->
+      <div class="home-dropdown-container">
+        <button class="home-dropdown-trigger" onclick="toggleHomeDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          Home
+          <svg class="home-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="home-dropdown">
+          <a href="/#mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Our Mission
+          </a>
+          <a href="/#who-we-serve">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Who We Serve
+          </a>
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            Our Programs
+          </a>
+          <a href="/#impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Our Impact
+          </a>
+          <a href="/#partners">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            Our Partners
+          </a>
+        </div>
+      </div>
 
       <!-- Programs Dropdown -->
       <div class="programs-dropdown-container">
@@ -526,7 +608,29 @@
         </div>
       </div>
 
-      <a href="/pages/blog/">Blog</a>
+      <!-- Blog Dropdown -->
+      <div class="blog-dropdown-container">
+        <button class="blog-dropdown-trigger" onclick="toggleBlogDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          Blog
+          <svg class="blog-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="blog-dropdown">
+          <a href="/pages/blog/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            All Posts
+          </a>
+          <a href="/pages/blog/posts/k12-curriculum-design.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            Building a K-12 Cybersecurity Curriculum
+          </a>
+        </div>
+      </div>
 
       <!-- Tools Dropdown -->
       <div class="tools-dropdown-container">
@@ -564,8 +668,44 @@
         </div>
       </div>
 
-      <a href="/pages/about/">About</a>
+      <!-- About Dropdown -->
+      <div class="about-dropdown-container">
+        <button class="about-dropdown-trigger" onclick="toggleAboutDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="about-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="about-dropdown">
+          <a href="/pages/about/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Who We Are
+          </a>
+          <a href="/pages/about/mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Our Mission
+          </a>
+          <a href="/pages/about/impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Our Impact
+          </a>
+          <a href="/pages/about/team">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Our Team
+          </a>
+        </div>
+      </div>
+
       <a href="/pages/contact">Contact</a>
+      <a href="https://store.cybersmrt.org">Store</a>
 
       <!-- Donate Button -->
       <a href="/pages/get-involved/donate.html" class="header-donate-btn">
