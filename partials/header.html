@@ -276,13 +276,120 @@
       align-items:center;
     }
 
-    .nav-links a,
-    .nav-links button {
+    .nav-links a {
       color: var(--hdr-text);
       text-decoration:none;
       font-weight:600;
       opacity:.9;
       padding-bottom: 2px;
+    }
+
+    /* Nav Link Buttons (with dropdowns) */
+    .nav-link-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--hdr-text);
+      text-decoration:none;
+      font-weight:600;
+      opacity:.9;
+      padding-bottom: 2px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link-btn:hover {
+      color: var(--hdr-text-hover);
+      opacity: 1;
+    }
+
+    .nav-link-btn.active {
+      color: var(--hdr-text-hover);
+      opacity: 1;
+      border-bottom-color: var(--brand);
+    }
+
+    .nav-dropdown-arrow {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link-btn.active .nav-dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* Expandable Nav Dropdown Panel */
+    .nav-dropdown-panel {
+      background: var(--hdr-bg);
+      border-bottom: 1px solid var(--hdr-border);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .nav-dropdown-panel.open {
+      max-height: 500px;
+    }
+
+    .nav-dropdown-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .nav-dropdown-section {
+      display: none;
+    }
+
+    .nav-dropdown-section.active {
+      display: block;
+    }
+
+    .nav-dropdown-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-dropdown-links h3 {
+      color: var(--hdr-text);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    .nav-dropdown-links h3:first-child {
+      margin-top: 0;
+    }
+
+    .nav-dropdown-links a {
+      color: var(--hdr-text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      opacity: 0.9;
+    }
+
+    .nav-dropdown-links a:hover {
+      background: var(--hdr-hover-bg);
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* Existing button styles */
+    .nav-links button {
       background: none;
       border: none;
       font-family: inherit;
@@ -621,11 +728,36 @@
       </button>
 
       <div class="nav-links" role="navigation" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="/pages/programs/">Programs</a>
-        <a href="/pages/blog/">Blog</a>
-        <a href="/pages/tools/">Tools</a>
-        <a href="/pages/about/">About</a>
+        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'home')" aria-haspopup="true" aria-expanded="false">
+          Home
+          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'programs')" aria-haspopup="true" aria-expanded="false">
+          Programs
+          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'blog')" aria-haspopup="true" aria-expanded="false">
+          Blog
+          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'tools')" aria-haspopup="true" aria-expanded="false">
+          Tools
+          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <button class="nav-link-btn" onclick="toggleNavDropdown(event, 'about')" aria-haspopup="true" aria-expanded="false">
+          About
+          <svg class="nav-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
 
         <!-- Members Dropdown -->
         <div class="members-dropdown-container">
@@ -727,12 +859,117 @@
       </div>
     </nav>
   </div>
+
+  <!-- Expandable Nav Dropdowns -->
+  <div id="nav-dropdown-panel" class="nav-dropdown-panel">
+    <div class="nav-dropdown-content">
+      <!-- Home Dropdown -->
+      <div id="dropdown-home" class="nav-dropdown-section" style="display: none;">
+        <div class="nav-dropdown-links">
+          <a href="/#mission">Our Mission</a>
+          <a href="/#who-we-serve">Who We Serve</a>
+          <a href="/#partners">Our Partners</a>
+          <a href="/#equity-gap">Fix the Equity Gap</a>
+        </div>
+      </div>
+
+      <!-- Programs Dropdown -->
+      <div id="dropdown-programs" class="nav-dropdown-section" style="display: none;">
+        <div class="nav-dropdown-links">
+          <h3>Education</h3>
+          <a href="/pages/programs/education/k-12-cybersecurity">K-12 Cybersecurity</a>
+          <a href="/pages/programs/education/technical-training">Technical Training</a>
+          <a href="/pages/programs/education/awareness-training">Awareness Training</a>
+
+          <h3>Services</h3>
+          <a href="/pages/programs/services/mssp">Managed Security Services</a>
+          <a href="/pages/programs/services/consulting">Consulting</a>
+          <a href="/pages/programs/services/incident-response">Incident Response</a>
+
+          <h3>About Programs</h3>
+          <a href="/pages/programs/">All Programs</a>
+          <a href="/pages/programs/pricing">Pricing & Sliding Scale</a>
+        </div>
+      </div>
+
+      <!-- Blog Dropdown -->
+      <div id="dropdown-blog" class="nav-dropdown-section" style="display: none;">
+        <div class="nav-dropdown-links">
+          <a href="/pages/blog/">All Posts</a>
+          <a href="/pages/blog/#category-news">News & Updates</a>
+          <a href="/pages/blog/#category-tutorials">Tutorials</a>
+          <a href="/pages/blog/#category-security">Security Insights</a>
+        </div>
+      </div>
+
+      <!-- Tools Dropdown -->
+      <div id="dropdown-tools" class="nav-dropdown-section" style="display: none;">
+        <div class="nav-dropdown-links">
+          <a href="/pages/tools/">All Tools</a>
+          <a href="/pages/tools/#security-tools">Security Tools</a>
+          <a href="/pages/tools/#calculators">Calculators</a>
+          <a href="/pages/tools/#resources">Resources</a>
+        </div>
+      </div>
+
+      <!-- About Dropdown -->
+      <div id="dropdown-about" class="nav-dropdown-section" style="display: none;">
+        <div class="nav-dropdown-links">
+          <a href="/pages/about/">About CyberSmrt</a>
+          <a href="/pages/about/#mission">Our Mission</a>
+          <a href="/pages/about/#team">Our Team</a>
+          <a href="/pages/about/#advisors">Advisory Board</a>
+          <a href="/pages/contact">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <script>
+// Nav dropdown toggle (for Home, Programs, Blog, Tools, About)
+function toggleNavDropdown(event, dropdownId) {
+  event.stopPropagation();
+
+  const panel = document.getElementById('nav-dropdown-panel');
+  const section = document.getElementById(`dropdown-${dropdownId}`);
+  const button = event.currentTarget;
+
+  // Check if this dropdown is already open
+  const isCurrentlyOpen = section.classList.contains('active');
+
+  // Close all nav dropdowns
+  document.querySelectorAll('.nav-link-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+  document.querySelectorAll('.nav-dropdown-section').forEach(sec => {
+    sec.classList.remove('active');
+  });
+
+  if (isCurrentlyOpen) {
+    // Close the panel if clicking the same button again
+    panel.classList.remove('open');
+  } else {
+    // Open the clicked dropdown
+    button.classList.add('active');
+    button.setAttribute('aria-expanded', 'true');
+    section.classList.add('active');
+    panel.classList.add('open');
+  }
+}
+
 // Members dropdown toggle
 function toggleMembersDropdown(event) {
   event.stopPropagation();
+
+  // Close nav dropdowns when opening members
+  document.getElementById('nav-dropdown-panel').classList.remove('open');
+  document.querySelectorAll('.nav-link-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
   const container = event.currentTarget.closest('.members-dropdown-container');
   container.classList.toggle('open');
 
@@ -754,6 +991,13 @@ function toggleAccountDropdown(event) {
 
 // Close dropdowns when clicking outside
 document.addEventListener('click', () => {
+  // Close nav dropdown panel
+  document.getElementById('nav-dropdown-panel').classList.remove('open');
+  document.querySelectorAll('.nav-link-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
   // Close members dropdown
   const openMembersDropdowns = document.querySelectorAll('.members-dropdown-container.open');
   openMembersDropdowns.forEach(dropdown => {
@@ -780,6 +1024,7 @@ document.querySelector('.nav-toggle')?.addEventListener('click', function() {
 });
 
 // Make functions globally available
+window.toggleNavDropdown = toggleNavDropdown;
 window.toggleMembersDropdown = toggleMembersDropdown;
 window.toggleAccountDropdown = toggleAccountDropdown;
 </script>
