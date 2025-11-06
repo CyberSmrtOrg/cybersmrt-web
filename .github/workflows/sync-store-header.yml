@@ -31,32 +31,46 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add store/partials/header.html
 
-          # Only commit if there are changes
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
+          # Check for changes
+          if ! git diff --quiet store/partials/header.html || ! git diff --cached --quiet store/partials/header.html; then
+            echo "📝 Changes detected in store header"
 
-          git commit -m "🤖 Auto-sync: Update store header from main header
+            # Fetch latest changes
+            git fetch origin main
 
-          Automatically synced by GitHub Actions when partials/header.html changed.
-          URLs updated to point to main site (https://cybersmrt.org) instead of root.
+            # Stage the changed file
+            git add store/partials/header.html
 
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            # Commit the changes
+            git commit -m "🤖 Auto-sync: Update store header from main header
 
-          # Try to push with retry logic
-          max_attempts=3
-          attempt=1
-          while [ $attempt -le $max_attempts ]; do
-            echo "Push attempt $attempt of $max_attempts"
-            git pull --rebase origin main && git push && break
-            attempt=$((attempt + 1))
-            sleep 2
-          done
+            Automatically synced by GitHub Actions when partials/header.html changed.
+            URLs updated to point to main site (https://cybersmrt.org) instead of root.
 
-          if [ $attempt -gt $max_attempts ]; then
-            echo "Failed to push after $max_attempts attempts"
-            exit 1
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            # Try to push with retry logic
+            max_attempts=3
+            attempt=1
+            while [ $attempt -le $max_attempts ]; do
+              echo "🚀 Push attempt $attempt of $max_attempts"
+
+              # Pull with rebase and push
+              if git pull --rebase origin main && git push origin main; then
+                echo "✅ Push successful!"
+                break
+              fi
+
+              echo "⚠️  Attempt $attempt failed, retrying..."
+              attempt=$((attempt + 1))
+              sleep 2
+            done
+
+            if [ $attempt -gt $max_attempts ]; then
+              echo "❌ Failed to push after $max_attempts attempts"
+              exit 1
+            fi
+          else
+            echo "✨ No changes to commit"
           fi
