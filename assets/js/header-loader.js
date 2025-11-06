@@ -42,128 +42,52 @@ window.HEADER_LOADER_EXECUTED = true;
     event.currentTarget.setAttribute('aria-expanded', !isOpen);
   };
 
-  // Toggle tools dropdown menu
-  window.toggleToolsDropdown = function(event) {
+  // Toggle mega menu
+  window.toggleMegaMenu = function(event) {
     event.stopPropagation();
-    const container = event.currentTarget.closest('.tools-dropdown-container');
-    if (!container) return;
+    const header = document.querySelector('.site-header');
+    if (!header) return;
 
-    const isOpen = container.classList.contains('open');
+    const isOpen = header.classList.contains('mega-menu-open');
 
-    // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
-      if (el !== container) {
-        el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
+    // Close user menu if open
+    const userMenuContainer = document.querySelector('.user-menu-container.open');
+    if (userMenuContainer) {
+      userMenuContainer.classList.remove('open');
+      const userMenuBtn = userMenuContainer.querySelector('.user-menu');
+      if (userMenuBtn) userMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Toggle mega menu
+    header.classList.toggle('mega-menu-open');
+
+    // Update all mega menu trigger aria-expanded states
+    const allTriggers = header.querySelectorAll('.mega-menu-trigger');
+    allTriggers.forEach(trigger => {
+      trigger.setAttribute('aria-expanded', !isOpen);
     });
-
-    // Toggle this menu
-    container.classList.toggle('open');
-    event.currentTarget.setAttribute('aria-expanded', !isOpen);
   };
 
-  // Toggle programs dropdown menu
-  window.toggleProgramsDropdown = function(event) {
-    event.stopPropagation();
-    const container = event.currentTarget.closest('.programs-dropdown-container');
-    if (!container) return;
-
-    const isOpen = container.classList.contains('open');
-
-    // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
-      if (el !== container) {
-        el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Toggle this menu
-    container.classList.toggle('open');
-    event.currentTarget.setAttribute('aria-expanded', !isOpen);
-  };
-
-  // Toggle home dropdown menu
-  window.toggleHomeDropdown = function(event) {
-    event.stopPropagation();
-    const container = event.currentTarget.closest('.home-dropdown-container');
-    if (!container) return;
-
-    const isOpen = container.classList.contains('open');
-
-    // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
-      if (el !== container) {
-        el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Toggle this menu
-    container.classList.toggle('open');
-    event.currentTarget.setAttribute('aria-expanded', !isOpen);
-  };
-
-  // Toggle blog dropdown menu
-  window.toggleBlogDropdown = function(event) {
-    event.stopPropagation();
-    const container = event.currentTarget.closest('.blog-dropdown-container');
-    if (!container) return;
-
-    const isOpen = container.classList.contains('open');
-
-    // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
-      if (el !== container) {
-        el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Toggle this menu
-    container.classList.toggle('open');
-    event.currentTarget.setAttribute('aria-expanded', !isOpen);
-  };
-
-  // Toggle about dropdown menu
-  window.toggleAboutDropdown = function(event) {
-    event.stopPropagation();
-    const container = event.currentTarget.closest('.about-dropdown-container');
-    if (!container) return;
-
-    const isOpen = container.classList.contains('open');
-
-    // Close all other open menus first
-    document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
-      if (el !== container) {
-        el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Toggle this menu
-    container.classList.toggle('open');
-    event.currentTarget.setAttribute('aria-expanded', !isOpen);
-  };
-
-  // Close dropdown menus when clicking outside
+  // Close menus when clicking outside
   document.addEventListener('click', function(event) {
-    if (!event.target.closest('.user-menu-container') &&
-        !event.target.closest('.home-dropdown-container') &&
-        !event.target.closest('.tools-dropdown-container') &&
-        !event.target.closest('.programs-dropdown-container') &&
-        !event.target.closest('.blog-dropdown-container') &&
-        !event.target.closest('.about-dropdown-container')) {
-      // Close all dropdowns
-      document.querySelectorAll('.user-menu-container.open, .home-dropdown-container.open, .tools-dropdown-container.open, .programs-dropdown-container.open, .blog-dropdown-container.open, .about-dropdown-container.open').forEach(el => {
+    const header = document.querySelector('.site-header');
+
+    // Close mega menu if clicking outside
+    if (header && header.classList.contains('mega-menu-open') &&
+        !event.target.closest('.mega-menu-trigger') &&
+        !event.target.closest('.mega-menu-panel')) {
+      header.classList.remove('mega-menu-open');
+      const allTriggers = header.querySelectorAll('.mega-menu-trigger');
+      allTriggers.forEach(trigger => {
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    // Close user menu if clicking outside
+    if (!event.target.closest('.user-menu-container')) {
+      document.querySelectorAll('.user-menu-container.open').forEach(el => {
         el.classList.remove('open');
-        const btn = el.querySelector('.user-menu, .home-dropdown-trigger, .tools-dropdown-trigger, .programs-dropdown-trigger, .blog-dropdown-trigger, .about-dropdown-trigger');
+        const btn = el.querySelector('.user-menu');
         if (btn) btn.setAttribute('aria-expanded', 'false');
       });
     }
@@ -226,7 +150,7 @@ window.HEADER_LOADER_EXECUTED = true;
     }
   });
 
-  console.log('✅ Global functions loaded (including toggleUserMenu, toggleToolsDropdown, toggleProgramsDropdown)');
+  console.log('✅ Global functions loaded (including toggleUserMenu, toggleMegaMenu)');
 })();
 
 // ============================================

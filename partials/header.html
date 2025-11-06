@@ -342,24 +342,14 @@
       opacity: 0.8;
     }
 
-    /* Shared Dropdown Styles for all navigation dropdowns */
-    .home-dropdown-container,
-    .programs-dropdown-container,
-    .blog-dropdown-container,
-    .about-dropdown-container {
-      position: relative;
-    }
-
-    .home-dropdown-trigger,
-    .programs-dropdown-trigger,
-    .blog-dropdown-trigger,
-    .about-dropdown-trigger {
+    /* Mega Menu Styles */
+    .mega-menu-trigger {
       display: flex;
       align-items: center;
       gap: 0.35rem;
       color: var(--hdr-text);
       text-decoration: none;
-      font-weight: 700; /* Bold main links */
+      font-weight: 700;
       opacity: 0.9;
       padding-bottom: 2px;
       background: none;
@@ -369,103 +359,83 @@
       cursor: pointer;
     }
 
-    .home-dropdown-trigger:hover,
-    .programs-dropdown-trigger:hover,
-    .blog-dropdown-trigger:hover,
-    .about-dropdown-trigger:hover {
+    .mega-menu-trigger:hover {
       color: var(--hdr-text-hover);
       opacity: 1;
     }
 
-    .home-dropdown-arrow,
-    .programs-dropdown-arrow,
-    .blog-dropdown-arrow,
-    .about-dropdown-arrow {
+    .mega-menu-arrow {
       width: 14px;
       height: 14px;
       transition: transform 0.3s ease;
     }
 
-    .home-dropdown-container.open .home-dropdown-arrow,
-    .programs-dropdown-container.open .programs-dropdown-arrow,
-    .blog-dropdown-container.open .blog-dropdown-arrow,
-    .about-dropdown-container.open .about-dropdown-arrow {
+    .site-header.mega-menu-open .mega-menu-arrow {
       transform: rotate(180deg);
     }
 
-    .home-dropdown,
-    .programs-dropdown,
-    .blog-dropdown,
-    .about-dropdown {
+    /* Mega Menu Panel */
+    .mega-menu-panel {
       position: absolute;
-      top: calc(100% + 0.5rem);
-      left: 50%;
-      transform: translateX(-50%);
+      top: 100%;
+      left: 0;
+      right: 0;
       background: var(--hdr-bg);
-      border: 1px solid var(--hdr-border);
-      border-radius: 12px;
-      min-width: 240px;
+      border-bottom: 1px solid var(--hdr-border);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       box-shadow: var(--shadow-lg);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateX(-50%) translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1001;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      z-index: 999;
     }
 
-    .programs-dropdown {
-      width: 260px;
+    .site-header.mega-menu-open .mega-menu-panel {
+      max-height: 600px;
     }
 
-    .blog-dropdown {
-      width: 300px;
+    .mega-menu-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2rem;
     }
 
-    .home-dropdown-container.open .home-dropdown,
-    .programs-dropdown-container.open .programs-dropdown,
-    .blog-dropdown-container.open .blog-dropdown,
-    .about-dropdown-container.open .about-dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
+    .mega-menu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    .home-dropdown a,
-    .programs-dropdown a,
-    .blog-dropdown a,
-    .about-dropdown a {
+    .mega-menu-section-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--hdr-text-hover);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--brand);
+    }
+
+    .mega-menu-section a {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.875rem 1.25rem;
+      padding: 0.625rem 0;
       color: var(--hdr-text);
       text-decoration: none;
-      font-weight: 400; /* Regular weight for child links */
-      transition: background 0.2s ease;
-      border-bottom: 1px solid var(--border-color);
-      white-space: nowrap;
+      font-weight: 400;
+      transition: all 0.2s ease;
     }
 
-    .home-dropdown a:last-child,
-    .programs-dropdown a:last-child,
-    .blog-dropdown a:last-child,
-    .about-dropdown a:last-child {
-      border-bottom: none;
-    }
-
-    .home-dropdown a:hover,
-    .programs-dropdown a:hover,
-    .blog-dropdown a:hover,
-    .about-dropdown a:hover {
-      background: var(--card-bg-hover);
+    .mega-menu-section a:hover {
       color: var(--hdr-text-hover);
+      transform: translateX(5px);
     }
 
-    .home-dropdown svg,
-    .programs-dropdown svg,
-    .blog-dropdown svg,
-    .about-dropdown svg {
+    .mega-menu-section svg {
       width: 18px;
       height: 18px;
       opacity: 0.8;
@@ -510,6 +480,16 @@
         width: 48px;
         height: 48px;
       }
+      /* Mega menu mobile adjustments */
+      .mega-menu-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem 1rem;
+      }
+      .site-header.mega-menu-open .mega-menu-panel {
+        max-height: 100vh;
+        overflow-y: auto;
+      }
     }
   </style>
 
@@ -524,185 +504,41 @@
     </button>
 
     <div class="nav-links" role="navigation" aria-label="Primary">
-      <!-- Home Dropdown -->
-      <div class="home-dropdown-container">
-        <button class="home-dropdown-trigger" onclick="toggleHomeDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          Home
-          <svg class="home-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="home-dropdown">
-          <a href="/#mission">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Our Mission
-          </a>
-          <a href="/#who-we-serve">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            Who We Serve
-          </a>
-          <a href="/#programs">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-            </svg>
-            Our Programs
-          </a>
-          <a href="/#impact">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-            </svg>
-            Our Impact
-          </a>
-          <a href="/#partners">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-            </svg>
-            Our Partners
-          </a>
-        </div>
-      </div>
+      <!-- Mega Menu Triggers -->
+      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
+        Home
+        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
-      <!-- Programs Dropdown -->
-      <div class="programs-dropdown-container">
-        <button class="programs-dropdown-trigger" onclick="toggleProgramsDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          Programs
-          <svg class="programs-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="programs-dropdown">
-          <a href="/#programs">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-            </svg>
-            All Programs
-          </a>
-          <a href="/pages/programs/k12-curriculum.html">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-            K-12 Curriculum
-          </a>
-          <a href="/pages/programs/mssp-lite.html">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-            MSSP-lite Services
-          </a>
-          <a href="/pages/programs/workforce-dev.html">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            Workforce Development
-          </a>
-          <a href="/pages/programs/community-outreach.html">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            Community Outreach
-          </a>
-        </div>
-      </div>
+      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
+        Programs
+        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
-      <!-- Blog Dropdown -->
-      <div class="blog-dropdown-container">
-        <button class="blog-dropdown-trigger" onclick="toggleBlogDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          Blog
-          <svg class="blog-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="blog-dropdown">
-          <a href="/pages/blog/">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-            </svg>
-            All Posts
-          </a>
-          <a href="/pages/blog/posts/k12-curriculum-design.html">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-            Building a K-12 Cybersecurity Curriculum
-          </a>
-        </div>
-      </div>
+      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
+        Blog
+        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
-      <!-- Tools Dropdown -->
-      <div class="tools-dropdown-container">
-        <button class="tools-dropdown-trigger" onclick="toggleToolsDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          Tools
-          <svg class="tools-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="tools-dropdown">
-          <a href="/pages/tools/">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-            </svg>
-            All Tools
-          </a>
-          <a href="/pages/tools/password-checker">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-            Password Checker
-          </a>
-          <a href="/pages/tools/phishing-detector">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-            Phishing Detector
-          </a>
-          <a href="/pages/tools/qr-tester">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
-            </svg>
-            QR Code Tester
-          </a>
-        </div>
-      </div>
+      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
+        Tools
+        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
-      <!-- About Dropdown -->
-      <div class="about-dropdown-container">
-        <button class="about-dropdown-trigger" onclick="toggleAboutDropdown(event)" aria-haspopup="true" aria-expanded="false">
-          About
-          <svg class="about-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="about-dropdown">
-          <a href="/pages/about/">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Who We Are
-          </a>
-          <a href="/pages/about/mission">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Our Mission
-          </a>
-          <a href="/pages/about/impact">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-            </svg>
-            Our Impact
-          </a>
-          <a href="/pages/about/team">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            Our Team
-          </a>
-        </div>
-      </div>
+      <button class="mega-menu-trigger" onclick="toggleMegaMenu(event)" aria-haspopup="true" aria-expanded="false">
+        About
+        <svg class="mega-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
       <a href="/pages/contact">Contact</a>
       <a href="https://store.cybersmrt.org">Store</a>
@@ -781,6 +617,156 @@
         <div class="theme-toggle-icon dark-icon">🌙</div>
         <div class="theme-toggle-icon light-icon">☀️</div>
       </button>
+    </div>
+
+    <!-- Mega Menu Panel -->
+    <div class="mega-menu-panel">
+      <div class="mega-menu-content">
+        <!-- Home Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Home</div>
+          <a href="/#mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Mission
+          </a>
+          <a href="/#who-we-serve">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Who We Serve
+          </a>
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            Our Programs
+          </a>
+          <a href="/#impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Impact
+          </a>
+          <a href="/#partners">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            Partners
+          </a>
+        </div>
+
+        <!-- Programs Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Programs</div>
+          <a href="/#programs">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+            All Programs
+          </a>
+          <a href="/pages/programs/k12-curriculum.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            K-12 Curriculum
+          </a>
+          <a href="/pages/programs/mssp-lite.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            MSSP-lite Services
+          </a>
+          <a href="/pages/programs/workforce-dev.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Workforce Development
+          </a>
+          <a href="/pages/programs/community-outreach.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Community Outreach
+          </a>
+        </div>
+
+        <!-- Blog Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Blog</div>
+          <a href="/pages/blog/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            All Posts
+          </a>
+          <a href="/pages/blog/posts/k12-curriculum-design.html">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            Building a K-12 Cybersecurity Curriculum
+          </a>
+        </div>
+
+        <!-- Tools Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">Tools</div>
+          <a href="/pages/tools/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            All Tools
+          </a>
+          <a href="/pages/tools/password-checker">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Password Checker
+          </a>
+          <a href="/pages/tools/phishing-detector">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            Phishing Detector
+          </a>
+          <a href="/pages/tools/qr-tester">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            QR Code Tester
+          </a>
+        </div>
+
+        <!-- About Section -->
+        <div class="mega-menu-section">
+          <div class="mega-menu-section-title">About</div>
+          <a href="/pages/about/">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Who We Are
+          </a>
+          <a href="/pages/about/mission">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Our Mission
+          </a>
+          <a href="/pages/about/impact">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+            Our Impact
+          </a>
+          <a href="/pages/about/team">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Our Team
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 </header>
