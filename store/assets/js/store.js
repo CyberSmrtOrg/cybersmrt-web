@@ -570,11 +570,20 @@ const Store = {
 
     // Find and update the card
     const card = document.querySelector(`[data-product-id="${productId}"]`);
-    if (!card) return;
+    if (!card) {
+      console.warn('[changeCardColor] Card not found for product:', productId);
+      return;
+    }
 
     // Update images
-    const carousel = card.querySelector('[data-carousel]');
+    const carousel = card.querySelector('.carousel-images');
+    if (!carousel) {
+      console.warn('[changeCardColor] Carousel not found for product:', productId);
+      return;
+    }
+
     const newImages = product.images[color] || [];
+    console.log('[changeCardColor] Changing to color:', color, 'Images:', newImages);
 
     carousel.innerHTML = newImages.map((img, idx) => `
       <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="lazy">
