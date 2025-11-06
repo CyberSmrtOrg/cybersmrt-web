@@ -98,6 +98,105 @@
       transform: translateY(-2px);
     }
 
+    /* Language Selector */
+    .header-language-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--hdr-text);
+      background: none;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .header-language-btn:hover {
+      color: var(--hdr-text-hover);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Utility Bar Donate Button */
+    .header-utility-donate-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: white !important;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+    }
+
+    .header-utility-donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.6);
+      color: white !important;
+    }
+
+    .header-utility-donate-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Utility Bar Members Button */
+    .header-utility-members-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: 1px solid rgba(102, 126, 234, 0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    }
+
+    .header-utility-members-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #7c8ef5 0%, #8c5bb8 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+    }
+
+    .header-utility-members-btn svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+    }
+
+    .header-utility-members.open .header-utility-members-btn svg {
+      transform: rotate(180deg);
+    }
+
+    /* Members Mega Menu Wrapper */
+    .members-mega-menu-wrapper {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    .members-dropdown-container.open {
+      display: block;
+    }
+
     .header-theme-toggle .theme-toggle-icon {
       font-size: 1.1rem;
       display: none;
@@ -712,6 +811,34 @@
         <div class="theme-toggle-icon dark-icon">🌙</div>
         <div class="theme-toggle-icon light-icon">☀️</div>
       </button>
+
+      <!-- Language Selector -->
+      <div class="header-language-selector">
+        <button class="header-language-btn" aria-label="Select language">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+          <span>EN</span>
+        </button>
+      </div>
+
+      <!-- Donate Button -->
+      <a href="/pages/get-involved/donate.html" class="header-utility-donate-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+        </svg>
+        <span>Donate</span>
+      </a>
+
+      <!-- Members Button -->
+      <div class="header-utility-members">
+        <button class="header-utility-members-btn" onclick="toggleMembersDropdown(event)" aria-haspopup="true" aria-expanded="false">
+          <span>Members</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -758,17 +885,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </button>
+      </div>
+    </nav>
+  </div>
 
-        <!-- Members Dropdown -->
-        <div class="members-dropdown-container">
-          <button class="members-dropdown-btn" onclick="toggleMembersDropdown(event)" aria-haspopup="true" aria-expanded="false">
-            <span>Members</span>
-            <svg class="members-dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-
-          <div class="members-mega-menu">
+  <!-- Members Mega Menu (positioned below utility bar) -->
+  <div class="members-mega-menu-wrapper">
+    <div class="members-dropdown-container">
+      <div class="members-mega-menu">
             <div class="members-mega-menu-title">Membership</div>
             <div class="members-mega-menu-grid">
               <!-- Achieve More -->
@@ -848,16 +972,8 @@
             </div>
           </div>
         </div>
-
-        <!-- Donate Button -->
-        <a href="/pages/get-involved/donate.html" class="header-donate-btn">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-          </svg>
-          <span>Donate</span>
-        </a>
       </div>
-    </nav>
+    </div>
   </div>
 
   <!-- Expandable Nav Dropdowns -->
@@ -970,12 +1086,19 @@ function toggleMembersDropdown(event) {
     btn.setAttribute('aria-expanded', 'false');
   });
 
-  const container = event.currentTarget.closest('.members-dropdown-container');
-  container.classList.toggle('open');
-
-  const button = container.querySelector('.members-dropdown-btn');
+  const utilityMembers = document.querySelector('.header-utility-members');
+  const container = document.querySelector('.members-dropdown-container');
   const isOpen = container.classList.contains('open');
-  button.setAttribute('aria-expanded', isOpen);
+
+  if (isOpen) {
+    container.classList.remove('open');
+    utilityMembers.classList.remove('open');
+    event.currentTarget.setAttribute('aria-expanded', 'false');
+  } else {
+    container.classList.add('open');
+    utilityMembers.classList.add('open');
+    event.currentTarget.setAttribute('aria-expanded', 'true');
+  }
 }
 
 // Account dropdown toggle
@@ -999,12 +1122,18 @@ document.addEventListener('click', () => {
   });
 
   // Close members dropdown
-  const openMembersDropdowns = document.querySelectorAll('.members-dropdown-container.open');
-  openMembersDropdowns.forEach(dropdown => {
-    dropdown.classList.remove('open');
-    const button = dropdown.querySelector('.members-dropdown-btn');
-    button.setAttribute('aria-expanded', 'false');
-  });
+  const membersContainer = document.querySelector('.members-dropdown-container');
+  const utilityMembers = document.querySelector('.header-utility-members');
+  const utilityMembersBtn = document.querySelector('.header-utility-members-btn');
+  if (membersContainer) {
+    membersContainer.classList.remove('open');
+  }
+  if (utilityMembers) {
+    utilityMembers.classList.remove('open');
+  }
+  if (utilityMembersBtn) {
+    utilityMembersBtn.setAttribute('aria-expanded', 'false');
+  }
 
   // Close account dropdown
   const openAccountDropdowns = document.querySelectorAll('.header-account-dropdown.open');
