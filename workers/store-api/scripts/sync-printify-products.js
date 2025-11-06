@@ -178,27 +178,31 @@ async function processProduct(product) {
   console.log(`   🎨 Found ${colorMap.size} unique colors`);
 
   // Group images by mockup type (camera label)
-  // This ensures we get the same 7 mockup views for each color
+  // Only use images that are selected for publishing (is_selected_for_publishing: true)
   const images = details.images || [];
   const imagesByColor = {};
   let totalImagesDownloaded = 0;
 
-  // First, identify unique mockup types from the images
+  // First, filter to only selected images
+  const selectedImages = images.filter(img => img.is_selected_for_publishing === true);
+  console.log(`   📷 Found ${selectedImages.length} selected mockup images`);
+
+  // Identify unique mockup types from the selected images
   const mockupTypes = new Set();
-  images.forEach(img => {
+  selectedImages.forEach(img => {
     const camera = img.src.match(/camera_label=([^&]*)/)?.[1] || 'default';
     mockupTypes.add(camera);
   });
   const mockupTypesList = Array.from(mockupTypes);
-  console.log(`   📷 Found ${mockupTypes.size} mockup types: ${mockupTypesList.join(', ')}`);
+  console.log(`   📷 Selected mockup types: ${mockupTypesList.join(', ')}`);
 
   for (const [color, variantId] of colorMap.entries()) {
-    // For each color, find one image of each mockup type
+    // For each color, find one image of each selected mockup type
     const colorImages = [];
 
     for (const mockupType of mockupTypesList) {
-      // Find an image with this mockup type that includes this variant ID
-      const matchingImage = images.find(img => {
+      // Find a selected image with this mockup type that includes this variant ID
+      const matchingImage = selectedImages.find(img => {
         const camera = img.src.match(/camera_label=([^&]*)/)?.[1] || 'default';
         const hasVariant = img.variant_ids && img.variant_ids.includes(variantId);
         return camera === mockupType && hasVariant;
@@ -209,7 +213,7 @@ async function processProduct(product) {
       }
     }
 
-    console.log(`   📸 ${color}: found ${colorImages.length} mockup types`);
+    console.log(`   📸 ${color}: found ${colorImages.length} selected mockup types`);
 
     if (colorImages.length === 0) continue;
 
