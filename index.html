@@ -686,7 +686,7 @@
     }
 
     .partners { background: var(--bg-solid); overflow: visible; }
-    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 200px; margin-top: -200px; }
+    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 250px; margin-top: -250px; }
     .partners-track { display: flex; animation: scroll 30s linear infinite; width: fit-content; overflow: visible; }
     .partners-track:hover { animation-play-state: paused; }
 
@@ -1516,16 +1516,6 @@
     </div>
   </section>
 
-  <!-- Stats -->
-  <section id="impact" class="stats">
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-number">200+</div><div class="stat-label">Students in Pilot Program</div></div>
-      <div class="stat-card"><div class="stat-number">5-10</div><div class="stat-label">MSSP-lite Pilot Organizations</div></div>
-      <div class="stat-card"><div class="stat-number">K-12</div><div class="stat-label">Curriculum Development</div></div>
-      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Adult Training Tracks</div></div>
-    </div>
-  </section>
-
   <!-- Partners -->
   <section id="partners" class="partners section">
     <h2 class="section-title">Our Partners</h2>
@@ -1657,6 +1647,43 @@
         </a>
       </div>
     </div>
+
+    <script>
+    // Dynamic tooltip positioning to keep tooltips visible when cards are near screen edge
+    (function() {
+      const partnerCards = document.querySelectorAll('.partner-card');
+
+      partnerCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          const tooltip = this.querySelector('.partner-tooltip');
+          if (!tooltip) return;
+
+          // Reset to default positioning
+          tooltip.style.left = '50%';
+          tooltip.style.transform = 'translateX(-50%)';
+
+          // Get positions
+          const cardRect = this.getBoundingClientRect();
+          const tooltipRect = tooltip.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+
+          // Check if tooltip would overflow on the left
+          if (tooltipRect.left < 10) {
+            const offset = 10 - tooltipRect.left;
+            tooltip.style.left = `calc(50% + ${offset}px)`;
+            tooltip.style.transform = `translateX(calc(-50% + ${offset}px))`;
+          }
+
+          // Check if tooltip would overflow on the right
+          if (tooltipRect.right > viewportWidth - 10) {
+            const offset = tooltipRect.right - (viewportWidth - 10);
+            tooltip.style.left = `calc(50% - ${offset}px)`;
+            tooltip.style.transform = `translateX(calc(-50% - ${offset}px))`;
+          }
+        });
+      });
+    })();
+    </script>
   </section>
 
   <!-- Programs -->
