@@ -178,11 +178,28 @@ const Store = {
     grid.innerHTML = filtered.map(product => this.renderProductCard(product)).join('');
   },
 
+  // Helper function to sort sizes in proper order
+  sortSizes(sizes) {
+    const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
+    return sizes.sort((a, b) => {
+      const indexA = sizeOrder.indexOf(a.toUpperCase());
+      const indexB = sizeOrder.indexOf(b.toUpperCase());
+      // If both sizes are in our order list, sort by their position
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      // If only one is in the list, prioritize it
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      // Otherwise sort alphabetically
+      return a.localeCompare(b);
+    });
+  },
+
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
     // Get all colors and sizes
     const colors = Object.keys(product.images || {});
-    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+    const unsortedSizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+    const sizes = this.sortSizes(unsortedSizes);
     const currentCardColor = product._cardColor || colors[0];
     const currentCardSize = product._cardSize || sizes[0];
     const previewImages = product.images?.[currentCardColor] || [product.image_url];
@@ -639,6 +656,30 @@ const Store = {
       btn.classList.toggle('active', btn.title === color);
     });
 
+    // Update size buttons availability based on new color
+    const sizeSelectorContainer = card.querySelector('.card-size-selector');
+    if (sizeSelectorContainer && product.variants) {
+      const unsortedSizes = [...new Set(product.variants.map(v => v.size).filter(Boolean))];
+      const sizes = this.sortSizes(unsortedSizes);
+      const currentCardSize = product._cardSize || sizes[0];
+
+      sizeSelectorContainer.innerHTML = sizes.map(size => {
+        const isAvailable = product.variants.some(v =>
+          v.size === size && v.color === color && v.isAvailable !== false
+        );
+        const isSelected = size === currentCardSize;
+        return `
+          <button class="card-size-btn ${isSelected ? 'selected' : ''} ${!isAvailable ? 'out-of-stock' : ''}"
+                  onclick="event.stopPropagation(); ${isAvailable ? `Store.changeCardSize('${productId}', '${size}')` : 'return false;'}"
+                  ${!isAvailable ? 'disabled' : ''}
+                  title="${isAvailable ? size : size + ' - Out of Stock'}">
+            ${size}
+            ${!isAvailable ? '<span class="out-of-stock-label">Out</span>' : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
     // Update data attribute
     card.setAttribute('data-current-color', color);
   },
@@ -651,10 +692,15 @@ const Store = {
     // Update internal state
     product._cardSize = size;
 
-    // Update data attribute
+    // Update data attribute and visual state
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
+
+      // Update size button selection state
+      card.querySelectorAll('.card-size-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.textContent.trim().startsWith(size));
+      });
     }
   },
 
