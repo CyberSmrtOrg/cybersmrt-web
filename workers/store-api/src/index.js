@@ -198,10 +198,23 @@ app.post('/checkout/create', async (c) => {
       const itemTotal = price * item.quantity;
       subtotal += itemTotal;
 
-      // Get first image from images_by_color
+      // Get image for the specific variant color
       const images = JSON.parse(product.images || '{}');
-      const firstColorImages = Object.values(images)[0] || [];
-      const imageUrl = firstColorImages[0] || '';
+      let imageUrl = '';
+
+      if (variant && variant.color) {
+        // Try to find images for this specific color
+        const colorImages = images[variant.color] || images[variant.color.toLowerCase()] || images[variant.color.toUpperCase()];
+        if (colorImages && colorImages.length > 0) {
+          imageUrl = colorImages[0];
+        }
+      }
+
+      // Fallback to first available image if no color-specific image found
+      if (!imageUrl) {
+        const firstColorImages = Object.values(images)[0] || [];
+        imageUrl = firstColorImages[0] || '';
+      }
 
       lineItems.push({
         price_data: {
