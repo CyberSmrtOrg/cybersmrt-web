@@ -10,6 +10,7 @@ import { handleProfileRoutes } from './profile/routes.js';
 import { handleDashboardRoutes } from './dashboard/routes.js';
 import { handleSettingsRoutes } from './settings/routes.js';
 import { handleContactRoutes } from './contact/routes.js';
+import { handleFeedbackRoutes } from './feedback/routes.js';
 import { jsonResponse, errorResponse } from './utils/response.js';
 
 const ALLOWED_ORIGINS = [
@@ -87,6 +88,11 @@ export default {
       // Contact routes
       if (path.startsWith('/contact')) {
         return await handleContactRoutes(request, env, ctx);
+      }
+
+      // Feedback routes
+      if (path.startsWith('/feedback')) {
+        return await handleFeedbackRoutes(request, env, ctx);
       }
 
       // API root - documentation

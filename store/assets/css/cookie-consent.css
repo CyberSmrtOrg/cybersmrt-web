@@ -1,44 +1,45 @@
 /* Cookie Consent Popup Styles */
 
-/* Persistent Settings Tab */
+/* Floating Cookie Button - Bottom Left */
 .cookie-settings-tab {
   position: fixed;
-  right: -45px;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: center center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  bottom: 20px;
+  left: 20px;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #d4a574 0%, #8b6239 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px 8px 0 0;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 36px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: -2px -2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 9998;
-  transition: right 0.3s ease, box-shadow 0.3s ease;
-  min-width: 120px;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cookie-settings-tab:hover {
-  right: -40px;
-  box-shadow: -2px -2px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-.cookie-settings-tab svg {
-  width: 20px;
-  height: 20px;
-  animation: rotate 8s linear infinite;
+.cookie-settings-tab:active {
+  transform: scale(0.95) rotate(-5deg);
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.cookie-settings-tab .cookie-icon {
+  font-size: 32px;
+  line-height: 1;
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
 }
 
 /* Cookie Popup Overlay */
@@ -332,13 +333,14 @@
   }
 
   .cookie-settings-tab {
-    font-size: 12px;
-    padding: 10px 16px;
+    width: 56px;
+    height: 56px;
+    bottom: 16px;
+    left: 16px;
   }
 
-  .cookie-settings-tab svg {
-    width: 16px;
-    height: 16px;
+  .cookie-settings-tab .cookie-icon {
+    font-size: 28px;
   }
 }
 

@@ -38,13 +38,41 @@ window.FEEDBACK_WIDGET_LOADED = true;
           Do you have a problem with this website? I want to know about it!
         </p>
 
-        <a href="mailto:tony@cybersmrt.org?subject=Website%20Feedback" class="feedback-email">
-          <div class="feedback-email-icon">✉️</div>
-          <div class="feedback-email-text">
-            <p class="feedback-email-label">Email Tony</p>
-            <p class="feedback-email-address">tony@cybersmrt.org</p>
+        <form id="feedback-form" class="feedback-form">
+          <div class="feedback-form-group">
+            <label for="feedback-name">Name (optional)</label>
+            <input type="text" id="feedback-name" name="name" placeholder="Your name">
           </div>
-        </a>
+
+          <div class="feedback-form-group">
+            <label for="feedback-email">Email (optional)</label>
+            <input type="email" id="feedback-email" name="email" placeholder="your@email.com">
+          </div>
+
+          <div class="feedback-form-group">
+            <label for="feedback-message">Message <span class="required">*</span></label>
+            <textarea id="feedback-message" name="message" rows="4" placeholder="What issue did you encounter?" required></textarea>
+          </div>
+
+          <div class="feedback-form-actions">
+            <button type="submit" class="feedback-submit-btn">
+              <span class="submit-text">Send Feedback</span>
+              <span class="submit-loading" style="display: none;">Sending...</span>
+            </button>
+          </div>
+        </form>
+
+        <div id="feedback-success" class="feedback-success" style="display: none;">
+          <div class="success-icon">✓</div>
+          <h4>Thank you!</h4>
+          <p>Your feedback has been sent to Tony.</p>
+        </div>
+
+        <div id="feedback-error" class="feedback-error" style="display: none;">
+          <div class="error-icon">✗</div>
+          <h4>Oops!</h4>
+          <p class="error-message">Something went wrong. Please try again.</p>
+        </div>
       </div>
 
       <div class="feedback-popup-footer">
@@ -54,6 +82,40 @@ window.FEEDBACK_WIDGET_LOADED = true;
 
     document.body.appendChild(popup);
     return popup;
+  }
+
+  // Submit feedback to Slack
+  async function submitFeedback(formData) {
+    const name = formData.get('name') || 'Anonymous';
+    const email = formData.get('email') || 'Not provided';
+    const message = formData.get('message');
+    const currentPage = window.location.href;
+    const userAgent = navigator.userAgent;
+
+    try {
+      const response = await fetch('https://api.cybersmrt.org/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          page: currentPage,
+          userAgent
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send feedback');
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Feedback submission error:', error);
+      return { success: false, error: error.message };
+    }
   }
 
   // Show the popup
@@ -96,6 +158,59 @@ window.FEEDBACK_WIDGET_LOADED = true;
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       hidePopup();
+    });
+
+    // Form submission handler
+    const form = popup.querySelector('#feedback-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('.feedback-submit-btn');
+      const submitText = submitBtn.querySelector('.submit-text');
+      const submitLoading = submitBtn.querySelector('.submit-loading');
+      const successDiv = popup.querySelector('#feedback-success');
+      const errorDiv = popup.querySelector('#feedback-error');
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitText.style.display = 'none';
+      submitLoading.style.display = 'inline';
+
+      // Hide previous messages
+      successDiv.style.display = 'none';
+      errorDiv.style.display = 'none';
+
+      // Submit feedback
+      const formData = new FormData(form);
+      const result = await submitFeedback(formData);
+
+      // Reset button state
+      submitBtn.disabled = false;
+      submitText.style.display = 'inline';
+      submitLoading.style.display = 'none';
+
+      if (result.success) {
+        // Show success message
+        form.style.display = 'none';
+        successDiv.style.display = 'block';
+
+        // Reset form after 3 seconds and close
+        setTimeout(() => {
+          form.reset();
+          form.style.display = 'block';
+          successDiv.style.display = 'none';
+          hidePopup();
+        }, 3000);
+      } else {
+        // Show error message
+        errorDiv.querySelector('.error-message').textContent = result.error || 'Something went wrong. Please try again.';
+        errorDiv.style.display = 'block';
+
+        // Hide error after 5 seconds
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 5000);
+      }
     });
 
     // Close when clicking outside
