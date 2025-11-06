@@ -45,7 +45,9 @@
       "Bash(printify-all-products.json)",
       "Bash(copy-tshirt.json:*)",
       "Bash(node -pe:*)",
-      "Bash(node analyze-mockups.js:*)"
+      "Bash(node analyze-mockups.js:*)",
+      "Bash(git push:*)",
+      "Bash(partials/header.html)"
     ],
     "deny": [],
     "ask": []
