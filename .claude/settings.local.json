@@ -44,7 +44,8 @@
       "Bash(/tmp/printify-products.json)",
       "Bash(printify-all-products.json)",
       "Bash(copy-tshirt.json:*)",
-      "Bash(node -pe:*)"
+      "Bash(node -pe:*)",
+      "Bash(node analyze-mockups.js:*)"
     ],
     "deny": [],
     "ask": []

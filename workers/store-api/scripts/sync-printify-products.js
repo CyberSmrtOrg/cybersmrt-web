@@ -177,60 +177,39 @@ async function processProduct(product) {
 
   console.log(`   🎨 Found ${colorMap.size} unique colors`);
 
-  // Download multiple mockups for each color (up to 4 images per color)
+  // Group images by mockup type (camera label)
+  // This ensures we get the same 7 mockup views for each color
   const images = details.images || [];
   const imagesByColor = {};
   let totalImagesDownloaded = 0;
 
+  // First, identify unique mockup types from the images
+  const mockupTypes = new Set();
+  images.forEach(img => {
+    const camera = img.src.match(/camera_label=([^&]*)/)?.[1] || 'default';
+    mockupTypes.add(camera);
+  });
+  const mockupTypesList = Array.from(mockupTypes);
+  console.log(`   📷 Found ${mockupTypes.size} mockup types: ${mockupTypesList.join(', ')}`);
+
   for (const [color, variantId] of colorMap.entries()) {
-    // Find ALL images for this product (Printify often doesn't tag variant_ids properly)
-    let colorImages = [...images];
+    // For each color, find one image of each mockup type
+    const colorImages = [];
 
-    // Filter out pure back shots (keep front, model, default)
-    colorImages = colorImages.filter(img => {
-      const position = (img.position || '').toLowerCase();
-      const src = (img.src || '').toLowerCase();
+    for (const mockupType of mockupTypesList) {
+      // Find an image with this mockup type that includes this variant ID
+      const matchingImage = images.find(img => {
+        const camera = img.src.match(/camera_label=([^&]*)/)?.[1] || 'default';
+        const hasVariant = img.variant_ids && img.variant_ids.includes(variantId);
+        return camera === mockupType && hasVariant;
+      });
 
-      // Keep default/primary image always
-      if (img.is_default) return true;
-
-      // Exclude if explicitly marked as back
-      if (position.includes('back') && !position.includes('front')) {
-        return false;
+      if (matchingImage) {
+        colorImages.push(matchingImage);
       }
+    }
 
-      return true;
-    });
-
-    // Sort to prioritize: default first, then model/lifestyle, then product shots
-    colorImages.sort((a, b) => {
-      if (a.is_default && !b.is_default) return -1;
-      if (b.is_default && !a.is_default) return 1;
-
-      const aPos = (a.position || '').toLowerCase();
-      const bPos = (b.position || '').toLowerCase();
-      const aSrc = (a.src || '').toLowerCase();
-      const bSrc = (b.src || '').toLowerCase();
-
-      // Prioritize lifestyle/model shots
-      const aHasModel = aPos.includes('model') || aSrc.includes('lifestyle') || aSrc.includes('model');
-      const bHasModel = bPos.includes('model') || bSrc.includes('lifestyle') || bSrc.includes('model');
-
-      if (aHasModel && !bHasModel) return -1;
-      if (bHasModel && !aHasModel) return 1;
-
-      // Then front views
-      const aHasFront = aPos.includes('front');
-      const bHasFront = bPos.includes('front');
-
-      if (aHasFront && !bHasFront) return -1;
-      if (bHasFront && !aHasFront) return 1;
-
-      return 0;
-    });
-
-    // Limit to 7 mockup images per color (as selected in Printify)
-    colorImages = colorImages.slice(0, 7);
+    console.log(`   📸 ${color}: found ${colorImages.length} mockup types`);
 
     if (colorImages.length === 0) continue;
 
