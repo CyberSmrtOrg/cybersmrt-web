@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Cloudflare Turnstile API -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Programs | CyberSmrt</title>
+  <meta name="description" content="Empowering underserved communities through cybersecurity education, workforce development, and managed security services. From K-12 curriculum to adult training and community outreach.">
+
+  <!-- Orbitron font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Theme System -->
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <script src="/assets/js/theme.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+    }
+
+    /* Hero Section */
+    .programs-hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .hero-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .programs-hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
+    }
+
+    .programs-hero .tagline {
+      font-size: 1.5rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .programs-hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--hero-text);
+      opacity: 0.85;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    /* Section Intro */
+    .section-intro {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 4rem;
+    }
+
+    .section-intro h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-intro p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* Programs Grid */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .program-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .program-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .program-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(102, 126, 234, 0.5);
+      background: rgba(102, 126, 234, 0.05);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+    }
+
+    .program-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      min-height: 100px;
+    }
+
+    .program-icon img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .program-card:hover .program-icon img {
+      transform: scale(1.15) translateY(-5px);
+      filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.5));
+    }
+
+    .program-title {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.5rem;
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    [data-theme="light"] .program-title {
+      color: #5a4ba2;
+    }
+
+    .program-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .program-highlights {
+      background: rgba(102, 126, 234, 0.08);
+      border-left: 3px solid #667eea;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-primary);
+    }
+
+    .program-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      color: #667eea;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: gap 0.3s ease;
+    }
+
+    .program-card:hover .program-cta {
+      gap: 0.75rem;
+    }
+
+    /* Coming Soon Card */
+    .coming-soon-card {
+      border: 2px dashed rgba(102, 126, 234, 0.3);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);
+    }
+
+    .coming-soon-card .program-icon {
+      font-size: 4rem;
+      opacity: 0.6;
+    }
+
+    .coming-soon-card:hover {
+      transform: none;
+      border-color: rgba(102, 126, 234, 0.4);
+    }
+
+    /* Impact Stats */
+    .impact-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+
+    .impact-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+    }
+
+    .impact-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .stat {
+      padding: 1.5rem;
+    }
+
+    .stat-number {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .cta-btn-secondary {
+      background: transparent;
+      border: 2px solid #667eea;
+      color: #667eea;
+      box-shadow: none;
+    }
+
+    .cta-btn-secondary:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .programs-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .programs-hero .tagline {
+        font-size: 1.2rem;
+      }
+
+      .programs-hero .subtitle {
+        font-size: 1rem;
+      }
+
+      .programs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-intro h2,
+      .impact-section h2,
+      .cta-section h2 {
+        font-size: 2rem;
+      }
+
+      .impact-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cta-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header will be loaded via header-loader.js -->
+  <script src="/assets/js/header-loader.js"></script>
+
+  <!-- Hero Section -->
+  <section class="programs-hero">
+    <div class="hero-content">
+      <h1>Our Programs</h1>
+      <p class="tagline">Closing the Cybersecurity Equity Gap</p>
+      <p class="subtitle">
+        Empowering underserved communities with world-class cybersecurity education, workforce development, and security services.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Programs Grid -->
+    <div class="programs-grid">
+      <!-- K-12 Curriculum -->
+      <a href="/pages/programs/k12-curriculum.html" class="program-card">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/k12-curriculum.png" alt="K-12 Curriculum icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">K-12 Cybersecurity Curriculum</h3>
+        <p class="program-description">
+          Modular, competency-based cybersecurity education for grades 5-12, co-developed with NEAAAT charter school. Aligned with industry standards and designed for scalable licensing.
+        </p>
+        <div class="program-highlights">
+          ✓ Hands-on, project-based learning<br/>
+          ✓ Portfolio-driven assessment<br/>
+          ✓ Family engagement
+        </div>
+        <span class="program-cta">Learn More →</span>
+      </a>
+
+      <!-- MSSP-lite Services -->
+      <a href="/pages/programs/mssp-lite.html" class="program-card">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/mssp-services.png" alt="MSSP Services icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">MSSP-lite Services</h3>
+        <p class="program-description">
+          Affordable managed security services for nonprofits and small businesses, including risk assessments, penetration testing, and cybersecurity awareness training.
+        </p>
+        <div class="program-highlights">
+          ✓ Enterprise-grade tools<br/>
+          ✓ Accessible pricing<br/>
+          ✓ AI integration
+        </div>
+        <span class="program-cta">Learn More →</span>
+      </a>
+
+      <!-- Workforce Development -->
+      <a href="/pages/programs/workforce-dev.html" class="program-card">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/workforce-development.png" alt="Workforce Development icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">Workforce Development</h3>
+        <p class="program-description">
+          Adult training programs aligned with industry certifications across three tracks: Red Team, Blue Team, and GRC.
+        </p>
+        <div class="program-highlights">
+          ✓ Hands-on labs<br/>
+          ✓ Mentorship<br/>
+          ✓ Job readiness
+        </div>
+        <span class="program-cta">Learn More →</span>
+      </a>
+
+      <!-- Community Outreach -->
+      <a href="/pages/programs/community-outreach.html" class="program-card">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/community-outreach.png" alt="Community Outreach icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">Community Outreach</h3>
+        <p class="program-description">
+          Targeted programs for underserved populations: digital literacy for seniors, youth workshops, rural training, and multilingual resources.
+        </p>
+        <div class="program-highlights">
+          ✓ Age-inclusive<br/>
+          ✓ Culturally responsive<br/>
+          ✓ Free resources
+        </div>
+        <span class="program-cta">Learn More →</span>
+      </a>
+
+      <!-- Coming Soon -->
+      <div class="program-card coming-soon-card">
+        <div class="program-icon">✨</div>
+        <h3 class="program-title">More Coming Soon</h3>
+        <p class="program-description">
+          We're developing additional programs to expand our impact. Stay tuned for new offerings in enterprise training, threat intelligence, and specialized security services.
+        </p>
+        <div class="program-highlights">
+          ✓ Enterprise training<br/>
+          ✓ Threat intelligence<br/>
+          ✓ Specialized services
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact Section -->
+    <div class="impact-section">
+      <h2>Our Impact</h2>
+      <div class="impact-stats">
+        <div class="stat">
+          <div class="stat-number">1,000+</div>
+          <div class="stat-label">Students Reached</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Core Programs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Equity Focused</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2>Get Involved</h2>
+      <p>
+        Whether you're a school, organization, or individual, there are many ways to support our mission of closing the cybersecurity equity gap.
+      </p>
+      <div class="cta-buttons">
+        <a href="/pages/get-involved/donate.html" class="cta-btn">Donate</a>
+        <a href="/pages/contact" class="cta-btn-secondary cta-btn">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <script src="/assets/js/footer-loader.js"></script>
+
+  <!-- Analytics -->
+  <script src="/assets/js/analytics.js"></script>
+</body>
+</html>
