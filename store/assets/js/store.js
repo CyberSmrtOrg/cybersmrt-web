@@ -585,10 +585,23 @@ const Store = {
     const newImages = product.images[color] || [];
     console.log('[changeCardColor] Changing to color:', color, 'Images:', newImages);
 
-    // Directly replace the carousel content
-    carousel.innerHTML = newImages.map((img, idx) => `
-      <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="eager" style="opacity: ${idx === 0 ? 1 : 0};">
-    `).join('');
+    // Get existing images
+    const existingImages = carousel.querySelectorAll('img');
+
+    // If we have the same number of images, just update src attributes
+    if (existingImages.length === newImages.length) {
+      console.log('[changeCardColor] Updating existing images');
+      existingImages.forEach((img, idx) => {
+        img.src = newImages[idx];
+        img.classList.toggle('active', idx === 0);
+      });
+    } else {
+      // Different number of images, replace HTML
+      console.log('[changeCardColor] Replacing carousel HTML (different image count)');
+      carousel.innerHTML = newImages.map((img, idx) => `
+        <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="eager">
+      `).join('');
+    }
 
     console.log('[changeCardColor] Carousel updated. Active images:', carousel.querySelectorAll('img.active').length);
 
