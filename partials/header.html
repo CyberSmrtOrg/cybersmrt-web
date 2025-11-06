@@ -430,9 +430,16 @@
       margin-bottom: 0.5rem;
       padding-bottom: 0.5rem;
       border-bottom: 2px solid var(--brand);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
     }
 
-    .mega-menu-section a {
+    .mega-menu-section-title:hover {
+      color: var(--brand);
+    }
+
+    .mega-menu-section a:not(.mega-menu-section-title) {
       display: flex;
       align-items: center;
       gap: 0.75rem;
@@ -443,7 +450,7 @@
       transition: all 0.2s ease;
     }
 
-    .mega-menu-section a:hover {
+    .mega-menu-section a:not(.mega-menu-section-title):hover {
       color: var(--hdr-text-hover);
       transform: translateX(5px);
     }
@@ -579,7 +586,7 @@
               </svg>
               Me
             </a>
-            <a href="/my-purchases">
+            <a href="https://store.cybersmrt.org/my-purchases">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
               </svg>
@@ -679,7 +686,7 @@
     <div class="mega-menu-content">
       <!-- Home Section -->
       <div class="mega-menu-section">
-        <div class="mega-menu-section-title">Home</div>
+        <a href="/" class="mega-menu-section-title">Home</a>
         <a href="/#mission">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -714,7 +721,7 @@
 
       <!-- Programs Section -->
       <div class="mega-menu-section">
-        <div class="mega-menu-section-title">Programs</div>
+        <a href="/programs" class="mega-menu-section-title">Programs</a>
         <a href="/#programs">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
@@ -749,7 +756,7 @@
 
       <!-- Blog Section -->
       <div class="mega-menu-section">
-        <div class="mega-menu-section-title">Blog</div>
+        <a href="/pages/blog/" class="mega-menu-section-title">Blog</a>
         <a href="/pages/blog/">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
@@ -766,7 +773,7 @@
 
       <!-- Tools Section -->
       <div class="mega-menu-section">
-        <div class="mega-menu-section-title">Tools</div>
+        <a href="/pages/tools/" class="mega-menu-section-title">Tools</a>
         <a href="/pages/tools/">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
@@ -795,7 +802,7 @@
 
       <!-- About Section -->
       <div class="mega-menu-section">
-        <div class="mega-menu-section-title">About</div>
+        <a href="/pages/about/" class="mega-menu-section-title">About</a>
         <a href="/pages/about/">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>

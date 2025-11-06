@@ -32,17 +32,24 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Check for changes
+          # Check for changes in the store header file
           if ! git diff --quiet store/partials/header.html || ! git diff --cached --quiet store/partials/header.html; then
             echo "📝 Changes detected in store header"
 
             # Fetch latest changes
             git fetch origin main
 
-            # Stage the changed file
-            git add store/partials/header.html
+            # Stash any other unstaged changes (like .claude/settings.local.json)
+            if ! git diff --quiet; then
+              echo "📦 Stashing other unstaged changes"
+              git stash push -u -m "Temporary stash of other changes during header sync"
+              STASHED=true
+            else
+              STASHED=false
+            fi
 
-            # Commit the changes
+            # Stage and commit the store header changes
+            git add store/partials/header.html
             git commit -m "🤖 Auto-sync: Update store header from main header
 
             Automatically synced by GitHub Actions when partials/header.html changed.
@@ -70,6 +77,12 @@ jobs:
             if [ $attempt -gt $max_attempts ]; then
               echo "❌ Failed to push after $max_attempts attempts"
               exit 1
+            fi
+
+            # Restore stashed changes if any
+            if [ "$STASHED" = true ]; then
+              echo "📤 Restoring stashed changes"
+              git stash pop || echo "⚠️  Could not restore stash (may have been empty or conflicted)"
             fi
           else
             echo "✨ No changes to commit"
