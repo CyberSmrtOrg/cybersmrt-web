@@ -18,19 +18,60 @@ window.COOKIE_CONSENT_LOADED = true;
     marketing: { name: 'Marketing', required: false, enabled: false }
   };
 
+  // Helper: Set cookie with domain for cross-subdomain sharing
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    // Set domain to .cybersmrt.org for cross-subdomain sharing
+    const domain = window.location.hostname.includes('cybersmrt.org') ? '.cybersmrt.org' : '';
+    const domainPart = domain ? `; domain=${domain}` : '';
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/${domainPart}; SameSite=Lax; Secure`;
+  }
+
+  // Helper: Get cookie value
+  function getCookie(name) {
+    const nameEQ = name + '=';
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      let c = cookies[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) {
+        return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      }
+    }
+    return null;
+  }
+
   // Get current consent
   function getConsent() {
-    const stored = localStorage.getItem(COOKIE_KEY);
-    if (!stored) return null;
-
-    try {
-      const consent = JSON.parse(stored);
-      // Check if consent is still valid (not expired)
-      if (consent.timestamp && Date.now() - consent.timestamp < COOKIE_EXPIRY_DAYS * 24 * 60 * 60 * 1000) {
-        return consent;
+    // Try cookie first (new method)
+    const cookieValue = getCookie(COOKIE_KEY);
+    if (cookieValue) {
+      try {
+        const consent = JSON.parse(cookieValue);
+        // Check if consent is still valid (not expired)
+        if (consent.timestamp && Date.now() - consent.timestamp < COOKIE_EXPIRY_DAYS * 24 * 60 * 60 * 1000) {
+          return consent;
+        }
+      } catch (e) {
+        console.error('Failed to parse cookie consent from cookie:', e);
       }
-    } catch (e) {
-      console.error('Failed to parse cookie consent:', e);
+    }
+
+    // Fallback to localStorage for backward compatibility
+    const stored = localStorage.getItem(COOKIE_KEY);
+    if (stored) {
+      try {
+        const consent = JSON.parse(stored);
+        // Migrate to cookie
+        if (consent.timestamp && Date.now() - consent.timestamp < COOKIE_EXPIRY_DAYS * 24 * 60 * 60 * 1000) {
+          setCookie(COOKIE_KEY, JSON.stringify(consent), COOKIE_EXPIRY_DAYS);
+          localStorage.removeItem(COOKIE_KEY); // Clean up old storage
+          return consent;
+        }
+      } catch (e) {
+        console.error('Failed to parse cookie consent from localStorage:', e);
+      }
     }
     return null;
   }
@@ -41,7 +82,9 @@ window.COOKIE_CONSENT_LOADED = true;
       timestamp: Date.now(),
       preferences: preferences
     };
-    localStorage.setItem(COOKIE_KEY, JSON.stringify(consent));
+
+    // Save to cookie for cross-subdomain sharing
+    setCookie(COOKIE_KEY, JSON.stringify(consent), COOKIE_EXPIRY_DAYS);
 
     // Trigger custom event for other scripts to listen to
     window.dispatchEvent(new CustomEvent('cookieConsentUpdated', { detail: consent }));
