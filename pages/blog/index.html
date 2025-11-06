@@ -37,7 +37,7 @@
 
         /* Hero */
         .blog-hero {
-            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+            background: linear-gradient(135deg, #0f1729 0%, #4a1d6e 50%, #6b3d99 100%);
             padding: 4rem 2rem;
             margin-top: 80px;
             text-align: center;
@@ -58,12 +58,12 @@
             margin-bottom: 1rem;
             font-weight: 900;
             letter-spacing: 0.02em;
-            color: var(--hero-text);
+            color: #ffffff;
         }
 
         .hero-text p {
             font-size: 1.25rem;
-            color: var(--hero-text);
+            color: #ffffff;
             line-height: 1.6;
             opacity: 0.95;
         }
@@ -348,13 +348,8 @@
     </section>
 
     <section class="category-filter">
-        <div class="filter-buttons">
-            <button class="filter-btn active">All Posts</button>
-            <button class="filter-btn">K-12 Education</button>
-            <button class="filter-btn">Community Impact</button>
-            <button class="filter-btn">Cybersecurity Tips</button>
-            <button class="filter-btn">Workforce Development</button>
-            <button class="filter-btn">Partner News</button>
+        <div class="filter-buttons" id="filterButtons">
+            <!-- Filter buttons will be dynamically generated -->
         </div>
     </section>
 
@@ -500,30 +495,82 @@
 <script defer src="/assets/js/footer-init.js"></script>
 
     <script>
-        // Simple category filter (client-side for now)
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const blogCards = document.querySelectorAll('.blog-card');
+        // Dynamically generate filter buttons from actual blog post categories
+        async function initializeFilters() {
+            try {
+                // Fetch blog data
+                const response = await fetch('/blog-data.json');
+                const data = await response.json();
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Update active button
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const category = btn.textContent;
-
-                // Filter cards
-                blogCards.forEach(card => {
-                    const cardCategory = card.querySelector('.card-category').textContent;
-
-                    if (category === 'All Posts' || cardCategory === category) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
+                // Extract unique categories from actual posts
+                const categories = new Set();
+                data.posts.forEach(post => {
+                    if (post.category && post.status === 'published') {
+                        categories.add(post.category);
                     }
                 });
+
+                // Generate filter buttons
+                const filterButtonsContainer = document.getElementById('filterButtons');
+                filterButtonsContainer.innerHTML = '';
+
+                // Add "All Posts" button first
+                const allButton = document.createElement('button');
+                allButton.className = 'filter-btn active';
+                allButton.textContent = 'All Posts';
+                filterButtonsContainer.appendChild(allButton);
+
+                // Add category buttons (sorted alphabetically)
+                Array.from(categories).sort().forEach(category => {
+                    const button = document.createElement('button');
+                    button.className = 'filter-btn';
+                    button.textContent = category;
+                    filterButtonsContainer.appendChild(button);
+                });
+
+                // Setup filter functionality
+                setupFilters();
+            } catch (error) {
+                console.error('Error loading blog filters:', error);
+                // Fallback: show all posts button only
+                const filterButtonsContainer = document.getElementById('filterButtons');
+                filterButtonsContainer.innerHTML = '<button class="filter-btn active">All Posts</button>';
+                setupFilters();
+            }
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const blogCards = document.querySelectorAll('.blog-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const category = btn.textContent;
+
+                    // Filter cards
+                    blogCards.forEach(card => {
+                        const cardCategory = card.querySelector('.card-category')?.textContent;
+
+                        if (category === 'All Posts' || cardCategory === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
             });
-        });
+        }
+
+        // Initialize filters when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeFilters);
+        } else {
+            initializeFilters();
+        }
     </script>
 </body>
 </html>

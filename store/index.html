@@ -35,7 +35,7 @@
 
     /* Hero Section */
     .store-hero {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #0f1729 0%, #4a1d6e 50%, #6b3d99 100%);
       padding: 4rem 2rem;
       text-align: center;
       border-radius: 20px;
@@ -1489,11 +1489,8 @@
     </div>
 
     <!-- Category Filter -->
-    <div class="category-filter">
-      <button class="category-btn active" onclick="filterCategory('all')">All Items</button>
-      <button class="category-btn" onclick="filterCategory('apparel')">Apparel</button>
-      <button class="category-btn" onclick="filterCategory('accessories')">Accessories</button>
-      <button class="category-btn" onclick="filterCategory('tech')">Tech Gear</button>
+    <div class="category-filter" id="categoryFilter">
+      <!-- Category buttons will be dynamically generated -->
     </div>
 
     <!-- Product Grid -->

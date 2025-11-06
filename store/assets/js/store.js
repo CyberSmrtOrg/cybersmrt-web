@@ -77,11 +77,52 @@ const Store = {
         };
       });
 
+      this.renderCategoryFilters();
       this.renderProducts();
     } catch (error) {
       console.error('Failed to load products:', error);
       this.renderProductError();
     }
+  },
+
+  // Render category filter buttons dynamically based on actual products
+  renderCategoryFilters() {
+    const filterContainer = document.getElementById('categoryFilter');
+    if (!filterContainer) return;
+
+    // Extract unique categories from products
+    const categories = new Set();
+    this.products.forEach(product => {
+      if (product.category) {
+        categories.add(product.category);
+      }
+    });
+
+    // Clear existing buttons
+    filterContainer.innerHTML = '';
+
+    // Add "All Items" button first
+    const allButton = document.createElement('button');
+    allButton.className = 'category-btn active';
+    allButton.textContent = 'All Items';
+    allButton.onclick = () => filterCategory('all');
+    filterContainer.appendChild(allButton);
+
+    // Add category buttons (sorted alphabetically, with nicer formatting)
+    const categoryNames = {
+      'apparel': 'Apparel',
+      'accessories': 'Accessories',
+      'stickers': 'Stickers',
+      'tech': 'Tech Gear'
+    };
+
+    Array.from(categories).sort().forEach(category => {
+      const button = document.createElement('button');
+      button.className = 'category-btn';
+      button.textContent = categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1);
+      button.onclick = () => filterCategory(category);
+      filterContainer.appendChild(button);
+    });
   },
 
   // Detect category from product title
