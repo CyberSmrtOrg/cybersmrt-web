@@ -686,7 +686,7 @@
     }
 
     .partners { background: var(--bg-solid); overflow: visible; }
-    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 250px; margin-top: -250px; }
+    .partners-scroll { position: relative; width: 100%; overflow-x: hidden; overflow-y: visible; padding: 2rem 0; padding-top: 320px; margin-top: -320px; }
     .partners-track { display: flex; animation: scroll 30s linear infinite; width: fit-content; overflow: visible; }
     .partners-track:hover { animation-play-state: paused; }
 
@@ -1662,24 +1662,27 @@
           tooltip.style.left = '50%';
           tooltip.style.transform = 'translateX(-50%)';
 
-          // Get positions
-          const cardRect = this.getBoundingClientRect();
-          const tooltipRect = tooltip.getBoundingClientRect();
-          const viewportWidth = window.innerWidth;
+          // Wait a tiny bit for the tooltip to render with default position
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              // Get positions after tooltip is visible
+              const tooltipRect = tooltip.getBoundingClientRect();
+              const viewportWidth = window.innerWidth;
 
-          // Check if tooltip would overflow on the left
-          if (tooltipRect.left < 10) {
-            const offset = 10 - tooltipRect.left;
-            tooltip.style.left = `calc(50% + ${offset}px)`;
-            tooltip.style.transform = `translateX(calc(-50% + ${offset}px))`;
-          }
-
-          // Check if tooltip would overflow on the right
-          if (tooltipRect.right > viewportWidth - 10) {
-            const offset = tooltipRect.right - (viewportWidth - 10);
-            tooltip.style.left = `calc(50% - ${offset}px)`;
-            tooltip.style.transform = `translateX(calc(-50% - ${offset}px))`;
-          }
+              // Check if tooltip would overflow on the left
+              if (tooltipRect.left < 10) {
+                const offset = 10 - tooltipRect.left;
+                tooltip.style.left = `calc(50% + ${offset}px)`;
+                tooltip.style.transform = `translateX(calc(-50% + ${offset}px))`;
+              }
+              // Check if tooltip would overflow on the right
+              else if (tooltipRect.right > viewportWidth - 10) {
+                const offset = tooltipRect.right - (viewportWidth - 10);
+                tooltip.style.left = `calc(50% - ${offset}px)`;
+                tooltip.style.transform = `translateX(calc(-50% - ${offset}px))`;
+              }
+            });
+          });
         });
       });
     })();
