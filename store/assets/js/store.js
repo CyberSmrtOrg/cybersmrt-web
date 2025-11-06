@@ -243,14 +243,23 @@ const Store = {
             ` : ''}
 
             ${hasSizes ? `
-              <select class="card-size-selector"
-                      data-product-id="${product.id}"
-                      onclick="event.stopPropagation();"
-                      onchange="Store.changeCardSize('${product.id}', this.value)">
-                ${sizes.map(size => `
-                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
-                `).join('')}
-              </select>
+              <div class="card-size-selector">
+                ${sizes.map(size => {
+                  const isAvailable = product.variants.some(v =>
+                    v.size === size && v.color === currentCardColor && v.isAvailable !== false
+                  );
+                  const isSelected = size === currentCardSize;
+                  return `
+                    <button class="card-size-btn ${isSelected ? 'selected' : ''} ${!isAvailable ? 'out-of-stock' : ''}"
+                            onclick="event.stopPropagation(); ${isAvailable ? `Store.changeCardSize('${product.id}', '${size}')` : 'return false;'}"
+                            ${!isAvailable ? 'disabled' : ''}
+                            title="${isAvailable ? size : size + ' - Out of Stock'}">
+                      ${size}
+                      ${!isAvailable ? '<span class="out-of-stock-label">Out</span>' : ''}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
             ` : ''}
           </div>
 
