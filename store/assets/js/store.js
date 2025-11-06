@@ -903,7 +903,15 @@ const Store = {
 
     // Get current selections from card
     const currentColor = product._cardColor || Object.keys(product.images || {})[0];
-    const currentSize = product._cardSize;
+    let currentSize = product._cardSize;
+
+    // If no size selected and product has sizes, use first available size for this color
+    if (!currentSize && product.variants) {
+      const variantsForColor = product.variants.filter(v => v.color === currentColor && v.size);
+      if (variantsForColor.length > 0) {
+        currentSize = variantsForColor[0].size;
+      }
+    }
 
     // Find matching variant
     const variant = product.variants?.find(v =>
@@ -912,7 +920,8 @@ const Store = {
     );
 
     if (!variant) {
-      console.error('No variant found for', { productId, currentColor, currentSize });
+      console.error('No variant found for', { productId, currentColor, currentSize, availableVariants: product.variants });
+      alert('Please select a size before adding to cart.');
       return;
     }
 
