@@ -38,7 +38,6 @@ sed -i 's|href="/pages/|href="https://cybersmrt.org/pages/|g' "$DEST_HEADER"
 sed -i 's|href="/#|href="https://cybersmrt.org/#|g' "$DEST_HEADER"
 
 # Update specific top-level paths
-sed -i 's|href="/programs"|href="https://cybersmrt.org/programs"|g' "$DEST_HEADER"
 sed -i 's|href="/blog"|href="https://cybersmrt.org/blog"|g' "$DEST_HEADER"
 sed -i 's|href="/tools"|href="https://cybersmrt.org/tools"|g' "$DEST_HEADER"
 sed -i 's|href="/about"|href="https://cybersmrt.org/about"|g' "$DEST_HEADER"
