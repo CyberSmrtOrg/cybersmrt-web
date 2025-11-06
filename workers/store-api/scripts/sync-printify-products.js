@@ -215,8 +215,8 @@ async function processProduct(product) {
       return 0;
     });
 
-    // Limit to 3 best images per color
-    colorImages = colorImages.slice(0, 3);
+    // Download all mockup images (no limit)
+    // colorImages = colorImages.slice(0, 3);
 
     if (colorImages.length === 0) continue;
 
