@@ -520,6 +520,12 @@ const Store = {
     images[activeIdx].classList.remove('active');
     images[newIdx].classList.add('active');
 
+    // Track the current index for this product
+    const product = this.products.find(p => p.id === productId);
+    if (product) {
+      product._cardImageIndex = newIdx;
+    }
+
     this.updateCarouselDots(productId, newIdx);
   },
 
@@ -534,6 +540,12 @@ const Store = {
     images[activeIdx].classList.remove('active');
     images[newIdx].classList.add('active');
 
+    // Track the current index for this product
+    const product = this.products.find(p => p.id === productId);
+    if (product) {
+      product._cardImageIndex = newIdx;
+    }
+
     this.updateCarouselDots(productId, newIdx);
   },
 
@@ -545,6 +557,12 @@ const Store = {
     images.forEach((img, idx) => {
       img.classList.toggle('active', idx === index);
     });
+
+    // Track the current index for this product
+    const product = this.products.find(p => p.id === productId);
+    if (product) {
+      product._cardImageIndex = index;
+    }
 
     this.updateCarouselDots(productId, index);
   },
@@ -564,9 +582,12 @@ const Store = {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
+    // Preserve the current carousel index (default to 0 if not set)
+    const currentIndex = product._cardImageIndex || 0;
+
     // Update internal state
     product._cardColor = color;
-    product._cardImageIndex = 0;
+    // Keep the same carousel index to stay on the same pose
 
     // Find and update the card
     const card = document.querySelector(`[data-product-id="${productId}"]`);
@@ -583,23 +604,26 @@ const Store = {
     }
 
     const newImages = product.images[color] || [];
-    console.log('[changeCardColor] Changing to color:', color, 'Images:', newImages);
+    console.log('[changeCardColor] Changing to color:', color, 'Images:', newImages, 'Preserving index:', currentIndex);
 
     // Get existing images
     const existingImages = carousel.querySelectorAll('img');
+
+    // Determine which image should be active (stay on same pose/index)
+    const activeIndex = Math.min(currentIndex, newImages.length - 1);
 
     // If we have the same number of images, just update src attributes
     if (existingImages.length === newImages.length) {
       console.log('[changeCardColor] Updating existing images');
       existingImages.forEach((img, idx) => {
         img.src = newImages[idx];
-        img.classList.toggle('active', idx === 0);
+        img.classList.toggle('active', idx === activeIndex);
       });
     } else {
       // Different number of images, replace HTML
       console.log('[changeCardColor] Replacing carousel HTML (different image count)');
       carousel.innerHTML = newImages.map((img, idx) => `
-        <img src="${img}" alt="${product.name}" class="${idx === 0 ? 'active' : ''}" loading="eager">
+        <img src="${img}" alt="${product.name}" class="${idx === activeIndex ? 'active' : ''}" loading="eager">
       `).join('');
     }
 
@@ -609,7 +633,7 @@ const Store = {
     const dotsContainer = card.querySelector('.carousel-dots');
     if (dotsContainer && newImages.length > 1) {
       dotsContainer.innerHTML = newImages.map((_, idx) => `
-        <span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); Store.cardCarouselGoto('${productId}', ${idx})"></span>
+        <span class="dot ${idx === activeIndex ? 'active' : ''}" onclick="event.stopPropagation(); Store.cardCarouselGoto('${productId}', ${idx})"></span>
       `).join('');
     }
 
@@ -801,7 +825,8 @@ const Store = {
   // Select color in modal (changes images)
   selectModalColor(color) {
     this.modalSelectedColor = color;
-    this.modalImageIndex = 0; // Reset to first image of new color
+    // Preserve the current image index to stay on the same pose
+    const currentIndex = this.modalImageIndex || 0;
 
     // Update color buttons
     document.querySelectorAll('.modal-color-btn').forEach(btn => {
@@ -812,14 +837,18 @@ const Store = {
     const images = this.modalProduct.images[color];
     const img = document.getElementById('modalMainImage');
     if (img && images) {
-      img.src = images[0];
+      // Stay on the same pose/index if available
+      const activeIndex = Math.min(currentIndex, images.length - 1);
+      this.modalImageIndex = activeIndex;
+      img.src = images[activeIndex];
+      img.onclick = () => openImageZoom(images[activeIndex]);
 
       // Update thumbnails
       const thumbnailsContainer = document.querySelector('.modal-thumbnails');
       if (thumbnailsContainer && images.length > 1) {
         thumbnailsContainer.innerHTML = images.map((imgSrc, idx) => `
           <img src="${imgSrc}"
-               class="modal-thumbnail ${idx === 0 ? 'active' : ''}"
+               class="modal-thumbnail ${idx === activeIndex ? 'active' : ''}"
                onclick="Store.modalGotoImage(${idx})"
                alt="View ${idx + 1}">
         `).join('');
