@@ -633,6 +633,10 @@
 
     /* Mobile styles */
     @media (max-width: 900px) {
+      .header-container {
+        padding: 0 1rem;
+      }
+
       .header-top-row {
         padding: 0.5rem 0;
       }
@@ -647,6 +651,7 @@
 
       .header-top-right {
         gap: 0.5rem;
+        flex-wrap: nowrap;
       }
 
       .header-search {
@@ -661,8 +666,48 @@
         display: none;
       }
 
-      .header-lang-selector span {
+      .language-selector-container {
         display: none;
+      }
+
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+
+      .header-donate-btn,
+      .header-store-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        min-height: 36px;
+      }
+
+      .header-donate-btn svg,
+      .header-store-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .header-donate-btn span,
+      .header-store-btn span {
+        display: none;
+      }
+
+      .header-signin-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        min-height: 36px;
+      }
+
+      .user-menu {
+        padding: 0.4rem 0.75rem;
+        min-height: 36px;
+      }
+
+      .user-avatar {
+        width: 28px;
+        height: 28px;
       }
 
       /* Mobile mega menu */
@@ -1157,4 +1202,71 @@ document.addEventListener('DOMContentLoaded', () => {
     window.changeLanguage(storedLang);
   }
 });
+
+/**
+ * Mega Menu Toggle
+ */
+window.toggleMegaMenu = function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const header = document.querySelector('.site-header');
+  const isOpen = header.classList.contains('mega-menu-open');
+
+  if (isOpen) {
+    header.classList.remove('mega-menu-open');
+  } else {
+    header.classList.add('mega-menu-open');
+  }
+};
+
+// Close mega menu when clicking outside
+document.addEventListener('click', (e) => {
+  const header = document.querySelector('.site-header');
+  const megaMenuPanel = document.querySelector('.mega-menu-panel');
+
+  if (header && megaMenuPanel && header.classList.contains('mega-menu-open')) {
+    if (!megaMenuPanel.contains(e.target) && !e.target.closest('.mega-menu-trigger')) {
+      header.classList.remove('mega-menu-open');
+    }
+  }
+});
+
+/**
+ * User Menu Toggle
+ */
+window.toggleUserMenu = function(event) {
+  event.stopPropagation();
+  const container = event.currentTarget.closest('.user-menu-container');
+
+  // Close language menu if open
+  const langDropdown = document.querySelector('.language-dropdown');
+  const langBtn = document.querySelector('.language-selector-btn');
+  if (langDropdown && langDropdown.classList.contains('active')) {
+    langDropdown.classList.remove('active');
+    langBtn.classList.remove('active');
+  }
+
+  container.classList.toggle('open');
+};
+
+// Close user menu when clicking outside
+document.addEventListener('click', (e) => {
+  const userMenu = document.querySelector('.user-menu-container');
+  if (userMenu && !userMenu.contains(e.target)) {
+    userMenu.classList.remove('open');
+  }
+});
+
+/**
+ * Logout Function
+ */
+window.logout = function() {
+  // Clear auth tokens
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+
+  // Redirect to home
+  window.location.href = '/';
+};
 </script>
