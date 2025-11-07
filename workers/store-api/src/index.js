@@ -410,7 +410,6 @@ app.post('/webhooks/stripe', async (c) => {
         // Send order confirmation email
         try {
           const emailService = createEmailService(c.env);
-          const lineItems = JSON.parse(order.line_items);
           const shippingDetails = JSON.parse(order.shipping_address);
 
           // Format shipping address
@@ -422,23 +421,22 @@ app.post('/webhooks/stripe', async (c) => {
             shippingDetails.address?.country
           ].filter(Boolean).join('\n');
 
-          // Get product details for email
-          const items = await Promise.all(lineItems.map(async (item) => {
-            const product = await DB.prepare(
-              'SELECT title FROM products WHERE id = ?'
-            ).bind(item.productId).first();
+          // Get product details from Stripe line items (includes human-readable variant info)
+          const stripeLineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+            expand: ['data.price.product']
+          });
 
-            const variants = product ? JSON.parse(product.variants || '[]') : [];
-            const variant = variants.find(v => v.id === item.variantId);
-            const variantText = variant ? `${variant.color || ''} ${variant.size || ''}`.trim() : '';
+          const items = stripeLineItems.data.map((lineItem) => {
+            // Get variant description from product (e.g., "Black XL")
+            const variantDescription = lineItem.price?.product?.description || '';
 
             return {
-              title: product?.title || 'Product',
-              variant: variantText,
-              quantity: item.quantity,
-              price: variant?.price || 0
+              title: lineItem.description,
+              variant: variantDescription,
+              quantity: lineItem.quantity,
+              price: lineItem.amount_total
             };
-          }));
+          });
 
           await emailService.send('orderConfirmation', order.customer_email, {
             orderNumber: order.order_number,

@@ -70,32 +70,26 @@ async function processOrder() {
       session.shipping_details?.address?.country
     ].filter(Boolean).join('\n');
 
-    // Fetch actual line items from Stripe
+    // Fetch actual line items from Stripe with product details
     console.log('📦 Fetching line items from Stripe...');
-    const stripeLineItems = await stripe.checkout.sessions.listLineItems(sessionId);
-
-    // Parse metadata for product/variant IDs
-    let metadata = [];
-    try {
-      if (session.metadata?.items) {
-        metadata = JSON.parse(session.metadata.items);
-      }
-    } catch (e) {
-      console.warn('⚠️  Could not parse items from metadata');
-    }
+    const stripeLineItems = await stripe.checkout.sessions.listLineItems(sessionId, {
+      expand: ['data.price.product']
+    });
 
     // Build items array from actual Stripe line items
-    const items = stripeLineItems.data.map((lineItem, index) => {
-      const metadataItem = metadata[index] || {};
+    const items = stripeLineItems.data.map((lineItem) => {
+      // Get variant description from product (e.g., "Black XL")
+      const variantDescription = lineItem.price?.product?.description || '';
+
       return {
         title: lineItem.description,
-        variant: metadataItem.variantId ? `Variant ${metadataItem.variantId}` : '',
+        variant: variantDescription,
         quantity: lineItem.quantity,
         price: lineItem.amount_total
       };
     });
 
-    console.log('✅ Found line items:', items.map(i => i.title).join(', '));
+    console.log('✅ Found line items:', items.map(i => `${i.title} (${i.variant})`).join(', '));
 
     // Send order confirmation email
     console.log('\n📧 Sending order confirmation email...');
