@@ -1,0 +1,77 @@
+name: Sync Printify Products
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    # Run twice daily at 6 AM and 6 PM UTC
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync-printify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd workers/store-api
+          npm install
+
+      - name: Sync Printify products
+        env:
+          PRINTIFY_API_KEY: ${{ secrets.PRINTIFY_API_KEY }}
+          PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+        run: |
+          node workers/store-api/scripts/sync-printify-products.js
+
+      - name: Deploy updated catalog to Cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          cd workers/store-api
+          npx wrangler deploy --env=""
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Add product catalog and mockup images
+          git add workers/store-api/product-catalog.json
+          git add assets/images/merch/*.jpg
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "🤖 Auto-sync Printify products and mockups"
+
+          # Try to push with retry logic
+          max_attempts=3
+          attempt=1
+          while [ $attempt -le $max_attempts ]; do
+            echo "Push attempt $attempt of $max_attempts"
+            git pull --rebase origin main && git push && break
+            attempt=$((attempt + 1))
+            sleep 2
+          done
+
+          if [ $attempt -gt $max_attempts ]; then
+            echo "Failed to push after $max_attempts attempts"
+            exit 1
+          fi
