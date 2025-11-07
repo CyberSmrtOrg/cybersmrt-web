@@ -50,14 +50,35 @@
       return localStorage.getItem('refreshToken') || getCookie('refreshToken');
     }
 
-    function getCurrentUser() { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { return null; } }
+    function getCurrentUser() {
+      // First try to get user info from cookie (cross-subdomain)
+      const userInfoCookie = getCookie('user_info');
+      if (userInfoCookie) {
+        try {
+          return JSON.parse(decodeURIComponent(userInfoCookie));
+        } catch (e) {
+          console.error('Failed to parse user_info cookie:', e);
+        }
+      }
+
+      // Fallback: try localStorage (same-subdomain only)
+      try {
+        return JSON.parse(localStorage.getItem('user') || 'null');
+      } catch (e) {
+        return null;
+      }
+    }
 
     function isAuthenticated() {
-      const token = getAccessToken();
-      if (!token) return false;
-      const payload = parseJWT(token);
-      if (!payload || typeof payload.exp !== 'number') return false;
-      return payload.exp > Math.floor(Date.now() / 1000);
+      // Check if user_info cookie exists (cross-subdomain cookie)
+      const userInfoCookie = getCookie('user_info');
+      if (userInfoCookie) {
+        return true;
+      }
+
+      // Fallback: check if user data exists in localStorage
+      const user = getCurrentUser();
+      return user !== null && user.id !== undefined;
     }
 
     function logout() {
@@ -71,6 +92,7 @@
       document.cookie = 'accessToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'refreshToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'session=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'user_info=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       if (token) {
         fetch((window.AUTH_BASE || 'https://auth.cybersmrt.org') + '/logout', {
           method: 'POST',
