@@ -696,12 +696,15 @@
           if (response.status === 401) {
             showError('Please sign in to view your purchases.');
           } else {
+            const errorText = await response.text();
+            console.error('❌ Error response:', errorText);
             throw new Error('Failed to load orders');
           }
           return;
         }
 
         const data = await response.json();
+        console.log('📦 Response data:', data);
         renderOrders(data.orders);
 
       } catch (error) {

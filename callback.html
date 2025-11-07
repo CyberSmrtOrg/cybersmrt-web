@@ -271,7 +271,7 @@
           statusEl.innerHTML = `✓ Authentication successful!<br>Welcome ${data.user.displayName || data.user.email}`;
 
           // Determine redirect location
-          let redirectUrl = '/profile';
+          let redirectUrl = '/';
 
           // Check if there's a saved return URL
           const savedReturnUrl = localStorage.getItem('loginReturnUrl');
@@ -292,7 +292,7 @@
                 redirectUrl = savedReturnUrl;
                 console.log('[OAuth Callback] Using saved return URL:', redirectUrl);
               } else {
-                console.log('[OAuth Callback] Origin mismatch, using default /profile');
+                console.log('[OAuth Callback] Origin mismatch, using default homepage');
               }
             } catch (e) {
               // If URL parsing fails, use default
@@ -302,15 +302,7 @@
             // Clear the saved return URL
             localStorage.removeItem('loginReturnUrl');
           } else {
-            console.log('[OAuth Callback] No saved return URL found, checking user status');
-            // Check if user needs to complete setup or verify email
-            if (data.user.email_verified === false || data.user.emailVerified === false) {
-              redirectUrl = '/profile?verify=true';
-              console.log('[OAuth Callback] Email not verified, redirecting to:', redirectUrl);
-            } else if (!data.user.displayName) {
-              redirectUrl = '/profile?setup=true';
-              console.log('[OAuth Callback] Display name missing, redirecting to:', redirectUrl);
-            }
+            console.log('[OAuth Callback] No saved return URL, redirecting to homepage');
           }
 
           console.log('[OAuth Callback] Final redirect URL:', redirectUrl);
