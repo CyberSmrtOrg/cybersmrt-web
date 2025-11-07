@@ -580,8 +580,10 @@ app.post('/webhooks/printify', async (c) => {
       const trackingUrl = resource?.shipments?.[0]?.tracking_url;
       const carrier = resource?.shipments?.[0]?.carrier;
 
+      console.log('[Printify Webhook] Processing shipment:created for order:', printifyOrderId);
+
       if (printifyOrderId) {
-        await DB.prepare(`
+        const updateResult = await DB.prepare(`
           UPDATE orders
           SET status = 'shipped',
               tracking_number = ?,
@@ -590,12 +592,17 @@ app.post('/webhooks/printify', async (c) => {
           WHERE printify_order_id = ?
         `).bind(trackingNumber || null, trackingUrl || null, printifyOrderId).run();
 
+        console.log('[Printify Webhook] Update result:', updateResult);
+
         // Get order details for email
         const order = await DB.prepare(
           'SELECT * FROM orders WHERE printify_order_id = ?'
         ).bind(printifyOrderId).first();
 
+        console.log('[Printify Webhook] Order found:', !!order);
+
         if (order && order.customer_email) {
+          console.log('[Printify Webhook] Sending email to:', order.customer_email);
           try {
             const emailService = createEmailService(c.env, {
               fromEmail: 'CyberSmrt Store <store@cybersmrt.org>'
@@ -614,6 +621,8 @@ app.post('/webhooks/printify', async (c) => {
           } catch (emailError) {
             console.error('Failed to send shipped email:', emailError);
           }
+        } else {
+          console.log('[Printify Webhook] No order found or no customer email');
         }
       }
     } else if (event.type === 'order:shipment:delivered') {

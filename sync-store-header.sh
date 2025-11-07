@@ -53,7 +53,7 @@ sed -i 's|href="/"\([^a-zA-Z]\)|href="https://cybersmrt.org/"\1|g' "$DEST_HEADER
 sed -i 's|href="/">|href="https://cybersmrt.org/">|g' "$DEST_HEADER"
 
 # Keep these as relative URLs (store-specific)
-# /my-purchases, /order-lookup - these should stay as-is (not matched above)
+# /orders, /order-lookup - these should stay as-is (not matched above)
 
 # Store link should point to store subdomain (undo if it was converted)
 sed -i 's|href="https://cybersmrt.org/store"|href="https://store.cybersmrt.org"|g' "$DEST_HEADER"
