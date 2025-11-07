@@ -17,15 +17,21 @@ app.use('/*', cors({
 // ======================
 
 function getStripe(env) {
-  console.log('[Stripe Init] Checking for STRIPE_SECRET_KEY...');
-  console.log('[Stripe Init] Has key:', !!env.STRIPE_SECRET_KEY);
-  console.log('[Stripe Init] Key starts with:', env.STRIPE_SECRET_KEY?.substring(0, 7));
+  console.log('[Stripe Init] Checking for Stripe keys...');
+  console.log('[Stripe Init] Has STRIPE_SECRET_KEY:', !!env.STRIPE_SECRET_KEY);
+  console.log('[Stripe Init] Has STRIPE_TEST_KEY:', !!env.STRIPE_TEST_KEY);
 
-  if (!env.STRIPE_SECRET_KEY) {
-    throw new Error('STRIPE_SECRET_KEY is not set in environment');
+  // Try STRIPE_SECRET_KEY first (for secrets), then STRIPE_TEST_KEY (for env vars)
+  const stripeKey = env.STRIPE_SECRET_KEY || env.STRIPE_TEST_KEY;
+
+  console.log('[Stripe Init] Using key:', !!stripeKey);
+  console.log('[Stripe Init] Key starts with:', stripeKey?.substring(0, 7));
+
+  if (!stripeKey) {
+    throw new Error('Neither STRIPE_SECRET_KEY nor STRIPE_TEST_KEY is set in environment');
   }
 
-  return new Stripe(env.STRIPE_SECRET_KEY, {
+  return new Stripe(stripeKey, {
     apiVersion: '2024-11-20.acacia',
   });
 }
