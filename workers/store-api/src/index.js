@@ -429,7 +429,9 @@ app.post('/webhooks/stripe', async (c) => {
 
         // Send order confirmation email
         try {
-          const emailService = createEmailService(c.env);
+          const emailService = createEmailService(c.env, {
+            fromEmail: 'CyberSmrt Store <store@cybersmrt.org>'
+          });
           const shippingDetails = JSON.parse(order.shipping_address);
 
           // Format shipping address
@@ -555,24 +557,103 @@ app.post('/webhooks/printify', async (c) => {
     const { DB } = c.env;
     const event = await c.req.json();
 
-    // Log webhook event
-    await DB.prepare(`
-      INSERT INTO webhook_events (source, event_type, event_id, payload)
-      VALUES ('printify', ?, ?, ?)
-    `).bind(event.type, event.id || '', JSON.stringify(event)).run();
+    console.log('[Printify Webhook] Received event:', event.type);
 
-    // Handle order status updates
-    if (event.type === 'order:shipment:created') {
-      const { order_id, tracking_number, tracking_url } = event.data;
-
+    // Log webhook event (ignore if duplicate)
+    try {
       await DB.prepare(`
-        UPDATE orders
-        SET status = 'shipped',
-            tracking_number = ?,
-            tracking_url = ?,
-            updated_at = CURRENT_TIMESTAMP
-        WHERE printify_order_id = ?
-      `).bind(tracking_number, tracking_url, order_id).run();
+        INSERT INTO webhook_events (source, event_type, event_id, payload)
+        VALUES ('printify', ?, ?, ?)
+      `).bind(event.type, event.id || '', JSON.stringify(event)).run();
+    } catch (logError) {
+      if (!logError.message?.includes('UNIQUE constraint')) {
+        console.error('Error logging webhook event:', logError);
+      }
+    }
+
+    // Handle different order events
+    if (event.type === 'order:shipment:created') {
+      // Order has shipped
+      const { resource } = event;
+      const printifyOrderId = resource?.id;
+      const trackingNumber = resource?.shipments?.[0]?.tracking_number;
+      const trackingUrl = resource?.shipments?.[0]?.tracking_url;
+      const carrier = resource?.shipments?.[0]?.carrier;
+
+      if (printifyOrderId) {
+        await DB.prepare(`
+          UPDATE orders
+          SET status = 'shipped',
+              tracking_number = ?,
+              tracking_url = ?,
+              updated_at = CURRENT_TIMESTAMP
+          WHERE printify_order_id = ?
+        `).bind(trackingNumber || null, trackingUrl || null, printifyOrderId).run();
+
+        // Get order details for email
+        const order = await DB.prepare(
+          'SELECT * FROM orders WHERE printify_order_id = ?'
+        ).bind(printifyOrderId).first();
+
+        if (order && order.customer_email) {
+          try {
+            const emailService = createEmailService(c.env, {
+              fromEmail: 'CyberSmrt Store <store@cybersmrt.org>'
+            });
+
+            await emailService.send('orderShipped', order.customer_email, {
+              orderNumber: order.order_number,
+              customerName: order.customer_name,
+              trackingNumber,
+              trackingUrl,
+              carrier,
+              estimatedDelivery: '5-7 business days'
+            });
+
+            console.log('✅ Shipped email sent to:', order.customer_email);
+          } catch (emailError) {
+            console.error('Failed to send shipped email:', emailError);
+          }
+        }
+      }
+    } else if (event.type === 'order:shipment:delivered') {
+      // Order has been delivered
+      const { resource } = event;
+      const printifyOrderId = resource?.id;
+      const deliveryTime = resource?.shipments?.[0]?.delivered_at;
+
+      if (printifyOrderId) {
+        await DB.prepare(`
+          UPDATE orders
+          SET status = 'delivered',
+              updated_at = CURRENT_TIMESTAMP
+          WHERE printify_order_id = ?
+        `).bind(printifyOrderId).run();
+
+        // Get order details for email
+        const order = await DB.prepare(
+          'SELECT * FROM orders WHERE printify_order_id = ?'
+        ).bind(printifyOrderId).first();
+
+        if (order && order.customer_email) {
+          try {
+            const emailService = createEmailService(c.env, {
+              fromEmail: 'CyberSmrt Store <store@cybersmrt.org>'
+            });
+
+            await emailService.send('orderDelivered', order.customer_email, {
+              orderNumber: order.order_number,
+              customerName: order.customer_name,
+              deliveryTime: deliveryTime ? new Date(deliveryTime).toLocaleString() : undefined,
+              deliveryLocation: 'Your shipping address'
+            });
+
+            console.log('✅ Delivered email sent to:', order.customer_email);
+          } catch (emailError) {
+            console.error('Failed to send delivered email:', emailError);
+          }
+        }
+      }
     }
 
     return c.json({ received: true });

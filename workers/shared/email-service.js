@@ -108,6 +108,30 @@ const EMAIL_TEMPLATES = {
     subject: `Order Confirmed - ${data.orderNumber} | CyberSmrt Store`,
     html: renderTemplate('order-confirmation', data),
     text: `Order Confirmed!\n\nOrder Number: ${data.orderNumber}\nTotal: $${(data.total / 100).toFixed(2)}\n\nYour order has been confirmed and will be processed within 2-3 business days. You'll receive tracking information once your order ships.\n\nThank you for supporting CyberSmrt!`
+  }),
+
+  orderShipped: (data) => ({
+    subject: `Your Order Has Shipped! - ${data.orderNumber} | CyberSmrt Store`,
+    html: renderTemplate('order-shipped', data),
+    text: `Your Order Has Shipped!\n\nOrder Number: ${data.orderNumber}\n\nYour order is on its way! ${data.trackingNumber ? `\n\nTracking Number: ${data.trackingNumber}\nTracking URL: ${data.trackingUrl}` : ''}\n\nEstimated Delivery: ${data.estimatedDelivery || '5-7 business days'}\n\nThank you for supporting CyberSmrt!`
+  }),
+
+  orderInTransit: (data) => ({
+    subject: `Package Update: In Transit - ${data.orderNumber} | CyberSmrt Store`,
+    html: renderTemplate('order-in-transit', data),
+    text: `Package Update\n\nOrder Number: ${data.orderNumber}\n\nYour package is in transit${data.currentLocation ? ` and was last scanned at ${data.currentLocation}` : ''}.\n\nTracking Number: ${data.trackingNumber}\nEstimated Delivery: ${data.estimatedDelivery || 'Soon'}\n\nTrack your package: ${data.trackingUrl}`
+  }),
+
+  orderOutForDelivery: (data) => ({
+    subject: `Out for Delivery Today! - ${data.orderNumber} | CyberSmrt Store`,
+    html: renderTemplate('order-out-for-delivery', data),
+    text: `Out for Delivery!\n\nOrder Number: ${data.orderNumber}\n\nGreat news! Your package is out for delivery and should arrive today.\n\nTracking Number: ${data.trackingNumber}\n\nTrack your package: ${data.trackingUrl}`
+  }),
+
+  orderDelivered: (data) => ({
+    subject: `Delivered! - ${data.orderNumber} | CyberSmrt Store`,
+    html: renderTemplate('order-delivered', data),
+    text: `Your Package Has Been Delivered!\n\nOrder Number: ${data.orderNumber}\n\nYour order was delivered${data.deliveryTime ? ` at ${data.deliveryTime}` : ''}${data.deliveryLocation ? ` to ${data.deliveryLocation}` : ''}.\n\nThank you for supporting CyberSmrt! We hope you love your purchase.\n\nHave feedback? Reply to this email - we'd love to hear from you!`
   })
 };
 
@@ -860,6 +884,171 @@ function renderTemplate(templateName, data) {
           <p>Service-Disabled Veteran-Owned 501(c)(3) Nonprofit</p>
         </div>
       </div>
+    `,
+
+    'order-shipped': `
+      <div class="email-wrapper">
+        <div class="header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+          <h1>📦 Your Order Has Shipped!</h1>
+        </div>
+        <div class="content">
+          <p>Hi${data.customerName ? ` ${data.customerName.split(' ')[0]}` : ''},</p>
+          <p><strong>Great news!</strong> Your order is on its way to you!</p>
+
+          <div class="success-box">
+            <h3 style="margin-top: 0;">Shipping Details</h3>
+            <p><strong>Order Number:</strong> ${data.orderNumber}</p>
+            ${data.trackingNumber ? `<p><strong>Tracking Number:</strong> ${data.trackingNumber}</p>` : ''}
+            ${data.carrier ? `<p><strong>Carrier:</strong> ${data.carrier}</p>` : ''}
+            ${data.estimatedDelivery ? `<p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>` : '<p><strong>Estimated Delivery:</strong> 5-7 business days</p>'}
+          </div>
+
+          ${data.trackingUrl ? `
+          <p style="text-align: center; margin: 30px 0;">
+            <a href="${data.trackingUrl}" class="button">Track Your Package</a>
+          </p>
+          ` : ''}
+
+          <div class="info-box">
+            <h3 style="margin-top: 0;">💡 Tracking Tips</h3>
+            <ul>
+              <li>It may take a few hours for tracking information to appear</li>
+              <li>You'll receive updates as your package moves through the shipping network</li>
+              <li>Someone should be available to sign for the package if required</li>
+            </ul>
+          </div>
+
+          <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
+            Questions about your shipment? Reply to this email or contact us at <a href="mailto:orders@cybersmrt.org">orders@cybersmrt.org</a>
+          </p>
+        </div>
+        <div class="footer">
+          <p><strong>CyberSmrt Store</strong></p>
+          <p><a href="https://store.cybersmrt.org">store.cybersmrt.org</a></p>
+        </div>
+      </div>
+    `,
+
+    'order-in-transit': `
+      <div class="email-wrapper">
+        <div class="header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+          <h1>🚚 Package Update: In Transit</h1>
+        </div>
+        <div class="content">
+          <p>Hi${data.customerName ? ` ${data.customerName.split(' ')[0]}` : ''},</p>
+          <p>Your package is making its way to you!</p>
+
+          <div class="info-box">
+            <h3 style="margin-top: 0;">Current Status</h3>
+            <p><strong>Order Number:</strong> ${data.orderNumber}</p>
+            ${data.currentLocation ? `<p><strong>Last Scan:</strong> ${data.currentLocation}</p>` : ''}
+            ${data.trackingNumber ? `<p><strong>Tracking Number:</strong> ${data.trackingNumber}</p>` : ''}
+            ${data.estimatedDelivery ? `<p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>` : ''}
+          </div>
+
+          ${data.trackingUrl ? `
+          <p style="text-align: center; margin: 30px 0;">
+            <a href="${data.trackingUrl}" class="button">View Detailed Tracking</a>
+          </p>
+          ` : ''}
+
+          <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
+            We'll notify you when your package is out for delivery!
+          </p>
+        </div>
+        <div class="footer">
+          <p><strong>CyberSmrt Store</strong></p>
+          <p><a href="https://store.cybersmrt.org">store.cybersmrt.org</a></p>
+        </div>
+      </div>
+    `,
+
+    'order-out-for-delivery': `
+      <div class="email-wrapper">
+        <div class="header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+          <h1>🚚 Out for Delivery Today!</h1>
+        </div>
+        <div class="content">
+          <p>Hi${data.customerName ? ` ${data.customerName.split(' ')[0]}` : ''},</p>
+          <p><strong>Exciting news!</strong> Your package is out for delivery and should arrive today!</p>
+
+          <div class="success-box">
+            <h3 style="margin-top: 0;">Delivery Information</h3>
+            <p><strong>Order Number:</strong> ${data.orderNumber}</p>
+            ${data.trackingNumber ? `<p><strong>Tracking Number:</strong> ${data.trackingNumber}</p>` : ''}
+            <p><strong>Expected:</strong> Today</p>
+          </div>
+
+          <div class="alert-box">
+            <h3 style="margin-top: 0;">📌 Delivery Tips</h3>
+            <ul>
+              <li>Make sure someone is available to receive the package</li>
+              <li>Check your doorstep if a signature isn't required</li>
+              <li>The driver may leave a delivery notice if no one is home</li>
+            </ul>
+          </div>
+
+          ${data.trackingUrl ? `
+          <p style="text-align: center; margin: 30px 0;">
+            <a href="${data.trackingUrl}" class="button">Track in Real-Time</a>
+          </p>
+          ` : ''}
+
+          <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
+            Any delivery issues? Contact us at <a href="mailto:orders@cybersmrt.org">orders@cybersmrt.org</a>
+          </p>
+        </div>
+        <div class="footer">
+          <p><strong>CyberSmrt Store</strong></p>
+          <p><a href="https://store.cybersmrt.org">store.cybersmrt.org</a></p>
+        </div>
+      </div>
+    `,
+
+    'order-delivered': `
+      <div class="email-wrapper">
+        <div class="header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+          <h1>✅ Delivered!</h1>
+        </div>
+        <div class="content">
+          <p>Hi${data.customerName ? ` ${data.customerName.split(' ')[0]}` : ''},</p>
+          <p><strong>Your package has been delivered!</strong></p>
+
+          <div class="success-box">
+            <h3 style="margin-top: 0;">Delivery Confirmation</h3>
+            <p><strong>Order Number:</strong> ${data.orderNumber}</p>
+            ${data.deliveryTime ? `<p><strong>Delivered At:</strong> ${data.deliveryTime}</p>` : ''}
+            ${data.deliveryLocation ? `<p><strong>Location:</strong> ${data.deliveryLocation}</p>` : ''}
+          </div>
+
+          <div class="alert-box">
+            <h3 style="margin-top: 0;">🎉 Thank You for Supporting CyberSmrt!</h3>
+            <p><strong>100% of profits</strong> from your purchase directly fund:</p>
+            <ul>
+              <li>K-12 cybersecurity education programs</li>
+              <li>Free security tools and resources</li>
+              <li>Sliding-scale services for underserved communities</li>
+            </ul>
+            <p>Your support helps us bridge the cybersecurity skills gap and make the digital world safer for everyone!</p>
+          </div>
+
+          <h3>How's everything?</h3>
+          <p>We'd love to hear about your experience! Have feedback or photos to share? Reply to this email - we read every message.</p>
+
+          <p style="text-align: center; margin: 30px 0;">
+            <a href="https://store.cybersmrt.org" class="button">Shop More Gear</a>
+          </p>
+
+          <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
+            Any issues with your order? Contact us at <a href="mailto:orders@cybersmrt.org">orders@cybersmrt.org</a>
+          </p>
+        </div>
+        <div class="footer">
+          <p><strong>CyberSmrt Store</strong></p>
+          <p><a href="https://store.cybersmrt.org">store.cybersmrt.org</a></p>
+          <p>Service-Disabled Veteran-Owned 501(c)(3) Nonprofit</p>
+        </div>
+      </div>
     `
   };
 
@@ -885,11 +1074,11 @@ function renderTemplate(templateName, data) {
 // ========================================
 
 export class EmailService {
-  constructor(env) {
+  constructor(env, options = {}) {
     this.env = env;
     this.apiKey = env.RESEND_API_KEY;
     this.apiUrl = 'https://api.resend.com/emails';
-    this.fromEmail = 'CyberSmrt <noreply@cybersmrt.org>';
+    this.fromEmail = options.fromEmail || 'CyberSmrt <noreply@cybersmrt.org>';
     this.maxRetries = 3;
     this.retryDelay = 1000; // ms
   }
@@ -1184,8 +1373,8 @@ export class EmailService {
 /**
  * Create email service instance
  */
-export function createEmailService(env) {
-  return new EmailService(env);
+export function createEmailService(env, options = {}) {
+  return new EmailService(env, options);
 }
 
 /**
