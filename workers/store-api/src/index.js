@@ -642,6 +642,7 @@ app.get('/api/orders', async (c) => {
 
     // Decode JWT to extract user_id
     // JWT structure: header.payload.signature
+    let userId;
     try {
       const [, payloadB64] = token.split('.');
       if (!payloadB64) {
@@ -651,40 +652,40 @@ app.get('/api/orders', async (c) => {
       // Decode base64url
       const payloadJson = atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'));
       const payload = JSON.parse(payloadJson);
-      const userId = payload.userId || payload.sub;
+      userId = payload.userId || payload.sub;
 
       if (!userId) {
         return c.json({ error: 'Invalid token - no user ID found' }, 401);
       }
 
       // TODO: Verify JWT signature for production security
-
-      // Fetch all orders for this user
-      const ordersResult = await DB.prepare(`
-        SELECT
-          o.id,
-          o.order_number,
-          o.customer_email,
-          o.customer_name,
-          o.shipping_address,
-          o.subtotal,
-          o.shipping_cost,
-          o.total_amount,
-          o.status,
-          o.payment_status,
-          o.tracking_number,
-          o.tracking_url,
-          o.stripe_payment_intent_id,
-          o.created_at,
-          o.updated_at
-        FROM orders o
-        WHERE o.user_id = ?
-        ORDER BY o.created_at DESC
-      `).bind(userId).all();
     } catch (jwtError) {
       console.error('JWT decode error:', jwtError);
       return c.json({ error: 'Invalid authentication token' }, 401);
     }
+
+    // Fetch all orders for this user
+    const ordersResult = await DB.prepare(`
+      SELECT
+        o.id,
+        o.order_number,
+        o.customer_email,
+        o.customer_name,
+        o.shipping_address,
+        o.subtotal,
+        o.shipping_cost,
+        o.total_amount,
+        o.status,
+        o.payment_status,
+        o.tracking_number,
+        o.tracking_url,
+        o.stripe_payment_intent_id,
+        o.created_at,
+        o.updated_at
+      FROM orders o
+      WHERE o.user_id = ?
+      ORDER BY o.created_at DESC
+    `).bind(userId).all();
 
     if (!ordersResult.results || ordersResult.results.length === 0) {
       return c.json({ orders: [] });
