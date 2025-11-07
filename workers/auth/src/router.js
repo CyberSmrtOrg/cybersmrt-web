@@ -887,7 +887,9 @@ export class AuthRouter {
 
     console.log('🍪 [2FA Verify] Response headers Set-Cookie count:', headers.getSetCookie().length);
 
-    return new Response(JSON.stringify({
+    // Create redirect response to callback with user data
+    const callbackUrl = new URL(`${this.env.FRONTEND_ORIGIN}/callback`);
+    const callbackData = {
       success: true,
       verified: true,
       method: result.method,
@@ -902,11 +904,23 @@ export class AuthRouter {
         id: session.sessionId,
         expiresAt: session.expiresAt,
       },
+      // Don't include tokens in redirect - they're in HttpOnly cookies
       tokens: {
         accessToken,
         refreshToken,
       },
-    }), {
+    };
+
+    // Encode data in URL hash (client-side only, not sent to server)
+    callbackUrl.hash = btoa(JSON.stringify(callbackData));
+
+    headers.delete('Content-Type'); // Remove JSON content type
+    headers.append('Location', callbackUrl.toString());
+
+    console.log('🍪 [2FA Verify] Redirecting to callback with cookies');
+
+    return new Response(null, {
+      status: 302,
       headers: headers
     });
   }

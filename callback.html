@@ -166,18 +166,22 @@
     <div id="status">Verifying your authentication...</div>
 
     <!-- 2FA Verification Form -->
-    <div id="twofa-form" class="twofa-form">
+    <form id="twofa-form" class="twofa-form" action="https://auth.cybersmrt.org/2fa/verify" method="POST">
       <p>Two-factor authentication is required for your account.</p>
       <label for="twofa-code">Enter your 6-digit code or backup code:</label>
       <input
         type="text"
         id="twofa-code"
+        name="code"
         placeholder="000000"
         maxlength="9"
         autocomplete="off"
+        required
       />
-      <button id="verify-btn" onclick="verify2FA()">Verify</button>
-    </div>
+      <input type="hidden" id="twofa-userId" name="userId" />
+      <input type="hidden" id="twofa-pendingAuthId" name="pendingAuthId" />
+      <button id="verify-btn" type="submit">Verify</button>
+    </form>
   </div>
 
   <script>
@@ -221,6 +225,10 @@
           // Store pending auth data
           pendingAuthData = data;
 
+          // Populate hidden form fields
+          document.getElementById('twofa-userId').value = data.userId;
+          document.getElementById('twofa-pendingAuthId').value = data.pendingAuthId;
+
           // Show 2FA form
           spinnerEl.style.display = 'none';
           titleEl.textContent = 'Two-Factor Authentication';
@@ -242,7 +250,7 @@
             }
           }
 
-          // Don't continue processing - wait for 2FA
+          // Don't continue processing - wait for 2FA (form submission will handle it)
         } else if (data.success) {
           statusEl.textContent = 'Success! Redirecting...';
 
@@ -326,125 +334,8 @@
       handleError('No authentication data received. Please try signing in again.', false);
     }
 
-    // Verify 2FA code
-    async function verify2FA() {
-      if (!pendingAuthData) {
-        handleError('No pending authentication found', false);
-        return;
-      }
-
-      const code = document.getElementById('twofa-code').value.trim();
-
-      if (!code) {
-        statusEl.style.display = 'block';
-        statusEl.className = 'error';
-        statusEl.textContent = 'Please enter your verification code';
-        return;
-      }
-
-      // Disable button
-      const btn = document.getElementById('verify-btn');
-      btn.disabled = true;
-      btn.textContent = 'Verifying...';
-
-      try {
-        const response = await fetch('https://auth.cybersmrt.org/2fa/verify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            userId: pendingAuthData.userId,
-            code: code,
-            pendingAuthId: pendingAuthData.pendingAuthId,
-          }),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Verification failed');
-        }
-
-        if (result.success && result.verified) {
-          // Store user data in localStorage (but NOT tokens - those are in HttpOnly cookies)
-          localStorage.setItem('user', JSON.stringify(result.user));
-
-          if (result.session && result.session.id) {
-            localStorage.setItem('sessionId', result.session.id);
-          }
-
-          // NOTE: Tokens are stored as HttpOnly cookies by the auth worker
-          // They are set with Domain=.cybersmrt.org for cross-subdomain access
-
-          // Show success message
-          twoFAFormEl.style.display = 'none';
-          titleEl.textContent = 'Authentication Complete';
-          statusEl.style.display = 'block';
-          statusEl.className = 'success';
-          statusEl.innerHTML = `✓ Successfully authenticated!<br>Welcome ${result.user.displayName || result.user.email}`;
-
-          // Determine redirect location
-          let redirectUrl = '/profile';
-
-          // Check if there's a saved return URL
-          const savedReturnUrl = localStorage.getItem('loginReturnUrl');
-          console.log('[2FA Callback] Saved return URL:', savedReturnUrl);
-          console.log('[2FA Callback] Current origin:', window.location.origin);
-
-          if (savedReturnUrl) {
-            // Parse the URL to ensure it's on the same origin
-            try {
-              const returnUrlObj = new URL(savedReturnUrl);
-              const currentOrigin = window.location.origin;
-
-              console.log('[2FA Callback] Return URL origin:', returnUrlObj.origin);
-              console.log('[2FA Callback] Origins match:', returnUrlObj.origin === currentOrigin);
-
-              // Only use saved URL if it's from the same origin
-              if (returnUrlObj.origin === currentOrigin) {
-                redirectUrl = savedReturnUrl;
-                console.log('[2FA Callback] Using saved return URL:', redirectUrl);
-              } else {
-                console.log('[2FA Callback] Origin mismatch, using default /profile');
-              }
-            } catch (e) {
-              // If URL parsing fails, use default
-              console.log('[2FA Callback] Could not parse saved return URL:', e);
-            }
-
-            // Clear the saved return URL
-            localStorage.removeItem('loginReturnUrl');
-          } else {
-            console.log('[2FA Callback] No saved return URL found');
-          }
-
-          console.log('[2FA Callback] Final redirect URL:', redirectUrl);
-
-          // Redirect after a short delay - use window.location.replace for full reload
-          setTimeout(() => {
-            window.location.replace(redirectUrl);
-          }, 1500);
-        } else {
-          throw new Error('Verification failed');
-        }
-      } catch (error) {
-        console.error('2FA verification error:', error);
-        statusEl.style.display = 'block';
-        statusEl.className = 'error';
-        statusEl.textContent = error.message || 'Invalid verification code. Please try again.';
-        btn.disabled = false;
-        btn.textContent = 'Verify';
-      }
-    }
-
-    // Allow Enter key to submit
-    document.getElementById('twofa-code')?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        verify2FA();
-      }
-    });
+    // Note: 2FA verification is now handled by form submission
+    // The auth worker will redirect back to callback.html with the result in the hash
 
     function handleError(message, isException) {
       spinnerEl.style.display = 'none';
