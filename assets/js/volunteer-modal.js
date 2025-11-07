@@ -81,13 +81,16 @@ window.VOLUNTEER_MODAL_LOADED = true;
   }
 
   // Submit volunteer application
-  async function submitVolunteerApplication(formData) {
+  async function submitVolunteerApplication(formData, roleName) {
     const name = formData.get('name');
     const email = formData.get('email');
     const phone = formData.get('phone') || 'Not provided';
     const message = formData.get('message');
     const currentPage = window.location.href;
     const userAgent = navigator.userAgent;
+
+    // Build subject line with role name if provided
+    const subject = roleName ? `Volunteer Opportunity - ${roleName}` : 'Volunteer Application';
 
     try {
       const response = await fetch('https://api.cybersmrt.org/feedback', {
@@ -101,7 +104,7 @@ window.VOLUNTEER_MODAL_LOADED = true;
           message: `VOLUNTEER APPLICATION\n\nPhone: ${phone}\n\n${message}`,
           page: currentPage,
           userAgent,
-          subject: 'Volunteer Application'
+          subject
         })
       });
 
@@ -117,7 +120,10 @@ window.VOLUNTEER_MODAL_LOADED = true;
   }
 
   // Show the modal
-  function showModal() {
+  let currentRoleName = null;
+
+  function showModal(roleName) {
+    currentRoleName = roleName || null;
     const modal = document.getElementById('volunteer-modal');
     if (modal) {
       modal.classList.add('show');
@@ -172,7 +178,7 @@ window.VOLUNTEER_MODAL_LOADED = true;
 
       // Submit application
       const formData = new FormData(form);
-      const result = await submitVolunteerApplication(formData);
+      const result = await submitVolunteerApplication(formData, currentRoleName);
 
       // Reset button state
       submitBtn.disabled = false;

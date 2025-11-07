@@ -426,7 +426,7 @@ window.OPPORTUNITY_DETAILS_LOADED = true;
         </div>
 
         <div class="opportunity-modal-footer">
-          <button class="opportunity-apply-btn" onclick="window.VolunteerModal.show()">
+          <button class="opportunity-apply-btn" onclick="window.VolunteerModal.show('${data.title}')">
             Apply for This Role →
           </button>
           <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">
