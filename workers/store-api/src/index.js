@@ -364,11 +364,18 @@ app.post('/webhooks/stripe', async (c) => {
       return c.json({ error: 'Invalid signature' }, 400);
     }
 
-    // Log webhook event
-    await DB.prepare(`
-      INSERT INTO webhook_events (source, event_type, event_id, payload)
-      VALUES ('stripe', ?, ?, ?)
-    `).bind(event.type, event.id, JSON.stringify(event)).run();
+    // Log webhook event (ignore if duplicate)
+    try {
+      await DB.prepare(`
+        INSERT INTO webhook_events (source, event_type, event_id, payload)
+        VALUES ('stripe', ?, ?, ?)
+      `).bind(event.type, event.id, JSON.stringify(event)).run();
+    } catch (logError) {
+      // Ignore duplicate event errors
+      if (!logError.message?.includes('UNIQUE constraint')) {
+        console.error('Error logging webhook event:', logError);
+      }
+    }
 
     // Handle checkout.session.completed
     if (event.type === 'checkout.session.completed') {
