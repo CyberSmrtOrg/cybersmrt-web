@@ -102,6 +102,12 @@ const EMAIL_TEMPLATES = {
     subject: `New Contact Form: ${data.reasonLabel} from ${data.name}`,
     html: renderTemplate('contact-notification', data),
     text: `New contact form submission:\n\nFrom: ${data.name} (${data.email})\nOrganization: ${data.organization || 'N/A'}\nReason: ${data.reasonLabel}\n\nMessage:\n${data.message}`
+  }),
+
+  orderConfirmation: (data) => ({
+    subject: `Order Confirmed - ${data.orderNumber} | CyberSmrt Store`,
+    html: renderTemplate('order-confirmation', data),
+    text: `Order Confirmed!\n\nOrder Number: ${data.orderNumber}\nTotal: $${(data.total / 100).toFixed(2)}\n\nYour order has been confirmed and will be processed within 2-3 business days. You'll receive tracking information once your order ships.\n\nThank you for supporting CyberSmrt!`
   })
 };
 
@@ -784,6 +790,74 @@ function renderTemplate(templateName, data) {
         <div class="footer">
           <p><strong>CyberSmrt Contact System</strong></p>
           <p><a href="https://cybersmrt.org">cybersmrt.org</a></p>
+        </div>
+      </div>
+    `,
+
+    'order-confirmation': `
+      <div class="email-wrapper">
+        <div class="header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+          <h1>✅ Order Confirmed!</h1>
+        </div>
+        <div class="content">
+          <p>Hi${data.customerName ? ` ${data.customerName.split(' ')[0]}` : ''},</p>
+          <p><strong>Thank you for your order!</strong> Your payment has been confirmed and your order is being processed.</p>
+
+          <div class="success-box">
+            <h3 style="margin-top: 0;">Order Details</h3>
+            <p><strong>Order Number:</strong> ${data.orderNumber}</p>
+            <p><strong>Order Date:</strong> ${data.orderDate || new Date().toLocaleDateString()}</p>
+            <p><strong>Total:</strong> $${(data.total / 100).toFixed(2)} USD</p>
+          </div>
+
+          <div class="info-box">
+            <h3 style="margin-top: 0;">Shipping Address</h3>
+            <p style="white-space: pre-line;">${data.shippingAddress}</p>
+          </div>
+
+          ${data.items && data.items.length > 0 ? `
+          <div class="info-box">
+            <h3 style="margin-top: 0;">Items Ordered</h3>
+            ${data.items.map(item => `
+              <div style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                <p style="margin: 0;"><strong>${item.title}</strong></p>
+                ${item.variant ? `<p style="margin: 5px 0 0 0; font-size: 0.9em; color: #64748b;">${item.variant}</p>` : ''}
+                <p style="margin: 5px 0 0 0;">Quantity: ${item.quantity} × $${(item.price / 100).toFixed(2)}</p>
+              </div>
+            `).join('')}
+          </div>
+          ` : ''}
+
+          <div class="alert-box">
+            <h3 style="margin-top: 0;">🎯 Your Impact</h3>
+            <p><strong>100% of profits</strong> from this purchase go directly to funding:</p>
+            <ul>
+              <li>K-12 cybersecurity education programs</li>
+              <li>Free student resources and tools</li>
+              <li>Sliding-scale security services for nonprofits</li>
+            </ul>
+            <p>Thank you for helping us bridge the cybersecurity skills gap!</p>
+          </div>
+
+          <h3>What Happens Next?</h3>
+          <ul>
+            <li>Your order will be printed and processed within <strong>2-3 business days</strong></li>
+            <li>Shipping typically takes <strong>5-7 business days</strong> for US orders</li>
+            <li>You'll receive tracking information via email once shipped</li>
+          </ul>
+
+          <p style="text-align: center; margin-top: 30px;">
+            <a href="https://store.cybersmrt.org" class="button">Continue Shopping</a>
+          </p>
+
+          <p style="margin-top: 30px; font-size: 14px; color: #64748b;">
+            Questions about your order? Reply to this email or contact us at <a href="mailto:orders@cybersmrt.org">orders@cybersmrt.org</a>
+          </p>
+        </div>
+        <div class="footer">
+          <p><strong>CyberSmrt Store</strong></p>
+          <p><a href="https://store.cybersmrt.org">store.cybersmrt.org</a></p>
+          <p>Service-Disabled Veteran-Owned 501(c)(3) Nonprofit</p>
         </div>
       </div>
     `

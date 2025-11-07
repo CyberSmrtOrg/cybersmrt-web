@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import Stripe from 'stripe';
+import { createEmailService } from '../../shared/email-service.js';
 
 // Store API on dedicated subdomain: store.cybersmrt.org
 const app = new Hono({ strict: false });
@@ -404,6 +405,54 @@ app.post('/webhooks/stripe', async (c) => {
         } catch (printifyError) {
           console.error('Failed to submit to Printify:', printifyError);
           // Don't fail the webhook - we'll retry later
+        }
+
+        // Send order confirmation email
+        try {
+          const emailService = createEmailService(c.env);
+          const lineItems = JSON.parse(order.line_items);
+          const shippingDetails = JSON.parse(order.shipping_address);
+
+          // Format shipping address
+          const shippingAddress = [
+            order.customer_name,
+            shippingDetails.address?.line1,
+            shippingDetails.address?.line2,
+            `${shippingDetails.address?.city}, ${shippingDetails.address?.state} ${shippingDetails.address?.postal_code}`,
+            shippingDetails.address?.country
+          ].filter(Boolean).join('\n');
+
+          // Get product details for email
+          const items = await Promise.all(lineItems.map(async (item) => {
+            const product = await DB.prepare(
+              'SELECT title FROM products WHERE id = ?'
+            ).bind(item.productId).first();
+
+            const variants = product ? JSON.parse(product.variants || '[]') : [];
+            const variant = variants.find(v => v.id === item.variantId);
+            const variantText = variant ? `${variant.color || ''} ${variant.size || ''}`.trim() : '';
+
+            return {
+              title: product?.title || 'Product',
+              variant: variantText,
+              quantity: item.quantity,
+              price: variant?.price || 0
+            };
+          }));
+
+          await emailService.send('orderConfirmation', order.customer_email, {
+            orderNumber: order.order_number,
+            customerName: order.customer_name,
+            orderDate: new Date().toLocaleDateString(),
+            total: order.total_amount,
+            shippingAddress,
+            items
+          });
+
+          console.log('✅ Order confirmation email sent to:', order.customer_email);
+        } catch (emailError) {
+          console.error('Failed to send order confirmation email:', emailError);
+          // Don't fail the webhook - email is not critical
         }
       }
     }
