@@ -246,14 +246,16 @@
         } else if (data.success) {
           statusEl.textContent = 'Success! Redirecting...';
 
-          // Store authentication data - use camelCase keys to match auth.js
-          localStorage.setItem('accessToken', data.tokens.accessToken);
-          localStorage.setItem('refreshToken', data.tokens.refreshToken);
+          // Store user data in localStorage (but NOT tokens - those are in HttpOnly cookies)
           localStorage.setItem('user', JSON.stringify(data.user));
 
           if (data.session && data.session.id) {
             localStorage.setItem('sessionId', data.session.id);
           }
+
+          // NOTE: Tokens are stored as HttpOnly cookies by the auth worker
+          // They are set with Domain=.cybersmrt.org for cross-subdomain access
+          // We don't store them in localStorage to avoid conflicts
 
           // Show success message
           spinnerEl.style.display = 'none';
@@ -366,14 +368,15 @@
         }
 
         if (result.success && result.verified) {
-          // Store authentication data - use camelCase keys to match auth.js
-          localStorage.setItem('accessToken', result.tokens.accessToken);
-          localStorage.setItem('refreshToken', result.tokens.refreshToken);
+          // Store user data in localStorage (but NOT tokens - those are in HttpOnly cookies)
           localStorage.setItem('user', JSON.stringify(result.user));
 
           if (result.session && result.session.id) {
             localStorage.setItem('sessionId', result.session.id);
           }
+
+          // NOTE: Tokens are stored as HttpOnly cookies by the auth worker
+          // They are set with Domain=.cybersmrt.org for cross-subdomain access
 
           // Show success message
           twoFAFormEl.style.display = 'none';
