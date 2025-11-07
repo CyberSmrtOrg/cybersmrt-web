@@ -32,8 +32,40 @@ database_id = "b6469b14-e613-44fc-aa9a-75d86c46a911"
 binding = "PRODUCT_CACHE"
 id = "89d8c4f59d794c36888770244e4bdbbf"
 
+# Development Environment
 [env.development]
 name = "cybersmrt-store-api-dev"
 
 [env.development.vars]
 ENVIRONMENT = "development"
+STRIPE_PUBLISHABLE_KEY = ""  # Set to pk_test_... for Stripe test mode
+
+# TODO: Create dev database with: npx wrangler d1 create cybersmrt-store-dev
+# [[env.development.d1_databases]]
+# binding = "DB"
+# database_name = "cybersmrt-store-dev"
+# database_id = "INSERT_DEV_DATABASE_ID_HERE"
+
+# TODO: Create dev KV with: npx wrangler kv:namespace create "PRODUCT_CACHE" --env development
+# [[env.development.kv_namespaces]]
+# binding = "PRODUCT_CACHE"
+# id = "INSERT_DEV_KV_ID_HERE"
+
+# Testing Environment
+[env.testing]
+name = "cybersmrt-store-api-test"
+
+[env.testing.vars]
+ENVIRONMENT = "testing"
+STRIPE_PUBLISHABLE_KEY = ""  # Set to pk_test_... for Stripe test mode
+
+# TODO: Create test database with: npx wrangler d1 create cybersmrt-store-test
+# [[env.testing.d1_databases]]
+# binding = "DB"
+# database_name = "cybersmrt-store-test"
+# database_id = "INSERT_TEST_DATABASE_ID_HERE"
+
+# TODO: Create test KV with: npx wrangler kv:namespace create "PRODUCT_CACHE" --env testing
+# [[env.testing.kv_namespaces]]
+# binding = "PRODUCT_CACHE"
+# id = "INSERT_TEST_KV_ID_HERE"
