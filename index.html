@@ -1094,6 +1094,15 @@
       .nav-links.show { display: flex; }
     }
 
+    /* Featured Tool Responsive */
+    @media (max-width: 768px) {
+      .section > div > .program-card > div[style*="grid-template-columns: 1fr 2fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        text-align: center;
+      }
+    }
+
     /* Mobile phones */
     @media (max-width: 768px) {
       .hero-content {
@@ -1447,74 +1456,122 @@
     </div>
   </section>
 
-  <!-- Who We Serve -->
-  <section id="who-we-serve" class="equity-focus section">
-    <h2 class="section-title">Who We Serve</h2>
-    <p style="text-align: center; color: #d0d0d0; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; line-height: 1.8;">
-      Cybersecurity shouldn't be a privilege, it's a necessity. We focus on communities
-      that have been left behind in the digital revolution.
-    </p>
-
-    <div class="equity-grid">
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/under-resourced-schools.png" alt="School building icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Under-Resourced Schools</h3>
-        <p>Inner-city and rural schools that lack cybersecurity education programs and can't afford enterprise security solutions.</p>
+  <!-- Impact Stats -->
+  <section class="stats section">
+    <h2 class="section-title" style="color: white; -webkit-text-fill-color: white;">Our Impact</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">1,000+</div>
+        <div class="stat-label">Students Reached</div>
       </div>
-
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/community-nonprofits.png" alt="Community hands icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Community Nonprofits</h3>
-        <p>Mission-driven organizations protecting sensitive donor and beneficiary data without the budget for dedicated security staff.</p>
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Core Programs</div>
       </div>
-
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/small-business.png" alt="Small business icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Small Businesses</h3>
-        <p>Local businesses that keep communities alive but face 350% more cyberattacks than larger firms, with no security budget.</p>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Free Tools</div>
       </div>
-
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/youth-families.png" alt="Youth and families icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Youth & Families</h3>
-        <p>Young people from underserved communities who deserve pathways to high-paying cybersecurity careers, not just awareness of threats.</p>
-      </div>
-
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/seniors-elderly.png" alt="Seniors icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Seniors & Elderly</h3>
-        <p>Older adults who are disproportionately targeted by scams and need age-appropriate digital safety education.</p>
-      </div>
-
-      <div class="equity-card">
-        <div class="equity-icon">
-          <img src="/assets/images/icons/rural-communities.png" alt="Rural communities icon" loading="lazy" width="90" height="90">
-        </div>
-        <h3>Rural Communities</h3>
-        <p>Remote areas where broadband is just arriving but cybersecurity education and support are still years behind.</p>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Equity Focused</div>
       </div>
     </div>
+  </section>
 
-    <div class="equity-callout">
-      <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">The Equity Gap is Real</h3>
-      <div class="equity-stats">
-        <div class="equity-stat"><strong>47%</strong><span>of companies with fewer than 50 employees have NO cybersecurity budget</span></div>
-        <div class="equity-stat"><strong>27%</strong><span>of nonprofits report experiencing a cyber breach due to limited awareness</span></div>
-        <div class="equity-stat"><strong>41%</strong><span>of small businesses experienced a cyberattack in the last 12 months</span></div>
+  <!-- Programs -->
+  <section id="programs" class="programs section">
+    <h2 class="section-title">Our Programs</h2>
+    <p style="text-align: center; color: var(--text-secondary); font-size: 1.2rem; max-width: 800px; margin: 0 auto 3rem; line-height: 1.8;">
+      Three core pillars addressing the cybersecurity equity gap
+    </p>
+    <div class="program-grid">
+      <a href="/pages/programs/k12-curriculum.html" class="program-card" style="text-decoration: none; color: inherit;">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/k12-curriculum.png" alt="K-12 Curriculum icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">K-12 Education</h3>
+        <p class="program-description">
+          Modular, competency-based cybersecurity curriculum for grades 5-12. Hands-on projects, portfolio assessment, and family engagement.
+        </p>
+        <div class="program-highlight">
+          ✓ Co-developed with NEAAAT charter school<br/>✓ Industry-aligned standards<br/>✓ Scalable licensing model
+        </div>
+      </a>
+
+      <a href="/pages/programs/mssp-lite.html" class="program-card" style="text-decoration: none; color: inherit;">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/mssp-services.png" alt="MSSP Services icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">MSSP-lite Services</h3>
+        <p class="program-description">
+          Affordable managed security for nonprofits and small businesses. Risk assessments, penetration testing, and awareness training.
+        </p>
+        <div class="program-highlight">
+          ✓ Enterprise-grade tools<br/>✓ Sliding-scale pricing<br/>✓ AI-powered security
+        </div>
+      </a>
+
+      <a href="/pages/programs/workforce-dev.html" class="program-card" style="text-decoration: none; color: inherit;">
+        <div class="program-icon">
+          <img src="/assets/images/icons/programs/workforce-development.png" alt="Workforce Development icon" width="90" height="90">
+        </div>
+        <h3 class="program-title">Workforce Development</h3>
+        <p class="program-description">
+          Career training aligned with industry certifications. Red Team, Blue Team, and GRC tracks with hands-on labs and mentorship.
+        </p>
+        <div class="program-highlight">
+          ✓ $70K-120K career paths<br/>✓ Industry certifications<br/>✓ Job placement support
+        </div>
+      </a>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="/pages/programs" class="btn btn-secondary" style="border: 2px solid #667eea; color: #667eea;">View All Programs</a>
+    </div>
+  </section>
+
+  <!-- Featured Tool -->
+  <section class="section" style="background: var(--bg-elevated);">
+    <h2 class="section-title">Featured Tool</h2>
+    <div style="max-width: 900px; margin: 0 auto;">
+      <div class="program-card" style="border: 2px solid rgba(102, 126, 234, 0.5); background: var(--card-bg);">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;">
+          <div class="program-icon" style="margin: 0;">
+            <img src="/assets/images/icons/tools/qr-scanner.png" alt="QR Code Scanner icon" width="110" height="110">
+          </div>
+          <div>
+            <h3 class="program-title" style="margin-top: 0;">QR Code Scanner</h3>
+            <p class="program-description" style="margin-bottom: 1.5rem;">
+              Scan QR codes safely before visiting links. Our tool checks URLs against multiple threat databases to protect you from phishing, malware, and scams.
+            </p>
+            <a href="/pages/tools/qr-tester" class="btn btn-primary">Try It Now</a>
+          </div>
+        </div>
       </div>
-      <p style="margin-top: 2rem; font-size: 1.1rem; opacity: 0.9;">
-        <strong>We meet communities where they are.</strong> Our volunteer-driven, mission-first approach
-        enables flexible pricing, sliding-scale services, and free resources for those who need them most.
+      <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
+        All our tools are <strong>100% free</strong> and designed to protect underserved communities.
+        <a href="/tools" style="color: #667eea; text-decoration: none; margin-left: 0.5rem;">Explore all tools →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Latest Blog Post -->
+  <section class="section" style="background: var(--bg-solid);">
+    <h2 class="section-title">Latest from Our Blog</h2>
+    <div style="max-width: 800px; margin: 0 auto;">
+      <div class="program-card">
+        <span class="badge" style="display: inline-block; margin-bottom: 1rem;">K-12 Education</span>
+        <h3 class="program-title">Building a K-12 Cybersecurity Curriculum That Actually Works</h3>
+        <p class="program-description">
+          Learn how we're developing a modular, competency-based cybersecurity curriculum in partnership with NEAAAT charter school. We share our process, challenges, and early wins in creating accessible cyber education for grades 5-12.
+        </p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <span style="color: var(--text-secondary); font-size: 0.9rem;">📅 January 15, 2025 • ⏱️ 8 min read</span>
+          <a href="/pages/blog/posts/k12-curriculum-design" class="btn btn-secondary" style="border: 2px solid #667eea; color: #667eea; padding: 0.75rem 1.5rem;">Read More</a>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
+        <a href="/blog" style="color: #667eea; text-decoration: none;">View all blog posts →</a>
       </p>
     </div>
   </section>
@@ -1690,80 +1747,6 @@
       });
     })();
     </script>
-  </section>
-
-  <!-- Programs -->
-  <section id="programs" class="programs section">
-    <h2 class="section-title">Our Programs</h2>
-    <div class="program-grid">
-      <a href="/pages/programs/k12-curriculum.html" class="program-card" style="text-decoration: none; color: inherit;">
-        <div class="program-icon">
-          <img src="/assets/images/icons/programs/k12-curriculum.png" alt="K-12 Curriculum icon" width="90" height="90">
-        </div>
-        <h3 class="program-title">K-12 Cybersecurity Curriculum</h3>
-        <p class="program-description">
-          Modular, competency-based cybersecurity education for grades 5-12, co-developed with
-          NEAAAT charter school. Aligned with industry standards and designed for scalable licensing.
-        </p>
-        <div class="program-highlight">
-          ✓ Hands-on, project-based learning<br/>✓ Portfolio-driven assessment<br/>✓ Family engagement
-        </div>
-      </a>
-
-      <a href="/pages/programs/mssp-lite.html" class="program-card" style="text-decoration: none; color: inherit;">
-        <div class="program-icon">
-          <img src="/assets/images/icons/programs/mssp-services.png" alt="MSSP Services icon" width="90" height="90">
-        </div>
-        <h3 class="program-title">MSSP-lite Services</h3>
-        <p class="program-description">
-          Affordable managed security services for nonprofits and small businesses, including
-          risk assessments, penetration testing, and cybersecurity awareness training.
-        </p>
-        <div class="program-highlight">
-          ✓ Enterprise-grade tools<br/>✓ Accessible pricing<br/>✓ AI integration
-        </div>
-      </a>
-
-      <a href="/pages/programs/workforce-dev.html" class="program-card" style="text-decoration: none; color: inherit;">
-        <div class="program-icon">
-          <img src="/assets/images/icons/programs/workforce-development.png" alt="Workforce Development icon" width="90" height="90">
-        </div>
-        <h3 class="program-title">Workforce Development</h3>
-        <p class="program-description">
-          Adult training programs aligned with industry certifications across three tracks:
-          Red Team, Blue Team, and GRC.
-        </p>
-        <div class="program-highlight">
-          ✓ Hands-on labs<br/>✓ Mentorship<br/>✓ Job readiness
-        </div>
-      </a>
-
-      <a href="/pages/programs/community-outreach.html" class="program-card" style="text-decoration: none; color: inherit;">
-        <div class="program-icon">
-          <img src="/assets/images/icons/programs/community-outreach.png" alt="Community Outreach icon" width="90" height="90">
-        </div>
-        <h3 class="program-title">Community Outreach</h3>
-        <p class="program-description">
-          Targeted programs for underserved populations: digital literacy for seniors,
-          youth workshops, rural training, and multilingual resources.
-        </p>
-        <div class="program-highlight">
-          ✓ Age-inclusive<br/>✓ Culturally responsive<br/>✓ Free resources
-        </div>
-      </a>
-
-      <div class="program-card" style="border: 2px dashed rgba(102, 126, 234, 0.3); background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);">
-        <div class="program-icon" style="font-size: 4rem; opacity: 0.6;">✨</div>
-        <h3 class="program-title">More Coming Soon</h3>
-        <p class="program-description">
-          We're developing additional programs to expand our impact. Stay tuned for new offerings in
-          enterprise training, threat intelligence, and specialized security services.
-        </p>
-        <div class="program-highlight">
-          ✓ Enterprise training<br/>✓ Threat intelligence<br/>✓ Specialized services
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- CTA -->

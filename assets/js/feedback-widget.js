@@ -12,7 +12,8 @@ window.FEEDBACK_WIDGET_LOADED = true;
     const button = document.createElement('button');
     button.id = 'feedback-widget-tab';
     button.className = 'feedback-widget-tab';
-    button.setAttribute('aria-label', 'Report a problem');
+    button.setAttribute('aria-label', 'Website Feedback');
+    button.setAttribute('title', 'Website Feedback');
     button.innerHTML = `<span class="feedback-icon">⚠️</span>`;
 
     document.body.appendChild(button);
