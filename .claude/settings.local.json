@@ -47,7 +47,8 @@
       "Bash(node -pe:*)",
       "Bash(node analyze-mockups.js:*)",
       "Bash(git push:*)",
-      "Bash(partials/header.html)"
+      "Bash(partials/header.html)",
+      "Bash(node scripts/process-order.js:*)"
     ],
     "deny": [],
     "ask": []
