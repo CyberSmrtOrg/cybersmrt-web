@@ -337,12 +337,15 @@ export class AuthRouter {
       const callbackUrl = returnUrl.endsWith('/') ? new URL(returnUrl) : new URL(returnUrl);
       callbackUrl.hash = encodedData;
 
-      // Set session cookie (HttpOnly, Secure)
-      const cookieHeader = `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`;
+      // Set cookies for cross-subdomain auth (HttpOnly, Secure, cross-subdomain)
+      const cookieMaxAge = this.env.SESSION_EXPIRY || 86400; // Default 24 hours
+      const sessionCookie = `session=${session.sessionId}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+      const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+      const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
 
       return Response.redirect(callbackUrl.toString(), 302, {
         headers: {
-          'Set-Cookie': cookieHeader,
+          'Set-Cookie': [sessionCookie, accessTokenCookie, refreshTokenCookie],
         },
       });
     }

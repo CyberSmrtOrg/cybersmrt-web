@@ -30,7 +30,31 @@ window.COOKIE_CONSENT_LOADED = true;
           storage: 'HTTP Cookie (domain: .cybersmrt.org)',
           expiry: '365 days',
           data: 'JSON object containing: timestamp, preference flags (necessary, functional, analytics, marketing)',
-          security: 'Stored as a secure, HttpOnly cookie with SameSite=Lax protection'
+          security: 'Stored as a secure cookie with SameSite=Lax protection'
+        },
+        {
+          name: 'session',
+          purpose: 'Maintains your authentication session across all CyberSmrt subdomains (main site, store, admin)',
+          storage: 'HTTP Cookie (domain: .cybersmrt.org)',
+          expiry: '30 days (or until logout)',
+          data: 'Unique session identifier (UUID)',
+          security: 'HttpOnly (inaccessible to JavaScript), Secure (HTTPS only), SameSite=Lax'
+        },
+        {
+          name: 'accessToken',
+          purpose: 'Stores your authentication token for accessing protected resources and APIs across subdomains',
+          storage: 'HTTP Cookie (domain: .cybersmrt.org)',
+          expiry: '1 day (auto-refreshed)',
+          data: 'JWT (JSON Web Token) containing: user ID, email, role, expiration time',
+          security: 'HttpOnly (inaccessible to JavaScript), Secure (HTTPS only), SameSite=Lax'
+        },
+        {
+          name: 'refreshToken',
+          purpose: 'Allows automatic renewal of your access token without requiring re-login',
+          storage: 'HTTP Cookie (domain: .cybersmrt.org)',
+          expiry: '30 days (or until logout)',
+          data: 'Secure random token used only for token refresh',
+          security: 'HttpOnly (inaccessible to JavaScript), Secure (HTTPS only), SameSite=Lax'
         }
       ],
       howTheyWork: 'Necessary cookies are set when you first visit the site or interact with core features. They enable basic functionality like remembering your cookie preferences, maintaining your session, and ensuring security features work correctly.',

@@ -32,8 +32,24 @@
       }
     }
 
-    function getAccessToken() { return localStorage.getItem('accessToken'); }
-    function getRefreshToken() { return localStorage.getItem('refreshToken'); }
+    // Helper to get cookie value
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    }
+
+    // Get access token from localStorage or cookie (fallback for cross-subdomain)
+    function getAccessToken() {
+      return localStorage.getItem('accessToken') || getCookie('accessToken');
+    }
+
+    // Get refresh token from localStorage or cookie (fallback for cross-subdomain)
+    function getRefreshToken() {
+      return localStorage.getItem('refreshToken') || getCookie('refreshToken');
+    }
+
     function getCurrentUser() { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { return null; } }
 
     function isAuthenticated() {
@@ -46,10 +62,15 @@
 
     function logout() {
       const token = getAccessToken();
+      // Clear localStorage
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
       localStorage.removeItem('sessionId');
+      // Clear cookies (cross-subdomain)
+      document.cookie = 'accessToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'refreshToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'session=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       if (token) {
         fetch((window.AUTH_BASE || 'https://auth.cybersmrt.org') + '/logout', {
           method: 'POST',

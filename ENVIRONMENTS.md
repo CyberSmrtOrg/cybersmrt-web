@@ -292,6 +292,411 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 ```
 
+## Development Workflow: From Feature to Production
+
+This section provides a step-by-step workflow for developing features and pushing them through dev → test → production.
+
+### Workflow Overview
+
+```
+Local Development → Dev Environment → Test/Staging → Production
+     ↓                    ↓                ↓              ↓
+  Your machine      workers.dev      QA/Review    cybersmrt.org
+  (wrangler dev)    (--env dev)    (--env test)   (main deploy)
+```
+
+### Step-by-Step Workflow
+
+#### **Step 1: Start Local Development**
+
+```bash
+# Create a feature branch
+git checkout -b feature/new-store-feature
+
+# Make sure you have .dev.vars set up with test credentials
+cd workers/store-api
+cat .dev.vars  # Should contain STRIPE_SECRET_KEY=sk_test_..., etc.
+
+# Run worker locally
+npx wrangler dev
+
+# Test in browser at http://localhost:8787
+```
+
+**What to test locally:**
+- Basic functionality works
+- No syntax errors
+- Database queries work (uses local D1 or --remote flag)
+- API endpoints respond correctly
+
+**Local testing tips:**
+- Use Stripe test cards (4242 4242 4242 4242)
+- Check browser console for errors
+- Use `console.log()` - shows in terminal running wrangler dev
+- Test with real Printify API or mock responses
+
+---
+
+#### **Step 2: Deploy to Development Environment**
+
+```bash
+# Still on feature/new-store-feature branch
+
+# Deploy worker to dev environment
+cd workers/store-api
+npx wrangler deploy --env development
+
+# Worker deploys to: cybersmrt-store-api-dev.workers.dev
+```
+
+**What happens:**
+- Worker deployed with dev database (cybersmrt-store-dev)
+- Uses Stripe test keys (sk_test_...)
+- Gets dev KV namespace
+- Accessible at `https://cybersmrt-store-api-dev.{your-subdomain}.workers.dev`
+
+**Test in dev:**
+```bash
+# View live logs
+npx wrangler tail --env development
+
+# Test endpoints
+curl https://cybersmrt-store-api-dev.{subdomain}.workers.dev/api/products
+
+# Query dev database
+npx wrangler d1 execute cybersmrt-store-dev --command "SELECT * FROM orders"
+
+# Check for errors in logs
+```
+
+**For Pages changes (static site):**
+```bash
+# Push feature branch to GitHub
+git add .
+git commit -m "feat: add new store feature"
+git push origin feature/new-store-feature
+
+# Cloudflare Pages auto-deploys to:
+# https://feature-new-store-feature.cybersmrt.pages.dev
+```
+
+**Dev environment testing checklist:**
+- ✅ Worker endpoints respond correctly
+- ✅ Database operations work
+- ✅ External API integrations work (Stripe, Printify)
+- ✅ No errors in wrangler tail logs
+- ✅ Pages preview looks correct (if applicable)
+
+---
+
+#### **Step 3: Deploy to Test/Staging Environment**
+
+Once dev testing passes, promote to testing environment for QA:
+
+```bash
+# Deploy worker to test environment
+cd workers/store-api
+npx wrangler deploy --env testing
+
+# Worker deploys to: cybersmrt-store-api-test.workers.dev
+```
+
+**What happens:**
+- Worker uses test database (cybersmrt-store-test)
+- Uses Stripe test keys
+- Uses test KV namespace
+- Should mirror production configuration exactly (except for live keys)
+
+**Test environment checklist:**
+- ✅ Full end-to-end testing (checkout flow, webhooks, emails)
+- ✅ Test with realistic data (seed test database if needed)
+- ✅ Cross-browser testing
+- ✅ Mobile responsive testing
+- ✅ Load testing (if applicable)
+- ✅ Security testing (SQL injection, XSS, etc.)
+- ✅ QA team approval
+
+**Monitor test environment:**
+```bash
+# View logs
+npx wrangler tail --env testing
+
+# Check database
+npx wrangler d1 execute cybersmrt-store-test --command "SELECT * FROM orders ORDER BY created_at DESC LIMIT 10"
+
+# Test webhook delivery (Stripe webhook testing)
+# Go to Stripe Dashboard → Webhooks → Test your endpoint
+```
+
+**For database migrations:**
+```bash
+# Test migration in test environment FIRST
+npx wrangler d1 execute cybersmrt-store-test --file=./migrations/002_add_new_field.sql
+
+# Verify migration worked
+npx wrangler d1 execute cybersmrt-store-test --command "DESCRIBE orders"
+```
+
+---
+
+#### **Step 4: Merge to Main & Deploy to Production**
+
+After testing environment approval:
+
+```bash
+# Ensure all tests pass
+git status  # Clean working directory
+
+# Switch to main branch
+git checkout main
+git pull origin main
+
+# Merge feature branch
+git merge feature/new-store-feature
+
+# Push to GitHub
+git push origin main
+```
+
+**What happens automatically (with Pages):**
+- GitHub push to main triggers Cloudflare Pages build
+- Static site deploys to https://cybersmrt.org
+- Production deployment complete in ~1-2 minutes
+
+**Deploy Worker to Production:**
+```bash
+# Deploy worker to production
+cd workers/store-api
+npx wrangler deploy  # No --env flag = production
+
+# Worker deploys to routes defined in wrangler.toml:
+# - store.cybersmrt.org/api/*
+# - store.cybersmrt.org/webhooks/*
+# etc.
+```
+
+**Production deployment checklist:**
+- ✅ Run database migration (if needed)
+- ✅ Monitor logs immediately after deployment
+- ✅ Test critical paths (checkout, webhooks)
+- ✅ Verify no errors in production logs
+- ✅ Check Stripe webhook deliveries
+- ✅ Verify email delivery (Resend)
+- ✅ Monitor for 10-15 minutes post-deployment
+
+**Monitor production:**
+```bash
+# Watch live production logs
+npx wrangler tail
+
+# Check recent orders
+npx wrangler d1 execute cybersmrt-store --remote --command "SELECT * FROM orders ORDER BY created_at DESC LIMIT 5"
+
+# Check Cloudflare Analytics dashboard
+# https://dash.cloudflare.com → Workers & Pages → cybersmrt-store-api
+```
+
+---
+
+#### **Step 5: Post-Deployment Verification**
+
+**Immediately after production deployment:**
+
+1. **Smoke test critical paths:**
+   ```bash
+   # Test product listing
+   curl https://store.cybersmrt.org/api/products
+
+   # Test checkout (use Stripe test card in production test mode)
+   # Or manually verify on site
+   ```
+
+2. **Check external integrations:**
+   - Go to Stripe Dashboard → Webhooks → Check recent deliveries
+   - Check Resend dashboard for email deliveries
+   - Check Printify for order creation (if applicable)
+
+3. **Monitor error rates:**
+   - Check Cloudflare Workers analytics for error rate spikes
+   - Watch `wrangler tail` for exceptions
+   - Check browser console on live site
+
+4. **Database sanity check:**
+   ```bash
+   # Verify database is healthy
+   npx wrangler d1 execute cybersmrt-store --remote --command "SELECT COUNT(*) FROM orders"
+   ```
+
+5. **Rollback plan (if issues found):**
+   ```bash
+   # Option 1: Revert git commit
+   git revert HEAD
+   git push origin main
+
+   # Option 2: Redeploy previous version
+   git checkout <previous-commit-sha>
+   cd workers/store-api
+   npx wrangler deploy
+   git checkout main
+   ```
+
+---
+
+### Database Migration Workflow
+
+**ALWAYS test migrations in dev → test → prod order:**
+
+```bash
+# 1. Create migration file
+cat > workers/store-api/migrations/002_add_user_preferences.sql << 'EOF'
+ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}';
+CREATE INDEX idx_users_preferences ON users(preferences);
+EOF
+
+# 2. Test in dev
+npx wrangler d1 execute cybersmrt-store-dev --file=./migrations/002_add_user_preferences.sql
+# Verify it worked
+npx wrangler d1 execute cybersmrt-store-dev --command "SELECT * FROM users LIMIT 1"
+
+# 3. Test in testing
+npx wrangler d1 execute cybersmrt-store-test --file=./migrations/002_add_user_preferences.sql
+# Verify it worked
+
+# 4. BACKUP production database first
+npx wrangler d1 export cybersmrt-store --remote --output=./backups/backup-$(date +%Y%m%d-%H%M%S).sql
+
+# 5. Run in production
+npx wrangler d1 execute cybersmrt-store --remote --file=./migrations/002_add_user_preferences.sql
+
+# 6. Verify production
+npx wrangler d1 execute cybersmrt-store --remote --command "SELECT * FROM users LIMIT 1"
+```
+
+---
+
+### Hotfix Workflow (Emergency Production Fixes)
+
+For critical production bugs that can't wait:
+
+```bash
+# 1. Create hotfix branch from main
+git checkout main
+git pull origin main
+git checkout -b hotfix/critical-checkout-bug
+
+# 2. Make minimal fix
+# Edit only what's necessary to fix the bug
+
+# 3. Test locally
+cd workers/store-api
+npx wrangler dev
+# Verify fix works
+
+# 4. Deploy directly to production (skip dev/test for emergencies)
+npx wrangler deploy
+
+# 5. Verify fix in production
+npx wrangler tail
+# Test the fixed functionality
+
+# 6. Commit and merge
+git add .
+git commit -m "hotfix: fix critical checkout bug"
+git push origin hotfix/critical-checkout-bug
+
+# Create PR and merge to main immediately
+git checkout main
+git merge hotfix/critical-checkout-bug
+git push origin main
+
+# 7. Backport to dev/test environments
+npx wrangler deploy --env development
+npx wrangler deploy --env testing
+```
+
+---
+
+### Environment Testing Matrix
+
+| What to Test | Local | Dev | Test | Prod |
+|--------------|-------|-----|------|------|
+| Code syntax | ✅ | ✅ | ✅ | ✅ |
+| Basic functionality | ✅ | ✅ | ✅ | ✅ |
+| Database queries | ✅ | ✅ | ✅ | ✅ |
+| Stripe test payments | ✅ | ✅ | ✅ | ❌ |
+| Stripe live payments | ❌ | ❌ | ❌ | ✅ |
+| Email delivery | ⚠️ | ✅ | ✅ | ✅ |
+| Printify orders | ⚠️ | ⚠️ | ✅ | ✅ |
+| Load testing | ❌ | ❌ | ✅ | ❌ |
+| Cross-browser | ⚠️ | ⚠️ | ✅ | ✅ |
+| Mobile testing | ⚠️ | ⚠️ | ✅ | ✅ |
+| Security testing | ❌ | ❌ | ✅ | ❌ |
+
+✅ = Required
+⚠️ = Optional/Limited
+❌ = Not applicable
+
+---
+
+### Common Scenarios
+
+#### **Scenario 1: Simple Bug Fix**
+```bash
+# Local → Dev → Test → Prod
+git checkout -b fix/button-alignment
+# Make fix
+npx wrangler dev  # Test locally
+git commit && git push
+npx wrangler deploy --env development  # Test in dev
+npx wrangler deploy --env testing      # QA in test
+git checkout main && git merge fix/button-alignment
+npx wrangler deploy  # Deploy to prod
+```
+
+#### **Scenario 2: New Feature with Database Changes**
+```bash
+# Create migration + feature code
+git checkout -b feature/user-preferences
+# Write migration + code
+npx wrangler dev  # Local test
+npx wrangler d1 execute cybersmrt-store-dev --file=./migrations/002_prefs.sql
+npx wrangler deploy --env development
+# Test thoroughly in dev
+npx wrangler d1 execute cybersmrt-store-test --file=./migrations/002_prefs.sql
+npx wrangler deploy --env testing
+# QA approval
+git checkout main && git merge feature/user-preferences
+npx wrangler d1 export cybersmrt-store --remote --output=backup.sql  # BACKUP!
+npx wrangler d1 execute cybersmrt-store --remote --file=./migrations/002_prefs.sql
+npx wrangler deploy
+```
+
+#### **Scenario 3: Pages-Only Change (No Worker)**
+```bash
+# Just HTML/CSS/JS changes
+git checkout -b feature/new-landing-page
+# Make changes to /pages or /assets
+git commit && git push origin feature/new-landing-page
+# Preview at: https://feature-new-landing-page.cybersmrt.pages.dev
+# After approval:
+git checkout main && git merge feature/new-landing-page
+git push origin main
+# Auto-deploys to cybersmrt.org
+```
+
+---
+
+### Key Principles
+
+1. **Always flow: Local → Dev → Test → Prod**
+2. **Never skip testing environment** (except true emergencies)
+3. **Always backup before production migrations**
+4. **Monitor production for 15 minutes after deployment**
+5. **Keep dev/test data realistic** but not real user data
+6. **Use Stripe test mode** everywhere except production
+7. **Test webhooks in test environment** before production
+8. **Have a rollback plan** before every production deployment
+
 ## Testing Strategy
 
 ### Development Environment
