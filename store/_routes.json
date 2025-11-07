@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "description": "Route API requests to store-api worker, serve static files for everything else",
+  "include": [
+    "/api/*",
+    "/webhooks/*",
+    "/checkout/*",
+    "/products",
+    "/products/*",
+    "/printify/*"
+  ],
+  "exclude": [
+    "/*"
+  ]
+}
