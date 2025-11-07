@@ -343,13 +343,23 @@ export class AuthRouter {
       const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
       const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
 
-      // Create redirect response with multiple Set-Cookie headers
-      const redirectResponse = Response.redirect(callbackUrl.toString(), 302);
-      redirectResponse.headers.append('Set-Cookie', sessionCookie);
-      redirectResponse.headers.append('Set-Cookie', accessTokenCookie);
-      redirectResponse.headers.append('Set-Cookie', refreshTokenCookie);
+      console.log('🍪 Setting cookies for redirect to:', callbackUrl.toString());
+      console.log('🍪 Session cookie:', sessionCookie.substring(0, 50) + '...');
+      console.log('🍪 Access token cookie:', accessTokenCookie.substring(0, 50) + '...');
 
-      return redirectResponse;
+      // Create redirect response with multiple Set-Cookie headers
+      const headers = new Headers();
+      headers.append('Location', callbackUrl.toString());
+      headers.append('Set-Cookie', sessionCookie);
+      headers.append('Set-Cookie', accessTokenCookie);
+      headers.append('Set-Cookie', refreshTokenCookie);
+
+      console.log('🍪 Response headers Set-Cookie count:', headers.getSetCookie().length);
+
+      return new Response(null, {
+        status: 302,
+        headers: headers
+      });
     }
 
   /**
@@ -845,6 +855,25 @@ export class AuthRouter {
     const accessToken = await generateAccessToken(user.id, user.email, this.env, user.role || 'user');
     const refreshToken = await generateRefreshToken(user.id, this.env);
 
+    // Set cookies for cross-subdomain auth (HttpOnly, Secure, cross-subdomain)
+    const cookieMaxAge = this.env.SESSION_EXPIRY || 86400; // Default 24 hours
+    const sessionCookie = `session=${session.sessionId}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+    const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+    const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+
+    console.log('🍪 [2FA Verify] Setting cookies for user:', user.id);
+    console.log('🍪 [2FA Verify] Session cookie:', sessionCookie.substring(0, 50) + '...');
+    console.log('🍪 [2FA Verify] Access token cookie:', accessTokenCookie.substring(0, 50) + '...');
+
+    // Create response with multiple Set-Cookie headers
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Set-Cookie', sessionCookie);
+    headers.append('Set-Cookie', accessTokenCookie);
+    headers.append('Set-Cookie', refreshTokenCookie);
+
+    console.log('🍪 [2FA Verify] Response headers Set-Cookie count:', headers.getSetCookie().length);
+
     return new Response(JSON.stringify({
       success: true,
       verified: true,
@@ -865,10 +894,7 @@ export class AuthRouter {
         refreshToken,
       },
     }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Set-Cookie': `session=${session.sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=${this.env.SESSION_EXPIRY}; Path=/`,
-      },
+      headers: headers
     });
   }
 
