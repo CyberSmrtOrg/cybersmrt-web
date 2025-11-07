@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/fix-dark-bar.css">
-
   <!-- Theme System -->
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
@@ -406,7 +404,7 @@
 <body>
 
   <!-- Load store's auth.js for cross-subdomain cookie support -->
-  <script src="/store/assets/js/auth.js"></script>
+  <script src="/assets/js/auth.js"></script>
 
   <!-- Header will be loaded here -->
   <script src="/assets/js/header-loader.js"></script>
@@ -430,7 +428,7 @@
   <script src="/assets/js/footer-loader.js"></script>
 
   <script>
-    const STORE_API_URL = 'https://store-api.cybersmrt.workers.dev';
+    const STORE_API_URL = 'https://store.cybersmrt.org';
 
     // Get current user (from auth.js)
     function getCurrentUser() {
@@ -642,14 +640,6 @@
       `;
     }
 
-    // Get access token (from auth.js)
-    function getAccessToken() {
-      if (window.getAccessToken) {
-        return window.getAccessToken();
-      }
-      return localStorage.getItem('accessToken') || getCookie('accessToken');
-    }
-
     // Helper to get cookie value
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -658,21 +648,35 @@
       return null;
     }
 
+    // Get access token from localStorage or cookies
+    function getAccessToken() {
+      // Try localStorage first
+      const localToken = localStorage.getItem('accessToken');
+      if (localToken) return localToken;
+
+      // Try cookies as fallback (for cross-subdomain auth)
+      const cookieToken = getCookie('accessToken');
+      if (cookieToken) return cookieToken;
+
+      return null;
+    }
+
     // Load orders
     async function loadOrders() {
       try {
         const accessToken = getAccessToken();
 
-        if (!accessToken) {
-          showError('Please sign in to view your purchases.');
-          return;
+        // Build headers - include Authorization if we have a token in localStorage
+        const headers = {};
+        if (accessToken) {
+          headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
+        // Make request - HttpOnly cookies will be sent automatically with credentials: 'include'
+        // The store-api will check both Authorization header and cookies
         const response = await fetch(`${STORE_API_URL}/api/orders`, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          },
-          credentials: 'include' // Send cookies
+          headers: headers,
+          credentials: 'include' // Send HttpOnly cookies automatically
         });
 
         if (!response.ok) {
