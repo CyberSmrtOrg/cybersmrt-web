@@ -31,6 +31,13 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
+          # Check for any unstaged changes and stage them
+          if ! git diff --quiet; then
+            git add -A
+          fi
+
+          # Stage store/assets explicitly
           git add store/assets/
 
           # Only commit if there are changes
