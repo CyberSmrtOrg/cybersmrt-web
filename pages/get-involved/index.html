@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Involved | CyberSmrt</title>
+  <meta name="description" content="Join the CyberSmrt mission to secure the underserved. Volunteer your expertise, donate to support our programs, or partner with us to expand our impact.">
+  <link rel="icon" href="/assets/logos/cybersmrt-logo-only.png" type="image/png"/>
+
+  <!-- Orbitron font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Theme System -->
+  <link rel="stylesheet" href="/assets/css/theme.css">
+  <script src="/assets/js/theme.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--hero-text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      color: var(--hero-text);
+      line-height: 1.1;
+    }
+
+    .hero .tagline {
+      font-size: 1.4rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--hero-text);
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .intro-section {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .intro-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .intro-section p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .involvement-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .involvement-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
+      border-color: #667eea;
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .card-highlights {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .card-highlights li {
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+    }
+
+    .card-highlights li:before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+      margin-right: 0.75rem;
+      font-size: 1.2rem;
+    }
+
+    .card-cta {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .card-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .card-cta.secondary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .card-cta.secondary:hover {
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .card-cta.tertiary {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .card-cta.tertiary:hover {
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Impact Stats */
+    .impact-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .impact-section h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2rem;
+      margin-bottom: 2.5rem;
+      color: var(--text-primary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .stat {
+      padding: 1.5rem;
+    }
+
+    .stat-number {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Call to Action */
+    .final-cta {
+      background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .final-cta h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--hero-text);
+    }
+
+    .final-cta p {
+      font-size: 1.2rem;
+      color: var(--hero-text);
+      opacity: 0.95;
+      margin-bottom: 2rem;
+    }
+
+    .final-cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .final-cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .final-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero .tagline {
+        font-size: 1.2rem;
+      }
+
+      .hero .subtitle {
+        font-size: 1rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .final-cta h2 {
+        font-size: 2rem;
+      }
+
+      .final-cta-buttons {
+        flex-direction: column;
+      }
+
+      .final-cta-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Join Our Mission</div>
+      <h1>Get Involved</h1>
+      <p class="tagline">Help Us Secure the Underserved</p>
+      <p class="subtitle">
+        Whether you volunteer your expertise, support us financially, or partner with us strategically,
+        every contribution brings cybersecurity education and protection to those who need it most.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Introduction -->
+    <section class="intro-section">
+      <h2>Why Your Support Matters</h2>
+      <p>
+        CyberSmrt is a service-disabled veteran-owned 501(c)(3) nonprofit dedicated to bridging the cybersecurity
+        skills gap and protecting underserved communities. We provide free K-12 education programs, sliding-scale
+        security services for nonprofits, and hands-on training for the next generation of cybersecurity professionals.
+        <strong>Your involvement makes this possible.</strong>
+      </p>
+    </section>
+
+    <!-- Ways to Get Involved -->
+    <section class="cards-grid">
+
+      <!-- Volunteer Card -->
+      <div class="involvement-card">
+        <div class="card-icon">🤝</div>
+        <h3 class="card-title">Volunteer</h3>
+        <p class="card-description">
+          Share your cybersecurity expertise to mentor students, develop curriculum, or support our operations.
+          We're looking for professionals at all experience levels who want to give back.
+        </p>
+        <ul class="card-highlights">
+          <li>Student mentorship opportunities</li>
+          <li>Curriculum development roles</li>
+          <li>Technical consulting positions</li>
+          <li>Flexible commitment levels</li>
+        </ul>
+        <a href="/pages/get-involved/volunteer.html" class="card-cta">View Opportunities</a>
+      </div>
+
+      <!-- Donate Card -->
+      <div class="involvement-card">
+        <div class="card-icon">💝</div>
+        <h3 class="card-title">Donate</h3>
+        <p class="card-description">
+          Your tax-deductible donation directly funds free cybersecurity education programs, security tools,
+          and services for underserved communities and nonprofits.
+        </p>
+        <ul class="card-highlights">
+          <li>100% of donations fund programs</li>
+          <li>Tax-deductible contributions</li>
+          <li>One-time or recurring options</li>
+          <li>Transparent impact reporting</li>
+        </ul>
+        <a href="/pages/get-involved/donate.html" class="card-cta secondary">Make a Donation</a>
+      </div>
+
+      <!-- Partner Card -->
+      <div class="involvement-card">
+        <div class="card-icon">🤝</div>
+        <h3 class="card-title">Partner</h3>
+        <p class="card-description">
+          Join forces with us to expand our reach and impact. We work with schools, businesses, and nonprofits
+          to deliver cybersecurity education and services at scale.
+        </p>
+        <ul class="card-highlights">
+          <li>School and district partnerships</li>
+          <li>Corporate sponsorship opportunities</li>
+          <li>Nonprofit collaboration programs</li>
+          <li>Co-branded education initiatives</li>
+        </ul>
+        <a href="/pages/get-involved/partner.html" class="card-cta tertiary">Explore Partnerships</a>
+      </div>
+
+    </section>
+
+    <!-- Impact Stats -->
+    <section class="impact-section">
+      <h2>Our Growing Impact</h2>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Students Reached</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">School Partnerships</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">25+</div>
+          <div class="stat-label">Active Volunteers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Free to Students</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <h2>Ready to Make a Difference?</h2>
+      <p>Choose how you'd like to support our mission to secure the underserved.</p>
+      <div class="final-cta-buttons">
+        <a href="/pages/get-involved/volunteer.html" class="final-cta-btn">Start Volunteering</a>
+        <a href="/pages/get-involved/donate.html" class="final-cta-btn">Donate Now</a>
+        <a href="/pages/get-involved/partner.html" class="final-cta-btn">Become a Partner</a>
+        <a href="/pages/contact.html" class="final-cta-btn">Contact Us</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Header Loader -->
+  <script src="/assets/js/header-loader.js"></script>
+
+</body>
+</html>

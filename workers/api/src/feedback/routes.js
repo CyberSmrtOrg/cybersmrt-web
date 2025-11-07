@@ -1,9 +1,11 @@
 /**
  * Feedback Routes
  * Handles website feedback submissions and sends them to Slack
+ * Routes volunteer applications to volunteer@cybersmrt.org
  */
 
 import { jsonResponse, errorResponse } from '../utils/response.js';
+import { EmailService } from '../../../shared/email-service.js';
 
 /**
  * Send feedback to Slack Workflow Builder webhook
@@ -41,6 +43,43 @@ async function sendToSlack(webhookUrl, feedbackData) {
 }
 
 /**
+ * Send volunteer application email to volunteer@cybersmrt.org
+ */
+async function sendVolunteerEmail(env, volunteerData) {
+  const emailService = new EmailService(env);
+  const { name, email, phone, message, subject } = volunteerData;
+
+  const emailBody = `
+New Volunteer Application
+
+From: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+
+${message}
+
+---
+Submitted via CyberSmrt.org Volunteer Form
+  `.trim();
+
+  // Send email using Resend with custom subject
+  await emailService.send('contactNotification', 'volunteer@cybersmrt.org', {
+    name,
+    email,
+    organization: '',
+    reasonLabel: subject,
+    message,
+    timestamp: new Date().toLocaleString(),
+    firstName: name.split(' ')[0]
+  }, {
+    subject,
+    replyTo: email
+  });
+
+  return true;
+}
+
+/**
  * Handle feedback routes
  */
 export async function handleFeedbackRoutes(request, env, ctx) {
@@ -51,38 +90,66 @@ export async function handleFeedbackRoutes(request, env, ctx) {
   if (path === '/feedback' && request.method === 'POST') {
     try {
       const body = await request.json();
-      const { name, email, message, page, userAgent } = body;
+      const { name, email, message, page, userAgent, subject } = body;
 
       // Validate required fields
       if (!message || message.trim().length === 0) {
         return errorResponse('Message is required', 400);
       }
 
-      // Get Slack webhook URL from environment
-      const slackWebhookUrl = env.SLACK_FEEDBACK_WEBHOOK_URL;
+      // Check if this is a volunteer application based on subject line
+      const isVolunteerApplication = subject && subject.includes('Volunteer Opportunity');
 
-      if (!slackWebhookUrl) {
-        console.error('SLACK_FEEDBACK_WEBHOOK_URL not configured');
-        // Still return success to user, but log error
+      if (isVolunteerApplication) {
+        // Route to volunteer@cybersmrt.org via email
+        console.log('📧 Routing volunteer application to volunteer@cybersmrt.org');
+
+        // Extract phone from message if present (volunteer form includes it)
+        const phoneMatch = message.match(/Phone: (.+)/);
+        const phone = phoneMatch ? phoneMatch[1] : null;
+
+        await sendVolunteerEmail(env, {
+          name: name || 'Anonymous',
+          email: email || 'Not provided',
+          phone,
+          message: message.trim(),
+          subject
+        });
+
         return jsonResponse({
           success: true,
-          message: 'Feedback received'
+          message: 'Volunteer application sent successfully'
+        });
+
+      } else {
+        // Regular feedback - send to Slack
+        console.log('💬 Routing feedback to Slack');
+
+        const slackWebhookUrl = env.SLACK_FEEDBACK_WEBHOOK_URL;
+
+        if (!slackWebhookUrl) {
+          console.error('SLACK_FEEDBACK_WEBHOOK_URL not configured');
+          // Still return success to user, but log error
+          return jsonResponse({
+            success: true,
+            message: 'Feedback received'
+          });
+        }
+
+        // Send to Slack
+        await sendToSlack(slackWebhookUrl, {
+          name: name || 'Anonymous',
+          email: email || 'Not provided',
+          message: message.trim(),
+          page: page || 'Unknown',
+          userAgent: userAgent || 'Unknown'
+        });
+
+        return jsonResponse({
+          success: true,
+          message: 'Feedback sent successfully'
         });
       }
-
-      // Send to Slack
-      await sendToSlack(slackWebhookUrl, {
-        name: name || 'Anonymous',
-        email: email || 'Not provided',
-        message: message.trim(),
-        page: page || 'Unknown',
-        userAgent: userAgent || 'Unknown'
-      });
-
-      return jsonResponse({
-        success: true,
-        message: 'Feedback sent successfully'
-      });
 
     } catch (error) {
       console.error('Feedback submission error:', error);

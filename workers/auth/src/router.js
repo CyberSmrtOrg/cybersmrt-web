@@ -343,11 +343,13 @@ export class AuthRouter {
       const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
       const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
 
-      return Response.redirect(callbackUrl.toString(), 302, {
-        headers: {
-          'Set-Cookie': [sessionCookie, accessTokenCookie, refreshTokenCookie],
-        },
-      });
+      // Create redirect response with multiple Set-Cookie headers
+      const redirectResponse = Response.redirect(callbackUrl.toString(), 302);
+      redirectResponse.headers.append('Set-Cookie', sessionCookie);
+      redirectResponse.headers.append('Set-Cookie', accessTokenCookie);
+      redirectResponse.headers.append('Set-Cookie', refreshTokenCookie);
+
+      return redirectResponse;
     }
 
   /**

@@ -617,40 +617,73 @@ app.get('/api/orders', async (c) => {
   try {
     const { DB } = c.env;
 
-    // Get user_id from Authorization header (JWT token)
+    // Get access token from Authorization header or cookies (for cross-subdomain auth)
+    let token = null;
     const authHeader = c.req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    } else {
+      // Try to get from cookies (cross-subdomain fallback)
+      const cookieHeader = c.req.header('Cookie');
+      if (cookieHeader) {
+        const cookies = cookieHeader.split(';').map(c => c.trim());
+        const accessTokenCookie = cookies.find(c => c.startsWith('accessToken='));
+        if (accessTokenCookie) {
+          token = accessTokenCookie.split('=')[1];
+        }
+      }
+    }
+
+    if (!token) {
       return c.json({ error: 'Unauthorized - Please sign in to view your purchases' }, 401);
     }
 
-    const token = authHeader.substring(7);
-    // TODO: Verify JWT token and extract user_id
-    // For now, we'll accept the token as the user_id
-    // This should be replaced with proper JWT verification
-    const userId = token;
+    // Decode JWT to extract user_id
+    // JWT structure: header.payload.signature
+    try {
+      const [, payloadB64] = token.split('.');
+      if (!payloadB64) {
+        return c.json({ error: 'Invalid token format' }, 401);
+      }
 
-    // Fetch all orders for this user
-    const ordersResult = await DB.prepare(`
-      SELECT
-        o.id,
-        o.order_number,
-        o.customer_email,
-        o.customer_name,
-        o.shipping_address,
-        o.subtotal,
-        o.shipping_cost,
-        o.total_amount,
-        o.status,
-        o.payment_status,
-        o.tracking_number,
-        o.tracking_url,
-        o.stripe_payment_intent_id,
-        o.created_at,
-        o.updated_at
-      FROM orders o
-      WHERE o.user_id = ?
-      ORDER BY o.created_at DESC
-    `).bind(userId).all();
+      // Decode base64url
+      const payloadJson = atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'));
+      const payload = JSON.parse(payloadJson);
+      const userId = payload.userId || payload.sub;
+
+      if (!userId) {
+        return c.json({ error: 'Invalid token - no user ID found' }, 401);
+      }
+
+      // TODO: Verify JWT signature for production security
+
+      // Fetch all orders for this user
+      const ordersResult = await DB.prepare(`
+        SELECT
+          o.id,
+          o.order_number,
+          o.customer_email,
+          o.customer_name,
+          o.shipping_address,
+          o.subtotal,
+          o.shipping_cost,
+          o.total_amount,
+          o.status,
+          o.payment_status,
+          o.tracking_number,
+          o.tracking_url,
+          o.stripe_payment_intent_id,
+          o.created_at,
+          o.updated_at
+        FROM orders o
+        WHERE o.user_id = ?
+        ORDER BY o.created_at DESC
+      `).bind(userId).all();
+    } catch (jwtError) {
+      console.error('JWT decode error:', jwtError);
+      return c.json({ error: 'Invalid authentication token' }, 401);
+    }
 
     if (!ordersResult.results || ordersResult.results.length === 0) {
       return c.json({ orders: [] });

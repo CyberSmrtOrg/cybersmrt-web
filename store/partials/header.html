@@ -1120,6 +1120,11 @@ window.toggleLanguageMenu = function(event) {
   const btn = event.currentTarget;
   const dropdown = btn.nextElementSibling;
 
+  if (!dropdown) {
+    console.error('Language dropdown not found');
+    return;
+  }
+
   // Close user menu if open
   const userMenu = document.querySelector('.user-menu-container .user-dropdown');
   if (userMenu && userMenu.classList.contains('active')) {
@@ -1128,18 +1133,33 @@ window.toggleLanguageMenu = function(event) {
   }
 
   // Toggle language menu
-  btn.classList.toggle('active');
-  dropdown.classList.toggle('active');
+  const isActive = dropdown.classList.toggle('active');
+  btn.classList.toggle('active', isActive);
 
   // Update active language option
   if (window.cyberSmrtTranslator) {
     const currentLang = window.cyberSmrtTranslator.currentLanguage;
     window.updateActiveLanguageOption(currentLang);
+  } else {
+    console.warn('Translator not yet loaded - will update active state when language is changed');
   }
+};
+
+// Update active language option in dropdown (defined first so it can be called)
+window.updateActiveLanguageOption = function(lang) {
+  document.querySelectorAll('.language-option').forEach(option => {
+    if (option.dataset.lang === lang) {
+      option.classList.add('active');
+    } else {
+      option.classList.remove('active');
+    }
+  });
 };
 
 // Change language
 window.changeLanguage = async function(lang) {
+  console.log('🌐 Changing language to:', lang);
+
   // Update button text
   const langCode = document.querySelector('.language-code');
   if (langCode) {
@@ -1168,7 +1188,7 @@ window.changeLanguage = async function(lang) {
 
   // Wait for translator to load if not already available
   if (!window.cyberSmrtTranslator) {
-    console.log('Waiting for translator to load...');
+    console.log('⏳ Waiting for translator to load...');
     let attempts = 0;
     while (!window.cyberSmrtTranslator && attempts < 50) {
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -1178,21 +1198,12 @@ window.changeLanguage = async function(lang) {
 
   // Translate page if translator is loaded
   if (window.cyberSmrtTranslator) {
+    console.log('✅ Translator found, translating page...');
     await window.cyberSmrtTranslator.translatePage(lang);
+    console.log('✅ Translation complete');
   } else {
-    console.warn('Translator not loaded - language change visual only');
+    console.error('❌ Translator not loaded after 5 seconds - language change visual only');
   }
-};
-
-// Update active language option in dropdown
-window.updateActiveLanguageOption = function(lang) {
-  document.querySelectorAll('.language-option').forEach(option => {
-    if (option.dataset.lang === lang) {
-      option.classList.add('active');
-    } else {
-      option.classList.remove('active');
-    }
-  });
 };
 
 // Close language dropdown when clicking outside
