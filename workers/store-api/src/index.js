@@ -759,4 +759,103 @@ app.get('/api/orders/:order_number', async (c) => {
   }
 });
 
+// Get store metrics (admin only)
+app.get('/api/admin/store/metrics', async (c) => {
+  try {
+    const { DB } = c.env;
+
+    // TODO: Add admin authentication check here
+    // For now, this endpoint should be protected by Cloudflare Access or similar
+
+    // Get overall metrics
+    const [totalOrders, totalRevenue, recentOrders, topProducts] = await Promise.all([
+      // Total orders
+      DB.prepare('SELECT COUNT(*) as count FROM orders WHERE payment_status = ?')
+        .bind('paid')
+        .first(),
+
+      // Total revenue
+      DB.prepare('SELECT SUM(total_amount) as total FROM orders WHERE payment_status = ?')
+        .bind('paid')
+        .first(),
+
+      // Recent orders (last 30 days)
+      DB.prepare(`
+        SELECT COUNT(*) as count, SUM(total_amount) as total
+        FROM orders
+        WHERE payment_status = ?
+        AND created_at >= datetime('now', '-30 days')
+      `)
+        .bind('paid')
+        .first(),
+
+      // Top products by quantity sold
+      DB.prepare(`
+        SELECT
+          json_extract(value, '$.productId') as product_id,
+          SUM(json_extract(value, '$.quantity')) as total_quantity
+        FROM orders, json_each(line_items)
+        WHERE payment_status = 'paid'
+        GROUP BY product_id
+        ORDER BY total_quantity DESC
+        LIMIT 5
+      `).all()
+    ]);
+
+    // Get product details for top products
+    const topProductsWithDetails = await Promise.all(
+      (topProducts.results || []).map(async (item) => {
+        const product = await DB.prepare('SELECT id, title FROM products WHERE id = ?')
+          .bind(item.product_id)
+          .first();
+        return {
+          productId: item.product_id,
+          productTitle: product?.title || 'Unknown Product',
+          totalQuantity: item.total_quantity
+        };
+      })
+    );
+
+    // Calculate 30-day growth
+    const prevMonthOrders = await DB.prepare(`
+      SELECT COUNT(*) as count, SUM(total_amount) as total
+      FROM orders
+      WHERE payment_status = ?
+      AND created_at >= datetime('now', '-60 days')
+      AND created_at < datetime('now', '-30 days')
+    `)
+      .bind('paid')
+      .first();
+
+    const orderGrowth = prevMonthOrders.count > 0
+      ? ((recentOrders.count - prevMonthOrders.count) / prevMonthOrders.count) * 100
+      : 0;
+
+    const revenueGrowth = prevMonthOrders.total > 0
+      ? ((recentOrders.total - prevMonthOrders.total) / prevMonthOrders.total) * 100
+      : 0;
+
+    return c.json({
+      totalOrders: totalOrders?.count || 0,
+      totalRevenue: totalRevenue?.total || 0,
+      recentOrders: {
+        count: recentOrders?.count || 0,
+        total: recentOrders?.total || 0,
+        growth: Math.round(orderGrowth * 10) / 10
+      },
+      recentRevenue: {
+        total: recentOrders?.total || 0,
+        growth: Math.round(revenueGrowth * 10) / 10
+      },
+      topProducts: topProductsWithDetails,
+      averageOrderValue: totalOrders?.count > 0
+        ? Math.round((totalRevenue?.total || 0) / totalOrders.count)
+        : 0
+    });
+  } catch (error) {
+    console.error('Error fetching store metrics:', error);
+    return c.json({ error: 'Failed to fetch metrics' }, 500);
+  }
+});
+
 export default app;
