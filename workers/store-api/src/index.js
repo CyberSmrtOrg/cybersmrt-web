@@ -173,7 +173,7 @@ app.post('/checkout/create', async (c) => {
     const stripe = getStripe(c.env);
     const body = await c.req.json();
 
-    const { items } = body;
+    const { items, userId } = body;
 
     if (!items || !items.length) {
       return c.json({ error: 'No items in cart' }, 400);
@@ -268,6 +268,7 @@ app.post('/checkout/create', async (c) => {
       metadata: {
         orderType: 'store',
         items: JSON.stringify(items),
+        user_id: userId || '', // Include user_id if user is signed in
       },
     });
 

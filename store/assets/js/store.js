@@ -1096,6 +1096,16 @@ async function proceedToCheckout() {
     btn.disabled = true;
     btn.textContent = 'Creating checkout session...';
 
+    // Get user_id from JWT token if user is signed in
+    let userId = null;
+    if (window.parseJWT && window.getAccessToken) {
+      const token = window.getAccessToken();
+      if (token) {
+        const payload = window.parseJWT(token);
+        userId = payload?.userId || payload?.sub || null;
+      }
+    }
+
     // Create checkout session (Stripe will collect email and shipping)
     const response = await fetch(`${API_BASE_URL}/checkout/create`, {
       method: 'POST',
@@ -1105,7 +1115,8 @@ async function proceedToCheckout() {
           productId: item.productId,
           variantId: item.variantId,
           quantity: item.quantity
-        }))
+        })),
+        userId: userId // Include user_id if signed in
       })
     });
 

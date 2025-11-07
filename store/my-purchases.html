@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
+  <!-- Load store's auth.js for cross-subdomain cookie support -->
+  <script src="/assets/js/auth.js"></script>
+
+  <!-- Header loader -->
+  <script src="/assets/js/header-loader.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -403,11 +409,7 @@
 </head>
 <body>
 
-  <!-- Load store's auth.js for cross-subdomain cookie support -->
-  <script src="/assets/js/auth.js"></script>
-
-  <!-- Header will be loaded here -->
-  <script src="/assets/js/header-loader.js"></script>
+  <!-- Header will be injected here by header-loader.js -->
 
   <div class="container">
     <div class="page-header">
