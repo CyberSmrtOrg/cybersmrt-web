@@ -667,12 +667,21 @@
     async function loadOrders() {
       try {
         const accessToken = getAccessToken();
+        console.log('🔍 Access token found:', accessToken ? 'YES' : 'NO');
+        console.log('🔍 localStorage accessToken:', localStorage.getItem('accessToken') ? 'YES' : 'NO');
+        console.log('🔍 Cookie accessToken:', getCookie('accessToken') ? 'YES' : 'NO');
+        console.log('🔍 All cookies:', document.cookie);
 
         // Build headers - include Authorization if we have a token in localStorage
         const headers = {};
         if (accessToken) {
           headers['Authorization'] = `Bearer ${accessToken}`;
+          console.log('✅ Added Authorization header');
+        } else {
+          console.warn('⚠️ No access token found - relying on HttpOnly cookies');
         }
+
+        console.log('📡 Fetching orders from:', `${STORE_API_URL}/api/orders`);
 
         // Make request - HttpOnly cookies will be sent automatically with credentials: 'include'
         // The store-api will check both Authorization header and cookies
@@ -680,6 +689,8 @@
           headers: headers,
           credentials: 'include' // Send HttpOnly cookies automatically
         });
+
+        console.log('📬 Response status:', response.status);
 
         if (!response.ok) {
           if (response.status === 401) {
