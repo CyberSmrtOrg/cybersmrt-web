@@ -405,6 +405,9 @@
 </head>
 <body>
 
+  <!-- Load store's auth.js for cross-subdomain cookie support -->
+  <script src="/store/assets/js/auth.js"></script>
+
   <!-- Header will be loaded here -->
   <script src="/assets/js/header-loader.js"></script>
 
@@ -639,20 +642,37 @@
       `;
     }
 
+    // Get access token (from auth.js)
+    function getAccessToken() {
+      if (window.getAccessToken) {
+        return window.getAccessToken();
+      }
+      return localStorage.getItem('accessToken') || getCookie('accessToken');
+    }
+
+    // Helper to get cookie value
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    }
+
     // Load orders
     async function loadOrders() {
       try {
-        const user = getCurrentUser();
+        const accessToken = getAccessToken();
 
-        if (!user || !user.id) {
+        if (!accessToken) {
           showError('Please sign in to view your purchases.');
           return;
         }
 
         const response = await fetch(`${STORE_API_URL}/api/orders`, {
           headers: {
-            'Authorization': `Bearer ${user.id}`
-          }
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'include' // Send cookies
         });
 
         if (!response.ok) {

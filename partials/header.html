@@ -1166,9 +1166,21 @@ window.changeLanguage = async function(lang) {
   if (dropdown) dropdown.classList.remove('active');
   if (btn) btn.classList.remove('active');
 
+  // Wait for translator to load if not already available
+  if (!window.cyberSmrtTranslator) {
+    console.log('Waiting for translator to load...');
+    let attempts = 0;
+    while (!window.cyberSmrtTranslator && attempts < 50) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+  }
+
   // Translate page if translator is loaded
   if (window.cyberSmrtTranslator) {
     await window.cyberSmrtTranslator.translatePage(lang);
+  } else {
+    console.warn('Translator not loaded - language change visual only');
   }
 };
 
