@@ -802,8 +802,21 @@ export class AuthRouter {
    * Verify 2FA code (used during login)
    */
   async handle2FAVerify() {
-    const body = await this.request.json();
-    const { userId, code, pendingAuthId } = body;
+    // Handle both JSON and form-encoded requests
+    const contentType = this.request.headers.get('content-type') || '';
+    let userId, code, pendingAuthId;
+
+    if (contentType.includes('application/json')) {
+      // JSON request (from fetch)
+      const body = await this.request.json();
+      ({ userId, code, pendingAuthId } = body);
+    } else {
+      // Form-encoded request (from form submission)
+      const formData = await this.request.formData();
+      userId = formData.get('userId');
+      code = formData.get('code');
+      pendingAuthId = formData.get('pendingAuthId');
+    }
 
     if (!userId) {
       throw new Error('User ID is required');
