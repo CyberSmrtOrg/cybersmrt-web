@@ -861,9 +861,21 @@ export class AuthRouter {
     const accessTokenCookie = `accessToken=${accessToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
     const refreshTokenCookie = `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
 
+    // Set a readable (non-HttpOnly) cookie with basic user info for cross-subdomain auth state
+    // This allows JavaScript to check if user is authenticated without exposing sensitive tokens
+    const userInfo = {
+      id: user.id,
+      email: user.email,
+      displayName: user.display_name,
+      avatarUrl: user.avatar_url,
+      role: user.role
+    };
+    const userInfoCookie = `user_info=${encodeURIComponent(JSON.stringify(userInfo))}; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=${cookieMaxAge}; Path=/`;
+
     console.log('🍪 [2FA Verify] Setting cookies for user:', user.id);
     console.log('🍪 [2FA Verify] Session cookie:', sessionCookie.substring(0, 50) + '...');
     console.log('🍪 [2FA Verify] Access token cookie:', accessTokenCookie.substring(0, 50) + '...');
+    console.log('🍪 [2FA Verify] User info cookie (readable):', userInfoCookie.substring(0, 50) + '...');
 
     // Create response with multiple Set-Cookie headers
     const headers = new Headers();
@@ -871,6 +883,7 @@ export class AuthRouter {
     headers.append('Set-Cookie', sessionCookie);
     headers.append('Set-Cookie', accessTokenCookie);
     headers.append('Set-Cookie', refreshTokenCookie);
+    headers.append('Set-Cookie', userInfoCookie);
 
     console.log('🍪 [2FA Verify] Response headers Set-Cookie count:', headers.getSetCookie().length);
 

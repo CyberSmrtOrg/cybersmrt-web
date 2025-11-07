@@ -54,12 +54,34 @@
       return getCookie('refreshToken'); // Will return null, but that's expected
     }
 
-    function getCurrentUser() { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { return null; } }
+    function getCurrentUser() {
+      // First try to get user info from cookie (cross-subdomain)
+      const userInfoCookie = getCookie('user_info');
+      if (userInfoCookie) {
+        try {
+          return JSON.parse(decodeURIComponent(userInfoCookie));
+        } catch (e) {
+          console.error('Failed to parse user_info cookie:', e);
+        }
+      }
+
+      // Fallback: try localStorage (same-subdomain only)
+      try {
+        return JSON.parse(localStorage.getItem('user') || 'null');
+      } catch (e) {
+        return null;
+      }
+    }
 
     function isAuthenticated() {
-      // Since tokens are HttpOnly cookies, we can't read them with JavaScript
-      // Instead, check if user data exists in localStorage (set during login)
-      // The actual token validation happens server-side when making API requests
+      // Check if user_info cookie exists (cross-subdomain cookie)
+      // This is more reliable than localStorage for cross-subdomain auth
+      const userInfoCookie = getCookie('user_info');
+      if (userInfoCookie) {
+        return true;
+      }
+
+      // Fallback: check if user data exists in localStorage (same-subdomain only)
       const user = getCurrentUser();
       return user !== null && user.id !== undefined;
     }
@@ -75,6 +97,7 @@
       document.cookie = 'accessToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'refreshToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'session=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'user_info=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       if (token) {
         fetch((window.AUTH_BASE || 'https://auth.cybersmrt.org') + '/logout', {
           method: 'POST',
