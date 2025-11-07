@@ -19,6 +19,14 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script src="/assets/js/theme.js"></script>
 
+  <!-- Volunteer Modal -->
+  <link rel="stylesheet" href="/assets/css/volunteer-modal.css">
+  <script src="/assets/js/volunteer-modal.js"></script>
+
+  <!-- Opportunity Details Modal -->
+  <link rel="stylesheet" href="/assets/css/opportunity-details.css">
+  <script src="/assets/js/opportunity-details.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -213,6 +221,24 @@
       left: 0;
       color: #667eea;
       font-weight: 700;
+    }
+
+    .opportunity-detail-btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      background: transparent;
+      border: 2px solid #667eea;
+      border-radius: 12px;
+      color: #667eea;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .opportunity-detail-btn:hover {
+      background: rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
     }
 
     /* Stats Bar */
@@ -413,7 +439,7 @@
     <h2>Why Volunteer With CyberSmrt?</h2>
     <p class="section-intro">
       Our mission-driven work requires expertise, passion, and dedication from cybersecurity professionals
-      who believe in building pathways for underserved communities. Your knowledge can change lives.
+      who believe in building pathways for underserved communities. Your knowledge can change lives. From traditional volunteering to our intensive intern/shadow program, we offer opportunities for professionals at every career stage.
     </p>
 
     <div class="callout">
@@ -452,6 +478,9 @@
           <li>Resume reviews and interview preparation</li>
           <li>Real-world cybersecurity stories and insights</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="student-mentor" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
 
       <!-- Curriculum Developer -->
@@ -470,6 +499,9 @@
           <li>Creating assessment rubrics and competency frameworks</li>
           <li>Reviewing and updating existing content</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="curriculum-developer" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
 
       <!-- Workshop Facilitator -->
@@ -488,6 +520,9 @@
           <li>Answering participant questions</li>
           <li>Adapting content for different audiences</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="workshop-facilitator" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
 
       <!-- MSSP Operations -->
@@ -506,6 +541,9 @@
           <li>Writing security documentation and runbooks</li>
           <li>Client education and best practices guidance</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="mssp-operations" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
 
       <!-- Technical Reviewer -->
@@ -524,6 +562,9 @@
           <li>Providing expert feedback on materials</li>
           <li>Suggesting improvements and updates</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="technical-reviewer" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
 
       <!-- Board Advisor -->
@@ -542,6 +583,32 @@
           <li>Industry connections and networking</li>
           <li>Governance and oversight</li>
         </ul>
+        <button class="opportunity-detail-btn" data-opportunity="board-advisor" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
+      </div>
+
+      <!-- NEW: Intern/Shadow Program -->
+      <div class="opportunity-card" style="border: 2px solid #667eea; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.03) 100%);">
+        <span class="opportunity-icon">🚀</span>
+        <h3>Intern/Shadow Program</h3>
+        <span class="commitment-badge" style="background: rgba(102, 126, 234, 0.2); color: #667eea;">10-20 hours/month • NDA Required</span>
+        <p>
+          Get hands-on experience by shadowing cybersecurity experts on real client engagements. Work alongside professionals on penetration testing, vulnerability scanning, patch remediation, and policy development.
+        </p>
+        <h4 style="color: var(--text-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">You'll learn:</h4>
+        <ul>
+          <li>Real-world penetration testing methodologies</li>
+          <li>Vulnerability assessment and remediation workflows</li>
+          <li>Security policy development and GRC practices</li>
+          <li>Client communication and reporting best practices</li>
+        </ul>
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; border-radius: 8px; font-size: 0.85rem; color: var(--text-secondary);">
+          <strong style="color: #ef4444;">⚠️ Requirements:</strong> NDA signature required. Background check may be required for direct client engagement.
+        </div>
+        <button class="opportunity-detail-btn" data-opportunity="intern-shadow" style="margin-top: 1.5rem;">
+          Learn More & Qualifications →
+        </button>
       </div>
     </div>
   </section>

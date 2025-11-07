@@ -1046,7 +1046,7 @@
  */
 
 // Toggle language menu
-function toggleLanguageMenu(event) {
+window.toggleLanguageMenu = function(event) {
   event.stopPropagation();
   const btn = event.currentTarget;
   const dropdown = btn.nextElementSibling;
@@ -1065,12 +1065,12 @@ function toggleLanguageMenu(event) {
   // Update active language option
   if (window.cyberSmrtTranslator) {
     const currentLang = window.cyberSmrtTranslator.currentLanguage;
-    updateActiveLanguageOption(currentLang);
+    window.updateActiveLanguageOption(currentLang);
   }
-}
+};
 
 // Change language
-async function changeLanguage(lang) {
+window.changeLanguage = async function(lang) {
   // Update button text
   const langCode = document.querySelector('.language-code');
   if (langCode) {
@@ -1089,7 +1089,7 @@ async function changeLanguage(lang) {
   }
 
   // Update active state
-  updateActiveLanguageOption(lang);
+  window.updateActiveLanguageOption(lang);
 
   // Close dropdown
   const dropdown = document.querySelector('.language-dropdown');
@@ -1101,10 +1101,10 @@ async function changeLanguage(lang) {
   if (window.cyberSmrtTranslator) {
     await window.cyberSmrtTranslator.translatePage(lang);
   }
-}
+};
 
 // Update active language option in dropdown
-function updateActiveLanguageOption(lang) {
+window.updateActiveLanguageOption = function(lang) {
   document.querySelectorAll('.language-option').forEach(option => {
     if (option.dataset.lang === lang) {
       option.classList.add('active');
@@ -1112,7 +1112,7 @@ function updateActiveLanguageOption(lang) {
       option.classList.remove('active');
     }
   });
-}
+};
 
 // Close language dropdown when clicking outside
 document.addEventListener('click', (e) => {
@@ -1130,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set initial language display
   if (window.cyberSmrtTranslator) {
     const storedLang = window.cyberSmrtTranslator.getStoredLanguage() || 'en';
-    changeLanguage(storedLang);
+    window.changeLanguage(storedLang);
   }
 });
 </script>

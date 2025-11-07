@@ -348,8 +348,8 @@
       </div>
 
       <div class="action-buttons">
-        <a href="/" class="btn btn-primary">Continue Shopping</a>
-        <a href="/" class="btn btn-secondary">Back to Home</a>
+        <a href="https://store.cybersmrt.org" class="btn btn-primary">Continue Shopping</a>
+        <a href="/my-purchases" class="btn btn-secondary">View My Orders</a>
       </div>
     </div>
   </main>
@@ -369,29 +369,62 @@
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
 
-    if (sessionId) {
-      // Fetch order details from API
-      fetch(`https://pay.cybersmrt.org/checkout/session/${sessionId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.order_id) {
-            document.getElementById('orderId').textContent = data.order_id;
-          }
-          if (data.customer_email) {
-            document.getElementById('orderEmail').textContent = data.customer_email;
-          }
-          if (data.status) {
-            document.getElementById('orderStatus').textContent = data.status === 'complete' ? 'Confirmed' : 'Processing';
-          }
-        })
-        .catch(err => {
-          console.error('Failed to fetch order details:', err);
-          document.getElementById('orderId').textContent = sessionId.substring(0, 16) + '...';
-          document.getElementById('orderEmail').textContent = 'Check your email';
-        });
+    async function fetchOrderDetails() {
+      if (!sessionId) {
+        document.getElementById('orderId').textContent = 'Confirmation sent via email';
+        document.getElementById('orderEmail').textContent = 'Check your inbox';
+        return;
+      }
+
+      try {
+        // Use the custom domain API endpoint
+        const workerUrl = `https://store.cybersmrt.org/checkout/session/${sessionId}`;
+
+        const response = await fetch(workerUrl);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Update order details with fetched data
+        if (data.order_id) {
+          document.getElementById('orderId').textContent = data.order_id;
+        } else if (data.id) {
+          document.getElementById('orderId').textContent = data.id;
+        } else {
+          document.getElementById('orderId').textContent = sessionId.substring(8, 24);
+        }
+
+        if (data.customer_email || data.email) {
+          document.getElementById('orderEmail').textContent = data.customer_email || data.email;
+        }
+
+        if (data.status) {
+          const statusMap = {
+            'complete': 'Confirmed ✓',
+            'paid': 'Confirmed ✓',
+            'processing': 'Processing',
+            'pending': 'Pending'
+          };
+          document.getElementById('orderStatus').textContent = statusMap[data.status] || 'Processing';
+        }
+      } catch (error) {
+        console.error('Failed to fetch order details:', error);
+
+        // Graceful fallback - show partial session ID
+        const shortId = sessionId.substring(8, 24);
+        document.getElementById('orderId').textContent = `CS-${shortId}`;
+        document.getElementById('orderEmail').textContent = 'Confirmation sent to your email';
+      }
+    }
+
+    // Fetch order details after page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchOrderDetails);
     } else {
-      document.getElementById('orderId').textContent = 'Not available';
-      document.getElementById('orderEmail').textContent = 'Check your email';
+      fetchOrderDetails();
     }
   </script>
 </body>

@@ -1,46 +1,46 @@
 [
   {
-    "id": "690a3876af1cb82d8d09e50b",
+    "id": "690d4f4727f2dde9090a5396",
     "title": "CyberSmrt Tank Top - Sun's Out, Firewall's Up",
     "description": "This tank top features a funny play on the popular saying 'Sun's out, Guns out' with a geeky twist as 'Sun's out, Firewall's up'. Perfect for computer enthusiasts who enjoy humor in their wardrobe. Ideal for casual wear during the summer season or for tech-related events and gatherings. Product features - Side seams for structural support - Self fabric binding for a clean look - Made from 100% Airlume combed and ring-spun cotton - Light fabric for a comfortable fit - Retail fit for a stylish loo...",
     "price": 3000,
     "category": "apparel",
-    "image_url": "/assets/images/merch/690a3876af1cb82d8d09e50b_black_1.jpg",
+    "image_url": "/assets/images/merch/690d4f4727f2dde9090a5396_black_1.jpg",
     "images_by_color": {
       "Black": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_black_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_black_1.jpg"
       ],
       "White": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_white_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_white_1.jpg"
       ],
       "Navy": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_navy_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_navy_1.jpg"
       ],
       "Red": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_red_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_red_1.jpg"
       ],
       "Leaf": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_leaf_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_leaf_1.jpg"
       ],
       "Kelly": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_kelly_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_kelly_1.jpg"
       ],
       "Athletic Heather": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_athletic-heather_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_athletic-heather_1.jpg"
       ],
       "Dark Grey": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_dark-grey_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_dark-grey_1.jpg"
       ],
       "True Royal": [
-        "/assets/images/merch/690a3876af1cb82d8d09e50b_true-royal_1.jpg"
+        "/assets/images/merch/690d4f4727f2dde9090a5396_true-royal_1.jpg"
       ]
     },
     "printify_blueprint_id": 39,
-    "printify_product_id": "690a3876af1cb82d8d09e50b",
+    "printify_product_id": "690d4f4727f2dde9090a5396",
     "variants": [
       {
         "id": 24644,
-        "sku": "46039488698255593821",
+        "sku": "79389474993439129958",
         "price": 3000,
         "size": "2XL",
         "color": "Black",
@@ -48,7 +48,7 @@
       },
       {
         "id": 24833,
-        "sku": "52085593091482512580",
+        "sku": "26642317232295862227",
         "price": 3000,
         "size": "2XL",
         "color": "White",
@@ -56,7 +56,7 @@
       },
       {
         "id": 32419,
-        "sku": "33975321271689735891",
+        "sku": "19569675987745654476",
         "price": 3000,
         "size": "2XL",
         "color": "Navy",
@@ -64,7 +64,7 @@
       },
       {
         "id": 24794,
-        "sku": "26710947181283951213",
+        "sku": "12040084995417211108",
         "price": 3000,
         "size": "2XL",
         "color": "Red",
@@ -72,7 +72,7 @@
       },
       {
         "id": 24734,
-        "sku": "85644469398757313393",
+        "sku": "22565368957059225239",
         "price": 3000,
         "size": "2XL",
         "color": "Leaf",
@@ -80,7 +80,7 @@
       },
       {
         "id": 24728,
-        "sku": "22782660286236236261",
+        "sku": "14116256103421885633",
         "price": 3000,
         "size": "2XL",
         "color": "Kelly",
@@ -88,7 +88,7 @@
       },
       {
         "id": 24626,
-        "sku": "33480286587160367175",
+        "sku": "23890813562445470209",
         "price": 3000,
         "size": "2XL",
         "color": "Athletic Heather",
@@ -96,7 +96,7 @@
       },
       {
         "id": 24674,
-        "sku": "13220067929426116399",
+        "sku": "33928263597886113307",
         "price": 3000,
         "size": "2XL",
         "color": "Dark Grey",
@@ -104,7 +104,7 @@
       },
       {
         "id": 24875,
-        "sku": "33048979447195662996",
+        "sku": "60510155528739012543",
         "price": 3000,
         "size": "2XL",
         "color": "True Royal",
@@ -112,7 +112,7 @@
       },
       {
         "id": 24641,
-        "sku": "31281935053812470329",
+        "sku": "59911255389771747769",
         "price": 2500,
         "size": "S",
         "color": "Black",
@@ -120,7 +120,7 @@
       },
       {
         "id": 24793,
-        "sku": "79971284248006465437",
+        "sku": "29804743125022832794",
         "price": 2500,
         "size": "XS",
         "color": "Red",
@@ -128,7 +128,7 @@
       },
       {
         "id": 24831,
-        "sku": "25025169315960483372",
+        "sku": "40302702364881809934",
         "price": 2500,
         "size": "XL",
         "color": "White",
@@ -136,7 +136,7 @@
       },
       {
         "id": 24828,
-        "sku": "27425114931825288708",
+        "sku": "13517525219682897759",
         "price": 2500,
         "size": "L",
         "color": "White",
@@ -144,7 +144,7 @@
       },
       {
         "id": 24832,
-        "sku": "32152848893742339456",
+        "sku": "33708743987017749773",
         "price": 2500,
         "size": "XS",
         "color": "White",
@@ -152,7 +152,7 @@
       },
       {
         "id": 24639,
-        "sku": "35580860938182935260",
+        "sku": "26558115767319449923",
         "price": 2500,
         "size": "L",
         "color": "Black",
@@ -160,7 +160,7 @@
       },
       {
         "id": 32417,
-        "sku": "83296286078802773497",
+        "sku": "19651541083233438966",
         "price": 2500,
         "size": "L",
         "color": "Navy",
@@ -168,7 +168,7 @@
       },
       {
         "id": 24829,
-        "sku": "80225498713613901877",
+        "sku": "13313154891880595148",
         "price": 2500,
         "size": "M",
         "color": "White",
@@ -176,7 +176,7 @@
       },
       {
         "id": 24640,
-        "sku": "24876676734083143921",
+        "sku": "77452217950710432345",
         "price": 2500,
         "size": "M",
         "color": "Black",
@@ -184,7 +184,7 @@
       },
       {
         "id": 24643,
-        "sku": "21715137960380841268",
+        "sku": "22160427472650193366",
         "price": 2500,
         "size": "XS",
         "color": "Black",
@@ -192,7 +192,7 @@
       },
       {
         "id": 24791,
-        "sku": "33451292786589074507",
+        "sku": "31991519186925886360",
         "price": 2500,
         "size": "S",
         "color": "Red",
@@ -200,7 +200,7 @@
       },
       {
         "id": 32415,
-        "sku": "32597285651917728680",
+        "sku": "11919523130902033872",
         "price": 2500,
         "size": "S",
         "color": "Navy",
@@ -208,7 +208,7 @@
       },
       {
         "id": 32418,
-        "sku": "23324714663497113850",
+        "sku": "24749844714456123527",
         "price": 2500,
         "size": "XL",
         "color": "Navy",
@@ -216,7 +216,7 @@
       },
       {
         "id": 24642,
-        "sku": "11572819669918999892",
+        "sku": "94279697909043825400",
         "price": 2500,
         "size": "XL",
         "color": "Black",
@@ -224,7 +224,7 @@
       },
       {
         "id": 24790,
-        "sku": "12705330773301571939",
+        "sku": "19535672240413029280",
         "price": 2500,
         "size": "M",
         "color": "Red",
@@ -232,7 +232,7 @@
       },
       {
         "id": 32416,
-        "sku": "57805797119962104024",
+        "sku": "17735386864086545198",
         "price": 2500,
         "size": "M",
         "color": "Navy",
@@ -240,7 +240,7 @@
       },
       {
         "id": 32414,
-        "sku": "19212477221091828707",
+        "sku": "22967294419043490953",
         "price": 2500,
         "size": "XS",
         "color": "Navy",
@@ -248,7 +248,7 @@
       },
       {
         "id": 24792,
-        "sku": "18001102691618475406",
+        "sku": "21078534795368626114",
         "price": 2500,
         "size": "XL",
         "color": "Red",
@@ -256,7 +256,7 @@
       },
       {
         "id": 24830,
-        "sku": "20913919004668535026",
+        "sku": "28063127865273445324",
         "price": 2500,
         "size": "S",
         "color": "White",
@@ -264,7 +264,7 @@
       },
       {
         "id": 24789,
-        "sku": "33104769703354426500",
+        "sku": "23679308838079021529",
         "price": 2500,
         "size": "L",
         "color": "Red",
@@ -272,7 +272,7 @@
       },
       {
         "id": 24730,
-        "sku": "17099620275996166555",
+        "sku": "31529490523389523964",
         "price": 2500,
         "size": "M",
         "color": "Leaf",
@@ -280,7 +280,7 @@
       },
       {
         "id": 24673,
-        "sku": "31736858101870948592",
+        "sku": "21953725692503190394",
         "price": 2500,
         "size": "XS",
         "color": "Dark Grey",
@@ -288,7 +288,7 @@
       },
       {
         "id": 24873,
-        "sku": "23291296332684711876",
+        "sku": "64240737390675693966",
         "price": 2500,
         "size": "XL",
         "color": "True Royal",
@@ -296,7 +296,7 @@
       },
       {
         "id": 24672,
-        "sku": "21248411435430340512",
+        "sku": "16853459125525298469",
         "price": 2500,
         "size": "XL",
         "color": "Dark Grey",
@@ -304,7 +304,7 @@
       },
       {
         "id": 24726,
-        "sku": "17896136536038132473",
+        "sku": "22671506645659939529",
         "price": 2500,
         "size": "XL",
         "color": "Kelly",
@@ -312,7 +312,7 @@
       },
       {
         "id": 24669,
-        "sku": "13248014190280299237",
+        "sku": "20572159922327037867",
         "price": 2500,
         "size": "L",
         "color": "Dark Grey",
@@ -320,7 +320,7 @@
       },
       {
         "id": 24624,
-        "sku": "65174356617633208108",
+        "sku": "20423261166819756649",
         "price": 2500,
         "size": "XL",
         "color": "Athletic Heather",
@@ -328,7 +328,7 @@
       },
       {
         "id": 24723,
-        "sku": "25092079602712760057",
+        "sku": "62228650206731515821",
         "price": 2500,
         "size": "L",
         "color": "Kelly",
@@ -336,7 +336,7 @@
       },
       {
         "id": 24725,
-        "sku": "91001990186176764194",
+        "sku": "28049894093615750741",
         "price": 2500,
         "size": "S",
         "color": "Kelly",
@@ -344,7 +344,7 @@
       },
       {
         "id": 24727,
-        "sku": "21339584327164508187",
+        "sku": "12261092220283450906",
         "price": 2500,
         "size": "XS",
         "color": "Kelly",
@@ -352,7 +352,7 @@
       },
       {
         "id": 24670,
-        "sku": "20757249632720590289",
+        "sku": "20928305251780486598",
         "price": 2500,
         "size": "M",
         "color": "Dark Grey",
@@ -360,7 +360,7 @@
       },
       {
         "id": 24821,
-        "sku": "14370813717889908094",
+        "sku": "18138092102157202934",
         "price": 2500,
         "size": "XS",
         "color": "True Royal",
@@ -368,7 +368,7 @@
       },
       {
         "id": 24819,
-        "sku": "32745899721939129903",
+        "sku": "23215912468310712644",
         "price": 2500,
         "size": "M",
         "color": "True Royal",
@@ -376,7 +376,7 @@
       },
       {
         "id": 24671,
-        "sku": "48756821048712430438",
+        "sku": "61987768635561708695",
         "price": 2500,
         "size": "S",
         "color": "Dark Grey",
@@ -384,7 +384,7 @@
       },
       {
         "id": 24724,
-        "sku": "13437919867722297881",
+        "sku": "13725045187753139250",
         "price": 2500,
         "size": "M",
         "color": "Kelly",
@@ -392,7 +392,7 @@
       },
       {
         "id": 24729,
-        "sku": "28266479410749030203",
+        "sku": "28716797402391174327",
         "price": 2500,
         "size": "L",
         "color": "Leaf",
@@ -400,7 +400,7 @@
       },
       {
         "id": 24733,
-        "sku": "18931502313406112805",
+        "sku": "29246490965513960605",
         "price": 2500,
         "size": "XS",
         "color": "Leaf",
@@ -408,7 +408,7 @@
       },
       {
         "id": 24625,
-        "sku": "28061293582961005503",
+        "sku": "31214450068893267308",
         "price": 2500,
         "size": "XS",
         "color": "Athletic Heather",
@@ -416,7 +416,7 @@
       },
       {
         "id": 24623,
-        "sku": "17963835134025762874",
+        "sku": "19134210384956510397",
         "price": 2500,
         "size": "S",
         "color": "Athletic Heather",
@@ -424,7 +424,7 @@
       },
       {
         "id": 24622,
-        "sku": "17141599290296651962",
+        "sku": "53726693199951254421",
         "price": 2500,
         "size": "M",
         "color": "Athletic Heather",
@@ -432,7 +432,7 @@
       },
       {
         "id": 24820,
-        "sku": "18868768660305681712",
+        "sku": "18476634150274711762",
         "price": 2500,
         "size": "S",
         "color": "True Royal",
@@ -440,7 +440,7 @@
       },
       {
         "id": 24732,
-        "sku": "30410329386600240325",
+        "sku": "24031511897472318720",
         "price": 2500,
         "size": "XL",
         "color": "Leaf",
@@ -448,7 +448,7 @@
       },
       {
         "id": 24870,
-        "sku": "24793718429972841384",
+        "sku": "26141635594382962532",
         "price": 2500,
         "size": "L",
         "color": "True Royal",
@@ -456,7 +456,7 @@
       },
       {
         "id": 24731,
-        "sku": "29216682615599667703",
+        "sku": "25404613393572668663",
         "price": 2500,
         "size": "S",
         "color": "Leaf",
@@ -464,7 +464,7 @@
       },
       {
         "id": 24621,
-        "sku": "16418361464147226232",
+        "sku": "85268093611218062349",
         "price": 2500,
         "size": "L",
         "color": "Athletic Heather",
@@ -484,70 +484,33 @@
       "Summer Picks",
       "TikTok"
     ],
-    "created_at": "2025-11-06T01:27:44.767Z"
+    "created_at": "2025-11-07T01:48:52.977Z"
   },
   {
-    "id": "690a2d5a7bb612279a0805f9",
-    "title": "CyberSmrt Logo Sticker",
-    "description": "Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product f...",
-    "price": 300,
-    "category": "stickers",
-    "image_url": "/assets/images/merch/690a2d5a7bb612279a0805f9_3-3_1.jpg",
-    "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/690a2d5a7bb612279a0805f9_3-3_1.jpg",
-        "/assets/images/merch/690a2d5a7bb612279a0805f9_3-3_2.jpg",
-        "/assets/images/merch/690a2d5a7bb612279a0805f9_3-3_3.jpg"
-      ]
-    },
-    "printify_blueprint_id": 400,
-    "printify_product_id": "690a2d5a7bb612279a0805f9",
-    "variants": [
-      {
-        "id": 45750,
-        "sku": "67947620222760172901",
-        "price": 300,
-        "size": null,
-        "color": "3\" × 3\"",
-        "is_available": true
-      }
-    ],
-    "tags": [
-      "Home & Living",
-      "Stickers",
-      "Fall Bestsellers",
-      "Magnets & Stickers",
-      "Kiss cut",
-      "TikTok",
-      "Back to School"
-    ],
-    "created_at": "2025-11-06T01:27:46.261Z"
-  },
-  {
-    "id": "690a2d089473e932c707f313",
+    "id": "690d4d4027f2dde9090a533a",
     "title": "CyberSmrt Polo Shirt",
     "description": "This classic men&#39;s piqué polo combines professional style with comfort, perfect for cybersecurity conferences, nonprofit events, teaching sessions, or casual wear. Whether you&#39;re mentoring students, attending board meetings, or enjoying weekend activities, this polo lets you proudly support accessible cybersecurity education for underserved communities. Made from soft, breathable fabric with a timeless design featuring a welt knit collar and ribbed sleeve bands, this versatile shirt work...",
     "price": 3500,
     "category": "apparel",
-    "image_url": "/assets/images/merch/690a2d089473e932c707f313_black_1.jpg",
+    "image_url": "/assets/images/merch/690d4d4027f2dde9090a533a_black_1.jpg",
     "images_by_color": {
       "Black": [
-        "/assets/images/merch/690a2d089473e932c707f313_black_1.jpg",
-        "/assets/images/merch/690a2d089473e932c707f313_black_2.jpg",
-        "/assets/images/merch/690a2d089473e932c707f313_black_3.jpg"
+        "/assets/images/merch/690d4d4027f2dde9090a533a_black_1.jpg",
+        "/assets/images/merch/690d4d4027f2dde9090a533a_black_2.jpg",
+        "/assets/images/merch/690d4d4027f2dde9090a533a_black_3.jpg"
       ],
       "White": [
-        "/assets/images/merch/690a2d089473e932c707f313_white_1.jpg",
-        "/assets/images/merch/690a2d089473e932c707f313_white_2.jpg",
-        "/assets/images/merch/690a2d089473e932c707f313_white_3.jpg"
+        "/assets/images/merch/690d4d4027f2dde9090a533a_white_1.jpg",
+        "/assets/images/merch/690d4d4027f2dde9090a533a_white_2.jpg",
+        "/assets/images/merch/690d4d4027f2dde9090a533a_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 1402,
-    "printify_product_id": "690a2d089473e932c707f313",
+    "printify_product_id": "690d4d4027f2dde9090a533a",
     "variants": [
       {
         "id": 104623,
-        "sku": "23214402021520448441",
+        "sku": "11075083557337414348",
         "price": 3500,
         "size": "S",
         "color": "Black",
@@ -555,7 +518,7 @@
       },
       {
         "id": 104624,
-        "sku": "23410827162891834557",
+        "sku": "24768902113625388649",
         "price": 3500,
         "size": "M",
         "color": "Black",
@@ -563,7 +526,7 @@
       },
       {
         "id": 104625,
-        "sku": "15782070902690002082",
+        "sku": "20018786957309011998",
         "price": 3500,
         "size": "L",
         "color": "Black",
@@ -571,7 +534,7 @@
       },
       {
         "id": 104626,
-        "sku": "23474250529940272384",
+        "sku": "14411856600178357871",
         "price": 3500,
         "size": "XL",
         "color": "Black",
@@ -579,7 +542,7 @@
       },
       {
         "id": 104627,
-        "sku": "28295449682026470970",
+        "sku": "22544107253974676561",
         "price": 4000,
         "size": "2XL",
         "color": "Black",
@@ -587,7 +550,7 @@
       },
       {
         "id": 104628,
-        "sku": "11560989820822323174",
+        "sku": "22794828587591043028",
         "price": 4000,
         "size": "3XL",
         "color": "Black",
@@ -595,7 +558,7 @@
       },
       {
         "id": 104647,
-        "sku": "88432701779327398402",
+        "sku": "31166507586140436431",
         "price": 3500,
         "size": "S",
         "color": "White",
@@ -603,7 +566,7 @@
       },
       {
         "id": 104648,
-        "sku": "25538069105632965720",
+        "sku": "24750528789511212071",
         "price": 3500,
         "size": "M",
         "color": "White",
@@ -611,7 +574,7 @@
       },
       {
         "id": 104649,
-        "sku": "19041554020418481212",
+        "sku": "16499575213783430391",
         "price": 3500,
         "size": "L",
         "color": "White",
@@ -619,7 +582,7 @@
       },
       {
         "id": 104650,
-        "sku": "21874228207785742037",
+        "sku": "85825118011507063265",
         "price": 3500,
         "size": "XL",
         "color": "White",
@@ -627,7 +590,7 @@
       },
       {
         "id": 104651,
-        "sku": "25899937714000900836",
+        "sku": "11302840801571210220",
         "price": 4000,
         "size": "2XL",
         "color": "White",
@@ -635,7 +598,7 @@
       },
       {
         "id": 104652,
-        "sku": "41739704283469193425",
+        "sku": "63991304874945906342",
         "price": 4000,
         "size": "3XL",
         "color": "White",
@@ -650,417 +613,43 @@
       "Polo",
       "Polo shirt"
     ],
-    "created_at": "2025-11-06T01:27:54.115Z"
+    "created_at": "2025-11-07T01:49:01.292Z"
   },
   {
-    "id": "690a2bd79473e932c707f2df",
-    "title": "CyberSmrt Logo T-Shirt",
-    "description": "This premium unisex jersey tee combines exceptional comfort with CyberSmrt&#39;s mission of making cyber awareness accessible to everyone. Made from 100% Airlume combed and ring-spun cotton, it offers a lightweight feel perfect for classroom sessions, tech conferences, community outreach events, or everyday wear. The classic crew neckline and retail fit make it versatile for any setting—whether you&#39;re teaching students, attending industry events, or showing your support for underserved commu...",
-    "price": 1882,
-    "category": "apparel",
-    "image_url": "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_1.jpg",
+    "id": "690d4d35dd669cae270d8538",
+    "title": "CyberSmrt Logo Sticker",
+    "description": "Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product f...",
+    "price": 400,
+    "category": "stickers",
+    "image_url": "/assets/images/merch/690d4d35dd669cae270d8538_3-3_1.jpg",
     "images_by_color": {
-      "Team Purple": [
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_1.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_2.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_3.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_4.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_5.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_6.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_team-purple_7.jpg"
-      ],
-      "White": [
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_1.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_2.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_3.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_4.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_5.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_6.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_white_7.jpg"
-      ],
-      "Black": [
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_1.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_2.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_3.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_4.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_5.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_6.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_black_7.jpg"
-      ],
-      "Heather Prism Lilac": [
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_1.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_2.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_3.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_4.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_5.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_6.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_heather-prism-lilac_7.jpg"
-      ],
-      "Ash": [
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_1.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_2.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_3.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_4.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_5.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_6.jpg",
-        "/assets/images/merch/690a2bd79473e932c707f2df_ash_7.jpg"
+      "3\" × 3\"": [
+        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_1.jpg",
+        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_2.jpg",
+        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_3.jpg"
       ]
     },
-    "printify_blueprint_id": 12,
-    "printify_product_id": "690a2bd79473e932c707f2df",
+    "printify_blueprint_id": 400,
+    "printify_product_id": "690d4d35dd669cae270d8538",
     "variants": [
       {
-        "id": 18509,
-        "sku": "11494337372922300063",
-        "price": 1882,
-        "size": "M",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 18541,
-        "sku": "30737647922048927603",
-        "price": 1882,
-        "size": "M",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 18100,
-        "sku": "20835482176502622014",
-        "price": 1882,
-        "size": "S",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 80532,
-        "sku": "20624525381197758120",
-        "price": 1882,
-        "size": "XL",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18103,
-        "sku": "69538469974958217796",
-        "price": 1882,
-        "size": "XL",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 38611,
-        "sku": "30080046890355584005",
-        "price": 1882,
-        "size": "XL",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 38605,
-        "sku": "33282915927499951503",
-        "price": 1882,
-        "size": "M",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18511,
-        "sku": "20272786632676072838",
-        "price": 1882,
-        "size": "XL",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 18101,
-        "sku": "13145854033777820305",
-        "price": 1882,
-        "size": "M",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 18542,
-        "sku": "22817503674029674953",
-        "price": 1882,
-        "size": "L",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 80529,
-        "sku": "24683889354446272929",
-        "price": 1882,
-        "size": "S",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 80531,
-        "sku": "31748233835843188526",
-        "price": 1882,
-        "size": "L",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18508,
-        "sku": "28052247069168324482",
-        "price": 1882,
-        "size": "S",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 38608,
-        "sku": "31788702377554332734",
-        "price": 1882,
-        "size": "L",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18102,
-        "sku": "17940561178320870756",
-        "price": 1882,
-        "size": "L",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 18540,
-        "sku": "16962754986406069728",
-        "price": 1882,
-        "size": "S",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 80530,
-        "sku": "23507048556646061991",
-        "price": 1882,
-        "size": "M",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18543,
-        "sku": "15349335371541957681",
-        "price": 1882,
-        "size": "XL",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 38602,
-        "sku": "76689225024197016366",
-        "price": 1882,
-        "size": "S",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18510,
-        "sku": "29737008758616112852",
-        "price": 1882,
-        "size": "L",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 18099,
-        "sku": "24794858990173699531",
-        "price": 1882,
-        "size": "XS",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 80528,
-        "sku": "18610565912305409313",
-        "price": 1882,
-        "size": "XS",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 38821,
-        "sku": "16983354007928520519",
-        "price": 1882,
-        "size": "XS",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18507,
-        "sku": "24161633876074499924",
-        "price": 1882,
-        "size": "XS",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 18539,
-        "sku": "21157502213280168466",
-        "price": 1882,
-        "size": "XS",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 18512,
-        "sku": "48187779741077973289",
-        "price": 2307,
-        "size": "2XL",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 80533,
-        "sku": "65472000077560389142",
-        "price": 2307,
-        "size": "2XL",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18544,
-        "sku": "45455435054090930990",
-        "price": 2307,
-        "size": "2XL",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 38614,
-        "sku": "20946050389409491367",
-        "price": 2307,
-        "size": "2XL",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18104,
-        "sku": "13021533497867643967",
-        "price": 2307,
-        "size": "2XL",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 38617,
-        "sku": "14738849036139808749",
-        "price": 2678,
-        "size": "3XL",
-        "color": "Ash",
-        "is_available": true
-      },
-      {
-        "id": 18545,
-        "sku": "18347492399032508718",
-        "price": 2678,
-        "size": "3XL",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 18105,
-        "sku": "22364667053173122028",
-        "price": 2678,
-        "size": "3XL",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 80534,
-        "sku": "23269461934221292249",
-        "price": 2678,
-        "size": "3XL",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18513,
-        "sku": "15016116215300749072",
-        "price": 2678,
-        "size": "3XL",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 45076,
-        "sku": "28434231964423157516",
-        "price": 3110,
-        "size": "4XL",
-        "color": "Ash",
-        "is_available": false
-      },
-      {
-        "id": 18514,
-        "sku": "14963713235306441699",
-        "price": 3110,
-        "size": "4XL",
-        "color": "Team Purple",
-        "is_available": true
-      },
-      {
-        "id": 80535,
-        "sku": "94696924552791964959",
-        "price": 3110,
-        "size": "4XL",
-        "color": "Heather Prism Lilac",
-        "is_available": true
-      },
-      {
-        "id": 18106,
-        "sku": "25584789236995475155",
-        "price": 3110,
-        "size": "4XL",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 18546,
-        "sku": "33923466989269382991",
-        "price": 3110,
-        "size": "4XL",
-        "color": "White",
-        "is_available": true
-      },
-      {
-        "id": 101666,
-        "sku": "23006551680079959121",
-        "price": 3407,
-        "size": "5XL",
-        "color": "Black",
-        "is_available": true
-      },
-      {
-        "id": 101776,
-        "sku": "24296184906899471272",
-        "price": 3407,
-        "size": "5XL",
-        "color": "White",
+        "id": 45750,
+        "sku": "13893700387875055367",
+        "price": 400,
+        "size": null,
+        "color": "3\" × 3\"",
         "is_available": true
       }
     ],
     "tags": [
-      "Men's Clothing",
-      "T-shirts",
-      "Women's Clothing",
-      "DTG",
-      "Unisex",
-      "Regular fit",
-      "Crew neck",
-      "Cotton",
-      "Neck Labels",
+      "Home & Living",
+      "Stickers",
+      "Fall Bestsellers",
+      "Magnets & Stickers",
+      "Kiss cut",
       "TikTok",
-      "Personalization Picks",
-      "Embroidery",
-      "Simple designs on large embroidery"
+      "Back to School"
     ],
-    "created_at": "2025-11-06T01:28:06.176Z"
+    "created_at": "2025-11-07T01:49:03.021Z"
   }
 ]
