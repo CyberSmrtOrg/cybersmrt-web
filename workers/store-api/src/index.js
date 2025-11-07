@@ -375,9 +375,7 @@ app.post('/webhooks/stripe', async (c) => {
       const session = event.data.object;
 
       // Get full session details (includes shipping)
-      const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ['shipping_details'],
-      });
+      const fullSession = await stripe.checkout.sessions.retrieve(session.id);
 
       // Generate unique order number
       const orderNumber = generateOrderNumber();
