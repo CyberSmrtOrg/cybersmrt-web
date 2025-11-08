@@ -74,6 +74,26 @@ function generateOrderNumber() {
   return `CS-${dateStr}-${randomNum}`;
 }
 
+// Sync a single product from Printify (triggered by webhook)
+async function syncProductFromPrintify(env, productId) {
+  console.log(`[Product Sync] Starting sync for product ${productId}`);
+
+  try {
+    // Clear the products cache to force refresh on next request
+    // The actual product sync with images happens via the manual sync script
+    // which downloads mockups and generates SQL imports
+    await env.PRODUCT_CACHE.delete('products');
+
+    console.log(`[Product Sync] Cleared product cache for ${productId}`);
+    console.log(`[Product Sync] Note: Run sync script to update product images and data in D1`);
+
+    return { success: true, productId };
+  } catch (error) {
+    console.error(`[Product Sync] Error syncing product ${productId}:`, error);
+    throw error;
+  }
+}
+
 // ======================
 // Routes
 // ======================
@@ -569,6 +589,20 @@ app.post('/webhooks/printify', async (c) => {
       if (!logError.message?.includes('UNIQUE constraint')) {
         console.error('Error logging webhook event:', logError);
       }
+    }
+
+    // Handle product update events
+    if (event.type === 'product:publish:started' || event.type === 'product:updated') {
+      // Product was published or updated in Printify - trigger sync
+      const { resource } = event;
+      const productId = resource?.id;
+
+      console.log('[Printify Webhook] Product update detected:', productId);
+
+      // Trigger product sync in the background
+      c.executionCtx.waitUntil(syncProductFromPrintify(c.env, productId));
+
+      console.log('[Printify Webhook] Product sync triggered');
     }
 
     // Handle different order events
