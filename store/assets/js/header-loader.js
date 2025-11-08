@@ -184,7 +184,24 @@ window.HEADER_LOADER_EXECUTED = true;
     console.log('📝 Header HTML length:', html.length, 'characters');
     const tmp = document.createElement('div');
     tmp.innerHTML = html.trim();
-    const headerEl = tmp.firstElementChild;
+
+    // Find the actual header element (not link/script tags)
+    const headerEl = tmp.querySelector('header.site-header');
+
+    if (!headerEl) {
+      console.error('❌ Could not find header.site-header element in HTML');
+      console.error('📄 HTML content:', html.substring(0, 500));
+      throw new Error('Header element not found in partial');
+    }
+
+    console.log('✅ Found header element:', headerEl.tagName, headerEl.className);
+
+    // Also grab any link/style/script tags that should go in the head
+    const headElements = tmp.querySelectorAll('link, style');
+    headElements.forEach(el => {
+      document.head.appendChild(el.cloneNode(true));
+      console.log('📌 Added to head:', el.tagName, el.getAttribute('href') || '(inline)');
+    });
 
     // Execute inline scripts before inserting (innerHTML doesn't execute them automatically)
     const scripts = tmp.querySelectorAll('script');
