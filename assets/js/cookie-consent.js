@@ -71,7 +71,7 @@ window.COOKIE_CONSENT_LOADED = true;
       description: 'These cookies enhance your experience by remembering your preferences.',
       cookies: [
         {
-          name: 'theme_preference',
+          name: 'theme',
           purpose: 'Remembers your light/dark mode preference',
           storage: 'LocalStorage',
           expiry: 'Persistent (until manually cleared)',
@@ -79,22 +79,55 @@ window.COOKIE_CONSENT_LOADED = true;
           security: 'Not transmitted over network, stored client-side only'
         },
         {
-          name: 'language_preference',
-          purpose: 'Remembers your language selection',
+          name: 'cybersmrt-language',
+          purpose: 'Remembers your language selection for the translation system',
           storage: 'LocalStorage',
           expiry: 'Persistent',
-          data: 'String: language code (e.g., "en", "es")',
+          data: 'String: language code (e.g., "en", "es", "fr", "de", "zh", "1337", "binary", "morse", "caesar")',
           security: 'Client-side only'
+        },
+        {
+          name: 'language',
+          purpose: 'Legacy language preference',
+          storage: 'LocalStorage',
+          expiry: 'Persistent',
+          data: 'String: language code (e.g., "en")',
+          security: 'Client-side only'
+        },
+        {
+          name: 'reduceMotion',
+          purpose: 'Remembers your motion preference for accessibility',
+          storage: 'LocalStorage',
+          expiry: 'Persistent',
+          data: 'Boolean: true/false',
+          security: 'Client-side only'
+        },
+        {
+          name: 'cybersmrt_cart',
+          purpose: 'Stores your shopping cart items when browsing the store',
+          storage: 'LocalStorage',
+          expiry: 'Persistent (until checkout or manually cleared)',
+          data: 'JSON array of cart items with product IDs, quantities, and selected options',
+          security: 'Client-side only, not transmitted to third parties'
+        },
+        {
+          name: 'user',
+          purpose: 'Caches your user profile information to reduce API calls',
+          storage: 'LocalStorage',
+          expiry: 'Persistent (cleared on logout)',
+          data: 'JSON object containing: user ID, email, name, role, avatar',
+          security: 'Client-side only, cleared on logout'
         }
       ],
-      howTheyWork: 'Functional cookies store your customization preferences in your browser. When you return to the site, we read these preferences to apply your chosen settings automatically.',
+      howTheyWork: 'Functional cookies store your customization preferences and temporary data in your browser. When you return to the site, we read these preferences to apply your chosen settings automatically. Your shopping cart persists across sessions so you don\'t lose items. Your language and theme choices are remembered so the site looks and feels the way you prefer.',
       potentialRisks: [
         'User fingerprinting: Preferences could be used to identify you across sessions',
+        'Cart data exposure: Shopping cart contents stored locally could reveal your interests',
         'Data leakage: If using third-party functional services, your preferences might be shared',
-        'Storage poisoning: Malicious scripts could modify preferences to cause unexpected behavior'
+        'Storage poisoning: Malicious scripts could modify preferences or cart data to cause unexpected behavior'
       ],
-      mitigation: 'We store preferences locally when possible and validate all stored values before applying them. We do not share preference data with third parties.',
-      laymanExplanation: 'In plain English: Your preferences stay on your computer, not on a server somewhere. We double-check every setting before using it to make sure no one tampered with it. We never sell or share what theme you like or what language you prefer. It\'s like keeping your personal notes in your own notebook instead of on someone else\'s bulletin board.'
+      mitigation: 'We store preferences and cart data locally (never sent to third parties) and validate all stored values before using them. Shopping cart data is encrypted in transit during checkout. User profile cache is cleared on logout. All preference data stays on your device and is never sold or shared.',
+      laymanExplanation: 'In plain English: Your preferences and shopping cart stay on your computer, not on a server somewhere. When you pick items in the store, they\'re saved on your device so you don\'t lose them if you close your browser. We double-check every setting and cart item before using it to make sure no one tampered with it. We never sell or share what you\'re shopping for, what theme you like, or what language you prefer. It\'s like keeping your shopping list in your own notebook instead of posting it on someone else\'s bulletin board. When you\'re ready to checkout, we securely send your order through an encrypted connection (the padlock icon in your browser).'
     },
     analytics: {
       title: 'Analytics Cookies',
