@@ -1,6 +1,7 @@
 <!-- /partials/header.html -->
 <link rel="stylesheet" href="/assets/css/search.css">
 <script src="/assets/js/search.js" defer></script>
+<script src="/assets/js/translator.js"></script>
 
 <header class="site-header" role="banner">
   <style>
@@ -29,7 +30,7 @@
     }
 
     .site-header {
-      position: sticky; top: 0; z-index: 100000;
+      position: sticky; top: 0; z-index: 100000 !important;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--hdr-border);
@@ -38,6 +39,12 @@
       visibility: visible !important;
       opacity: 1 !important;
       min-height: 60px;
+    }
+
+    @media (max-width: 900px) {
+      .site-header {
+        z-index: 999999 !important;
+      }
     }
 
     /* Header Container */
@@ -706,7 +713,7 @@
       background: rgba(6, 10, 22, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      z-index: 99999;
+      z-index: 999998 !important;
       overflow-y: auto;
       padding: 1rem;
       transform: translateY(-100%);
@@ -956,8 +963,8 @@
         </button>
 
         <!-- Language Selector -->
-        <div class="language-selector-container">
-          <button class="language-selector-btn" onclick="toggleLanguageMenu(event)" aria-haspopup="true" aria-expanded="false">
+        <div class="language-selector-container no-translate">
+          <button class="language-selector-btn no-translate" onclick="toggleLanguageMenu(event)" aria-haspopup="true" aria-expanded="false">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="language-icon">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
             </svg>
@@ -967,9 +974,9 @@
             </svg>
           </button>
 
-          <div class="language-dropdown">
-            <div class="language-section">
-              <div class="language-section-title">Real Languages</div>
+          <div class="language-dropdown no-translate">
+            <div class="language-section no-translate">
+              <div class="language-section-title no-translate">Real Languages</div>
               <button class="language-option" data-lang="en" onclick="changeLanguage('en')">
                 <span class="language-flag">🇺🇸</span>
                 <span class="language-name">English</span>
@@ -994,8 +1001,8 @@
 
             <div class="language-divider"></div>
 
-            <div class="language-section">
-              <div class="language-section-title">🔐 Cyber Languages</div>
+            <div class="language-section no-translate">
+              <div class="language-section-title no-translate">🔐 Cyber Languages</div>
               <button class="language-option cyber-lang" data-lang="1337" onclick="changeLanguage('1337')">
                 <span class="language-flag">💻</span>
                 <span class="language-name">1337 Speak</span>
@@ -1317,7 +1324,7 @@
   </div>
 
   <!-- Emergency "Back to English" button -->
-  <button id="emergency-english" class="emergency-english-btn" onclick="changeLanguage('en')" title="Click to return to English">
+  <button id="emergency-english" class="emergency-english-btn no-translate" onclick="changeLanguage('en')" title="Click to return to English">
     🇺🇸 Back to English
   </button>
 </header>
@@ -1427,7 +1434,28 @@ window.changeLanguage = async function(lang) {
   // Translate page if translator is loaded
   if (window.cyberSmrtTranslator) {
     console.log('✅ Translator found, translating page...');
-    await window.cyberSmrtTranslator.translatePage(lang);
+
+    // Show loading indicator for real languages (not cyber languages)
+    const realLanguages = ['es', 'fr', 'de', 'zh'];
+    if (realLanguages.includes(lang)) {
+      // Create simple loading overlay
+      const loadingDiv = document.createElement('div');
+      loadingDiv.id = 'translation-loading';
+      loadingDiv.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 2rem; border-radius: 12px; z-index: 9999999; text-align: center;';
+      loadingDiv.innerHTML = '<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Translating page...</div><div style="font-size: 0.9rem; opacity: 0.7;">This may take a few seconds</div>';
+      document.body.appendChild(loadingDiv);
+
+      try {
+        await window.cyberSmrtTranslator.translatePage(lang);
+      } finally {
+        // Remove loading indicator
+        const loading = document.getElementById('translation-loading');
+        if (loading) loading.remove();
+      }
+    } else {
+      await window.cyberSmrtTranslator.translatePage(lang);
+    }
+
     console.log('✅ Translation complete');
   } else {
     console.error('❌ Translator not loaded after 5 seconds - language change visual only');
