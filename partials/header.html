@@ -241,18 +241,24 @@
       position: absolute;
       top: calc(100% + 0.5rem);
       right: 0;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: rgba(6, 10, 22, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.3);
       border-radius: 12px;
       padding: 0.75rem;
       min-width: 220px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
       z-index: 10000;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    [data-theme="light"] .language-dropdown {
+      background: rgba(248, 250, 252, 0.98);
+      border-color: rgba(148, 163, 184, 0.4);
     }
 
     .language-dropdown.active {
@@ -1119,10 +1125,14 @@
 <script>
 /**
  * Language Selector Functions
+ * Note: These are defined on window to ensure they persist across DOM changes
  */
 
-// Toggle language menu
-window.toggleLanguageMenu = function(event) {
+// Toggle language menu (use IIFE to avoid redefinition issues)
+(function() {
+  'use strict';
+
+  window.toggleLanguageMenu = function(event) {
   event.stopPropagation();
   const btn = event.currentTarget;
   const dropdown = btn.nextElementSibling;
@@ -1287,6 +1297,8 @@ document.addEventListener('click', (e) => {
     userMenu.classList.remove('open');
   }
 });
+
+})(); // End of language selector IIFE
 
 /**
  * Logout Function
