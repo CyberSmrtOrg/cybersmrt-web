@@ -3,6 +3,10 @@
  * Supports real languages + cyber languages (1337 Speak, Binary, Morse Code, Caesar Cipher)
  */
 
+// Prevent duplicate execution
+if (typeof window.TRANSLATOR_LOADED === 'undefined') {
+window.TRANSLATOR_LOADED = true;
+
 class CyberSmrtTranslator {
   constructor() {
     this.currentLanguage = this.getStoredLanguage() || 'en';
@@ -355,3 +359,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
   }
 });
+
+} // End duplicate check
