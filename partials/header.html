@@ -29,7 +29,7 @@
     }
 
     .site-header {
-      position: sticky; top: 0; z-index: 1000;
+      position: sticky; top: 0; z-index: 100000;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--hdr-border);
@@ -234,6 +234,44 @@
 
     .language-selector-btn.active .language-dropdown-arrow {
       transform: rotate(180deg);
+    }
+
+    /* Emergency "Back to English" button for cyber languages */
+    .emergency-english-btn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
+      z-index: 999999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    .emergency-english-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(245, 158, 11, 0.7);
+    }
+
+    .emergency-english-btn.visible {
+      display: block;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
+      }
+      50% {
+        box-shadow: 0 6px 32px rgba(245, 158, 11, 0.8);
+      }
     }
 
     /* Language Dropdown */
@@ -1277,6 +1315,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Emergency "Back to English" button -->
+  <button id="emergency-english" class="emergency-english-btn" onclick="changeLanguage('en')" title="Click to return to English">
+    🇺🇸 Back to English
+  </button>
 </header>
 
 <script>
@@ -1349,6 +1392,17 @@ window.changeLanguage = async function(lang) {
       'caesar': 'ROT13'
     };
     langCode.textContent = langCodes[lang] || lang.toUpperCase();
+  }
+
+  // Show/hide emergency English button for cyber languages
+  const emergencyBtn = document.getElementById('emergency-english');
+  const cyberLanguages = ['1337', 'binary', 'morse', 'caesar'];
+  if (emergencyBtn) {
+    if (cyberLanguages.includes(lang)) {
+      emergencyBtn.classList.add('visible');
+    } else {
+      emergencyBtn.classList.remove('visible');
+    }
   }
 
   // Update active state
