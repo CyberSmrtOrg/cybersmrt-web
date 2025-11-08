@@ -641,7 +641,101 @@
       width: 24px;
       height: 2px;
       background: var(--hdr-text);
-      transition: .2s;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Mobile Menu Panel */
+    .mobile-menu-panel {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(6, 10, 22, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 999;
+      overflow-y: auto;
+      padding: 1rem;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    [data-theme="light"] .mobile-menu-panel {
+      background: rgba(248, 250, 252, 0.98);
+    }
+
+    .mobile-menu-panel.active {
+      display: block;
+      transform: translateY(0);
+    }
+
+    .mobile-menu-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .mobile-menu-section-title {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--hdr-border);
+    }
+
+    .mobile-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mobile-menu-links a,
+    .mobile-menu-links button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem;
+      background: transparent;
+      border: 1px solid var(--hdr-border);
+      border-radius: 8px;
+      color: var(--hdr-text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu-links a:hover,
+    .mobile-menu-links button:hover {
+      background: var(--card-bg-hover);
+      color: var(--hdr-text-hover);
+      border-color: var(--brand);
+    }
+
+    .mobile-menu-links svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
     }
 
     /* Mobile styles */
@@ -683,34 +777,17 @@
         display: none;
       }
 
+      /* Hide action buttons on mobile - they'll be in hamburger menu */
+      .header-donate-btn,
+      .header-store-btn,
+      .header-signin-btn {
+        display: none;
+      }
+
       .theme-toggle {
         width: 36px;
         height: 36px;
         font-size: 1rem;
-      }
-
-      .header-donate-btn,
-      .header-store-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        min-height: 36px;
-      }
-
-      .header-donate-btn svg,
-      .header-store-btn svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      .header-donate-btn span,
-      .header-store-btn span {
-        display: none;
-      }
-
-      .header-signin-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        min-height: 36px;
       }
 
       .user-menu {
@@ -747,7 +824,7 @@
         </a>
       </div>
 
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <button class="nav-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -1120,6 +1197,77 @@
       </div>
     </div>
   </div>
+
+  <!-- Mobile Menu Panel -->
+  <div class="mobile-menu-panel" id="mobile-menu">
+    <!-- Actions Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">Actions</div>
+      <div class="mobile-menu-links">
+        <button class="header-signin-btn" onclick="openLoginModalSafe()" data-auth-hide style="display: flex;">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+          </svg>
+          Sign In
+        </button>
+        <a href="https://store.cybersmrt.org">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          Store
+        </a>
+        <a href="/pages/get-involved/donate.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+          Donate
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">Navigation</div>
+      <div class="mobile-menu-links">
+        <a href="/">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Home
+        </a>
+        <a href="/pages/programs">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Programs
+        </a>
+        <a href="/pages/tools/">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+          </svg>
+          Tools
+        </a>
+        <a href="/pages/about/">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          About
+        </a>
+        <a href="/pages/get-involved">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          Get Involved
+        </a>
+        <a href="/pages/blog/">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+          </svg>
+          Blog
+        </a>
+      </div>
+    </div>
+  </div>
 </header>
 
 <script>
@@ -1295,6 +1443,46 @@ document.addEventListener('click', (e) => {
   const userMenu = document.querySelector('.user-menu-container');
   if (userMenu && !userMenu.contains(e.target)) {
     userMenu.classList.remove('open');
+  }
+});
+
+/**
+ * Mobile Menu Toggle
+ */
+window.toggleMobileMenu = function() {
+  const mobileMenu = document.getElementById('mobile-menu');
+  const toggle = document.querySelector('.nav-toggle');
+
+  if (!mobileMenu || !toggle) {
+    console.error('Mobile menu elements not found');
+    return;
+  }
+
+  const isActive = mobileMenu.classList.toggle('active');
+  toggle.classList.toggle('active', isActive);
+  toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+
+  // Prevent body scroll when menu is open
+  if (isActive) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+};
+
+// Close mobile menu when clicking a link
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.mobile-menu-links a, .mobile-menu-links button')) {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const toggle = document.querySelector('.nav-toggle');
+    if (mobileMenu) {
+      mobileMenu.classList.remove('active');
+      if (toggle) {
+        toggle.classList.remove('active');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      document.body.style.overflow = '';
+    }
   }
 });
 
