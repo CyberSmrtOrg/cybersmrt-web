@@ -6,7 +6,8 @@
       "Bash(tshirt-original.json)",
       "Bash(check-products.json)",
       "Bash(find:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
