@@ -106,38 +106,58 @@ class CyberSmrtSearch {
    * Set up event listeners
    */
   setupEventListeners() {
-    // Find all search inputs
-    const searchInputs = document.querySelectorAll('.header-search input, #search-input');
+    // Wait for header to be loaded (since it's dynamically loaded)
+    const trySetup = () => {
+      const searchInputs = document.querySelectorAll('.header-search input, #search-input');
 
-    searchInputs.forEach(input => {
-      // Search on input
-      input.addEventListener('input', (e) => {
-        const query = e.target.value.trim();
-        if (query.length >= 2) {
-          this.performSearch(query);
-        } else {
-          this.hideResults();
-        }
-      });
+      if (searchInputs.length === 0) {
+        // Header not loaded yet, try again
+        setTimeout(trySetup, 100);
+        return;
+      }
 
-      // Search on Enter
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
+      console.log('✅ Search: Found', searchInputs.length, 'search inputs');
+
+      searchInputs.forEach(input => {
+        // Remove existing listeners if any
+        const newInput = input.cloneNode(true);
+        input.parentNode.replaceChild(newInput, input);
+
+        // Search on input
+        newInput.addEventListener('input', (e) => {
           const query = e.target.value.trim();
           if (query.length >= 2) {
             this.performSearch(query);
+          } else {
+            this.hideResults();
           }
-        }
+        });
+
+        // Search on Enter
+        newInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = e.target.value.trim();
+            if (query.length >= 2) {
+              this.performSearch(query);
+            }
+          }
+        });
       });
 
-      // Close results when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.header-search') && !e.target.closest('.search-results')) {
-          this.hideResults();
-        }
-      });
-    });
+      // Close results when clicking outside (only add once)
+      if (!this.clickListenerAdded) {
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.header-search') && !e.target.closest('.search-results-modal')) {
+            this.hideResults();
+          }
+        });
+        this.clickListenerAdded = true;
+      }
+    };
+
+    // Start trying to set up
+    setTimeout(trySetup, 100);
   }
 
   /**
