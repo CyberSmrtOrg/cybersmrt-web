@@ -203,22 +203,6 @@ window.HEADER_LOADER_EXECUTED = true;
       console.log('📌 Added to head:', el.tagName, el.getAttribute('href') || '(inline)');
     });
 
-    // Execute inline scripts before inserting (innerHTML doesn't execute them automatically)
-    const scripts = tmp.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      // Copy attributes
-      Array.from(oldScript.attributes).forEach(attr => {
-        newScript.setAttribute(attr.name, attr.value);
-      });
-      oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-
     // Check if there's a header-mount element, otherwise insert at top of body
     const mountPoint = document.getElementById('header-mount');
     if (mountPoint) {
@@ -228,6 +212,27 @@ window.HEADER_LOADER_EXECUTED = true;
       console.log('📌 Mounting header at top of body');
       document.body.insertBefore(headerEl, document.body.firstChild);
     }
+
+    // Execute inline scripts AFTER the header is in the DOM (so they can find elements)
+    const scripts = tmp.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+        newScript.defer = oldScript.defer;
+        newScript.async = oldScript.async;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      // Copy other attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        if (!['src', 'defer', 'async'].includes(attr.name)) {
+          newScript.setAttribute(attr.name, attr.value);
+        }
+      });
+      document.body.appendChild(newScript);
+      console.log('✅ Executed script:', oldScript.src || '(inline)');
+    });
 
     // Wire up mobile toggle
     const toggle = headerEl.querySelector('.nav-toggle');
