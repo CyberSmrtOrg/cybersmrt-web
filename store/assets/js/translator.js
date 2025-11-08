@@ -256,6 +256,21 @@ class CyberSmrtTranslator {
         element.placeholder = translated;
       }
     });
+
+    // Clear input values when changing languages (don't translate user input)
+    document.querySelectorAll('input[type="search"], input[type="text"]').forEach((element) => {
+      if (element.value && targetLang !== 'en') {
+        // Store the value if switching away from English
+        if (!element.dataset.originalValue) {
+          element.dataset.originalValue = element.value;
+        }
+        element.value = '';
+      } else if (targetLang === 'en' && element.dataset.originalValue) {
+        // Restore value when returning to English
+        element.value = element.dataset.originalValue;
+        delete element.dataset.originalValue;
+      }
+    });
   }
 
   /**
