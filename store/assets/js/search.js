@@ -83,22 +83,55 @@ class CyberSmrtSearch {
    */
   async loadStoreProducts() {
     try {
+      console.log('🛍️ Loading store products for search...');
       const response = await fetch('https://store.cybersmrt.org/api/products');
+      console.log('Store API response:', response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log('Store API data:', data);
+
         this.storeProducts = (data.products || []).map(p => ({
           title: p.title,
           url: `https://store.cybersmrt.org#product-${p.id}`,
           type: 'product',
           description: p.description || p.title,
           price: p.markup_price ? `$${(p.markup_price / 100).toFixed(2)}` : '',
-          image: p.default_image
+          image: p.default_image,
+          tags: p.tags || []
         }));
         this.isStoreLoaded = true;
         console.log('✅ Store products loaded:', this.storeProducts.length, 'products');
+      } else {
+        console.warn('Store API returned non-OK status:', response.status);
       }
     } catch (error) {
       console.warn('Could not load store products for search:', error);
+      // Add fallback static store items for common searches
+      this.storeProducts = [
+        {
+          title: 'CyberSmrt T-Shirt',
+          url: 'https://store.cybersmrt.org',
+          type: 'product',
+          description: 'Official CyberSmrt branded t-shirt',
+          tags: ['shirt', 'tshirt', 't-shirt', 'apparel', 'clothing']
+        },
+        {
+          title: 'CyberSmrt Hoodie',
+          url: 'https://store.cybersmrt.org',
+          type: 'product',
+          description: 'Official CyberSmrt branded hoodie',
+          tags: ['hoodie', 'sweatshirt', 'apparel', 'clothing']
+        },
+        {
+          title: 'CyberSmrt Sticker',
+          url: 'https://store.cybersmrt.org',
+          type: 'product',
+          description: 'Official CyberSmrt stickers',
+          tags: ['sticker', 'decal', 'accessories']
+        }
+      ];
+      console.log('Using fallback store products:', this.storeProducts.length);
     }
   }
 
@@ -126,7 +159,7 @@ class CyberSmrtSearch {
         // Search on input
         newInput.addEventListener('input', (e) => {
           const query = e.target.value.trim();
-          if (query.length >= 2) {
+          if (query.length >= 4) {
             this.performSearch(query);
           } else {
             this.hideResults();
@@ -138,7 +171,7 @@ class CyberSmrtSearch {
           if (e.key === 'Enter') {
             e.preventDefault();
             const query = e.target.value.trim();
-            if (query.length >= 2) {
+            if (query.length >= 4) {
               this.performSearch(query);
             }
           }
@@ -166,8 +199,9 @@ class CyberSmrtSearch {
   performSearch(query) {
     const normalizedQuery = query.toLowerCase();
     const results = [];
+    const seenUrls = new Set();
 
-    // Search main site content
+    // Search main site content (static index)
     this.searchIndex.forEach(item => {
       const titleMatch = item.title.toLowerCase().includes(normalizedQuery);
       const descMatch = item.description.toLowerCase().includes(normalizedQuery);
@@ -177,6 +211,7 @@ class CyberSmrtSearch {
           ...item,
           relevance: titleMatch ? 10 : 5
         });
+        seenUrls.add(item.url);
       }
     });
 
@@ -184,12 +219,23 @@ class CyberSmrtSearch {
     this.storeProducts.forEach(product => {
       const titleMatch = product.title.toLowerCase().includes(normalizedQuery);
       const descMatch = product.description.toLowerCase().includes(normalizedQuery);
+      const tagsMatch = product.tags && product.tags.some(tag => tag.toLowerCase().includes(normalizedQuery));
 
-      if (titleMatch || descMatch) {
+      if (titleMatch || descMatch || tagsMatch) {
         results.push({
           ...product,
-          relevance: titleMatch ? 8 : 4
+          relevance: titleMatch ? 10 : (tagsMatch ? 8 : 4)
         });
+        seenUrls.add(product.url);
+      }
+    });
+
+    // Search current page DOM content
+    const pageContent = this.searchPageContent(normalizedQuery);
+    pageContent.forEach(item => {
+      if (!seenUrls.has(item.url)) {
+        results.push(item);
+        seenUrls.add(item.url);
       }
     });
 
@@ -198,6 +244,66 @@ class CyberSmrtSearch {
 
     // Show results
     this.showResults(results, query);
+  }
+
+  /**
+   * Search current page DOM content for matching text
+   */
+  searchPageContent(query) {
+    const results = [];
+    const currentUrl = window.location.pathname;
+
+    // Search through main content sections
+    const contentSelectors = [
+      'main', 'article', '.section', '.content',
+      'h1', 'h2', 'h3', 'p', 'li'
+    ];
+
+    contentSelectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(element => {
+        // Skip header, footer, nav, and script elements
+        if (element.closest('header, footer, nav, script, style, .no-translate')) {
+          return;
+        }
+
+        const text = element.textContent;
+        if (text && text.toLowerCase().includes(query)) {
+          // Get a snippet of the matching text
+          const index = text.toLowerCase().indexOf(query);
+          const start = Math.max(0, index - 50);
+          const end = Math.min(text.length, index + query.length + 50);
+          const snippet = (start > 0 ? '...' : '') +
+                         text.substring(start, end).trim() +
+                         (end < text.length ? '...' : '');
+
+          // Try to get a meaningful title
+          let title = document.title || 'Current Page';
+
+          // If it's a heading, use that as the title
+          if (element.tagName.match(/^H[1-6]$/)) {
+            title = element.textContent.trim();
+          }
+          // If element has an ID, try to create an anchor link
+          const elementId = element.id || element.closest('[id]')?.id;
+          const url = elementId ? `${currentUrl}#${elementId}` : currentUrl;
+
+          // Check if we already have a result for this URL
+          const existing = results.find(r => r.url === url && r.title === title);
+          if (!existing) {
+            results.push({
+              title: title,
+              url: url,
+              type: 'page-content',
+              description: snippet,
+              relevance: element.tagName.match(/^H[1-6]$/) ? 7 : 3
+            });
+          }
+        }
+      });
+    });
+
+    return results;
   }
 
   /**
@@ -298,7 +404,8 @@ class CyberSmrtSearch {
       'program': 'Programs',
       'tool': 'Tools',
       'product': 'Store Products',
-      'blog': 'Blog Posts'
+      'blog': 'Blog Posts',
+      'page-content': 'Page Content'
     };
     return labels[type] || type;
   }
