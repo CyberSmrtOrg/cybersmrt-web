@@ -160,7 +160,12 @@ class CyberSmrtTranslator {
    */
   async translateViaAPI(text, targetLang) {
     try {
-      // Use LibreTranslate's free API
+      console.log(`🌐 Translating to ${targetLang}:`, text.substring(0, 50) + '...');
+
+      // Use LibreTranslate's free API with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
       const response = await fetch('https://libretranslate.com/translate', {
         method: 'POST',
         headers: {
@@ -171,18 +176,27 @@ class CyberSmrtTranslator {
           source: 'en',
           target: targetLang,
           format: 'text'
-        })
+        }),
+        signal: controller.signal
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
+        console.error(`Translation API error: ${response.status} ${response.statusText}`);
         throw new Error(`Translation API error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('✅ Translation received:', data.translatedText?.substring(0, 50) + '...');
       return data.translatedText || text;
     } catch (error) {
-      console.warn('Translation API failed, returning original text:', error);
-      return text;
+      if (error.name === 'AbortError') {
+        console.warn('Translation API timed out after 10 seconds');
+      } else {
+        console.warn('Translation API failed:', error.message);
+      }
+      return text; // Fallback to original text
     }
   }
 
@@ -243,19 +257,23 @@ class CyberSmrtTranslator {
       }
     }
 
-    // Translate placeholders
-    document.querySelectorAll('[placeholder]').forEach(async (element) => {
+    // Handle placeholders - store first, then translate/restore
+    const placeholderElements = document.querySelectorAll('[placeholder]');
+    for (const element of placeholderElements) {
+      // Always store original if not already stored
       if (!element.dataset.originalPlaceholder) {
         element.dataset.originalPlaceholder = element.placeholder;
       }
 
       if (targetLang === 'en') {
+        // Restore to original English
         element.placeholder = element.dataset.originalPlaceholder;
       } else {
+        // Translate from original English
         const translated = await this.translate(element.dataset.originalPlaceholder, targetLang);
         element.placeholder = translated;
       }
-    });
+    }
 
     // Clear input values when changing languages (don't translate user input)
     document.querySelectorAll('input[type="search"], input[type="text"]').forEach((element) => {
