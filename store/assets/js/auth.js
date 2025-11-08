@@ -40,14 +40,18 @@
       return null;
     }
 
-    // Get access token from localStorage or cookie (fallback for cross-subdomain)
+    // Get access token from HttpOnly cookies (note: will return null because cookies are HttpOnly)
+    // This function exists for compatibility but the actual tokens are sent automatically by the browser
     function getAccessToken() {
-      return localStorage.getItem('accessToken') || getCookie('accessToken');
+      // HttpOnly cookies cannot be read by JavaScript
+      // They are automatically sent with requests using credentials: 'include'
+      return getCookie('accessToken'); // Will return null, but that's expected
     }
 
-    // Get refresh token from localStorage or cookie (fallback for cross-subdomain)
+    // Get refresh token from HttpOnly cookies (note: will return null because cookies are HttpOnly)
     function getRefreshToken() {
-      return localStorage.getItem('refreshToken') || getCookie('refreshToken');
+      // HttpOnly cookies cannot be read by JavaScript
+      return getCookie('refreshToken'); // Will return null, but that's expected
     }
 
     function getCurrentUser() {
@@ -71,12 +75,13 @@
 
     function isAuthenticated() {
       // Check if user_info cookie exists (cross-subdomain cookie)
+      // This is more reliable than localStorage for cross-subdomain auth
       const userInfoCookie = getCookie('user_info');
       if (userInfoCookie) {
         return true;
       }
 
-      // Fallback: check if user data exists in localStorage
+      // Fallback: check if user data exists in localStorage (same-subdomain only)
       const user = getCurrentUser();
       return user !== null && user.id !== undefined;
     }
