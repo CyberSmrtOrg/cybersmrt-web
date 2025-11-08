@@ -60,6 +60,30 @@ async function printifyRequest(env, endpoint, method = 'GET', body = null) {
   return response.json();
 }
 
+async function printfulRequest(env, endpoint, method = 'GET', body = null) {
+  const url = `https://api.printful.com${endpoint}`;
+  const options = {
+    method,
+    headers: {
+      'Authorization': `Bearer ${env.PRINTFUL_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Printful API Error: ${response.status} - ${error}`);
+  }
+
+  return response.json();
+}
+
 // Generate order number in format: CS-YYYYMMDD-XXXXX
 function generateOrderNumber() {
   const now = new Date();
