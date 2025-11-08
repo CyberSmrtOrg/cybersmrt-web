@@ -181,6 +181,7 @@ window.HEADER_LOADER_EXECUTED = true;
     }
     console.log('✅ Header HTML fetched successfully');
     const html = await res.text();
+    console.log('📝 Header HTML length:', html.length, 'characters');
     const tmp = document.createElement('div');
     tmp.innerHTML = html.trim();
     const headerEl = tmp.firstElementChild;
@@ -201,7 +202,15 @@ window.HEADER_LOADER_EXECUTED = true;
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
 
-    document.body.insertBefore(headerEl, document.body.firstChild);
+    // Check if there's a header-mount element, otherwise insert at top of body
+    const mountPoint = document.getElementById('header-mount');
+    if (mountPoint) {
+      console.log('📌 Mounting header in #header-mount');
+      mountPoint.appendChild(headerEl);
+    } else {
+      console.log('📌 Mounting header at top of body');
+      document.body.insertBefore(headerEl, document.body.firstChild);
+    }
 
     // Wire up mobile toggle
     const toggle = headerEl.querySelector('.nav-toggle');
@@ -235,6 +244,31 @@ window.HEADER_LOADER_EXECUTED = true;
     });
 
     console.log('✅ Header loaded and mounted');
+
+    // Verify header visibility
+    setTimeout(() => {
+      const header = document.querySelector('.site-header');
+      if (header) {
+        const styles = window.getComputedStyle(header);
+        console.log('🔍 Header visibility check:');
+        console.log('  - Display:', styles.display);
+        console.log('  - Visibility:', styles.visibility);
+        console.log('  - Opacity:', styles.opacity);
+        console.log('  - Position:', styles.position);
+
+        if (styles.display === 'none' || styles.visibility === 'hidden') {
+          console.error('⚠️ WARNING: Header is in DOM but not visible!');
+          console.error('  - Forcing visibility...');
+          header.style.display = 'block';
+          header.style.visibility = 'visible';
+          header.style.opacity = '1';
+        } else {
+          console.log('✅ Header is visible');
+        }
+      } else {
+        console.error('❌ ERROR: Header not found in DOM after mounting!');
+      }
+    }, 100);
 
     // Update auth UI after header is ready
     waitForAuthAndUpdate();
