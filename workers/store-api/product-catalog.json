@@ -1,5 +1,416 @@
 [
   {
+    "id": "690e93e52e33a251dc0f1694",
+    "title": "CyberSmrt Logo T-Shirt",
+    "description": "This premium unisex jersey tee combines exceptional comfort with CyberSmrt&#39;s mission of making cyber awareness accessible to everyone. Made from 100% Airlume combed and ring-spun cotton, it offers a lightweight feel perfect for classroom sessions, tech conferences, community outreach events, or everyday wear. The classic crew neckline and retail fit make it versatile for any setting—whether you&#39;re teaching students, attending industry events, or showing your support for underserved commu...",
+    "price": 3000,
+    "category": "apparel",
+    "image_url": "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_1.jpg",
+    "images_by_color": {
+      "Team Purple": [
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_1.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_2.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_3.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_4.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_5.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_6.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_7.jpg"
+      ],
+      "White": [
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_1.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_2.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_3.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_4.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_5.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_6.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_white_7.jpg"
+      ],
+      "Black": [
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_1.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_2.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_3.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_4.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_5.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_6.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_black_7.jpg"
+      ],
+      "Heather Prism Lilac": [
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_1.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_2.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_3.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_4.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_5.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_6.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_7.jpg"
+      ],
+      "Ash": [
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_1.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_2.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_3.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_4.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_5.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_6.jpg",
+        "/assets/images/merch/690e93e52e33a251dc0f1694_ash_7.jpg"
+      ]
+    },
+    "printify_blueprint_id": 12,
+    "printify_product_id": "690e93e52e33a251dc0f1694",
+    "variants": [
+      {
+        "id": 18509,
+        "sku": "27517881367491089836",
+        "price": 3000,
+        "size": "M",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 18541,
+        "sku": "65258888314837976746",
+        "price": 3000,
+        "size": "M",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 18100,
+        "sku": "29174394410272012289",
+        "price": 3000,
+        "size": "S",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 80532,
+        "sku": "13196591545830681986",
+        "price": 3000,
+        "size": "XL",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18103,
+        "sku": "15405757109602461485",
+        "price": 3000,
+        "size": "XL",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 38611,
+        "sku": "12148878870592850464",
+        "price": 3000,
+        "size": "XL",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 38605,
+        "sku": "20996153704150860386",
+        "price": 3000,
+        "size": "M",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18511,
+        "sku": "25595809543960682577",
+        "price": 3000,
+        "size": "XL",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 18101,
+        "sku": "25643362195583276413",
+        "price": 3000,
+        "size": "M",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 18542,
+        "sku": "17699581508913279921",
+        "price": 3000,
+        "size": "L",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 80529,
+        "sku": "10848289105212518809",
+        "price": 3000,
+        "size": "S",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 80531,
+        "sku": "66604647434997001573",
+        "price": 3000,
+        "size": "L",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18508,
+        "sku": "22425724524779582744",
+        "price": 3000,
+        "size": "S",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 38608,
+        "sku": "24421473195690519551",
+        "price": 3000,
+        "size": "L",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18102,
+        "sku": "19736474438498581893",
+        "price": 3000,
+        "size": "L",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 18540,
+        "sku": "24682027111143677479",
+        "price": 3000,
+        "size": "S",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 80530,
+        "sku": "72238673968362209047",
+        "price": 3000,
+        "size": "M",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18543,
+        "sku": "15598688630021254807",
+        "price": 3000,
+        "size": "XL",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 38602,
+        "sku": "20527797985300319976",
+        "price": 3000,
+        "size": "S",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18510,
+        "sku": "28652971907553293319",
+        "price": 3000,
+        "size": "L",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 18099,
+        "sku": "65148885339370266148",
+        "price": 3000,
+        "size": "XS",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 80528,
+        "sku": "31848823384229109330",
+        "price": 3000,
+        "size": "XS",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 38821,
+        "sku": "29029637306837813589",
+        "price": 3000,
+        "size": "XS",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18507,
+        "sku": "30379911539027156379",
+        "price": 3000,
+        "size": "XS",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 18539,
+        "sku": "18264642909211919873",
+        "price": 3000,
+        "size": "XS",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 18512,
+        "sku": "20098196498624137393",
+        "price": 3000,
+        "size": "2XL",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 80533,
+        "sku": "17712870613563680277",
+        "price": 3000,
+        "size": "2XL",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18544,
+        "sku": "10434211274992814970",
+        "price": 3000,
+        "size": "2XL",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 38614,
+        "sku": "10013921305318085224",
+        "price": 3000,
+        "size": "2XL",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18104,
+        "sku": "23502367822284583430",
+        "price": 3000,
+        "size": "2XL",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 38617,
+        "sku": "21177379688455573361",
+        "price": 3500,
+        "size": "3XL",
+        "color": "Ash",
+        "is_available": true
+      },
+      {
+        "id": 18545,
+        "sku": "74406717384236395267",
+        "price": 3500,
+        "size": "3XL",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 18105,
+        "sku": "55357049411157223460",
+        "price": 3500,
+        "size": "3XL",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 80534,
+        "sku": "10087382539745776802",
+        "price": 3500,
+        "size": "3XL",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18513,
+        "sku": "20768302940410164072",
+        "price": 3500,
+        "size": "3XL",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 45076,
+        "sku": "21615904679766401846",
+        "price": 4000,
+        "size": "4XL",
+        "color": "Ash",
+        "is_available": false
+      },
+      {
+        "id": 18514,
+        "sku": "30638032732917760463",
+        "price": 4000,
+        "size": "4XL",
+        "color": "Team Purple",
+        "is_available": true
+      },
+      {
+        "id": 80535,
+        "sku": "21014196407300701875",
+        "price": 4000,
+        "size": "4XL",
+        "color": "Heather Prism Lilac",
+        "is_available": true
+      },
+      {
+        "id": 18106,
+        "sku": "80221112243692565344",
+        "price": 4000,
+        "size": "4XL",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 18546,
+        "sku": "33346618910686251263",
+        "price": 4000,
+        "size": "4XL",
+        "color": "White",
+        "is_available": true
+      },
+      {
+        "id": 101666,
+        "sku": "10516514798885063060",
+        "price": 4000,
+        "size": "5XL",
+        "color": "Black",
+        "is_available": true
+      },
+      {
+        "id": 101776,
+        "sku": "25338533070496723207",
+        "price": 4000,
+        "size": "5XL",
+        "color": "White",
+        "is_available": true
+      }
+    ],
+    "tags": [
+      "Men's Clothing",
+      "T-shirts",
+      "Women's Clothing",
+      "DTG",
+      "Unisex",
+      "Regular fit",
+      "Crew neck",
+      "Cotton",
+      "Neck Labels",
+      "TikTok",
+      "Personalization Picks",
+      "Embroidery",
+      "Simple designs on large embroidery"
+    ],
+    "created_at": "2025-11-08T00:52:58.959Z"
+  },
+  {
     "id": "690d4f4727f2dde9090a5396",
     "title": "CyberSmrt Tank Top - Sun's Out, Firewall's Up",
     "description": "This tank top features a funny play on the popular saying 'Sun's out, Guns out' with a geeky twist as 'Sun's out, Firewall's up'. Perfect for computer enthusiasts who enjoy humor in their wardrobe. Ideal for casual wear during the summer season or for tech-related events and gatherings. Product features - Side seams for structural support - Self fabric binding for a clean look - Made from 100% Airlume combed and ring-spun cotton - Light fabric for a comfortable fit - Retail fit for a stylish loo...",
@@ -484,7 +895,7 @@
       "Summer Picks",
       "TikTok"
     ],
-    "created_at": "2025-11-07T23:41:55.979Z"
+    "created_at": "2025-11-08T00:53:02.382Z"
   },
   {
     "id": "690d4d4027f2dde9090a533a",
@@ -613,7 +1024,7 @@
       "Polo",
       "Polo shirt"
     ],
-    "created_at": "2025-11-07T23:42:04.108Z"
+    "created_at": "2025-11-08T00:53:10.327Z"
   },
   {
     "id": "690d4d35dd669cae270d8538",
@@ -650,6 +1061,6 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-07T23:42:05.920Z"
+    "created_at": "2025-11-08T00:53:11.926Z"
   }
 ]
