@@ -172,8 +172,14 @@ window.HEADER_LOADER_EXECUTED = true;
     }
 
     // Fetch the partial and inject it at the top of <body>
-    const res = await fetch('/partials/header.html', { cache: 'reload' });
-    if (!res.ok) throw new Error('Failed to load header.html');
+    console.log('🔄 Fetching header from /partials/header.html...');
+    const res = await fetch('/partials/header.html');
+    console.log('📥 Fetch response:', res.status, res.statusText, res.url);
+    if (!res.ok) {
+      console.error('❌ Failed to load header:', res.status, res.statusText);
+      throw new Error(`Failed to load header.html: ${res.status}`);
+    }
+    console.log('✅ Header HTML fetched successfully');
     const html = await res.text();
     const tmp = document.createElement('div');
     tmp.innerHTML = html.trim();
