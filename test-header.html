@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header Test</title>
+  <link rel="stylesheet" href="/assets/css/theme.css"/>
+  <script src="/assets/js/theme.js"></script>
+</head>
+<body>
+  <h1>Header Test Page</h1>
+
+  <!-- Header Mount Point -->
+  <div id="header-mount"></div>
+
+  <!-- Load header -->
+  <script src="/assets/js/header-loader.js?v=2"></script>
+
+  <div style="padding: 2rem;">
+    <h2>If you see this text but no header above, the header is not loading properly.</h2>
+    <p>Check the browser console for errors.</p>
+  </div>
+
+  <script>
+    // Diagnostic script
+    setTimeout(() => {
+      console.log('=== HEADER DIAGNOSTIC ===');
+      console.log('Header element:', document.querySelector('.site-header'));
+      console.log('Header mount point:', document.getElementById('header-mount'));
+      console.log('Header in body:', document.querySelector('body > .site-header'));
+
+      const header = document.querySelector('.site-header');
+      if (header) {
+        const styles = window.getComputedStyle(header);
+        console.log('Display:', styles.display);
+        console.log('Visibility:', styles.visibility);
+        console.log('Opacity:', styles.opacity);
+        console.log('Position:', styles.position);
+        console.log('Z-index:', styles.zIndex);
+      } else {
+        console.error('❌ Header not found in DOM!');
+      }
+    }, 2000);
+  </script>
+</body>
+</html>
