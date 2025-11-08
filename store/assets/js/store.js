@@ -77,52 +77,11 @@ const Store = {
         };
       });
 
-      this.renderCategoryFilters();
       this.renderProducts();
     } catch (error) {
       console.error('Failed to load products:', error);
       this.renderProductError();
     }
-  },
-
-  // Render category filter buttons dynamically based on actual products
-  renderCategoryFilters() {
-    const filterContainer = document.getElementById('categoryFilter');
-    if (!filterContainer) return;
-
-    // Extract unique categories from products
-    const categories = new Set();
-    this.products.forEach(product => {
-      if (product.category) {
-        categories.add(product.category);
-      }
-    });
-
-    // Clear existing buttons
-    filterContainer.innerHTML = '';
-
-    // Add "All Items" button first
-    const allButton = document.createElement('button');
-    allButton.className = 'category-btn active';
-    allButton.textContent = 'All Items';
-    allButton.onclick = () => filterCategory('all');
-    filterContainer.appendChild(allButton);
-
-    // Add category buttons (sorted alphabetically, with nicer formatting)
-    const categoryNames = {
-      'apparel': 'Apparel',
-      'accessories': 'Accessories',
-      'stickers': 'Stickers',
-      'tech': 'Tech Gear'
-    };
-
-    Array.from(categories).sort().forEach(category => {
-      const button = document.createElement('button');
-      button.className = 'category-btn';
-      button.textContent = categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1);
-      button.onclick = () => filterCategory(category);
-      filterContainer.appendChild(button);
-    });
   },
 
   // Detect category from product title
@@ -219,28 +178,11 @@ const Store = {
     grid.innerHTML = filtered.map(product => this.renderProductCard(product)).join('');
   },
 
-  // Helper function to sort sizes in proper order
-  sortSizes(sizes) {
-    const sizeOrder = ['YS', 'YM', 'YL', 'YXL', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
-    return sizes.sort((a, b) => {
-      const indexA = sizeOrder.indexOf(a.toUpperCase());
-      const indexB = sizeOrder.indexOf(b.toUpperCase());
-      // If both sizes are in our order list, sort by their position
-      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-      // If only one is in the list, prioritize it
-      if (indexA !== -1) return -1;
-      if (indexB !== -1) return 1;
-      // Otherwise sort alphabetically
-      return a.localeCompare(b);
-    });
-  },
-
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
     // Get all colors and sizes
     const colors = Object.keys(product.images || {});
-    const unsortedSizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
-    const sizes = this.sortSizes(unsortedSizes);
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
     const currentCardColor = product._cardColor || colors[0];
     const currentCardSize = product._cardSize || sizes[0];
     const previewImages = product.images?.[currentCardColor] || [product.image_url];
@@ -301,23 +243,14 @@ const Store = {
             ` : ''}
 
             ${hasSizes ? `
-              <div class="card-size-selector">
-                ${sizes.map(size => {
-                  const isAvailable = product.variants.some(v =>
-                    v.size === size && v.color === currentCardColor && v.isAvailable !== false
-                  );
-                  const isSelected = size === currentCardSize;
-                  return `
-                    <button class="card-size-btn ${isSelected ? 'selected' : ''} ${!isAvailable ? 'out-of-stock' : ''}"
-                            onclick="event.stopPropagation(); ${isAvailable ? `Store.changeCardSize('${product.id}', '${size}')` : 'return false;'}"
-                            ${!isAvailable ? 'disabled' : ''}
-                            title="${isAvailable ? size : size + ' - Out of Stock'}">
-                      ${size}
-                      ${!isAvailable ? '<span class="out-of-stock-label">Out</span>' : ''}
-                    </button>
-                  `;
-                }).join('')}
-              </div>
+              <select class="card-size-selector"
+                      data-product-id="${product.id}"
+                      onclick="event.stopPropagation();"
+                      onchange="Store.changeCardSize('${product.id}', this.value)">
+                ${sizes.map(size => `
+                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
+                `).join('')}
+              </select>
             ` : ''}
           </div>
 
@@ -697,30 +630,6 @@ const Store = {
       btn.classList.toggle('active', btn.title === color);
     });
 
-    // Update size buttons availability based on new color
-    const sizeSelectorContainer = card.querySelector('.card-size-selector');
-    if (sizeSelectorContainer && product.variants) {
-      const unsortedSizes = [...new Set(product.variants.map(v => v.size).filter(Boolean))];
-      const sizes = this.sortSizes(unsortedSizes);
-      const currentCardSize = product._cardSize || sizes[0];
-
-      sizeSelectorContainer.innerHTML = sizes.map(size => {
-        const isAvailable = product.variants.some(v =>
-          v.size === size && v.color === color && v.isAvailable !== false
-        );
-        const isSelected = size === currentCardSize;
-        return `
-          <button class="card-size-btn ${isSelected ? 'selected' : ''} ${!isAvailable ? 'out-of-stock' : ''}"
-                  onclick="event.stopPropagation(); ${isAvailable ? `Store.changeCardSize('${productId}', '${size}')` : 'return false;'}"
-                  ${!isAvailable ? 'disabled' : ''}
-                  title="${isAvailable ? size : size + ' - Out of Stock'}">
-            ${size}
-            ${!isAvailable ? '<span class="out-of-stock-label">Out</span>' : ''}
-          </button>
-        `;
-      }).join('');
-    }
-
     // Update data attribute
     card.setAttribute('data-current-color', color);
   },
@@ -733,15 +642,10 @@ const Store = {
     // Update internal state
     product._cardSize = size;
 
-    // Update data attribute and visual state
+    // Update data attribute
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
-
-      // Update size button selection state
-      card.querySelectorAll('.card-size-btn').forEach(btn => {
-        btn.classList.toggle('selected', btn.textContent.trim().startsWith(size));
-      });
     }
   },
 
@@ -999,15 +903,7 @@ const Store = {
 
     // Get current selections from card
     const currentColor = product._cardColor || Object.keys(product.images || {})[0];
-    let currentSize = product._cardSize;
-
-    // If no size selected and product has sizes, use first available size for this color
-    if (!currentSize && product.variants) {
-      const variantsForColor = product.variants.filter(v => v.color === currentColor && v.size);
-      if (variantsForColor.length > 0) {
-        currentSize = variantsForColor[0].size;
-      }
-    }
+    const currentSize = product._cardSize;
 
     // Find matching variant
     const variant = product.variants?.find(v =>
@@ -1016,8 +912,7 @@ const Store = {
     );
 
     if (!variant) {
-      console.error('No variant found for', { productId, currentColor, currentSize, availableVariants: product.variants });
-      alert('Please select a size before adding to cart.');
+      console.error('No variant found for', { productId, currentColor, currentSize });
       return;
     }
 
@@ -1096,16 +991,6 @@ async function proceedToCheckout() {
     btn.disabled = true;
     btn.textContent = 'Creating checkout session...';
 
-    // Get user_id from JWT token if user is signed in
-    let userId = null;
-    if (window.parseJWT && window.getAccessToken) {
-      const token = window.getAccessToken();
-      if (token) {
-        const payload = window.parseJWT(token);
-        userId = payload?.userId || payload?.sub || null;
-      }
-    }
-
     // Create checkout session (Stripe will collect email and shipping)
     const response = await fetch(`${API_BASE_URL}/checkout/create`, {
       method: 'POST',
@@ -1115,8 +1000,7 @@ async function proceedToCheckout() {
           productId: item.productId,
           variantId: item.variantId,
           quantity: item.quantity
-        })),
-        userId: userId // Include user_id if signed in
+        }))
       })
     });
 
