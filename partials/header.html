@@ -668,7 +668,7 @@
       background: rgba(6, 10, 22, 0.98);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      z-index: 999;
+      z-index: 10001;
       overflow-y: auto;
       padding: 1rem;
       transform: translateY(-100%);
@@ -780,14 +780,9 @@
       /* Hide action buttons on mobile - they'll be in hamburger menu */
       .header-donate-btn,
       .header-store-btn,
-      .header-signin-btn {
-        display: none;
-      }
-
+      .header-signin-btn,
       .theme-toggle {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
+        display: none;
       }
 
       .user-menu {
@@ -823,12 +818,6 @@
           <span>CYBERSMRT</span>
         </a>
       </div>
-
-      <button class="nav-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
 
       <div class="header-top-right">
         <!-- Search Bar -->
@@ -988,6 +977,13 @@
             </div>
           </div>
         </div>
+
+        <!-- Hamburger Menu (Mobile) - Moved to far right -->
+        <button class="nav-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </div>
 
@@ -1222,6 +1218,19 @@
           </svg>
           Donate
         </a>
+      </div>
+    </div>
+
+    <!-- Settings Section -->
+    <div class="mobile-menu-section">
+      <div class="mobile-menu-section-title">Settings</div>
+      <div class="mobile-menu-links">
+        <button onclick="window.ThemeManager.toggle(); event.stopPropagation();">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+          Toggle Theme
+        </button>
       </div>
     </div>
 
