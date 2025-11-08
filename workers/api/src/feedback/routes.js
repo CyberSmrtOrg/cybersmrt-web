@@ -116,6 +116,31 @@ export async function handleFeedbackRoutes(request, env, ctx) {
           subject
         });
 
+        // Send confirmation email to the volunteer
+        if (email && email !== 'Not provided') {
+          try {
+            const emailService = new EmailService(env);
+            const firstName = (name || 'Anonymous').split(' ')[0];
+
+            await emailService.send('contactConfirmation', email, {
+              firstName,
+              name: name || 'Anonymous',
+              email,
+              organization: '',
+              reasonLabel: 'Volunteer Opportunity',
+              responseTime: '3-5 business days'
+            }, {
+              from: 'CyberSmrt Volunteer Team <volunteers@cybersmrt.org>',
+              replyTo: 'volunteers@cybersmrt.org'
+            });
+
+            console.log('✅ Confirmation email sent to volunteer:', email);
+          } catch (emailError) {
+            console.error('⚠️ Failed to send confirmation email:', emailError);
+            // Continue even if confirmation fails
+          }
+        }
+
         return jsonResponse({
           success: true,
           message: 'Volunteer application sent successfully'
