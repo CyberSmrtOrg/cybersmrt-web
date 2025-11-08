@@ -161,11 +161,10 @@ class CyberSmrtTranslator {
 
   /**
    * Translate via external API using LibreTranslate
+   * Note: Free API has rate limits - use sparingly
    */
   async translateViaAPI(text, targetLang) {
     try {
-      console.log(`🌐 Translating to ${targetLang}:`, text.substring(0, 50) + '...');
-
       // Use LibreTranslate's free API with timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
@@ -187,18 +186,19 @@ class CyberSmrtTranslator {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        console.error(`Translation API error: ${response.status} ${response.statusText}`);
+        if (response.status === 429) {
+          console.warn('⚠️ Translation rate limit exceeded');
+        } else if (response.status === 403) {
+          console.warn('⚠️ Translation API access denied');
+        }
         throw new Error(`Translation API error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('✅ Translation received:', data.translatedText?.substring(0, 50) + '...');
       return data.translatedText || text;
     } catch (error) {
       if (error.name === 'AbortError') {
-        console.warn('Translation API timed out after 10 seconds');
-      } else {
-        console.warn('Translation API failed:', error.message);
+        console.warn('⏱️ Translation timed out');
       }
       return text; // Fallback to original text
     }
@@ -241,6 +241,11 @@ class CyberSmrtTranslator {
       return;
     }
 
+    // Track if we're using API (for real languages)
+    const realLanguages = ['es', 'fr', 'de', 'zh'];
+    const usingAPI = realLanguages.includes(targetLang);
+    let apiErrorShown = false;
+
     // Select all text-containing elements
     const textNodes = this.getTextNodes(document.body);
 
@@ -257,6 +262,14 @@ class CyberSmrtTranslator {
       const originalText = node.textContent.trim();
       if (originalText) {
         const translated = await this.translate(originalText, targetLang);
+
+        // Check if translation failed (API returned original text)
+        if (usingAPI && translated === originalText && !apiErrorShown) {
+          // Show user-friendly error only once
+          console.warn('⚠️ Real language translation unavailable due to API limits. Try cyber languages instead!');
+          apiErrorShown = true;
+        }
+
         node.textContent = translated;
       }
     }
@@ -329,18 +342,24 @@ class CyberSmrtTranslator {
     if (!element) return true;
 
     const skipTags = ['SCRIPT', 'STYLE', 'CODE', 'PRE', 'NOSCRIPT'];
-    const skipClasses = ['no-translate'];
+    const skipClasses = ['no-translate', 'language-selector-container', 'language-dropdown', 'emergency-english-btn'];
 
     // Skip certain tags
     if (skipTags.includes(element.tagName)) return true;
 
-    // Skip elements with no-translate class
-    if (element.classList && Array.from(element.classList).some(cls => skipClasses.includes(cls))) {
-      return true;
-    }
+    // Check element and all parents for no-translate class or attribute
+    let current = element;
+    while (current && current !== document.body) {
+      // Skip elements with no-translate class
+      if (current.classList && Array.from(current.classList).some(cls => skipClasses.includes(cls))) {
+        return true;
+      }
 
-    // Skip elements with translate="no"
-    if (element.getAttribute('translate') === 'no') return true;
+      // Skip elements with translate="no"
+      if (current.getAttribute && current.getAttribute('translate') === 'no') return true;
+
+      current = current.parentElement;
+    }
 
     return false;
   }
