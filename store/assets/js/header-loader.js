@@ -157,6 +157,13 @@ window.HEADER_LOADER_EXECUTED = true;
 // Header Loader - Load and Mount Header
 // ============================================
 (async function mountSharedHeader(){
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    await new Promise(resolve => {
+      document.addEventListener('DOMContentLoaded', resolve, { once: true });
+    });
+  }
+
   try {
     // If a header is already present, don't duplicate
     if (document.querySelector('.site-header')) {
