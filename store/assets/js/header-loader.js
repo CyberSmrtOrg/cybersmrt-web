@@ -203,6 +203,33 @@ window.HEADER_LOADER_EXECUTED = true;
       console.log('📌 Added to head:', el.tagName, el.getAttribute('href') || '(inline)');
     });
 
+    // Execute inline scripts FIRST (before mounting) so functions are available for onclick handlers
+    const scripts = tmp.querySelectorAll('script');
+    console.log(`📜 Found ${scripts.length} scripts in header`);
+
+    scripts.forEach((oldScript, index) => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+        if (oldScript.defer) newScript.defer = true;
+        if (oldScript.async) newScript.async = true;
+        console.log(`✅ Script ${index + 1}: External - ${oldScript.src}`);
+      } else {
+        newScript.textContent = oldScript.textContent;
+        const preview = oldScript.textContent.trim().substring(0, 60);
+        console.log(`✅ Script ${index + 1}: Inline - ${preview}...`);
+      }
+      // Copy other attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        if (!['src', 'defer', 'async'].includes(attr.name)) {
+          newScript.setAttribute(attr.name, attr.value);
+        }
+      });
+      document.body.appendChild(newScript);
+    });
+
+    console.log('✅ All header scripts executed');
+
     // Check if there's a header-mount element, otherwise insert at top of body
     const mountPoint = document.getElementById('header-mount');
     if (mountPoint) {
@@ -212,27 +239,6 @@ window.HEADER_LOADER_EXECUTED = true;
       console.log('📌 Mounting header at top of body');
       document.body.insertBefore(headerEl, document.body.firstChild);
     }
-
-    // Execute inline scripts AFTER the header is in the DOM (so they can find elements)
-    const scripts = tmp.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement('script');
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.defer = oldScript.defer;
-        newScript.async = oldScript.async;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      // Copy other attributes
-      Array.from(oldScript.attributes).forEach(attr => {
-        if (!['src', 'defer', 'async'].includes(attr.name)) {
-          newScript.setAttribute(attr.name, attr.value);
-        }
-      });
-      document.body.appendChild(newScript);
-      console.log('✅ Executed script:', oldScript.src || '(inline)');
-    });
 
     // Wire up mobile toggle
     const toggle = headerEl.querySelector('.nav-toggle');
