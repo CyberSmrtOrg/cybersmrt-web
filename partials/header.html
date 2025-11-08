@@ -1133,34 +1133,34 @@
   'use strict';
 
   window.toggleLanguageMenu = function(event) {
-  event.stopPropagation();
-  const btn = event.currentTarget;
-  const dropdown = btn.nextElementSibling;
+    event.stopPropagation();
+    const btn = event.currentTarget;
+    const dropdown = btn.nextElementSibling;
 
-  if (!dropdown) {
-    console.error('Language dropdown not found');
-    return;
-  }
+    if (!dropdown) {
+      console.error('Language dropdown not found');
+      return;
+    }
 
-  // Close user menu if open
-  const userMenu = document.querySelector('.user-menu-container .user-dropdown');
-  if (userMenu && userMenu.classList.contains('active')) {
-    userMenu.classList.remove('active');
-    userMenu.previousElementSibling.classList.remove('active');
-  }
+    // Close user menu if open
+    const userMenu = document.querySelector('.user-menu-container .user-dropdown');
+    if (userMenu && userMenu.classList.contains('active')) {
+      userMenu.classList.remove('active');
+      userMenu.previousElementSibling.classList.remove('active');
+    }
 
-  // Toggle language menu
-  const isActive = dropdown.classList.toggle('active');
-  btn.classList.toggle('active', isActive);
+    // Toggle language menu
+    const isActive = dropdown.classList.toggle('active');
+    btn.classList.toggle('active', isActive);
 
-  // Update active language option
-  if (window.cyberSmrtTranslator) {
-    const currentLang = window.cyberSmrtTranslator.currentLanguage;
-    window.updateActiveLanguageOption(currentLang);
-  } else {
-    console.warn('Translator not yet loaded - will update active state when language is changed');
-  }
-};
+    // Update active language option
+    if (window.cyberSmrtTranslator) {
+      const currentLang = window.cyberSmrtTranslator.currentLanguage;
+      window.updateActiveLanguageOption(currentLang);
+    } else {
+      console.warn('Translator not yet loaded - will update active state when language is changed');
+    }
+  };
 
 // Update active language option in dropdown (defined first so it can be called)
 window.updateActiveLanguageOption = function(lang) {
