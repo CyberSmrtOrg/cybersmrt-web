@@ -44,6 +44,32 @@ window.FOOTER_LOADER_EXECUTED = true;
     });
 
     postInit();
+
+    // If a language other than English is active, translate the footer
+    if (window.cyberSmrtTranslator) {
+      const currentLang = window.cyberSmrtTranslator.currentLanguage;
+      if (currentLang && currentLang !== 'en') {
+        // Wait a tick for the footer to be fully in the DOM
+        setTimeout(() => {
+          const footer = document.querySelector('.site-footer');
+          if (footer) {
+            // Get all text nodes in the footer and translate them
+            const textNodes = window.cyberSmrtTranslator.getTextNodes(footer);
+            textNodes.forEach(async (node) => {
+              const element = node.parentElement;
+              if (!window.cyberSmrtTranslator.shouldSkipElement(element)) {
+                window.cyberSmrtTranslator.storeOriginalContent(element);
+                const originalText = node.textContent.trim();
+                if (originalText) {
+                  const translated = await window.cyberSmrtTranslator.translate(originalText, currentLang);
+                  node.textContent = translated;
+                }
+              }
+            });
+          }
+        }, 50);
+      }
+    }
   }
 
   function injectFallback(reason) {
