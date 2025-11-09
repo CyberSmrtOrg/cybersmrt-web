@@ -5,17 +5,9 @@ compatibility_date = "2024-01-01"
 # Enable workers.dev subdomain for testing
 workers_dev = true
 
-# Custom domain for store API
-# Routes are configured via _routes.json in /store directory
-# This allows Pages to serve static files while routing API calls to the worker
-routes = [
-  { pattern = "cybersmrt.org/store/api/*", zone_name = "cybersmrt.org" },
-  { pattern = "cybersmrt.org/store/webhooks/*", zone_name = "cybersmrt.org" },
-  { pattern = "cybersmrt.org/store/checkout/*", zone_name = "cybersmrt.org" },
-  { pattern = "cybersmrt.org/store/products", zone_name = "cybersmrt.org" },
-  { pattern = "cybersmrt.org/store/products/*", zone_name = "cybersmrt.org" },
-  { pattern = "cybersmrt.org/store/printify/*", zone_name = "cybersmrt.org" }
-]
+# NOTE: No direct routes configured - this worker is accessed via service binding
+# from the Pages Function at functions/store/[[path]].js
+# This allows Pages to handle routing while the worker provides the API logic
 
 [vars]
 ENVIRONMENT = "production"
