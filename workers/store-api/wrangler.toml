@@ -9,12 +9,12 @@ workers_dev = true
 # Routes are configured via _routes.json in /store directory
 # This allows Pages to serve static files while routing API calls to the worker
 routes = [
-  { pattern = "store.cybersmrt.org/api/*", zone_name = "cybersmrt.org" },
-  { pattern = "store.cybersmrt.org/webhooks/*", zone_name = "cybersmrt.org" },
-  { pattern = "store.cybersmrt.org/checkout/*", zone_name = "cybersmrt.org" },
-  { pattern = "store.cybersmrt.org/products", zone_name = "cybersmrt.org" },
-  { pattern = "store.cybersmrt.org/products/*", zone_name = "cybersmrt.org" },
-  { pattern = "store.cybersmrt.org/printify/*", zone_name = "cybersmrt.org" }
+  { pattern = "cybersmrt.org/store/api/*", zone_name = "cybersmrt.org" },
+  { pattern = "cybersmrt.org/store/webhooks/*", zone_name = "cybersmrt.org" },
+  { pattern = "cybersmrt.org/store/checkout/*", zone_name = "cybersmrt.org" },
+  { pattern = "cybersmrt.org/store/products", zone_name = "cybersmrt.org" },
+  { pattern = "cybersmrt.org/store/products/*", zone_name = "cybersmrt.org" },
+  { pattern = "cybersmrt.org/store/printify/*", zone_name = "cybersmrt.org" }
 ]
 
 [vars]

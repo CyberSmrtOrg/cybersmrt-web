@@ -10,8 +10,8 @@ window.STORE_LOADED = true;
 // ============================================
 // Configuration
 // ============================================
-// Temporarily using workers.dev URL while Pages DNS propagates
-window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
+// Use relative path for store API on main domain
+window.API_BASE_URL = window.API_BASE_URL || '/store/api';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
