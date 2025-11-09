@@ -1,5 +1,5 @@
 -- CyberSmrt Product Catalog Import
--- Generated: 2025-11-09T04:43:25.871Z
+-- Generated: 2025-11-09T05:08:25.770Z
 -- Products: 21
 
 
@@ -15,8 +15,8 @@ INSERT INTO products (
   'Perfect for laptops, incident response kits, or anywhere you want to accurately describe your job without using your actual job title. For professionals who clean up messes they didn&#39;t create. Every purchase supports cybersecurity education that teaches people to make fewer fixable mistakes. Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
-  '{"3\" × 3\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"14860676126386846466","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"26534047241001418310","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"29545430104546609929","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"33327809954943582579","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '{"White":["/assets/images/merch/691006cf57ca4ce0c7096aae_white_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_white_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_white_3.jpg"]}',
+  '[{"id":45750,"sku":"14860676126386846466","price":450,"size":"3\" × 3\"","color":"White","is_available":true},{"id":45752,"sku":"26534047241001418310","price":500,"size":"4\" × 4\"","color":"White","is_available":true},{"id":45754,"sku":"29545430104546609929","price":550,"size":"6\" × 6\"","color":"White","is_available":true},{"id":45748,"sku":"33327809954943582579","price":400,"size":"2\" × 2\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -39,8 +39,8 @@ INSERT INTO products (
   'Perfect for zero trust architects, paranoid sysadmins, and security professionals who&#39;ve learned that trust is a vulnerability. Every purchase supports free cybersecurity education teaching actual security principles. Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
-  '{"3\" × 3\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"11177668097912896855","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"23256496662658892563","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"17959987715438687496","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"85327419190851187698","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '{"White":["/assets/images/merch/6910061d2e33a251dc0f6b64_white_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_white_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_white_3.jpg"]}',
+  '[{"id":45750,"sku":"11177668097912896855","price":450,"size":"3\" × 3\"","color":"White","is_available":true},{"id":45752,"sku":"23256496662658892563","price":500,"size":"4\" × 4\"","color":"White","is_available":true},{"id":45754,"sku":"17959987715438687496","price":550,"size":"6\" × 6\"","color":"White","is_available":true},{"id":45748,"sku":"85327419190851187698","price":400,"size":"2\" × 2\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -63,8 +63,8 @@ INSERT INTO products (
   'Perfect for laptops, compliance binders (irony), server racks, or anywhere you need to make the point silently. Every purchase supports free cybersecurity education that teaches actual security, not just checkbox compliance. Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
-  '{"3\" × 3\"":["/assets/images/merch/6910045d0c938f573d023c0a_3-3_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_3-3_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910045d0c938f573d023c0a_4-4_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_4-4_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910045d0c938f573d023c0a_6-6_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_6-6_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910045d0c938f573d023c0a_2-2_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_2-2_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"31710656058819540621","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"24855115090978533144","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"13859681111512008525","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"29129068635434660422","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '{"White":["/assets/images/merch/6910045d0c938f573d023c0a_white_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_white_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_white_3.jpg"]}',
+  '[{"id":45750,"sku":"31710656058819540621","price":450,"size":"3\" × 3\"","color":"White","is_available":true},{"id":45752,"sku":"24855115090978533144","price":500,"size":"4\" × 4\"","color":"White","is_available":true},{"id":45754,"sku":"13859681111512008525","price":550,"size":"6\" × 6\"","color":"White","is_available":true},{"id":45748,"sku":"29129068635434660422","price":400,"size":"2\" × 2\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -87,8 +87,8 @@ INSERT INTO products (
   'The authorized penetration tester&#39;s disclaimer. Shadowy figure. Glowing laptop. Cascading green code. Cyber-noir aesthetic that says &quot;security professional&quot; not &quot;movie villain.&quot; &quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; Premium glossy vinyl sticker for laptops, gear, or anywhere you need to establish your ethical-but-edgy credentials. Perfect conversation starter at security conferences. For professionals with scoped engagements, signed contracts, and maybe one or two',
   450,
   450,
-  '{"3\" × 3\"":["/assets/images/merch/6910017342b6650d5905b47c_3-3_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_3-3_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910017342b6650d5905b47c_4-4_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_4-4_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910017342b6650d5905b47c_6-6_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_6-6_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910017342b6650d5905b47c_2-2_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_2-2_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"23503507621546185096","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"22870552001790973774","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"20501013078508420636","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"15736439512450807647","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '{"White":["/assets/images/merch/6910017342b6650d5905b47c_white_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_white_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_white_3.jpg"]}',
+  '[{"id":45750,"sku":"23503507621546185096","price":450,"size":"3\" × 3\"","color":"White","is_available":true},{"id":45752,"sku":"22870552001790973774","price":500,"size":"4\" × 4\"","color":"White","is_available":true},{"id":45754,"sku":"20501013078508420636","price":550,"size":"6\" × 6\"","color":"White","is_available":true},{"id":45748,"sku":"15736439512450807647","price":400,"size":"2\" × 2\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -111,8 +111,8 @@ INSERT INTO products (
   'The uncomfortable truth in premium vinyl. Possessed smart devices. Glowing red eyes. Ominous kitchen takeover. One oblivious coffee cup. &quot;YOUR IOT DEVICES ARE A BOTNET. CHANGE MY MIND...&quot; Weather-resistant vinyl sticker for laptops, water bottles, server racks, or anywhere you need to make people question their smart home purchases. Comic-style artwork in electric blue and sinister red. Perfect size for maximum impact. Permanent reminder that default passwords are forever. Every purcha',
   450,
   450,
-  '{"3\" × 3\"":["/assets/images/merch/691000b0027fe1e0970d5eda_3-3_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_3-3_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/691000b0027fe1e0970d5eda_4-4_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_4-4_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/691000b0027fe1e0970d5eda_6-6_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_6-6_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/691000b0027fe1e0970d5eda_2-2_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_2-2_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"70444366065254945566","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"24366713678602104698","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"90362577541918089764","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"93235349189001002956","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '{"White":["/assets/images/merch/691000b0027fe1e0970d5eda_white_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_white_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_white_3.jpg"]}',
+  '[{"id":45750,"sku":"70444366065254945566","price":450,"size":"3\" × 3\"","color":"White","is_available":true},{"id":45752,"sku":"24366713678602104698","price":500,"size":"4\" × 4\"","color":"White","is_available":true},{"id":45754,"sku":"90362577541918089764","price":550,"size":"6\" × 6\"","color":"White","is_available":true},{"id":45748,"sku":"93235349189001002956","price":400,"size":"2\" × 2\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -136,7 +136,7 @@ INSERT INTO products (
   3500,
   3500,
   '{"White":["/assets/images/merch/690ff7fc386d9ee60c0f1840_white_1.jpg"],"Black":["/assets/images/merch/690ff7fc386d9ee60c0f1840_black_1.jpg"]}',
-  '[{"id":125427,"sku":"32261776444966378281","price":3500,"size":null,"color":"White","is_available":false},{"id":125428,"sku":"53990541444002133163","price":3500,"size":null,"color":"Black","is_available":true}]',
+  '[{"id":125427,"sku":"32261776444966378281","price":3500,"size":"20oz","color":"White","is_available":false},{"id":125428,"sku":"53990541444002133163","price":3500,"size":"20oz","color":"Black","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -495,8 +495,8 @@ INSERT INTO products (
   'Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product f',
   400,
   400,
-  '{"3\" × 3\"":["/assets/images/merch/690d4d35dd669cae270d8538_3-3_1.jpg","/assets/images/merch/690d4d35dd669cae270d8538_3-3_2.jpg","/assets/images/merch/690d4d35dd669cae270d8538_3-3_3.jpg"]}',
-  '[{"id":45750,"sku":"13893700387875055367","price":400,"size":null,"color":"3\" × 3\"","is_available":true}]',
+  '{"White":["/assets/images/merch/690d4d35dd669cae270d8538_white_1.jpg","/assets/images/merch/690d4d35dd669cae270d8538_white_2.jpg","/assets/images/merch/690d4d35dd669cae270d8538_white_3.jpg"]}',
+  '[{"id":45750,"sku":"13893700387875055367","price":400,"size":"3\" × 3\"","color":"White","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,

@@ -5,27 +5,12 @@
     "description": "Perfect for laptops, incident response kits, or anywhere you want to accurately describe your job without using your actual job title. For professionals who clean up messes they didn&#39;t create. Every purchase supports cybersecurity education that teaches people to make fewer fixable mistakes. Service-Disabled Veteran-Owned 501(c)(3)",
     "price": 450,
     "category": "stickers",
-    "image_url": "/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_1.jpg",
+    "image_url": "/assets/images/merch/691006cf57ca4ce0c7096aae_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_1.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_2.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_3.jpg"
-      ],
-      "4\" × 4\"": [
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_1.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_2.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_3.jpg"
-      ],
-      "6\" × 6\"": [
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_1.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_2.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_3.jpg"
-      ],
-      "2\" × 2\"": [
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_1.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_2.jpg",
-        "/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_3.jpg"
+      "White": [
+        "/assets/images/merch/691006cf57ca4ce0c7096aae_white_1.jpg",
+        "/assets/images/merch/691006cf57ca4ce0c7096aae_white_2.jpg",
+        "/assets/images/merch/691006cf57ca4ce0c7096aae_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -35,32 +20,32 @@
         "id": 45750,
         "sku": "14860676126386846466",
         "price": 450,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45752,
         "sku": "26534047241001418310",
         "price": 500,
-        "size": null,
-        "color": "4\" × 4\"",
+        "size": "4\" × 4\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45754,
         "sku": "29545430104546609929",
         "price": 550,
-        "size": null,
-        "color": "6\" × 6\"",
+        "size": "6\" × 6\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45748,
         "sku": "33327809954943582579",
         "price": 400,
-        "size": null,
-        "color": "2\" × 2\"",
+        "size": "2\" × 2\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -73,7 +58,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:40:21.475Z"
+    "created_at": "2025-11-09T05:05:39.832Z"
   },
   {
     "id": "6910061d2e33a251dc0f6b64",
@@ -81,27 +66,12 @@
     "description": "Perfect for zero trust architects, paranoid sysadmins, and security professionals who&#39;ve learned that trust is a vulnerability. Every purchase supports free cybersecurity education teaching actual security principles. Service-Disabled Veteran-Owned 501(c)(3)",
     "price": 450,
     "category": "stickers",
-    "image_url": "/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_1.jpg",
+    "image_url": "/assets/images/merch/6910061d2e33a251dc0f6b64_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_1.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_2.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_3.jpg"
-      ],
-      "4\" × 4\"": [
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_1.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_2.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_3.jpg"
-      ],
-      "6\" × 6\"": [
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_1.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_2.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_3.jpg"
-      ],
-      "2\" × 2\"": [
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_1.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_2.jpg",
-        "/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_3.jpg"
+      "White": [
+        "/assets/images/merch/6910061d2e33a251dc0f6b64_white_1.jpg",
+        "/assets/images/merch/6910061d2e33a251dc0f6b64_white_2.jpg",
+        "/assets/images/merch/6910061d2e33a251dc0f6b64_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -111,32 +81,32 @@
         "id": 45750,
         "sku": "11177668097912896855",
         "price": 450,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45752,
         "sku": "23256496662658892563",
         "price": 500,
-        "size": null,
-        "color": "4\" × 4\"",
+        "size": "4\" × 4\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45754,
         "sku": "17959987715438687496",
         "price": 550,
-        "size": null,
-        "color": "6\" × 6\"",
+        "size": "6\" × 6\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45748,
         "sku": "85327419190851187698",
         "price": 400,
-        "size": null,
-        "color": "2\" × 2\"",
+        "size": "2\" × 2\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -149,7 +119,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:40:25.769Z"
+    "created_at": "2025-11-09T05:05:41.172Z"
   },
   {
     "id": "6910045d0c938f573d023c0a",
@@ -157,27 +127,12 @@
     "description": "Perfect for laptops, compliance binders (irony), server racks, or anywhere you need to make the point silently. Every purchase supports free cybersecurity education that teaches actual security, not just checkbox compliance. Service-Disabled Veteran-Owned 501(c)(3)",
     "price": 450,
     "category": "stickers",
-    "image_url": "/assets/images/merch/6910045d0c938f573d023c0a_3-3_1.jpg",
+    "image_url": "/assets/images/merch/6910045d0c938f573d023c0a_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/6910045d0c938f573d023c0a_3-3_1.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_3-3_2.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_3-3_3.jpg"
-      ],
-      "4\" × 4\"": [
-        "/assets/images/merch/6910045d0c938f573d023c0a_4-4_1.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_4-4_2.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_4-4_3.jpg"
-      ],
-      "6\" × 6\"": [
-        "/assets/images/merch/6910045d0c938f573d023c0a_6-6_1.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_6-6_2.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_6-6_3.jpg"
-      ],
-      "2\" × 2\"": [
-        "/assets/images/merch/6910045d0c938f573d023c0a_2-2_1.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_2-2_2.jpg",
-        "/assets/images/merch/6910045d0c938f573d023c0a_2-2_3.jpg"
+      "White": [
+        "/assets/images/merch/6910045d0c938f573d023c0a_white_1.jpg",
+        "/assets/images/merch/6910045d0c938f573d023c0a_white_2.jpg",
+        "/assets/images/merch/6910045d0c938f573d023c0a_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -187,32 +142,32 @@
         "id": 45750,
         "sku": "31710656058819540621",
         "price": 450,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45752,
         "sku": "24855115090978533144",
         "price": 500,
-        "size": null,
-        "color": "4\" × 4\"",
+        "size": "4\" × 4\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45754,
         "sku": "13859681111512008525",
         "price": 550,
-        "size": null,
-        "color": "6\" × 6\"",
+        "size": "6\" × 6\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45748,
         "sku": "29129068635434660422",
         "price": 400,
-        "size": null,
-        "color": "2\" × 2\"",
+        "size": "2\" × 2\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -225,7 +180,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:40:29.529Z"
+    "created_at": "2025-11-09T05:05:42.393Z"
   },
   {
     "id": "6910017342b6650d5905b47c",
@@ -233,27 +188,12 @@
     "description": "The authorized penetration tester&#39;s disclaimer. Shadowy figure. Glowing laptop. Cascading green code. Cyber-noir aesthetic that says &quot;security professional&quot; not &quot;movie villain.&quot; &quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; Premium glossy vinyl sticker for laptops, gear, or anywhere you need to establish your ethical-but-edgy credentials. Perfect conversation starter at security conferences. For professionals with scoped engagements, signed contracts, and maybe one or two stories we don&#39;t discuss in polite company. Every purchase supports free cybersecurity education for underserved communities. Service-Disabled Veteran-Owned 501(c)(3)",
     "price": 450,
     "category": "stickers",
-    "image_url": "/assets/images/merch/6910017342b6650d5905b47c_3-3_1.jpg",
+    "image_url": "/assets/images/merch/6910017342b6650d5905b47c_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/6910017342b6650d5905b47c_3-3_1.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_3-3_2.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_3-3_3.jpg"
-      ],
-      "4\" × 4\"": [
-        "/assets/images/merch/6910017342b6650d5905b47c_4-4_1.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_4-4_2.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_4-4_3.jpg"
-      ],
-      "6\" × 6\"": [
-        "/assets/images/merch/6910017342b6650d5905b47c_6-6_1.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_6-6_2.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_6-6_3.jpg"
-      ],
-      "2\" × 2\"": [
-        "/assets/images/merch/6910017342b6650d5905b47c_2-2_1.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_2-2_2.jpg",
-        "/assets/images/merch/6910017342b6650d5905b47c_2-2_3.jpg"
+      "White": [
+        "/assets/images/merch/6910017342b6650d5905b47c_white_1.jpg",
+        "/assets/images/merch/6910017342b6650d5905b47c_white_2.jpg",
+        "/assets/images/merch/6910017342b6650d5905b47c_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -263,32 +203,32 @@
         "id": 45750,
         "sku": "23503507621546185096",
         "price": 450,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45752,
         "sku": "22870552001790973774",
         "price": 500,
-        "size": null,
-        "color": "4\" × 4\"",
+        "size": "4\" × 4\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45754,
         "sku": "20501013078508420636",
         "price": 550,
-        "size": null,
-        "color": "6\" × 6\"",
+        "size": "6\" × 6\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45748,
         "sku": "15736439512450807647",
         "price": 400,
-        "size": null,
-        "color": "2\" × 2\"",
+        "size": "2\" × 2\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -301,7 +241,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:40:33.191Z"
+    "created_at": "2025-11-09T05:05:43.560Z"
   },
   {
     "id": "691000b0027fe1e0970d5eda",
@@ -309,27 +249,12 @@
     "description": "The uncomfortable truth in premium vinyl. Possessed smart devices. Glowing red eyes. Ominous kitchen takeover. One oblivious coffee cup. &quot;YOUR IOT DEVICES ARE A BOTNET. CHANGE MY MIND...&quot; Weather-resistant vinyl sticker for laptops, water bottles, server racks, or anywhere you need to make people question their smart home purchases. Comic-style artwork in electric blue and sinister red. Perfect size for maximum impact. Permanent reminder that default passwords are forever. Every purchase supports free cybersecurity education for underserved communities. Service-Disabled Veteran-Owned 501(c)(3)",
     "price": 450,
     "category": "stickers",
-    "image_url": "/assets/images/merch/691000b0027fe1e0970d5eda_3-3_1.jpg",
+    "image_url": "/assets/images/merch/691000b0027fe1e0970d5eda_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/691000b0027fe1e0970d5eda_3-3_1.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_3-3_2.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_3-3_3.jpg"
-      ],
-      "4\" × 4\"": [
-        "/assets/images/merch/691000b0027fe1e0970d5eda_4-4_1.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_4-4_2.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_4-4_3.jpg"
-      ],
-      "6\" × 6\"": [
-        "/assets/images/merch/691000b0027fe1e0970d5eda_6-6_1.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_6-6_2.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_6-6_3.jpg"
-      ],
-      "2\" × 2\"": [
-        "/assets/images/merch/691000b0027fe1e0970d5eda_2-2_1.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_2-2_2.jpg",
-        "/assets/images/merch/691000b0027fe1e0970d5eda_2-2_3.jpg"
+      "White": [
+        "/assets/images/merch/691000b0027fe1e0970d5eda_white_1.jpg",
+        "/assets/images/merch/691000b0027fe1e0970d5eda_white_2.jpg",
+        "/assets/images/merch/691000b0027fe1e0970d5eda_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -339,32 +264,32 @@
         "id": 45750,
         "sku": "70444366065254945566",
         "price": 450,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45752,
         "sku": "24366713678602104698",
         "price": 500,
-        "size": null,
-        "color": "4\" × 4\"",
+        "size": "4\" × 4\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45754,
         "sku": "90362577541918089764",
         "price": 550,
-        "size": null,
-        "color": "6\" × 6\"",
+        "size": "6\" × 6\"",
+        "color": "White",
         "is_available": true
       },
       {
         "id": 45748,
         "sku": "93235349189001002956",
         "price": 400,
-        "size": null,
-        "color": "2\" × 2\"",
+        "size": "2\" × 2\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -377,7 +302,7 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:40:36.981Z"
+    "created_at": "2025-11-09T05:05:44.698Z"
   },
   {
     "id": "690ff7fc386d9ee60c0f1840",
@@ -401,7 +326,7 @@
         "id": 125427,
         "sku": "32261776444966378281",
         "price": 3500,
-        "size": null,
+        "size": "20oz",
         "color": "White",
         "is_available": false
       },
@@ -409,7 +334,7 @@
         "id": 125428,
         "sku": "53990541444002133163",
         "price": 3500,
-        "size": null,
+        "size": "20oz",
         "color": "Black",
         "is_available": true
       }
@@ -427,7 +352,7 @@
       "Home & Living",
       "Engraving"
     ],
-    "created_at": "2025-11-09T04:40:37.675Z"
+    "created_at": "2025-11-09T05:05:45.643Z"
   },
   {
     "id": "690ff67875896d655507b3d5",
@@ -819,7 +744,7 @@
       "Embroidery",
       "Personalization Picks"
     ],
-    "created_at": "2025-11-09T04:40:47.414Z"
+    "created_at": "2025-11-09T05:05:55.042Z"
   },
   {
     "id": "690ff2f48ed2c2d2bb07f11d",
@@ -916,7 +841,7 @@
       "Embroidery",
       "Personalization Picks"
     ],
-    "created_at": "2025-11-09T04:40:48.979Z"
+    "created_at": "2025-11-09T05:05:56.571Z"
   },
   {
     "id": "690ff1c641ac722ee801224a",
@@ -1598,7 +1523,7 @@
       "Embroidery",
       "Personalization Picks"
     ],
-    "created_at": "2025-11-09T04:41:04.611Z"
+    "created_at": "2025-11-09T05:06:09.415Z"
   },
   {
     "id": "690feda0386d9ee60c0f1583",
@@ -1911,7 +1836,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:41:13.931Z"
+    "created_at": "2025-11-09T05:06:16.069Z"
   },
   {
     "id": "690fec48149edf1d8f067bec",
@@ -2300,7 +2225,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:41:24.838Z"
+    "created_at": "2025-11-09T05:06:25.202Z"
   },
   {
     "id": "690feb1841ac722ee8012078",
@@ -3059,7 +2984,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:41:50.973Z"
+    "created_at": "2025-11-09T05:06:47.962Z"
   },
   {
     "id": "690fe9628ed2c2d2bb07ee96",
@@ -3160,7 +3085,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:41:53.932Z"
+    "created_at": "2025-11-09T05:06:50.605Z"
   },
   {
     "id": "690fe8ba2e33a251dc0f6442",
@@ -3658,7 +3583,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:42:19.385Z"
+    "created_at": "2025-11-09T05:07:11.031Z"
   },
   {
     "id": "690fdc8357ca4ce0c7096060",
@@ -4353,7 +4278,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:42:49.366Z"
+    "created_at": "2025-11-09T05:07:34.227Z"
   },
   {
     "id": "690fdb6f72b3d1dfb70b89d1",
@@ -4456,7 +4381,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:42:52.763Z"
+    "created_at": "2025-11-09T05:07:37.233Z"
   },
   {
     "id": "690fcef9044f38019f0b5453",
@@ -4560,7 +4485,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:42:56.441Z"
+    "created_at": "2025-11-09T05:07:40.324Z"
   },
   {
     "id": "690e93e52e33a251dc0f1694",
@@ -4971,7 +4896,7 @@
       "Embroidery",
       "Simple designs on large embroidery"
     ],
-    "created_at": "2025-11-09T04:43:11.820Z"
+    "created_at": "2025-11-09T05:07:52.263Z"
   },
   {
     "id": "690d4f4727f2dde9090a5396",
@@ -5458,7 +5383,7 @@
       "Summer Picks",
       "TikTok"
     ],
-    "created_at": "2025-11-09T04:43:15.621Z"
+    "created_at": "2025-11-09T05:07:54.895Z"
   },
   {
     "id": "690d4d4027f2dde9090a533a",
@@ -5587,7 +5512,7 @@
       "Polo",
       "Polo shirt"
     ],
-    "created_at": "2025-11-09T04:43:23.764Z"
+    "created_at": "2025-11-09T05:08:02.841Z"
   },
   {
     "id": "690d4d35dd669cae270d8538",
@@ -5595,12 +5520,12 @@
     "description": "Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product features - Glossy paper finish for a scratch-resistant surface. - Durable vinyl with strong adhesive for long-lasting application. - Vibrant colors printed with eco-friendly inks for eye-catching designs. - Available in multiple sizes with both white and transparent options. - Quick and easy application without bubbles for a polished look. Care instructions - Use a soft, clean and dry cloth to gently brush any dust or dirt off from the center of the sticker outwards.",
     "price": 400,
     "category": "stickers",
-    "image_url": "/assets/images/merch/690d4d35dd669cae270d8538_3-3_1.jpg",
+    "image_url": "/assets/images/merch/690d4d35dd669cae270d8538_white_1.jpg",
     "images_by_color": {
-      "3\" × 3\"": [
-        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_1.jpg",
-        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_2.jpg",
-        "/assets/images/merch/690d4d35dd669cae270d8538_3-3_3.jpg"
+      "White": [
+        "/assets/images/merch/690d4d35dd669cae270d8538_white_1.jpg",
+        "/assets/images/merch/690d4d35dd669cae270d8538_white_2.jpg",
+        "/assets/images/merch/690d4d35dd669cae270d8538_white_3.jpg"
       ]
     },
     "printify_blueprint_id": 400,
@@ -5610,8 +5535,8 @@
         "id": 45750,
         "sku": "13893700387875055367",
         "price": 400,
-        "size": null,
-        "color": "3\" × 3\"",
+        "size": "3\" × 3\"",
+        "color": "White",
         "is_available": true
       }
     ],
@@ -5624,6 +5549,6 @@
       "TikTok",
       "Back to School"
     ],
-    "created_at": "2025-11-09T04:43:25.811Z"
+    "created_at": "2025-11-09T05:08:04.304Z"
   }
 ]

@@ -17,7 +17,8 @@
       "Bash(node -e:*)",
       "Bash(curl:*)",
       "Bash(node scripts/generate-import-sql.js:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node test-extraction.js:*)"
     ],
     "deny": [],
     "ask": []
