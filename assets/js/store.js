@@ -10,8 +10,9 @@ window.STORE_LOADED = true;
 // ============================================
 // Configuration
 // ============================================
-// Use relative path - proxied to worker via Pages Functions service binding
-window.API_BASE_URL = window.API_BASE_URL || '/store/api';
+// Using workers.dev until service binding is working
+// TODO: Debug why /store/api returns 404 even with STORE_API binding configured
+window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
