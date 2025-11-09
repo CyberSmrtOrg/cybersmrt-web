@@ -246,30 +246,29 @@
     /* Emergency "Back to English" button for cyber languages */
     .emergency-english-btn {
       display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
       background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
       color: white;
-      padding: 0.75rem 1.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 50px;
       border: 2px solid rgba(255, 255, 255, 0.3);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
-      z-index: 999999;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
       transition: all 0.3s ease;
       animation: pulse 2s infinite;
+      white-space: nowrap;
+      margin-right: 1rem;
     }
 
     .emergency-english-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(245, 158, 11, 0.7);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.7);
     }
 
     .emergency-english-btn.visible {
-      display: block;
+      display: inline-flex;
+      align-items: center;
     }
 
     @keyframes pulse {
@@ -1020,6 +1019,11 @@
         <a href="https://cybersmrt.org/blog" class="mega-menu-trigger" onclick="toggleMegaMenu(event); return false;" aria-haspopup="true" aria-expanded="false">Blog</a>
       </nav>
 
+      <!-- Emergency "Back to English" button -->
+      <button id="emergency-english" class="emergency-english-btn no-translate" onclick="changeLanguage('en')" title="Click to return to English">
+        🇺🇸 Back to English
+      </button>
+
       <div class="header-social-links" aria-label="Social Media">
         <a href="https://www.linkedin.com/company/cybersmrtorg/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
           <img src="/assets/logos/linkedin.png" alt="LinkedIn">
@@ -1299,11 +1303,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Emergency "Back to English" button -->
-  <button id="emergency-english" class="emergency-english-btn no-translate" onclick="changeLanguage('en')" title="Click to return to English">
-    🇺🇸 Back to English
-  </button>
 </header>
 
 <script>

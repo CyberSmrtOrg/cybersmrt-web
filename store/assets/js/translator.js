@@ -238,6 +238,23 @@ class CyberSmrtTranslator {
       this.originalContent.forEach((original, element) => {
         element.textContent = original.text;
       });
+
+      // Restore placeholders
+      const placeholderElements = document.querySelectorAll('[placeholder]');
+      for (const element of placeholderElements) {
+        if (element.dataset.originalPlaceholder) {
+          element.placeholder = element.dataset.originalPlaceholder;
+        }
+      }
+
+      // Restore input values
+      document.querySelectorAll('input[type="search"], input[type="text"]').forEach((element) => {
+        if (element.dataset.originalValue) {
+          element.value = element.dataset.originalValue;
+          delete element.dataset.originalValue;
+        }
+      });
+
       return;
     }
 
