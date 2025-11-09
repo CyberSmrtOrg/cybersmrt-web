@@ -10,8 +10,8 @@ window.STORE_LOADED = true;
 // ============================================
 // Configuration
 // ============================================
-// Use relative path for store API - routed to worker via _routes.json
-window.API_BASE_URL = window.API_BASE_URL || '/store/api';
+// Using workers.dev until _routes.json is properly configured in Pages
+window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
