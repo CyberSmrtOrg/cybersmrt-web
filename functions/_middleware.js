@@ -2,6 +2,12 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = url.pathname;
 
+  // 0. Skip middleware for store API paths - let the store function handle them
+  const storeApiPaths = ['/store/api/', '/store/webhooks/', '/store/checkout/', '/store/printify/'];
+  if (storeApiPaths.some(apiPath => path.startsWith(apiPath)) || path === '/store/products') {
+    return context.next();
+  }
+
   // 1. Block underscore-prefixed template files
   if (path.includes('/_')) {
     return new Response(`
