@@ -11,7 +11,8 @@ window.STORE_LOADED = true;
 // Configuration
 // ============================================
 // Use relative path - proxied to worker via Pages Functions service binding
-window.API_BASE_URL = window.API_BASE_URL || '/store/api';
+// Note: Worker routes are at /products, /checkout/*, /api/orders, etc.
+window.API_BASE_URL = window.API_BASE_URL || '/store';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================

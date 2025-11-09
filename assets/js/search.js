@@ -84,7 +84,7 @@ class CyberSmrtSearch {
   async loadStoreProducts() {
     try {
       console.log('🛍️ Loading store products for search...');
-      const response = await fetch('/store/api/products');
+      const response = await fetch('/store/products');
       console.log('Store API response:', response.status);
 
       if (response.ok) {
