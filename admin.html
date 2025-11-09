@@ -583,11 +583,15 @@
 
             try {
                 const response = await fetch(`${AUTH_API}/me`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    mode: 'cors',
+                    credentials: 'include'
                 });
 
                 if (!response.ok) {
-                    throw new Error('Unauthorized');
+                    const errorText = await response.text();
+                    console.error('API Error Response:', response.status, errorText);
+                    throw new Error(`API returned ${response.status}: ${errorText || 'Unauthorized'}`);
                 }
 
                 const data = await response.json();
@@ -606,6 +610,14 @@
                 return true;
             } catch (error) {
                 console.error('Admin access check failed:', error);
+
+                // Show more detailed error message to user
+                if (error.message && error.message.includes('Failed to fetch')) {
+                    alert(`Cannot connect to auth.cybersmrt.org. Please check:\n1. Your internet connection\n2. Whether auth.cybersmrt.org is accessible\n3. Browser console for CORS errors\n\nError: ${error.message}`);
+                } else {
+                    alert(`Authentication failed: ${error.message}\n\nPlease try logging in again.`);
+                }
+
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
                 window.location.href = '/login.html';

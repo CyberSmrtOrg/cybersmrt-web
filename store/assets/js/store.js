@@ -276,17 +276,28 @@ const Store = {
     let html = '<div class="product-options">';
 
     if (sizes.length > 0) {
+      // Get the first color to check availability (will be updated when color changes)
+      const defaultColor = colors[0];
+
       html += `
         <div class="option-group">
           <label class="option-label">Size:</label>
           <div class="option-buttons" data-option-type="size" data-product-id="${product.id}">
-            ${sizes.map(size => `
-              <button class="option-btn ${size === sizes[0] ? 'selected' : ''}"
-                      onclick="Store.selectOption('${product.id}', 'size', '${size}')"
-                      data-option-value="${size}">
-                ${size}
-              </button>
-            `).join('')}
+            ${sizes.map((size, index) => {
+              // Check if this size is available in the default color
+              const variant = product.variants.find(v => v.size === size && v.color === defaultColor);
+              const isAvailable = variant && variant.is_available;
+              const isOutOfStock = !isAvailable;
+
+              return `
+                <button class="option-btn ${index === 0 ? 'selected' : ''} ${isOutOfStock ? 'out-of-stock' : ''}"
+                        onclick="Store.selectOption('${product.id}', 'size', '${size}')"
+                        data-option-value="${size}"
+                        ${isOutOfStock ? 'disabled' : ''}>
+                  ${size}${isOutOfStock ? ' (Out)' : ''}
+                </button>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
@@ -334,8 +345,37 @@ const Store = {
       btn.classList.toggle('selected', btn.dataset.optionValue === value);
     });
 
+    // If color changed, update size availability
+    if (optionType === 'color') {
+      this.updateSizeAvailability(productId, value);
+    }
+
     // Update price based on selected variant
     this.updateProductPrice(productId);
+  },
+
+  // Update size button availability based on selected color
+  updateSizeAvailability(productId, selectedColor) {
+    const product = this.products.find(p => p.id === productId);
+    if (!product || !product.variants) return;
+
+    const sizeContainer = document.querySelector(`[data-option-type="size"][data-product-id="${productId}"]`);
+    if (!sizeContainer) return;
+
+    sizeContainer.querySelectorAll('.option-btn').forEach(btn => {
+      const size = btn.dataset.optionValue;
+      const variant = product.variants.find(v => v.size === size && v.color === selectedColor);
+      const isAvailable = variant && variant.is_available;
+      const isOutOfStock = !isAvailable;
+
+      // Update button state
+      btn.classList.toggle('out-of-stock', isOutOfStock);
+      btn.disabled = isOutOfStock;
+
+      // Update button text
+      const sizeText = size + (isOutOfStock ? ' (Out)' : '');
+      btn.textContent = sizeText;
+    });
   },
 
   // Update product price based on selected variants

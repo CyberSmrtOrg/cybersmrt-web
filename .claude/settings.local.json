@@ -7,7 +7,8 @@
       "Bash(check-products.json)",
       "Bash(find:*)",
       "Bash(git add:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(gh workflow run:*)"
     ],
     "deny": [],
     "ask": []
