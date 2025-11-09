@@ -10,8 +10,9 @@ window.STORE_LOADED = true;
 // ============================================
 // Configuration
 // ============================================
-// Use relative path - proxied to worker via Pages Functions service binding
-window.API_BASE_URL = window.API_BASE_URL || '/store/api';
+// Using workers.dev until Pages Functions service binding is configured
+// TODO: Switch to '/store/api' after configuring STORE_API binding in Cloudflare
+window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
