@@ -229,8 +229,9 @@ const Store = {
           <h3 class="product-title-simple">${product.name}</h3>
           <div class="product-price-simple">$${(defaultPrice / 100).toFixed(2)}</div>
 
-          <div class="card-options-row">
-            ${hasMultipleColors ? `
+          ${hasMultipleColors ? `
+            <div class="card-option-group">
+              <label class="card-option-label">Color:</label>
               <div class="card-color-selector">
                 ${colors.map(color => `
                   <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
@@ -241,19 +242,22 @@ const Store = {
                   </button>
                 `).join('')}
               </div>
-            ` : ''}
+            </div>
+          ` : ''}
 
-            ${hasSizes ? `
-              <select class="card-size-selector"
-                      data-product-id="${product.id}"
-                      onclick="event.stopPropagation();"
-                      onchange="Store.changeCardSize('${product.id}', this.value)">
+          ${hasSizes ? `
+            <div class="card-option-group">
+              <label class="card-option-label">Size:</label>
+              <div class="card-size-selector">
                 ${sizes.map(size => `
-                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
+                  <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
+                          onclick="event.stopPropagation(); Store.changeCardSize('${product.id}', '${size}')">
+                    ${size}
+                  </button>
                 `).join('')}
-              </select>
-            ` : ''}
-          </div>
+              </div>
+            </div>
+          ` : ''}
 
           <button class="card-add-to-cart-btn" onclick="event.stopPropagation(); Store.quickAddToCart('${product.id}')">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -643,10 +647,15 @@ const Store = {
     // Update internal state
     product._cardSize = size;
 
-    // Update data attribute
+    // Update data attribute and button states
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
+
+      // Update size button active states
+      card.querySelectorAll('.card-size-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim() === size);
+      });
     }
   },
 
@@ -698,7 +707,7 @@ const Store = {
         </button>
 
         <div class="modal-grid">
-          <!-- Left: Image Carousel -->
+          <!-- Left: Image Carousel & Description -->
           <div class="modal-image-section">
             <div class="modal-carousel">
               ${currentImages.length > 1 ? `
@@ -730,23 +739,31 @@ const Store = {
                 `).join('')}
               </div>
             ` : ''}
+
+            <!-- Full Description Below Images -->
+            ${product.description ? `
+              <div class="modal-description-full">
+                <h3 class="modal-description-title">Description</h3>
+                <p class="modal-description-text">${product.description}</p>
+              </div>
+            ` : ''}
           </div>
 
-          <!-- Right: Product Details -->
+          <!-- Right: Product Details (Compact) -->
           <div class="modal-details-section">
             <h2 class="modal-title">${product.name}</h2>
             <div class="modal-price">$${(product.price / 100).toFixed(2)}</div>
-            <p class="modal-description">${product.description || ''}</p>
 
             ${colors.length > 1 ? `
               <div class="modal-option-group">
                 <label class="modal-option-label">Color</label>
                 <div class="modal-color-options">
                   ${colors.map(color => `
-                    <button class="modal-color-btn ${color === this.modalSelectedColor ? 'selected' : ''}"
+                    <button class="modal-color-dot ${color === this.modalSelectedColor ? 'selected' : ''}"
+                            style="background-color: ${this.getColorHex(color)};"
                             onclick="Store.selectModalColor('${color}')"
-                            title="${color}">
-                      ${color}
+                            title="${color}"
+                            aria-label="Select ${color}">
                     </button>
                   `).join('')}
                 </div>
@@ -817,9 +834,9 @@ const Store = {
     // Preserve the current image index to stay on the same pose
     const currentIndex = this.modalImageIndex || 0;
 
-    // Update color buttons
-    document.querySelectorAll('.modal-color-btn').forEach(btn => {
-      btn.classList.toggle('selected', btn.textContent.trim() === color);
+    // Update color dots
+    document.querySelectorAll('.modal-color-dot').forEach(btn => {
+      btn.classList.toggle('selected', btn.title === color);
     });
 
     // Update images

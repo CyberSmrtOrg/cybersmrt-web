@@ -943,6 +943,20 @@
       transform: translateY(0);
     }
 
+    .card-option-group {
+      margin-top: 0.75rem;
+    }
+
+    .card-option-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
     .product-card {
       cursor: pointer;
     }
@@ -1243,6 +1257,47 @@
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
+    }
+
+    .modal-color-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 3px solid var(--card-border);
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+    }
+
+    .modal-color-dot:hover {
+      transform: scale(1.15);
+      border-color: #667eea;
+    }
+
+    .modal-color-dot.selected {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+      transform: scale(1.2);
+    }
+
+    .modal-description-full {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .modal-description-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .modal-description-text {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 1.05rem;
+      white-space: pre-wrap;
     }
 
     /* Animations */
