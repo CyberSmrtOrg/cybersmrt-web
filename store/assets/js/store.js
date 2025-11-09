@@ -243,16 +243,14 @@ const Store = {
             ` : ''}
 
             ${hasSizes ? `
-              <div class="card-size-selector">
+              <select class="card-size-selector"
+                      data-product-id="${product.id}"
+                      onclick="event.stopPropagation();"
+                      onchange="Store.changeCardSize('${product.id}', this.value)">
                 ${sizes.map(size => `
-                  <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="event.stopPropagation(); Store.changeCardSize('${product.id}', '${size}')"
-                          data-size="${size}"
-                          title="${size}">
-                    ${size}
-                  </button>
+                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
                 `).join('')}
-              </div>
+              </select>
             ` : ''}
           </div>
 
@@ -644,15 +642,10 @@ const Store = {
     // Update internal state
     product._cardSize = size;
 
-    // Update data attribute and button states
+    // Update data attribute
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
-
-      // Update size button active states
-      card.querySelectorAll('.card-size-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-size') === size);
-      });
     }
   },
 
@@ -742,6 +735,7 @@ const Store = {
           <div class="modal-details-section">
             <h2 class="modal-title">${product.name}</h2>
             <div class="modal-price">$${(product.price / 100).toFixed(2)}</div>
+            <p class="modal-description">${product.description || ''}</p>
 
             ${colors.length > 1 ? `
               <div class="modal-option-group">
@@ -780,14 +774,6 @@ const Store = {
             </button>
           </div>
         </div>
-
-        <!-- Description Section - Full Width Below -->
-        ${product.description ? `
-          <div class="modal-description-section">
-            <h3 class="modal-description-title">Product Description</h3>
-            <p class="modal-description">${product.description}</p>
-          </div>
-        ` : ''}
       </div>
     `;
   },
