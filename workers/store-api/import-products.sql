@@ -1,9 +1,9 @@
 -- CyberSmrt Product Catalog Import
--- Generated: 2025-11-09T04:19:22.289Z
--- Products: 22
+-- Generated: 2025-11-09T04:43:25.871Z
+-- Products: 21
 
 
--- Kiss-Cut Stickers
+-- CyberSmrt "I Fix Your Mistakes For A Living" Sticker
 INSERT INTO products (
   id, printify_blueprint_id, printify_print_provider_id,
   title, description, base_price, markup_price, images, variants, is_active
@@ -11,12 +11,12 @@ INSERT INTO products (
   '691006cf57ca4ce0c7096aae',
   400,
   99,
-  'Kiss-Cut Stickers',
-  'Perfect for spicing up indoor decor (not waterproof) .: Quick, smooth, and bubble-free application .: Choose between 4 sizes with a glossy finish to match your needs .: White and transparent sticker options available',
-  263,
-  263,
+  'CyberSmrt "I Fix Your Mistakes For A Living" Sticker',
+  'Perfect for laptops, incident response kits, or anywhere you want to accurately describe your job without using your actual job title. For professionals who clean up messes they didn&#39;t create. Every purchase supports cybersecurity education that teaches people to make fewer fixable mistakes. Service-Disabled Veteran-Owned 501(c)(3)',
+  450,
+  450,
   '{"3\" × 3\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_2-2_3.jpg"]}',
-  '[{"id":45750,"sku":"14860676126386846466","price":263,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"26534047241001418310","price":333,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"29545430104546609929","price":386,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"33327809954943582579","price":236,"size":null,"color":"2\" × 2\"","is_available":true}]',
+  '[{"id":45750,"sku":"14860676126386846466","price":450,"size":null,"color":"3\" × 3\"","is_available":true},{"id":45752,"sku":"26534047241001418310","price":500,"size":null,"color":"4\" × 4\"","is_available":true},{"id":45754,"sku":"29545430104546609929","price":550,"size":null,"color":"6\" × 6\"","is_available":true},{"id":45748,"sku":"33327809954943582579","price":400,"size":null,"color":"2\" × 2\"","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
@@ -36,7 +36,7 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Trust No One" Sticker',
-  'Features: Glossy scratch-resistant finish Luminous teal on deep black (maximum contrast) Cyber-noir fedora aesthetic (classy paranoia) Durable 100% vinyl construction Strong permanent acrylic adhesive Printed with eco-solvent inks (fade-resistant) Kiss-cut edges (clean professional look) Quick, bubble-free application Available in 4 sizes White or transparent backing options Care: Gently wipe with soft, clean, dry cloth from center outward. (Trust no one with your sticker maintenance either.) Pe',
+  'Perfect for zero trust architects, paranoid sysadmins, and security professionals who&#39;ve learned that trust is a vulnerability. Every purchase supports free cybersecurity education teaching actual security principles. Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"3\" × 3\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_2-2_3.jpg"]}',
@@ -60,7 +60,7 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Compliance ≠ Security" Sticker',
-  'Features: Glossy scratch-resistant finish Vivid eco-solvent ink printing (colors POP) Split-screen design: cool blues vs. hot oranges Durable 100% vinyl construction Strong permanent acrylic adhesive Kiss-cut edges (professional appearance) Quick, bubble-free application Available in 4 sizes White or transparent backing options Care: Gently wipe with soft, clean, dry cloth from center outward. (Unlike compliance frameworks, proper care actually prevents problems.) Perfect for: Security architect',
+  'Perfect for laptops, compliance binders (irony), server racks, or anywhere you need to make the point silently. Every purchase supports free cybersecurity education that teaches actual security, not just checkbox compliance. Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"3\" × 3\"":["/assets/images/merch/6910045d0c938f573d023c0a_3-3_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_3-3_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910045d0c938f573d023c0a_4-4_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_4-4_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910045d0c938f573d023c0a_6-6_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_6-6_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910045d0c938f573d023c0a_2-2_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_2-2_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_2-2_3.jpg"]}',
@@ -84,7 +84,7 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "I Hack Things. Legally. Mostly..." Sticker',
-  'Features: Glossy finish with scratch-resistant surface Vibrant eco-solvent ink printing (that green POPS) Durable 100% vinyl construction Strong permanent acrylic adhesive Kiss-cut edges (clean, professional look) Quick, bubble-free application Available in 4 sizes (pick your impact level) White or transparent backing options Not waterproof (indoor use recommended) Care: Gently wipe with soft, clean, dry cloth from center outward. (Treat it better than your IoT devices treat their default passwo',
+  'The authorized penetration tester&#39;s disclaimer. Shadowy figure. Glowing laptop. Cascading green code. Cyber-noir aesthetic that says &quot;security professional&quot; not &quot;movie villain.&quot; &quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; Premium glossy vinyl sticker for laptops, gear, or anywhere you need to establish your ethical-but-edgy credentials. Perfect conversation starter at security conferences. For professionals with scoped engagements, signed contracts, and maybe one or two',
   450,
   450,
   '{"3\" × 3\"":["/assets/images/merch/6910017342b6650d5905b47c_3-3_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_3-3_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/6910017342b6650d5905b47c_4-4_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_4-4_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/6910017342b6650d5905b47c_6-6_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_6-6_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/6910017342b6650d5905b47c_2-2_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_2-2_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_2-2_3.jpg"]}',
@@ -108,7 +108,7 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Your IoT Devices Are A Botnet" Sticker',
-  'Features: Premium vinyl material (durable, weather-resistant) Comic-style electric blue and red artwork Matte or glossy finish (depends on supplier) Die-cut to shape (no boring rectangle) Strong adhesive (stays put) Removable without residue (repositionable once) Approximate size: 3-4 inches (perfect laptop sticker size) Perfect for: Security researchers specializing in IoT Network admins who&#39;ve seen the scanning traffic Penetration testers who focus on embedded devices Anyone who puts IoT d',
+  'The uncomfortable truth in premium vinyl. Possessed smart devices. Glowing red eyes. Ominous kitchen takeover. One oblivious coffee cup. &quot;YOUR IOT DEVICES ARE A BOTNET. CHANGE MY MIND...&quot; Weather-resistant vinyl sticker for laptops, water bottles, server racks, or anywhere you need to make people question their smart home purchases. Comic-style artwork in electric blue and sinister red. Perfect size for maximum impact. Permanent reminder that default passwords are forever. Every purcha',
   450,
   450,
   '{"3\" × 3\"":["/assets/images/merch/691000b0027fe1e0970d5eda_3-3_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_3-3_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_3-3_3.jpg"],"4\" × 4\"":["/assets/images/merch/691000b0027fe1e0970d5eda_4-4_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_4-4_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_4-4_3.jpg"],"6\" × 6\"":["/assets/images/merch/691000b0027fe1e0970d5eda_6-6_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_6-6_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_6-6_3.jpg"],"2\" × 2\"":["/assets/images/merch/691000b0027fe1e0970d5eda_2-2_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_2-2_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_2-2_3.jpg"]}',
@@ -137,30 +137,6 @@ INSERT INTO products (
   3500,
   '{"White":["/assets/images/merch/690ff7fc386d9ee60c0f1840_white_1.jpg"],"Black":["/assets/images/merch/690ff7fc386d9ee60c0f1840_black_1.jpg"]}',
   '[{"id":125427,"sku":"32261776444966378281","price":3500,"size":null,"color":"White","is_available":false},{"id":125428,"sku":"53990541444002133163","price":3500,"size":null,"color":"Black","is_available":true}]',
-  1
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  description = excluded.description,
-  markup_price = excluded.markup_price,
-  images = excluded.images,
-  variants = excluded.variants,
-  updated_at = CURRENT_TIMESTAMP;
-
-
--- Vagabond 20oz Tumbler
-INSERT INTO products (
-  id, printify_blueprint_id, printify_print_provider_id,
-  title, description, base_price, markup_price, images, variants, is_active
-) VALUES (
-  '690ff7a375896d655507b41a',
-  966,
-  99,
-  'Vagabond 20oz Tumbler',
-  'This tumbler is the best companion on road trips – it fits perfectly into car cup holders. The rubber gasket makes it spill-resistant on bumpier roads, and the double-wall insulation makes sure drinks stay at the right temperature until the next pit stop. Please note: Colors on the product might appear less bright than on the mockup, for higher color fidelity we recommend oversaturating your colors or overall image. This tumbler is made with a digital inkjet printing technique that transfers des',
-  2831,
-  2831,
-  '{"20oz":["/assets/images/merch/690ff7a375896d655507b41a_20oz_1.jpg","/assets/images/merch/690ff7a375896d655507b41a_20oz_2.jpg","/assets/images/merch/690ff7a375896d655507b41a_20oz_3.jpg","/assets/images/merch/690ff7a375896d655507b41a_20oz_4.jpg","/assets/images/merch/690ff7a375896d655507b41a_20oz_5.jpg","/assets/images/merch/690ff7a375896d655507b41a_20oz_6.jpg"]}',
-  '[{"id":78458,"sku":"13300298126123749659","price":2831,"size":null,"color":"20oz","is_available":true}]',
   1
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,

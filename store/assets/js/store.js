@@ -243,14 +243,15 @@ const Store = {
             ` : ''}
 
             ${hasSizes ? `
-              <select class="card-size-selector"
-                      data-product-id="${product.id}"
-                      onclick="event.stopPropagation();"
-                      onchange="Store.changeCardSize('${product.id}', this.value)">
+              <div class="card-size-buttons">
                 ${sizes.map(size => `
-                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
+                  <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
+                          onclick="event.stopPropagation(); Store.changeCardSize('${product.id}', '${size}')"
+                          data-size="${size}">
+                    ${size}
+                  </button>
                 `).join('')}
-              </select>
+              </div>
             ` : ''}
           </div>
 
@@ -646,6 +647,12 @@ const Store = {
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
+
+      // Update button states
+      const sizeButtons = card.querySelectorAll('.card-size-btn');
+      sizeButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.size === size);
+      });
     }
   },
 

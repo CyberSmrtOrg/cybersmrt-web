@@ -351,6 +351,14 @@ function detectCategory(title, tags = []) {
  * Handles both formats: "Color / Size" and "Size / Color"
  */
 function extractSize(title) {
+  // Check for dimension-based sizes first (stickers, tumblers, etc.)
+  // Match patterns like: 3" × 3", 20oz, 4" x 4", 3″ × 3″ (with both straight and curly quotes)
+  const dimensionPattern = /^(\d+[""″]\s*[\u00D7×x]\s*\d+[""″]|\d+oz)$/i;
+  if (dimensionPattern.test(title.trim())) {
+    return title.trim();
+  }
+
+  // Then check for clothing sizes
   const sizePattern = /\b(XS|S|M|L|XL|2XL|3XL|4XL|5XL)\b/i;
   const sizeMatch = title.match(sizePattern);
   return sizeMatch ? sizeMatch[1].toUpperCase() : null;
@@ -361,6 +369,12 @@ function extractSize(title) {
  * Handles both formats: "Color / Size" and "Size / Color"
  */
 function extractColor(title) {
+  // If it's just a dimension (sticker size, tumbler size, etc.), return null
+  const dimensionPattern = /^(\d+[""″]\s*[\u00D7×x]\s*\d+[""″]|\d+oz)$/i;
+  if (dimensionPattern.test(title.trim())) {
+    return null;
+  }
+
   const parts = title.split('/').map(p => p.trim());
 
   if (parts.length !== 2) {
