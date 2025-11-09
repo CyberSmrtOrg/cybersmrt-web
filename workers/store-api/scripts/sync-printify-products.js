@@ -312,9 +312,9 @@ function cleanDescription(description) {
     cleaned = cleaned.substring(startIdx);
   }
 
-  // Limit to reasonable length (first 500 chars of actual description)
-  if (cleaned.length > 500) {
-    cleaned = cleaned.substring(0, 500) + '...';
+  // Limit to reasonable length (first 2000 chars of actual description)
+  if (cleaned.length > 2000) {
+    cleaned = cleaned.substring(0, 2000) + '...';
   }
 
   return cleaned;

@@ -735,7 +735,6 @@ const Store = {
           <div class="modal-details-section">
             <h2 class="modal-title">${product.name}</h2>
             <div class="modal-price">$${(product.price / 100).toFixed(2)}</div>
-            <p class="modal-description">${product.description || ''}</p>
 
             ${colors.length > 1 ? `
               <div class="modal-option-group">
@@ -774,6 +773,14 @@ const Store = {
             </button>
           </div>
         </div>
+
+        <!-- Description Section - Full Width Below -->
+        ${product.description ? `
+          <div class="modal-description-section">
+            <h3 class="modal-description-title">Product Description</h3>
+            <p class="modal-description">${product.description}</p>
+          </div>
+        ` : ''}
       </div>
     `;
   },
