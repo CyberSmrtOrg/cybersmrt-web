@@ -64,8 +64,8 @@ class CyberSmrtSearch {
         { title: 'Blog', url: '/pages/blog/', type: 'page', description: 'CyberSmrt blog articles' },
 
         // Store
-        { title: 'Store', url: 'https://store.cybersmrt.org', type: 'page', description: 'Shop CyberSmrt merchandise' },
-        { title: 'Order Lookup', url: 'https://store.cybersmrt.org/order-lookup', type: 'page', description: 'Track your order' },
+        { title: 'Store', url: '/store', type: 'page', description: 'Shop CyberSmrt merchandise' },
+        { title: 'Order Lookup', url: '/store/order-lookup', type: 'page', description: 'Track your order' },
 
         // Contact
         { title: 'Contact', url: '/pages/contact', type: 'page', description: 'Get in touch with us' },
@@ -84,7 +84,7 @@ class CyberSmrtSearch {
   async loadStoreProducts() {
     try {
       console.log('🛍️ Loading store products for search...');
-      const response = await fetch('https://store.cybersmrt.org/api/products');
+      const response = await fetch('/store/api/products');
       console.log('Store API response:', response.status);
 
       if (response.ok) {
@@ -93,7 +93,7 @@ class CyberSmrtSearch {
 
         this.storeProducts = (data.products || []).map(p => ({
           title: p.title,
-          url: `https://store.cybersmrt.org#product-${p.id}`,
+          url: `/store#product-${p.id}`,
           type: 'product',
           description: p.description || p.title,
           price: p.markup_price ? `$${(p.markup_price / 100).toFixed(2)}` : '',
@@ -111,21 +111,21 @@ class CyberSmrtSearch {
       this.storeProducts = [
         {
           title: 'CyberSmrt T-Shirt',
-          url: 'https://store.cybersmrt.org',
+          url: '/store',
           type: 'product',
           description: 'Official CyberSmrt branded t-shirt',
           tags: ['shirt', 'tshirt', 't-shirt', 'apparel', 'clothing']
         },
         {
           title: 'CyberSmrt Hoodie',
-          url: 'https://store.cybersmrt.org',
+          url: '/store',
           type: 'product',
           description: 'Official CyberSmrt branded hoodie',
           tags: ['hoodie', 'sweatshirt', 'apparel', 'clothing']
         },
         {
           title: 'CyberSmrt Sticker',
-          url: 'https://store.cybersmrt.org',
+          url: '/store',
           type: 'product',
           description: 'Official CyberSmrt stickers',
           tags: ['sticker', 'decal', 'accessories']
