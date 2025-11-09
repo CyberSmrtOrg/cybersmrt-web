@@ -249,6 +249,232 @@
       font-size: 1.2rem;
     }
 
+    /* Partner scroll section */
+    .partners-scroll {
+      position: relative;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: visible;
+      padding: 2rem 0;
+      padding-top: 320px;
+      margin-top: -320px;
+    }
+
+    .partners-track {
+      display: flex;
+      animation: scroll 30s linear infinite;
+      width: fit-content;
+      overflow: visible;
+    }
+
+    .partners-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .partner-logo {
+      flex: 0 0 auto;
+      margin: 0 2rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .partner-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .partner-card {
+      display: inline-block;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+
+    .logo-box {
+      display: grid;
+      place-items: center;
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 15px;
+      padding: 1.25rem 1.75rem;
+      min-width: 180px;
+      min-height: 80px;
+      transition: all 0.3s ease;
+      margin-bottom: 0.75rem;
+    }
+
+    .logo-box:hover {
+      border-color: #667eea;
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .partner-img {
+      display: block;
+      width: 100%;
+      height: 55px;
+      object-fit: contain;
+      filter: grayscale(10%);
+    }
+
+    .partner-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: rgba(20, 20, 30, 0.98);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      max-width: 300px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .partner-card:hover .partner-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-20px);
+    }
+
+    .partner-tooltip-text {
+      color: #ffffff;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .partner-img-light { display: block; }
+    .partner-img-dark { display: none; }
+    [data-theme="light"] .partner-img-light { display: none; }
+    [data-theme="light"] .partner-img-dark { display: block; }
+
+    /* Partnership modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .modal h2 {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-heading);
+    }
+
+    .modal p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--bg-elevated);
+      border: 2px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
     @media (max-width: 768px) {
       .program-hero {
         margin-top: 60px;
@@ -262,6 +488,12 @@
       }
       .content-section h2 {
         font-size: 2rem;
+      }
+      .modal-content {
+        padding: 2rem;
+      }
+      .partner-logo {
+        margin: 0 1rem;
       }
     }
   </style>
@@ -290,7 +522,7 @@
       <h1>Partner With CyberSmrt</h1>
       <p class="tagline">Join us in closing the cybersecurity skills gap through strategic partnerships</p>
       <div class="hero-cta-group">
-        <a href="/pages/contact.html" class="cta-btn">Become a Partner</a>
+        <button onclick="openPartnerModal()" class="cta-btn" style="border: none; cursor: pointer;">Become a Partner</button>
         <a href="#opportunities" class="cta-btn secondary">Partnership Options</a>
       </div>
     </div>
@@ -431,24 +663,129 @@
       We're proud to work with industry leaders who share our commitment to expanding cybersecurity access.
     </p>
 
-    <div class="two-column">
-      <div class="column">
-        <h3>Strategic Partners</h3>
-        <ul>
-          <li><strong>Tenable:</strong> Vulnerability management tools and training</li>
-          <li><strong>CompTIA:</strong> Certification pathways and curriculum alignment</li>
-          <li><strong>CloudRange:</strong> Hands-on cyber range environments</li>
-          <li><strong>NEAAAT Charter School:</strong> K-12 curriculum pilot program</li>
-        </ul>
-      </div>
+    <div class="partners-scroll" aria-label="Partner logos carousel">
+      <div class="partners-track">
+        <!-- First set of partners -->
+        <a class="partner-card" href="https://www.northeastacademy.org/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">NEAAAT is an innovative STEM-focused charter school partnering with CyberSmrt to bring cutting-edge cybersecurity education to K-12 students.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/neaaat-light.png" alt="NEAAAT Charter School" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/neaaat-dark.png" alt="NEAAAT Charter School" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
 
-      <div class="column">
-        <h3>What Partners Say</h3>
-        <p style="font-style: italic; color: var(--text-primary);">
-          "CyberSmrt's equity-focused approach and veteran leadership make them an ideal partner
-          for organizations committed to building a diverse cybersecurity workforce."
-        </p>
-        <p style="color: var(--text-secondary); margin-top: 1rem;">— Partner Organization</p>
+        <a class="partner-card" href="https://www.tenable.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">Tenable is the Exposure Management company providing vulnerability management solutions to help secure organizations worldwide.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/tenable-light.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/tenable-dark.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.comptia.org/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">CompTIA is the leading provider of vendor-neutral IT certifications, helping CyberSmrt align our curriculum with industry-recognized standards.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/comptia-light.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/comptia-dark.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.cloudrangecyber.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">CloudRange provides hands-on cyber range training environments, giving our students real-world experience in a safe, simulated setting.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/cloudrange-light.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cloudrange-dark.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.cyturity.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">Cyturity partners with CyberSmrt to provide advanced security tools and expertise, enhancing our MSSP-lite services for nonprofits.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/cyturity-light.png" alt="Cyturity" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cyturity-dark.png" alt="Cyturity" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <!-- Duplicate set for seamless loop -->
+        <a class="partner-card" href="https://www.northeastacademy.org/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">NEAAAT is an innovative STEM-focused charter school partnering with CyberSmrt to bring cutting-edge cybersecurity education to K-12 students.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/neaaat-light.png" alt="NEAAAT Charter School" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/neaaat-dark.png" alt="NEAAAT Charter School" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.tenable.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">Tenable is the Exposure Management company providing vulnerability management solutions to help secure organizations worldwide.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/tenable-light.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/tenable-dark.png" alt="Tenable" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.comptia.org/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">CompTIA is the leading provider of vendor-neutral IT certifications, helping CyberSmrt align our curriculum with industry-recognized standards.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/comptia-light.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/comptia-dark.png" alt="CompTIA" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.cloudrangecyber.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">CloudRange provides hands-on cyber range training environments, giving our students real-world experience in a safe, simulated setting.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/cloudrange-light.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cloudrange-dark.png" alt="CloudRange" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
+
+        <a class="partner-card" href="https://www.cyturity.com/" target="_blank" rel="noopener noreferrer">
+          <div class="partner-tooltip">
+            <p class="partner-tooltip-text">Cyturity partners with CyberSmrt to provide advanced security tools and expertise, enhancing our MSSP-lite services for nonprofits.</p>
+          </div>
+          <div class="partner-logo">
+            <div class="logo-box">
+              <img src="/assets/partners/cyturity-light.png" alt="Cyturity" loading="lazy" width="180" height="60" class="partner-img partner-img-light"/>
+              <img src="/assets/partners/cyturity-dark.png" alt="Cyturity" loading="lazy" width="180" height="60" class="partner-img partner-img-dark"/>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -467,14 +804,142 @@
         cybersecurity education and community protection.
       </p>
       <div style="text-align: center;">
-        <a href="/pages/contact.html" class="cta-btn" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+        <button onclick="openPartnerModal()" class="cta-btn" style="font-size: 1.2rem; padding: 1.2rem 3rem; border: none; cursor: pointer;">
           Contact Us About Partnerships
-        </a>
+        </button>
       </div>
     </div>
   </section>
 
   <div id="top"></div>
+
+  <!-- Partnership Contact Modal -->
+  <div id="partnerModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closePartnerModal()" aria-label="Close modal">&times;</button>
+      <h2>Partnership Inquiry</h2>
+      <p>We're excited to explore partnership opportunities with you! Fill out the form below and we'll get back to you soon.</p>
+
+      <form id="partnerForm" onsubmit="submitPartnerForm(event)">
+        <div class="form-group">
+          <label for="partner-name">Your Name *</label>
+          <input type="text" id="partner-name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="partner-email">Email Address *</label>
+          <input type="email" id="partner-email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="partner-organization">Organization</label>
+          <input type="text" id="partner-organization" name="organization">
+        </div>
+
+        <div class="form-group">
+          <label for="partner-message">Message *</label>
+          <textarea id="partner-message" name="message" required placeholder="Tell us about your organization and partnership interests..."></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send Partnership Inquiry</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openPartnerModal() {
+      document.getElementById('partnerModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePartnerModal() {
+      document.getElementById('partnerModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('partnerModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePartnerModal();
+      }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closePartnerModal();
+      }
+    });
+
+    function submitPartnerForm(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const organization = formData.get('organization') || 'Not specified';
+      const message = formData.get('message');
+
+      // Construct mailto link with pre-filled subject and body
+      const subject = encodeURIComponent('Contacting about Partnerships');
+      const body = encodeURIComponent(
+        `Name: ${name}\n` +
+        `Email: ${email}\n` +
+        `Organization: ${organization}\n\n` +
+        `Message:\n${message}`
+      );
+
+      const mailtoLink = `mailto:partnerships@cybersmrt.org?subject=${subject}&body=${body}`;
+
+      // Open default email client
+      window.location.href = mailtoLink;
+
+      // Close modal and reset form
+      setTimeout(() => {
+        closePartnerModal();
+        form.reset();
+      }, 500);
+    }
+
+    // Tooltip positioning to prevent overflow
+    document.addEventListener('DOMContentLoaded', function() {
+      const partnerCards = document.querySelectorAll('.partner-card');
+
+      partnerCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          const tooltip = this.querySelector('.partner-tooltip');
+          if (!tooltip) return;
+
+          const rect = tooltip.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+
+          // Check if tooltip goes off-screen to the left
+          if (rect.left < 0) {
+            tooltip.style.left = '0';
+            tooltip.style.transform = 'translateX(0) translateY(-20px)';
+          }
+          // Check if tooltip goes off-screen to the right
+          else if (rect.right > viewportWidth) {
+            tooltip.style.left = 'auto';
+            tooltip.style.right = '0';
+            tooltip.style.transform = 'translateX(0) translateY(-20px)';
+          }
+        });
+
+        card.addEventListener('mouseleave', function() {
+          const tooltip = this.querySelector('.partner-tooltip');
+          if (!tooltip) return;
+
+          // Reset tooltip positioning
+          tooltip.style.left = '50%';
+          tooltip.style.right = 'auto';
+          tooltip.style.transform = 'translateX(-50%) translateY(-10px)';
+        });
+      });
+    });
+  </script>
 
   <div id="footer-mount"></div>
   <script defer src="/assets/js/footer-loader.js"></script>
