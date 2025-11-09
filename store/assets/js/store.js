@@ -102,118 +102,6 @@ const Store = {
     return 'apparel'; // default
   },
 
-  // Sort sizes in logical order
-  sortSizes(sizes) {
-    // Define dimension patterns (for stickers, etc.)
-    const dimensionPattern = /^(\d+)[""″]\s*[×x]\s*(\d+)[""″]$/;
-
-    // Define standard clothing size order
-    const sizeOrder = {
-      'XS': 1, 'S': 2, 'M': 3, 'L': 4, 'XL': 5,
-      '2XL': 6, '3XL': 7, '4XL': 8, '5XL': 9
-    };
-
-    return [...sizes].sort((a, b) => {
-      // Check if both are dimensions (e.g., "3" × 3"", "4" × 4"")
-      const aMatch = a.match(dimensionPattern);
-      const bMatch = b.match(dimensionPattern);
-
-      if (aMatch && bMatch) {
-        // Sort dimensions by first number
-        const aNum = parseInt(aMatch[1]);
-        const bNum = parseInt(bMatch[1]);
-        return aNum - bNum;
-      }
-
-      // Check if both are standard clothing sizes
-      if (sizeOrder[a] && sizeOrder[b]) {
-        return sizeOrder[a] - sizeOrder[b];
-      }
-
-      // Check for oz-based sizes (tumblers)
-      if (a.includes('oz') && b.includes('oz')) {
-        return parseInt(a) - parseInt(b);
-      }
-
-      // Default: alphabetical
-      return a.localeCompare(b);
-    });
-  },
-
-  // Sort colors in visually logical order
-  sortColors(colors) {
-    // Define color order categories
-    const colorOrder = {
-      // Whites and light colors
-      'White': 1,
-      'Ice Grey': 2,
-      'Ash': 3,
-      'Sand': 4,
-      'Athletic Heather': 5,
-
-      // Grays and neutrals
-      'Heather Grey': 10,
-      'Sport Grey': 11,
-      'Dark Grey': 12,
-      'Charcoal': 13,
-      'Tweed': 14,
-
-      // Blacks
-      'Black': 20,
-      'Midnight': 21,
-
-      // Blues
-      'Light Blue': 30,
-      'Heather Blue': 31,
-      'Indigo Blue': 32,
-      'Royal': 33,
-      'True Royal': 34,
-      'Navy': 35,
-      'Heather Navy': 36,
-      'Heather Sport Dark Navy': 37,
-
-      // Purples and pinks
-      'Light Pink': 40,
-      'Heather Prism Lilac': 41,
-      'Purple': 42,
-      'Team Purple': 43,
-
-      // Reds
-      'Heather Red': 50,
-      'Cardinal Red': 51,
-      'Red': 52,
-      'Antique Cherry Red': 53,
-      'Burgundy': 54,
-
-      // Greens
-      'Lime': 60,
-      'Kelly': 61,
-      'Leaf': 62,
-      'Forest Green': 63,
-      'Military Green': 64,
-
-      // Yellows and oranges
-      'Yellow Haze': 70,
-      'Gold': 71,
-      'Sunset': 72,
-
-      // Heathers and special
-      'Dark Heather': 80
-    };
-
-    return [...colors].sort((a, b) => {
-      const aOrder = colorOrder[a] || 999;
-      const bOrder = colorOrder[b] || 999;
-
-      if (aOrder !== bOrder) {
-        return aOrder - bOrder;
-      }
-
-      // If same order value or both unknown, sort alphabetically
-      return a.localeCompare(b);
-    });
-  },
-
   // Convert color name to hex value for display
   getColorHex(colorName) {
     const colorMap = {
@@ -249,7 +137,6 @@ const Store = {
       'Dark Grey': '#505050',
       'Dark Gray': '#505050',
       'True Royal': '#1E3A8A',
-      'Royal': '#4169E1',
       'Royal Blue': '#4169E1',
       'Heather Blue': '#8FB4D9',
       'Light Blue': '#87CEEB',
@@ -263,23 +150,9 @@ const Store = {
       'Irish Green': '#009A63',
       'Military Green': '#5A7247',
       'Cardinal': '#C41E3A',
-      'Cardinal Red': '#C41E3A',
       'Burgundy': '#800020',
       'Team Purple': '#764ba2',
-      'Heather Prism Lilac': '#C8A2D0',
-      'Antique Cherry Red': '#A0353A',
-      'Dark Heather': '#616161',
-      'Heather Red': '#D32F2F',
-      'Heather Navy': '#1B3B6F',
-      'Heather Sport Dark Navy': '#1B2F4A',
-      'Ice Grey': '#E8E8E8',
-      'Indigo Blue': '#3949AB',
-      'Light Pink': '#FFB6C1',
-      'Midnight': '#191970',
-      'Sand': '#C2B280',
-      'Sunset': '#FFA07A',
-      'Tweed': '#8C7853',
-      'Yellow Haze': '#F9E79F'
+      'Heather Prism Lilac': '#C8A2D0'
     };
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
@@ -307,11 +180,9 @@ const Store = {
 
   // Render single product card (simplified - just image carousel, name, price)
   renderProductCard(product) {
-    // Get all colors and sizes - sorted in visual/logical order
-    const rawColors = Object.keys(product.images || {});
-    const colors = this.sortColors(rawColors);
-    const rawSizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
-    const sizes = this.sortSizes(rawSizes);
+    // Get all colors and sizes
+    const colors = Object.keys(product.images || {});
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
     const currentCardColor = product._cardColor || colors[0];
     const currentCardSize = product._cardSize || sizes[0];
     const previewImages = product.images?.[currentCardColor] || [product.image_url];
@@ -372,15 +243,14 @@ const Store = {
             ` : ''}
 
             ${hasSizes ? `
-              <div class="card-size-buttons">
+              <select class="card-size-selector"
+                      data-product-id="${product.id}"
+                      onclick="event.stopPropagation();"
+                      onchange="Store.changeCardSize('${product.id}', this.value)">
                 ${sizes.map(size => `
-                  <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="event.stopPropagation(); Store.changeCardSize('${product.id}', '${size}')"
-                          data-size="${size}">
-                    ${size}
-                  </button>
+                  <option value="${size}" ${size === currentCardSize ? 'selected' : ''}>${size}</option>
                 `).join('')}
-              </div>
+              </select>
             ` : ''}
           </div>
 
@@ -776,12 +646,6 @@ const Store = {
     const card = document.querySelector(`[data-product-id="${productId}"]`);
     if (card) {
       card.setAttribute('data-current-size', size);
-
-      // Update button states
-      const sizeButtons = card.querySelectorAll('.card-size-btn');
-      sizeButtons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.size === size);
-      });
     }
   },
 
@@ -818,10 +682,8 @@ const Store = {
 
   // Render product modal
   renderProductModal(product) {
-    const rawColors = Object.keys(product.images || {});
-    const colors = this.sortColors(rawColors);
-    const rawSizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
-    const sizes = this.sortSizes(rawSizes);
+    const colors = Object.keys(product.images || {});
+    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
 
     const currentImages = product.images[this.modalSelectedColor] || [];
 
