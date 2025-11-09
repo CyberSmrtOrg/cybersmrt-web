@@ -292,30 +292,26 @@ async function processProduct(product) {
 }
 
 /**
- * Clean product description - strip HTML and extract meaningful text
+ * Clean product description - strip HTML and preserve full text
  */
 function cleanDescription(description) {
   if (!description) return '';
 
-  // Strip all HTML tags
-  let cleaned = description.replace(/<[^>]*>/g, ' ');
+  // Strip all HTML tags but preserve line breaks
+  let cleaned = description
+    .replace(/<br\s*\/?>/gi, '\n')  // Convert <br> to newlines
+    .replace(/<\/p>/gi, '\n\n')     // Convert closing </p> to double newlines
+    .replace(/<[^>]*>/g, '');       // Remove all other HTML tags
 
-  // Remove extra whitespace and newlines
-  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  // Normalize whitespace while preserving paragraph breaks
+  cleaned = cleaned
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n\n');
 
-  // Try to extract the actual product description (usually after size table data)
-  // Look for common description patterns
-  const descMatch = cleaned.match(/(?:This|Made from|Features|Perfect for|Ideal for)[^.]+\./);
-  if (descMatch) {
-    // Found a sentence-like description, extract from there to end
-    const startIdx = cleaned.indexOf(descMatch[0]);
-    cleaned = cleaned.substring(startIdx);
-  }
-
-  // Limit to reasonable length (first 2000 chars of actual description)
-  if (cleaned.length > 2000) {
-    cleaned = cleaned.substring(0, 2000) + '...';
-  }
+  // Remove common Printify boilerplate if present
+  cleaned = cleaned.replace(/\s*This product is made especially for you.*$/s, '');
 
   return cleaned;
 }
