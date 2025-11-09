@@ -1,3 +1,4 @@
-# Cloudflare Pages redirects for store.cybersmrt.org
-# NOTE: When building from /store, this file handles routing
-# No redirects needed - serve files directly
+# Redirect store.cybersmrt.org to main domain
+# All store pages are now served from cybersmrt.org/store/
+
+/*  https://cybersmrt.org/store/:splat  301!
