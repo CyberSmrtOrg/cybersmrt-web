@@ -10,8 +10,9 @@ window.STORE_LOADED = true;
 // ============================================
 // Configuration
 // ============================================
-// Use relative path for store API on main domain
-window.API_BASE_URL = window.API_BASE_URL || '/store/api';
+// Use workers.dev URL until custom domain routing is configured
+// TODO: Switch to '/store/api' once Cloudflare Pages routing is set up
+window.API_BASE_URL = window.API_BASE_URL || 'https://cybersmrt-store-api.tony-398.workers.dev';
 const API_BASE_URL = window.API_BASE_URL;
 
 // ============================================
