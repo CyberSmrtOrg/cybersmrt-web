@@ -20,7 +20,9 @@
       "Bash(python3:*)",
       "Bash(node test-extraction.js:*)",
       "Bash(git checkout:*)",
-      "Bash(comm:*)"
+      "Bash(comm:*)",
+      "Bash(node scripts/update-printify-webhooks.js:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []
