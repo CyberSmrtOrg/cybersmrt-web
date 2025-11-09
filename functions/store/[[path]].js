@@ -37,9 +37,19 @@ export async function onRequest(context) {
 
   try {
     console.log(`[Store Function] Proxying to STORE_API: ${url.pathname}`);
+
+    // Strip /store prefix from the path before sending to worker
+    // Worker routes are /products, /checkout/*, /api/orders, etc.
+    const workerPath = url.pathname.replace(/^\/store/, '') || '/';
+    const workerUrl = new URL(workerPath + url.search, request.url);
+
+    console.log(`[Store Function] Worker path: ${workerPath}`);
+
+    // Create new request with modified URL
+    const workerRequest = new Request(workerUrl, request);
+
     // Forward the request to the worker via service binding
-    // The worker will see the request at its original path
-    const response = await env.STORE_API.fetch(request);
+    const response = await env.STORE_API.fetch(workerRequest);
     console.log(`[Store Function] Response status: ${response.status}`);
     return response;
   } catch (error) {
