@@ -703,7 +703,6 @@
 
     /* Mobile Menu Panel */
     .mobile-menu-panel {
-      display: none;
       position: fixed;
       top: 60px;
       left: 0;
@@ -717,6 +716,7 @@
       padding: 1rem;
       transform: translateY(-100%);
       transition: transform 0.3s ease;
+      pointer-events: none;
     }
 
     [data-theme="light"] .mobile-menu-panel {
@@ -724,8 +724,8 @@
     }
 
     .mobile-menu-panel.active {
-      display: block;
       transform: translateY(0);
+      pointer-events: auto;
     }
 
     .mobile-menu-section {
