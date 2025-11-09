@@ -13,7 +13,11 @@
       "Bash(node scripts/import-to-d1.js:*)",
       "Bash(npx wrangler kv:key delete:*)",
       "Bash(npx wrangler:*)",
-      "Bash(node scripts/sync-printify-products.js:*)"
+      "Bash(node scripts/sync-printify-products.js:*)",
+      "Bash(node -e:*)",
+      "Bash(curl:*)",
+      "Bash(node scripts/generate-import-sql.js:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []
