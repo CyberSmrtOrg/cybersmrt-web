@@ -182,7 +182,9 @@ const Store = {
       'Tweed': '#8B7D6B',
       'Sand': '#C2B280',
       'Ice Grey': '#C9D6DF',
-      'Sunset': '#FF6B6B'
+      'Sunset': '#FF6B6B',
+      'Midnight': '#191970',
+      'Heather Red': '#DC143C'
     };
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
@@ -280,7 +282,7 @@ const Store = {
               <div class="card-size-selector">
                 ${sizes.map(size => `
                   <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="(function(e){e.stopPropagation(); Store.changeCardSize('${product.id}', '${size}');})(event)">
+                          onclick="Store.changeCardSize('${product.id}', '${size}'); return false;">
                     ${size}
                   </button>
                 `).join('')}
