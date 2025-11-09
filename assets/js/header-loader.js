@@ -187,6 +187,7 @@ window.HEADER_LOADER_EXECUTED = true;
 
     // Find the actual header element (not link/script tags)
     const headerEl = tmp.querySelector('header.site-header');
+    const mobileMenuEl = tmp.querySelector('.mobile-menu-panel');
 
     if (!headerEl) {
       console.error('❌ Could not find header.site-header element in HTML');
@@ -195,6 +196,9 @@ window.HEADER_LOADER_EXECUTED = true;
     }
 
     console.log('✅ Found header element:', headerEl.tagName, headerEl.className);
+    if (mobileMenuEl) {
+      console.log('✅ Found mobile menu panel');
+    }
 
     // Also grab any link/style/script tags that should go in the head
     const headElements = tmp.querySelectorAll('link, style');
@@ -235,9 +239,17 @@ window.HEADER_LOADER_EXECUTED = true;
     if (mountPoint) {
       console.log('📌 Mounting header in #header-mount');
       mountPoint.appendChild(headerEl);
+      if (mobileMenuEl) {
+        mountPoint.appendChild(mobileMenuEl);
+        console.log('📌 Mounted mobile menu panel after header');
+      }
     } else {
       console.log('📌 Mounting header at top of body');
       document.body.insertBefore(headerEl, document.body.firstChild);
+      if (mobileMenuEl) {
+        document.body.insertBefore(mobileMenuEl, headerEl.nextSibling);
+        console.log('📌 Mounted mobile menu panel after header');
+      }
     }
 
     // Wire up mobile toggle
