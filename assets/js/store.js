@@ -103,6 +103,27 @@ const Store = {
     return 'apparel'; // default
   },
 
+  // Sort sizes in proper order (S, M, L, XL, 2XL, 3XL, 4XL, 5XL)
+  sortSizes(sizes) {
+    const sizeOrder = {
+      'XS': 0,
+      'S': 1,
+      'M': 2,
+      'L': 3,
+      'XL': 4,
+      '2XL': 5,
+      '3XL': 6,
+      '4XL': 7,
+      '5XL': 8
+    };
+
+    return sizes.sort((a, b) => {
+      const orderA = sizeOrder[a] !== undefined ? sizeOrder[a] : 999;
+      const orderB = sizeOrder[b] !== undefined ? sizeOrder[b] : 999;
+      return orderA - orderB;
+    });
+  },
+
   // Convert color name to hex value for display
   getColorHex(colorName) {
     const colorMap = {
@@ -137,12 +158,14 @@ const Store = {
       'Athletic Heather': '#B3B3B3',
       'Dark Grey': '#505050',
       'Dark Gray': '#505050',
+      'Dark Heather': '#505050',
       'True Royal': '#1E3A8A',
       'Royal Blue': '#4169E1',
       'Heather Blue': '#8FB4D9',
       'Light Blue': '#87CEEB',
       'Heather Grey': '#D3D3D3',
       'Heather Gray': '#D3D3D3',
+      'Heather Navy': '#1E3A5F',
       'Ash': '#B2BEB5',
       'Ash Grey': '#B2BEB5',
       'Sport Grey': '#B3B3B3',
@@ -151,9 +174,15 @@ const Store = {
       'Irish Green': '#009A63',
       'Military Green': '#5A7247',
       'Cardinal': '#C41E3A',
+      'Cardinal Red': '#C41E3A',
       'Burgundy': '#800020',
       'Team Purple': '#764ba2',
-      'Heather Prism Lilac': '#C8A2D0'
+      'Heather Prism Lilac': '#C8A2D0',
+      'Yellow Haze': '#F4D03F',
+      'Tweed': '#8B7D6B',
+      'Sand': '#C2B280',
+      'Ice Grey': '#C9D6DF',
+      'Sunset': '#FF6B6B'
     };
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
@@ -183,7 +212,7 @@ const Store = {
   renderProductCard(product) {
     // Get all colors and sizes
     const colors = Object.keys(product.images || {});
-    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+    const sizes = this.sortSizes([...new Set(product.variants?.map(v => v.size).filter(Boolean))] || []);
     const currentCardColor = product._cardColor || colors[0];
     const currentCardSize = product._cardSize || sizes[0];
     const previewImages = product.images?.[currentCardColor] || [product.image_url];
@@ -693,7 +722,7 @@ const Store = {
   // Render product modal
   renderProductModal(product) {
     const colors = Object.keys(product.images || {});
-    const sizes = [...new Set(product.variants?.map(v => v.size).filter(Boolean))] || [];
+    const sizes = this.sortSizes([...new Set(product.variants?.map(v => v.size).filter(Boolean))] || []);
 
     const currentImages = product.images[this.modalSelectedColor] || [];
 
