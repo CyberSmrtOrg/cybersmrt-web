@@ -280,7 +280,7 @@ const Store = {
               <div class="card-size-selector">
                 ${sizes.map(size => `
                   <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="event.stopPropagation(); Store.changeCardSize('${product.id}', '${size}')">
+                          onclick="(function(e){e.stopPropagation(); Store.changeCardSize('${product.id}', '${size}');})(event)">
                     ${size}
                   </button>
                 `).join('')}
