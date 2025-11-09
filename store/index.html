@@ -1027,25 +1027,28 @@
       transform: scale(1.1);
     }
 
-    .modal-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 3rem;
+    .modal-single-column {
       padding: 2.5rem;
       max-height: 85vh;
       overflow-y: auto;
+      max-width: 650px;
+      margin: 0 auto;
     }
 
-    /* Modal Image Section */
-    .modal-image-section {
-      position: sticky;
-      top: 0;
-      height: fit-content;
+    /* Modal Header Section - Product info at top */
+    .modal-header-section {
+      margin-bottom: 2rem;
+    }
+
+    .modal-options-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
     }
 
     .modal-carousel {
       width: 100%;
-      max-width: 500px;
       aspect-ratio: 1;
       background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
       border-radius: 16px;
@@ -1139,29 +1142,23 @@
       box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
     }
 
-    /* Modal Details Section */
-    .modal-details-section {
-      display: flex;
-      flex-direction: column;
-    }
-
     .modal-title {
       font-family: "Orbitron", system-ui, sans-serif;
-      font-size: 2.2rem;
+      font-size: 1.75rem;
       font-weight: 900;
       color: var(--text-heading);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       line-height: 1.2;
     }
 
     .modal-price {
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       font-weight: 900;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
     }
 
     /* Description section below the grid */
@@ -1185,12 +1182,13 @@
     }
 
     .modal-option-group {
-      margin-bottom: 2rem;
+      flex: 1;
+      min-width: 200px;
     }
 
     .modal-option-label {
       display: block;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-heading);
       margin-bottom: 0.75rem;
@@ -1244,7 +1242,8 @@
       font-size: 1.15rem;
       cursor: pointer;
       transition: all 0.3s;
-      margin-top: auto;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1284,22 +1283,21 @@
     }
 
     .modal-description-full {
-      margin-top: 2rem;
-      padding-top: 2rem;
+      padding-top: 1.5rem;
       border-top: 1px solid var(--card-border);
     }
 
     .modal-description-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-heading);
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .modal-description-text {
       color: var(--text-secondary);
-      line-height: 1.8;
-      font-size: 1.05rem;
+      line-height: 1.7;
+      font-size: 0.95rem;
       white-space: pre-wrap;
     }
 

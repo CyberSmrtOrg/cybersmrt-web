@@ -735,91 +735,93 @@ const Store = {
           </svg>
         </button>
 
-        <div class="modal-grid">
-          <!-- Left: Image Carousel & Description -->
-          <div class="modal-image-section">
-            <div class="modal-carousel">
-              ${currentImages.length > 1 ? `
-                <button class="modal-carousel-btn modal-carousel-prev" onclick="Store.modalPrevImage()">
-                  <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                  </svg>
-                </button>
-              ` : ''}
-
-              <img id="modalMainImage" src="${currentImages[this.modalImageIndex] || product.image_url}" alt="${product.name}" onclick="openImageZoom('${currentImages[this.modalImageIndex] || product.image_url}')">
-
-              ${currentImages.length > 1 ? `
-                <button class="modal-carousel-btn modal-carousel-next" onclick="Store.modalNextImage()">
-                  <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </button>
-              ` : ''}
-            </div>
-
-            ${currentImages.length > 1 ? `
-              <div class="modal-thumbnails">
-                ${currentImages.map((img, idx) => `
-                  <img src="${img}"
-                       class="modal-thumbnail ${idx === this.modalImageIndex ? 'active' : ''}"
-                       onclick="Store.modalGotoImage(${idx})"
-                       alt="View ${idx + 1}">
-                `).join('')}
-              </div>
-            ` : ''}
-
-            <!-- Full Description Below Images -->
-            ${product.description ? `
-              <div class="modal-description-full">
-                <h3 class="modal-description-title">Description</h3>
-                <p class="modal-description-text">${product.description}</p>
-              </div>
-            ` : ''}
-          </div>
-
-          <!-- Right: Product Details (Compact) -->
-          <div class="modal-details-section">
+        <div class="modal-single-column">
+          <!-- Product Info at Top -->
+          <div class="modal-header-section">
             <h2 class="modal-title">${product.name}</h2>
             <div class="modal-price">$${(product.price / 100).toFixed(2)}</div>
 
-            ${colors.length > 1 ? `
-              <div class="modal-option-group">
-                <label class="modal-option-label">Color</label>
-                <div class="modal-color-options">
-                  ${colors.map(color => `
-                    <button class="modal-color-dot ${color === this.modalSelectedColor ? 'selected' : ''}"
-                            style="background-color: ${this.getColorHex(color)};"
-                            onclick="Store.selectModalColor('${color}')"
-                            title="${color}"
-                            aria-label="Select ${color}">
-                    </button>
-                  `).join('')}
+            <div class="modal-options-row">
+              ${colors.length > 1 ? `
+                <div class="modal-option-group">
+                  <label class="modal-option-label">Color</label>
+                  <div class="modal-color-options">
+                    ${colors.map(color => `
+                      <button class="modal-color-dot ${color === this.modalSelectedColor ? 'selected' : ''}"
+                              style="background-color: ${this.getColorHex(color)};"
+                              onclick="Store.selectModalColor('${color}')"
+                              title="${color}"
+                              aria-label="Select ${color}">
+                      </button>
+                    `).join('')}
+                  </div>
                 </div>
-              </div>
-            ` : ''}
+              ` : ''}
 
-            ${sizes.length > 0 ? `
-              <div class="modal-option-group">
-                <label class="modal-option-label">Size</label>
-                <div class="modal-size-options">
-                  ${sizes.map(size => `
-                    <button class="modal-size-btn ${size === this.modalSelectedSize ? 'selected' : ''}"
-                            onclick="Store.selectModalSize('${size}')">
-                      ${size}
-                    </button>
-                  `).join('')}
+              ${sizes.length > 0 ? `
+                <div class="modal-option-group">
+                  <label class="modal-option-label">Size</label>
+                  <div class="modal-size-options">
+                    ${sizes.map(size => `
+                      <button class="modal-size-btn ${size === this.modalSelectedSize ? 'selected' : ''}"
+                              onclick="Store.selectModalSize('${size}')">
+                        ${size}
+                      </button>
+                    `).join('')}
+                  </div>
                 </div>
-              </div>
-            ` : ''}
-
-            <button class="modal-add-to-cart" onclick="Store.addToCartFromModal()">
-              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-              Add to Cart
-            </button>
+              ` : ''}
+            </div>
           </div>
+
+          <!-- Main Image -->
+          <div class="modal-carousel">
+            ${currentImages.length > 1 ? `
+              <button class="modal-carousel-btn modal-carousel-prev" onclick="Store.modalPrevImage()">
+                <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+            ` : ''}
+
+            <img id="modalMainImage" src="${currentImages[this.modalImageIndex] || product.image_url}" alt="${product.name}" onclick="openImageZoom('${currentImages[this.modalImageIndex] || product.image_url}')">
+
+            ${currentImages.length > 1 ? `
+              <button class="modal-carousel-btn modal-carousel-next" onclick="Store.modalNextImage()">
+                <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Thumbnails Below Main Image -->
+          ${currentImages.length > 1 ? `
+            <div class="modal-thumbnails">
+              ${currentImages.map((img, idx) => `
+                <img src="${img}"
+                     class="modal-thumbnail ${idx === this.modalImageIndex ? 'active' : ''}"
+                     onclick="Store.modalGotoImage(${idx})"
+                     alt="View ${idx + 1}">
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <!-- Add to Cart Button -->
+          <button class="modal-add-to-cart" onclick="Store.addToCartFromModal()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            Add to Cart
+          </button>
+
+          <!-- Description at Bottom -->
+          ${product.description ? `
+            <div class="modal-description-full">
+              <h3 class="modal-description-title">Description</h3>
+              <p class="modal-description-text">${product.description}</p>
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
