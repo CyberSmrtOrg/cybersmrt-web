@@ -25,9 +25,7 @@ for (const product of products) {
   const title = product.title.replace(/'/g, "''");
   const description = (product.description || '')
     .replace(/'/g, "''")
-    .replace(/\s+/g, ' ')
-    .trim()
-    .substring(0, 500);
+    .trim();
 
   // Store images_by_color for frontend carousel functionality
   const imagesData = product.images_by_color || {};
