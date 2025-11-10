@@ -292,11 +292,14 @@ const Store = {
 
       // Check if line has concatenated list items (lowercase letter followed by uppercase letter)
       // Pattern: "item oneItem twoItem three" -> split before uppercase letters
-      const hasConcatenatedItems = line.match(/[a-z][A-Z]/);
+      // Also handle: item"NextItem, item)NextItem, item'NextItem
+      const hasConcatenatedItems = line.match(/[a-z][A-Z]/) || line.match(/["')\]]\s*[A-Z]/);
 
       if (hasConcatenatedItems) {
-        // Split on transitions from lowercase to uppercase
-        const items = line.split(/(?<=[a-z])(?=[A-Z])/);
+        // Split on transitions from:
+        // 1. lowercase letter to uppercase letter
+        // 2. punctuation (quotes, parens, brackets) followed by uppercase letter
+        const items = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\]])(?=[A-Z])/);
 
         if (!inList) {
           html += '<ul>';
