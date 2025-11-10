@@ -293,14 +293,16 @@ const Store = {
       // Check if line has concatenated list items (lowercase letter followed by uppercase letter)
       // Pattern: "item oneItem twoItem three" -> split before uppercase letters
       // Also handle: item"NextItem, item)NextItem, item'NextItem, item&quot;NextItem
-      const hasConcatenatedItems = line.match(/[a-z][A-Z]/) || line.match(/["')\];](?:\s*[A-Z]|[A-Z])/) || line.match(/&quot;[A-Z]/);
+      // BUT NOT: "sentence. Another sentence" (period + space is normal sentence boundary)
+      const hasConcatenatedItems = line.match(/[a-z][A-Z]/) || line.match(/["')\];][A-Z]/) || line.match(/&quot;[A-Z]/);
 
       if (hasConcatenatedItems) {
         // Split on transitions from:
-        // 1. lowercase letter to uppercase letter
-        // 2. punctuation (quotes, parens, brackets, semicolon) followed by uppercase letter (with optional space)
+        // 1. lowercase letter to uppercase letter (no space between)
+        // 2. quotes, parens, brackets (NOT periods) followed by uppercase letter with NO space
         // 3. HTML entity &quot; followed by uppercase letter
-        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\];])\s*(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
+        // Explicitly exclude: period/exclamation/question mark followed by space (normal sentences)
+        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\];])(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
 
         // Merge items that are too short (likely part of compound words like "DevOps")
         const items = [];
