@@ -197,4 +197,7 @@
 if (window.logoutImpl) {
   window.logout = window.logoutImpl;
   console.log('🔄 Logout function updated to latest version');
+  console.log('🔍 Checking logout function:', window.logout.toString().substring(0, 200));
+} else {
+  console.warn('⚠️ window.logoutImpl not found - logout may not work correctly');
 }
