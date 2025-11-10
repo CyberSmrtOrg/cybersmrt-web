@@ -294,7 +294,8 @@ Disallow: /
 
       // Logout
       if (path === '/logout' && request.method === 'POST') {
-        return await router.handleLogout();
+        const response = await router.handleLogout();
+        return addCorsHeaders(response, request, env);
       }
 
       // Get current user
