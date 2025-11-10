@@ -274,7 +274,7 @@ const Store = {
       '&nbsp;': ' '
     };
     return text.replace(/&[#\w]+;/g, entity => entities[entity] || entity);
-  }
+  },
 
   // Format description text into HTML with proper bullet points
   formatDescription(text) {
