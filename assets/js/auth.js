@@ -170,7 +170,8 @@
     if (!window.getCurrentUser) window.getCurrentUser = getCurrentUser;
     if (!window.getAccessToken) window.getAccessToken = getAccessToken;
     if (!window.getRefreshToken) window.getRefreshToken = getRefreshToken;
-    if (!window.logout) window.logout = logout;
+    // ALWAYS replace logout to ensure latest version is used
+    window.logout = logout;
     if (!window.updateAuthUI) window.updateAuthUI = updateAuthUI;
     if (!window.authRequest) window.authRequest = authRequest;
     if (!window.apiRequest) window.apiRequest = apiRequest;
