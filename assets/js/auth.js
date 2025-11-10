@@ -87,21 +87,14 @@
     }
 
     function logout() {
-      const token = getAccessToken();
+      console.log('🚪 Logout called');
 
-      // Call auth server FIRST to clear HttpOnly cookies server-side
-      const authBase = window.AUTH_BASE || 'https://auth.cybersmrt.org';
-
-      // Make synchronous logout call
-      const logoutPromise = fetch(authBase + '/logout', {
-        method: 'POST',
-        headers: token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      }).catch(err => console.error('Logout API error:', err));
-
-      // Clear ALL auth-related localStorage items
+      // Clear ALL auth-related localStorage items IMMEDIATELY
       const authKeys = ['accessToken', 'refreshToken', 'user', 'sessionId', 'session_activity'];
-      authKeys.forEach(key => localStorage.removeItem(key));
+      authKeys.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`🗑️ Cleared localStorage: ${key}`);
+      });
 
       // Try to clear cookies (may not work for HttpOnly cookies, but try anyway)
       const cookiesToClear = ['accessToken', 'refreshToken', 'session', 'user_info', 'sessionId'];
@@ -111,17 +104,25 @@
         document.cookie = `${cookie}=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
         document.cookie = `${cookie}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax`;
         document.cookie = `${cookie}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        console.log(`🗑️ Attempted to clear cookie: ${cookie}`);
       });
 
-      // Wait for logout API call, then redirect
-      logoutPromise.finally(() => {
-        // Force reload to update auth UI
-        if (window.location.pathname === '/') {
-          window.location.reload();
-        } else {
-          window.location.href = '/';
-        }
-      });
+      // Call auth server to clear HttpOnly cookies server-side (non-blocking)
+      const authBase = window.AUTH_BASE || 'https://auth.cybersmrt.org';
+      fetch(authBase + '/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      }).catch(err => console.warn('Logout API error (non-critical):', err));
+
+      console.log('🔄 Redirecting to clear session...');
+
+      // Redirect IMMEDIATELY to clear session
+      if (window.location.pathname === '/') {
+        window.location.reload(true); // Hard reload
+      } else {
+        window.location.href = '/';
+      }
     }
 
     function displayUserProfile(user) {
