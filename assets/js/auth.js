@@ -88,16 +88,14 @@
 
     function logout() {
       const token = getAccessToken();
-      // Clear localStorage
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
-      localStorage.removeItem('sessionId');
+      // Clear ALL auth-related localStorage items
+      const authKeys = ['accessToken', 'refreshToken', 'user', 'sessionId', 'session_activity'];
+      authKeys.forEach(key => localStorage.removeItem(key));
       // Clear cookies (cross-subdomain)
-      document.cookie = 'accessToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'refreshToken=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'session=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'user_info=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      const cookiesToClear = ['accessToken', 'refreshToken', 'session', 'user_info', 'sessionId'];
+      cookiesToClear.forEach(cookie => {
+        document.cookie = `${cookie}=; Domain=.cybersmrt.org; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      });
       if (token) {
         fetch((window.AUTH_BASE || 'https://auth.cybersmrt.org') + '/logout', {
           method: 'POST',
