@@ -294,7 +294,8 @@ const Store = {
       // Pattern: "item oneItem twoItem three" -> split before uppercase letters
       // Also handle: item"NextItem, item)NextItem, item'NextItem, item&quot;NextItem
       // BUT NOT: "sentence. Another sentence" (period + space is normal sentence boundary)
-      const hasConcatenatedItems = line.match(/[a-z][A-Z]/) || line.match(/["')\];][A-Z]/) || line.match(/&quot;[A-Z]/);
+      // AND NOT: Short declarative lines like "Trust No One." or "Encrypt Everything."
+      const hasConcatenatedItems = line.length > 60 && (line.match(/[a-z][A-Z]/) || line.match(/["')\];][A-Z]/) || line.match(/&quot;[A-Z]/));
 
       if (hasConcatenatedItems) {
         // Split on transitions from:
