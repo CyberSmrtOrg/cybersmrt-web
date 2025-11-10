@@ -300,7 +300,22 @@ const Store = {
         // 1. lowercase letter to uppercase letter
         // 2. punctuation (quotes, parens, brackets, semicolon) followed by uppercase letter (with optional space)
         // 3. HTML entity &quot; followed by uppercase letter
-        const items = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\];])\s*(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
+        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\];])\s*(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
+
+        // Merge items that are too short (likely part of compound words like "DevOps")
+        const items = [];
+        let current = '';
+        for (let i = 0; i < rawItems.length; i++) {
+          const item = rawItems[i];
+          // If current item is very short (<=3 chars) and doesn't end with punctuation, merge with next
+          if (current && current.replace(/[^a-zA-Z]/g, '').length <= 3 && !current.match(/[.!?;,]$/)) {
+            current += item;
+          } else {
+            if (current) items.push(current);
+            current = item;
+          }
+        }
+        if (current) items.push(current);
 
         if (!inList) {
           html += '<ul>';
