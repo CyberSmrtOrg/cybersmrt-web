@@ -295,15 +295,16 @@ const Store = {
       // Also handle: item"NextItem, item)NextItem, item'NextItem, item&quot;NextItem
       // BUT NOT: "sentence. Another sentence" (period + space is normal sentence boundary)
       // AND NOT: Short declarative lines like "Trust No One." or "Encrypt Everything."
-      const hasConcatenatedItems = line.length > 60 && (line.match(/[a-z][A-Z]/) || line.match(/["')\];][A-Z]/) || line.match(/&quot;[A-Z]/));
+      // AND NOT: Quoted text like 'panel "My incident"' (space before quote)
+      const hasConcatenatedItems = line.length > 60 && (line.match(/[a-z][A-Z]/) || line.match(/[^\s]["')\];][A-Z]/) || line.match(/[^\s]&quot;[A-Z]/));
 
       if (hasConcatenatedItems) {
         // Split on transitions from:
         // 1. lowercase letter to uppercase letter (no space between)
-        // 2. quotes, parens, brackets (NOT periods) followed by uppercase letter with NO space
-        // 3. HTML entity &quot; followed by uppercase letter
+        // 2. quotes, parens, brackets (NOT periods) followed by uppercase letter with NO space BEFORE the quote
+        // 3. HTML entity &quot; preceded by non-space, followed by uppercase letter
         // Explicitly exclude: period/exclamation/question mark followed by space (normal sentences)
-        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=["')\];])(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
+        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=[^\s])(?=["')\];][A-Z])|(?<=[^\s])(?=&quot;[A-Z])/);
 
         // Merge items that are too short (likely part of compound words like "DevOps")
         const items = [];
