@@ -349,8 +349,8 @@ function waitForAuthAndUpdate() {
 // ============================================
 (function loadAuthHelper() {
   const script = document.createElement('script');
-  // Add version parameter to bust browser cache
-  script.src = '/assets/js/auth.js?v=20251110-2';
+  // Use timestamp to force fresh load every time
+  script.src = `/assets/js/auth.js?t=${Date.now()}`;
   script.async = true;
 
   script.onload = function() {
