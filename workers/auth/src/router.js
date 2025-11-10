@@ -568,27 +568,50 @@ export class AuthRouter {
    * Handle logout
    */
   async handleLogout() {
-    const { userId } = await authenticateRequest(this.request, this.env);
-
     // Get session ID from cookie
     const cookies = this.request.headers.get('Cookie') || '';
     const sessionMatch = cookies.match(/session=([^;]+)/);
     const sessionId = sessionMatch ? sessionMatch[1] : null;
 
+    // Try to authenticate to get userId for logging, but don't fail if not authenticated
+    let userId = null;
+    try {
+      const auth = await authenticateRequest(this.request, this.env);
+      userId = auth.userId;
+    } catch {
+      // Not authenticated, that's okay - still proceed with logout
+    }
+
+    // Delete session if exists
     if (sessionId) {
       await deleteSession(sessionId, this.env);
     }
 
-    await logLogout(userId, this.request, this.env);
+    // Log logout if we have a userId
+    if (userId) {
+      await logLogout(userId, this.request, this.env);
+    }
+
+    // Clear ALL auth cookies (cross-subdomain)
+    const cookiesToClear = ['session', 'accessToken', 'refreshToken', 'user_info', 'sessionId'];
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    cookiesToClear.forEach(cookieName => {
+      // Clear cookie for .cybersmrt.org domain
+      headers.append('Set-Cookie', `${cookieName}=; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=0; Path=/`);
+      // Also clear for current domain (belt and suspenders)
+      headers.append('Set-Cookie', `${cookieName}=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/`);
+    });
+
+    console.log('🚪 Logout: Cleared', cookiesToClear.length, 'cookies');
+    console.log('🚪 Logout: Set-Cookie headers count:', headers.getSetCookie().length);
 
     return new Response(JSON.stringify({
       success: true,
       message: 'Logged out successfully',
     }), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/',
-      },
+      headers: headers
     });
   }
 
