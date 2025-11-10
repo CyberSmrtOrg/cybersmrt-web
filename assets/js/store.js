@@ -272,12 +272,13 @@ const Store = {
 
     let html = '';
     let inList = false;
+    let lastLineWasHeader = false;
 
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
 
       // Check if this line is a section header (short line followed by concatenated items)
-      const isHeader = line.match(/^(Product features?|Care instructions?|Specifications?|Details?|Features?|Materials?|Dimensions?|Sizes?|Colors?|About|Description)$/i);
+      const isHeader = line.match(/^(Product features?|Care instructions?|Specifications?|Details?|Features?|Materials?|Dimensions?|Sizes?|Colors?|About|Description|Perfect for|Wear it to)$/i);
 
       if (isHeader) {
         // Close any open list
@@ -287,18 +288,19 @@ const Store = {
         }
         // Add header
         html += `<h4>${line}</h4>`;
+        lastLineWasHeader = true;
         continue;
       }
 
-      // Check if line has concatenated list items (lowercase letter followed by uppercase letter)
+      // Check if line has concatenated list items - ONLY if it follows a header or we're already in a list
       // Pattern: "item oneItem twoItem three" -> split before uppercase letters
       // Also handle: item"NextItem, item)NextItem, item'NextItem, item&quot;NextItem
-      // BUT NOT: "sentence. Another sentence" (period + space is normal sentence boundary)
-      // AND NOT: Short declarative lines like "Trust No One." or "Encrypt Everything."
-      // AND NOT: Quoted text like 'panel "My incident"' (space before quote)
-      const hasConcatenatedItems = line.length > 60 && (line.match(/[a-z][A-Z]/) || line.match(/[^\s]["')\];][A-Z]/) || line.match(/[^\s]&quot;[A-Z]/));
+      const hasConcatenatedItems = (lastLineWasHeader || inList) &&
+                                   line.length > 60 &&
+                                   (line.match(/[a-z][A-Z]/) || line.match(/[^\s]["')\];][A-Z]/) || line.match(/[^\s]&quot;[A-Z]/));
 
       if (hasConcatenatedItems) {
+        lastLineWasHeader = false;
         // Split on transitions from:
         // 1. lowercase letter to uppercase letter (no space between)
         // 2. quotes, parens, brackets (NOT periods) followed by uppercase letter with NO space BEFORE the quote
@@ -353,6 +355,7 @@ const Store = {
             inList = false;
           }
           // Regular paragraph
+          lastLineWasHeader = false;
           if (line.length > 0) {
             html += `<p>${line}</p>`;
           }
