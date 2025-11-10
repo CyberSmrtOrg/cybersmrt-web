@@ -268,36 +268,71 @@ const Store = {
     if (!text) return '';
 
     // Split into lines
-    const lines = text.split('\n').filter(line => line.trim());
+    const lines = text.split('\n').map(line => line.trim()).filter(line => line);
 
     let html = '';
     let inList = false;
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      let line = lines[i];
 
-      // Check if line starts with bullet point indicators
-      const isBullet = line.startsWith('•') ||
-                       line.startsWith('-') ||
-                       line.startsWith('*') ||
-                       line.match(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6]/);
+      // Check if this line is a section header (short line followed by concatenated items)
+      const isHeader = line.match(/^(Product features?|Care instructions?|Specifications?|Details?|Features?|Materials?|Dimensions?|Sizes?|Colors?|About|Description)$/i);
 
-      if (isBullet) {
-        if (!inList) {
-          html += '<ul>';
-          inList = true;
-        }
-        // Remove the bullet character and add as list item
-        const content = line.replace(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6\-\*]\s*/, '');
-        html += `<li>${content}</li>`;
-      } else {
+      if (isHeader) {
+        // Close any open list
         if (inList) {
           html += '</ul>';
           inList = false;
         }
-        // Regular paragraph
-        if (line.length > 0) {
-          html += `<p>${line}</p>`;
+        // Add header
+        html += `<h4>${line}</h4>`;
+        continue;
+      }
+
+      // Check if line has concatenated list items (lowercase letter followed by uppercase letter)
+      // Pattern: "item oneItem twoItem three" -> split before uppercase letters
+      const hasConcatenatedItems = line.match(/[a-z][A-Z]/);
+
+      if (hasConcatenatedItems) {
+        // Split on transitions from lowercase to uppercase
+        const items = line.split(/(?<=[a-z])(?=[A-Z])/);
+
+        if (!inList) {
+          html += '<ul>';
+          inList = true;
+        }
+
+        items.forEach(item => {
+          if (item.trim()) {
+            html += `<li>${item.trim()}</li>`;
+          }
+        });
+      } else {
+        // Check if line starts with bullet point indicators
+        const isBullet = line.startsWith('•') ||
+                         line.startsWith('-') ||
+                         line.startsWith('*') ||
+                         line.match(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6]/);
+
+        if (isBullet) {
+          if (!inList) {
+            html += '<ul>';
+            inList = true;
+          }
+          // Remove the bullet character and add as list item
+          const content = line.replace(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6\-\*]\s*/, '');
+          html += `<li>${content}</li>`;
+        } else {
+          // Close any open list
+          if (inList) {
+            html += '</ul>';
+            inList = false;
+          }
+          // Regular paragraph
+          if (line.length > 0) {
+            html += `<p>${line}</p>`;
+          }
         }
       }
     }
