@@ -263,6 +263,53 @@ const Store = {
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
 
+  // Format description text into HTML with proper bullet points
+  formatDescription(text) {
+    if (!text) return '';
+
+    // Split into lines
+    const lines = text.split('\n').filter(line => line.trim());
+
+    let html = '';
+    let inList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      // Check if line starts with bullet point indicators
+      const isBullet = line.startsWith('•') ||
+                       line.startsWith('-') ||
+                       line.startsWith('*') ||
+                       line.match(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6]/);
+
+      if (isBullet) {
+        if (!inList) {
+          html += '<ul>';
+          inList = true;
+        }
+        // Remove the bullet character and add as list item
+        const content = line.replace(/^[\u2022\u2023\u2043\u204C\u204D\u2219\u25AA\u25CF\u25E6\-\*]\s*/, '');
+        html += `<li>${content}</li>`;
+      } else {
+        if (inList) {
+          html += '</ul>';
+          inList = false;
+        }
+        // Regular paragraph
+        if (line.length > 0) {
+          html += `<p>${line}</p>`;
+        }
+      }
+    }
+
+    // Close any open list
+    if (inList) {
+      html += '</ul>';
+    }
+
+    return html;
+  },
+
   // Render products grid
   renderProducts() {
     const grid = document.getElementById('productGrid');
@@ -894,7 +941,7 @@ const Store = {
           ${product.description ? `
             <div class="modal-description-full">
               <h3 class="modal-description-title">Description</h3>
-              <p class="modal-description-text">${product.description}</p>
+              <div class="modal-description-text">${this.formatDescription(product.description)}</div>
             </div>
           ` : ''}
         </div>
