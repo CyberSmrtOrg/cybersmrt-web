@@ -105,7 +105,12 @@
           credentials: 'include'
         }).catch(()=>{});
       }
-      window.location.href = '/';
+      // Force reload to update auth UI
+      if (window.location.pathname === '/') {
+        window.location.reload();
+      } else {
+        window.location.href = '/';
+      }
     }
 
     function displayUserProfile(user) {
