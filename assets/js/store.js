@@ -267,7 +267,7 @@ const Store = {
                 ${colors.map(color => `
                   <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
                           style="background-color: ${this.getColorHex(color)};"
-                          onclick="Store.changeCardColor('${product.id}', '${color}'); return false;"
+                          onclick="Store.changeCardColor('${product.id}', '${color}', event)"
                           title="${color}"
                           aria-label="View ${color} variant">
                   </button>
@@ -282,7 +282,7 @@ const Store = {
               <div class="card-size-selector">
                 ${sizes.map(size => `
                   <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="Store.changeCardSize('${product.id}', '${size}'); return false;">
+                          onclick="Store.changeCardSize('${product.id}', '${size}', event)">
                     ${size}
                   </button>
                 `).join('')}
@@ -290,7 +290,7 @@ const Store = {
             </div>
           ` : ''}
 
-          <button class="card-add-to-cart-btn" onclick="Store.quickAddToCart('${product.id}'); return false;">
+          <button class="card-add-to-cart-btn" onclick="Store.quickAddToCart('${product.id}', event)">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
@@ -614,7 +614,13 @@ const Store = {
   },
 
   // Change color on product card
-  changeCardColor(productId, color) {
+  changeCardColor(productId, color, event) {
+    // Stop event from bubbling to parent card (which would open modal)
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
@@ -671,7 +677,13 @@ const Store = {
   },
 
   // Change size on product card
-  changeCardSize(productId, size) {
+  changeCardSize(productId, size, event) {
+    // Stop event from bubbling to parent card (which would open modal)
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
@@ -948,7 +960,13 @@ const Store = {
   },
 
   // Quick add to cart from product card
-  quickAddToCart(productId) {
+  quickAddToCart(productId, event) {
+    // Stop event from bubbling to parent card (which would open modal)
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
