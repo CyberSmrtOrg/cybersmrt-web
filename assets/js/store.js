@@ -250,13 +250,13 @@ const Store = {
       'Sand': '#C2B280',
       'Ice Grey': '#C9D6DF',
       'Sunset': '#FF6B6B',
-      'Midnight': '#191970',
+      'Midnight': '#2C5F5F',
       'Heather Red': '#DC143C',
       'Purple': '#6B46C1',
       'Light Pink': '#FFB6C1',
       'Royal': '#4169E1',
       'Antique Cherry Red': '#9B111E',
-      'Indigo Blue': '#4B0082',
+      'Indigo Blue': '#87CEEB',
       'Lime': '#00FF00',
       'Heather Sport Dark Navy': '#1C2841'
     };
