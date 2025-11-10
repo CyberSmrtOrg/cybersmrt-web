@@ -593,18 +593,28 @@ export class AuthRouter {
     }
 
     // Clear ALL auth cookies (cross-subdomain)
-    const cookiesToClear = ['session', 'accessToken', 'refreshToken', 'user_info', 'sessionId'];
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    cookiesToClear.forEach(cookieName => {
+    // HttpOnly cookies (server-side only)
+    const httpOnlyCookies = ['session', 'accessToken', 'refreshToken', 'sessionId'];
+    httpOnlyCookies.forEach(cookieName => {
       // Clear cookie for .cybersmrt.org domain
       headers.append('Set-Cookie', `${cookieName}=; HttpOnly; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=0; Path=/`);
       // Also clear for current domain (belt and suspenders)
       headers.append('Set-Cookie', `${cookieName}=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/`);
     });
 
-    console.log('🚪 Logout: Cleared', cookiesToClear.length, 'cookies');
+    // Readable cookies (client-side accessible) - IMPORTANT: Do NOT set HttpOnly flag when clearing
+    const readableCookies = ['user_info'];
+    readableCookies.forEach(cookieName => {
+      // Clear cookie for .cybersmrt.org domain (WITHOUT HttpOnly flag)
+      headers.append('Set-Cookie', `${cookieName}=; Secure; SameSite=Lax; Domain=.cybersmrt.org; Max-Age=0; Path=/`);
+      // Also clear for current domain (belt and suspenders)
+      headers.append('Set-Cookie', `${cookieName}=; Secure; SameSite=Lax; Max-Age=0; Path=/`);
+    });
+
+    console.log('🚪 Logout: Cleared', httpOnlyCookies.length + readableCookies.length, 'cookies');
     console.log('🚪 Logout: Set-Cookie headers count:', headers.getSetCookie().length);
 
     return new Response(JSON.stringify({
