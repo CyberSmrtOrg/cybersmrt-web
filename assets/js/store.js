@@ -28,6 +28,73 @@ const Store = {
     this.loadCart();
     this.loadProducts();
     this.updateCartUI();
+    this.setupEventDelegation();
+  },
+
+  // Setup event delegation for product card interactions
+  setupEventDelegation() {
+    const productGrid = document.getElementById('productGrid');
+    if (!productGrid) return;
+
+    // Use event delegation for all card interactions
+    productGrid.addEventListener('click', (e) => {
+      // Handle color button clicks
+      if (e.target.closest('.card-color-dot')) {
+        e.stopPropagation();
+        e.preventDefault();
+        const btn = e.target.closest('.card-color-dot');
+        const card = btn.closest('.product-card');
+        const productId = card?.dataset.productId;
+        const color = btn.title;
+        if (productId && color) {
+          this.changeCardColor(productId, color);
+        }
+        return;
+      }
+
+      // Handle size button clicks
+      if (e.target.closest('.card-size-btn')) {
+        e.stopPropagation();
+        e.preventDefault();
+        const btn = e.target.closest('.card-size-btn');
+        const card = btn.closest('.product-card');
+        const productId = card?.dataset.productId;
+        const size = btn.textContent.trim();
+        if (productId && size) {
+          this.changeCardSize(productId, size);
+        }
+        return;
+      }
+
+      // Handle add to cart button clicks
+      if (e.target.closest('.card-add-to-cart-btn')) {
+        e.stopPropagation();
+        e.preventDefault();
+        const btn = e.target.closest('.card-add-to-cart-btn');
+        const card = btn.closest('.product-card');
+        const productId = card?.dataset.productId;
+        if (productId) {
+          this.quickAddToCart(productId);
+        }
+        return;
+      }
+
+      // Handle carousel dot clicks
+      if (e.target.closest('.dot')) {
+        e.stopPropagation();
+        e.preventDefault();
+        return; // These have their own inline handlers
+      }
+
+      // Handle card clicks (open modal) - only if not clicking on interactive elements
+      const card = e.target.closest('.product-card');
+      if (card && !e.target.closest('button, .dot, .carousel-nav')) {
+        const productId = card.dataset.productId;
+        if (productId) {
+          this.openProductModal(productId);
+        }
+      }
+    }, { passive: false });
   },
 
   // Load cart from localStorage
@@ -184,7 +251,9 @@ const Store = {
       'Ice Grey': '#C9D6DF',
       'Sunset': '#FF6B6B',
       'Midnight': '#191970',
-      'Heather Red': '#DC143C'
+      'Heather Red': '#DC143C',
+      'Purple': '#6B46C1',
+      'Light Pink': '#FFB6C1'
     };
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
@@ -225,7 +294,7 @@ const Store = {
     const defaultPrice = product.price || 0;
 
     return `
-      <article class="product-card" data-product-id="${product.id}" data-current-color="${currentCardColor}" data-current-size="${currentCardSize}" onclick="Store.openProductModal('${product.id}')">
+      <article class="product-card" data-product-id="${product.id}" data-current-color="${currentCardColor}" data-current-size="${currentCardSize}">
         <div class="product-image-carousel">
           ${hasMultipleImages ? `
             <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); Store.cardCarouselPrev('${product.id}')">
@@ -267,7 +336,6 @@ const Store = {
                 ${colors.map(color => `
                   <button class="card-color-dot ${color === currentCardColor ? 'active' : ''}"
                           style="background-color: ${this.getColorHex(color)};"
-                          onclick="Store.changeCardColor('${product.id}', '${color}', event)"
                           title="${color}"
                           aria-label="View ${color} variant">
                   </button>
@@ -282,7 +350,7 @@ const Store = {
               <div class="card-size-selector">
                 ${sizes.map(size => `
                   <button class="card-size-btn ${size === currentCardSize ? 'active' : ''}"
-                          onclick="Store.changeCardSize('${product.id}', '${size}', event)">
+                          data-size="${size}">
                     ${size}
                   </button>
                 `).join('')}
@@ -290,7 +358,7 @@ const Store = {
             </div>
           ` : ''}
 
-          <button class="card-add-to-cart-btn" onclick="Store.quickAddToCart('${product.id}', event)">
+          <button class="card-add-to-cart-btn">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
@@ -614,13 +682,7 @@ const Store = {
   },
 
   // Change color on product card
-  changeCardColor(productId, color, event) {
-    // Stop event from bubbling to parent card (which would open modal)
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-
+  changeCardColor(productId, color) {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
@@ -677,13 +739,7 @@ const Store = {
   },
 
   // Change size on product card
-  changeCardSize(productId, size, event) {
-    // Stop event from bubbling to parent card (which would open modal)
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-
+  changeCardSize(productId, size) {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
@@ -960,13 +1016,7 @@ const Store = {
   },
 
   // Quick add to cart from product card
-  quickAddToCart(productId, event) {
-    // Stop event from bubbling to parent card (which would open modal)
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-
+  quickAddToCart(productId) {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
 
