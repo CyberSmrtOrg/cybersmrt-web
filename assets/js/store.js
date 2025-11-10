@@ -263,9 +263,25 @@ const Store = {
     return colorMap[colorName] || '#667eea'; // Default to brand purple if unknown
   },
 
+  // Decode HTML entities
+  decodeHtmlEntities(text) {
+    const entities = {
+      '&quot;': '"',
+      '&#39;': "'",
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&nbsp;': ' '
+    };
+    return text.replace(/&[#\w]+;/g, entity => entities[entity] || entity);
+  }
+
   // Format description text into HTML with proper bullet points
   formatDescription(text) {
     if (!text) return '';
+
+    // Decode HTML entities first
+    text = this.decodeHtmlEntities(text);
 
     // Split into lines
     const lines = text.split('\n').map(line => line.trim()).filter(line => line);
@@ -294,19 +310,18 @@ const Store = {
 
       // Check if line has concatenated list items - ONLY if it follows a header or we're already in a list
       // Pattern: "item oneItem twoItem three" -> split before uppercase letters
-      // Also handle: item"NextItem, item)NextItem, item'NextItem, item&quot;NextItem
+      // Also handle: item"NextItem, item)NextItem, item'NextItem
       const hasConcatenatedItems = (lastLineWasHeader || inList) &&
                                    line.length > 60 &&
-                                   (line.match(/[a-z][A-Z]/) || line.match(/[^\s]["')\];][A-Z]/) || line.match(/[^\s]&quot;[A-Z]/));
+                                   (line.match(/[a-z][A-Z]/) || line.match(/[^\s]["')\];][A-Z]/));
 
       if (hasConcatenatedItems) {
         lastLineWasHeader = false;
         // Split on transitions from:
         // 1. lowercase letter to uppercase letter (no space between)
         // 2. quotes, parens, brackets (NOT periods) followed by uppercase letter with NO space BEFORE the quote
-        // 3. HTML entity &quot; followed by uppercase letter (split AFTER &quot;)
         // Explicitly exclude: period/exclamation/question mark followed by space (normal sentences)
-        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=[^\s]["')\];])(?=[A-Z])|(?<=&quot;)(?=[A-Z])/);
+        const rawItems = line.split(/(?<=[a-z])(?=[A-Z])|(?<=[^\s]["')\];])(?=[A-Z])/);
 
         // Merge items that are too short (likely part of compound words like "DevOps")
         const items = [];
