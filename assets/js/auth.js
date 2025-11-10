@@ -170,7 +170,8 @@
     if (!window.getCurrentUser) window.getCurrentUser = getCurrentUser;
     if (!window.getAccessToken) window.getAccessToken = getAccessToken;
     if (!window.getRefreshToken) window.getRefreshToken = getRefreshToken;
-    // ALWAYS replace logout to ensure latest version is used
+    // Store logout implementation for external override (outside duplicate check)
+    window.logoutImpl = logout;
     window.logout = logout;
     if (!window.updateAuthUI) window.updateAuthUI = updateAuthUI;
     if (!window.authRequest) window.authRequest = authRequest;
@@ -190,3 +191,10 @@
   })();
 
   } // End duplicate check
+
+// CRITICAL: Always replace logout function outside the duplicate check
+// This ensures the latest logout code is used even when AUTH_LOADED is already true
+if (window.logoutImpl) {
+  window.logout = window.logoutImpl;
+  console.log('🔄 Logout function updated to latest version');
+}
