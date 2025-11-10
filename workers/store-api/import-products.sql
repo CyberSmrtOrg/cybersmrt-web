@@ -1,5 +1,5 @@
 -- CyberSmrt Product Catalog Import
--- Generated: 2025-11-09T05:08:25.770Z
+-- Generated: 2025-11-10T04:51:21.107Z
 -- Products: 21
 
 
@@ -12,7 +12,19 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "I Fix Your Mistakes For A Living" Sticker',
-  'Perfect for laptops, incident response kits, or anywhere you want to accurately describe your job without using your actual job title. For professionals who clean up messes they didn&#39;t create. Every purchase supports cybersecurity education that teaches people to make fewer fixable mistakes. Service-Disabled Veteran-Owned 501(c)(3)',
+  'Retro poster art. Literal flames. Cold coffee. Resignation.
+
+Vintage-style sticker featuring a weary technician surrounded by chaos, fixing production disasters with the energy of someone who&#39;s done this before and will do it again.
+
+&quot;I FIX YOUR MISTAKES FOR A LIVING&quot;
+
+Glossy vinyl with saturated colors and distressed aesthetic. Perfect for laptops, incident response kits, or anywhere you want to accurately describe your job without using your actual job title.
+
+For professionals who clean up messes they didn&#39;t create.
+
+Every purchase supports cybersecurity education that teaches people to make fewer fixable mistakes.
+
+Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"White":["/assets/images/merch/691006cf57ca4ce0c7096aae_white_1.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_white_2.jpg","/assets/images/merch/691006cf57ca4ce0c7096aae_white_3.jpg"]}',
@@ -36,7 +48,17 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Trust No One" Sticker',
-  'Perfect for zero trust architects, paranoid sysadmins, and security professionals who&#39;ve learned that trust is a vulnerability. Every purchase supports free cybersecurity education teaching actual security principles. Service-Disabled Veteran-Owned 501(c)(3)',
+  'Three commandments. Electric teal. Pure paranoia.
+
+Shadowy fedora figure surrounded by floating padlocks, credentials, and digital debris. Cyber-noir aesthetic in luminous teal on deep black.
+
+&quot;Trust No One. Encrypt Everything. rm -rf ./Witnesses.&quot;
+
+Glossy vinyl sticker for laptops, gear, encrypted drives, or anywhere you practice defense in depth. Perfect for zero trust architects, paranoid sysadmins, and security professionals who&#39;ve learned that trust is a vulnerability.
+
+Every purchase supports free cybersecurity education teaching actual security principles.
+
+Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"White":["/assets/images/merch/6910061d2e33a251dc0f6b64_white_1.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_white_2.jpg","/assets/images/merch/6910061d2e33a251dc0f6b64_white_3.jpg"]}',
@@ -60,7 +82,21 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Compliance ≠ Security" Sticker',
-  'Perfect for laptops, compliance binders (irony), server racks, or anywhere you need to make the point silently. Every purchase supports free cybersecurity education that teaches actual security, not just checkbox compliance. Service-Disabled Veteran-Owned 501(c)(3)',
+  'Split-screen truth for security professionals.
+
+Left: Pristine checklist. Thumbs up. Audit passed.
+
+Right: Same system. Literally on fire. Actively compromised.
+
+&quot;Compliance ≠ Security. But sure, check that box.&quot;
+
+Glossy vinyl sticker in retro-futuristic split-screen style. Cool organized blues vs. chaotic destructive oranges. For people exhausted by &quot;we&#39;re compliant, so we&#39;re secure&quot; logic.
+
+Perfect for laptops, compliance binders (irony), server racks, or anywhere you need to make the point silently.
+
+Every purchase supports free cybersecurity education that teaches actual security, not just checkbox compliance.
+
+Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"White":["/assets/images/merch/6910045d0c938f573d023c0a_white_1.jpg","/assets/images/merch/6910045d0c938f573d023c0a_white_2.jpg","/assets/images/merch/6910045d0c938f573d023c0a_white_3.jpg"]}',
@@ -84,7 +120,19 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "I Hack Things. Legally. Mostly..." Sticker',
-  'The authorized penetration tester&#39;s disclaimer. Shadowy figure. Glowing laptop. Cascading green code. Cyber-noir aesthetic that says &quot;security professional&quot; not &quot;movie villain.&quot; &quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; Premium glossy vinyl sticker for laptops, gear, or anywhere you need to establish your ethical-but-edgy credentials. Perfect conversation starter at security conferences. For professionals with scoped engagements, signed contracts, and maybe one or two',
+  'The authorized penetration tester&#39;s disclaimer.
+
+Shadowy figure. Glowing laptop. Cascading green code. Cyber-noir aesthetic that says &quot;security professional&quot; not &quot;movie villain.&quot;
+
+&quot;I HACK THINGS. LEGALLY. MOSTLY...&quot;
+
+Premium glossy vinyl sticker for laptops, gear, or anywhere you need to establish your ethical-but-edgy credentials. Perfect conversation starter at security conferences.
+
+For professionals with scoped engagements, signed contracts, and maybe one or two stories we don&#39;t discuss in polite company.
+
+Every purchase supports free cybersecurity education for underserved communities.
+
+Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"White":["/assets/images/merch/6910017342b6650d5905b47c_white_1.jpg","/assets/images/merch/6910017342b6650d5905b47c_white_2.jpg","/assets/images/merch/6910017342b6650d5905b47c_white_3.jpg"]}',
@@ -108,7 +156,19 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt "Your IoT Devices Are A Botnet" Sticker',
-  'The uncomfortable truth in premium vinyl. Possessed smart devices. Glowing red eyes. Ominous kitchen takeover. One oblivious coffee cup. &quot;YOUR IOT DEVICES ARE A BOTNET. CHANGE MY MIND...&quot; Weather-resistant vinyl sticker for laptops, water bottles, server racks, or anywhere you need to make people question their smart home purchases. Comic-style artwork in electric blue and sinister red. Perfect size for maximum impact. Permanent reminder that default passwords are forever. Every purcha',
+  'The uncomfortable truth in premium vinyl.
+
+Possessed smart devices. Glowing red eyes. Ominous kitchen takeover. One oblivious coffee cup.
+
+&quot;YOUR IOT DEVICES ARE A BOTNET. CHANGE MY MIND...&quot;
+
+Weather-resistant vinyl sticker for laptops, water bottles, server racks, or anywhere you need to make people question their smart home purchases. Comic-style artwork in electric blue and sinister red.
+
+Perfect size for maximum impact. Permanent reminder that default passwords are forever.
+
+Every purchase supports free cybersecurity education for underserved communities.
+
+Service-Disabled Veteran-Owned 501(c)(3)',
   450,
   450,
   '{"White":["/assets/images/merch/691000b0027fe1e0970d5eda_white_1.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_white_2.jpg","/assets/images/merch/691000b0027fe1e0970d5eda_white_3.jpg"]}',
@@ -132,7 +192,47 @@ INSERT INTO products (
   2044,
   99,
   'CyberSmrt Engraved Tumbler - 20oz',
-  'This 20oz engraved tumbler blends sleek tech aesthetics with serious functionality. The CyberSmrt shield logo—our signature brain-circuit design in gradient purple-to-blue—is precision-etched into premium stainless steel. Not printed. Not stuck on. Permanently engraved. The kind of quality that signals you&#39;re serious about what you represent. Double-wall vacuum insulation keeps your coffee scalding through marathon security audits or your water ice-cold during summer conference talks. 12-24 ',
+  'Keep your coffee hot. Keep your mission close.
+
+This 20oz engraved tumbler blends sleek tech aesthetics with serious functionality. The CyberSmrt shield logo—our signature brain-circuit design in gradient purple-to-blue—is precision-etched into premium stainless steel. Not printed. Not stuck on. Permanently engraved. The kind of quality that signals you&#39;re serious about what you represent.
+
+Double-wall vacuum insulation keeps your coffee scalding through marathon security audits or your water ice-cold during summer conference talks. 12-24 hours of temperature retention means your morning brew stays hot until your afternoon vulnerability scan finishes running. The spill-resistant slide-top lid prevents desk disasters during incident response chaos.
+
+Available in:
+
+White - Clean, professional, modernBlack - Sleek, understated, always appropriate
+
+18/8 food-grade stainless steel construction means durability that matches your work ethic. The engraved logo won&#39;t fade, peel, or wash away—just like your commitment to making cybersecurity accessible. Lightweight design slips into cup holders and backpacks easily, because security professionals are always mobile: conference to coffee shop to client site to classroom.
+
+Perfect for:
+
+Long SOC shifts (coffee stays hot, focus stays sharp)Security conference hydration (rep the mission between talks)Teaching sessions (water within reach, students inspired)Client meetings (professional appearance, nonprofit credibility)Late-night study sessions (caffeine delivery system)Daily commutes (spill-resistant for bumpy rides)Anywhere you need hydration + mission representation
+
+This isn&#39;t just a water bottle—it&#39;s a daily reminder that you&#39;re part of something bigger. Every time you refill it, you&#39;re repping a Service-Disabled Veteran-Owned nonprofit that&#39;s building pathways to cybersecurity careers for people who wouldn&#39;t otherwise have access.
+
+Features:
+
+20oz capacity (perfect all-day size)Double-wall vacuum insulation (12-24hr temperature retention)18/8 food-grade stainless steel (durable, safe)Precision-engraved CyberSmrt logo (permanent, won&#39;t fade)Spill-resistant slide-top lid (desk-disaster prevention)Fits standard cup holders (car, backpack pocket)Lightweight construction (portable everywhere)
+
+Care: Hand wash with warm water and dish soap. (Simple maintenance for people focused on more important things.)
+
+Why this matters:
+
+Every tumbler purchase supports CyberSmrt&#39;s mission:
+
+Free cybersecurity training for veterans and underserved communitiesScholarships for students who can&#39;t afford expensive bootcampsCareer pathways to $70K-120K jobs in one of the fastest-growing fieldsCurriculum development from K-12 through professional certificationWorkforce diversity the industry desperately needs
+
+You&#39;re not just buying a tumbler. You&#39;re funding someone&#39;s transition from underemployed to cybersecurity professional. You&#39;re enabling a veteran to leverage their service into a civilian career. You&#39;re making it possible for a student from an underserved community to access an industry that&#39;s been too exclusive for too long.
+
+Practical. Professional. Purpose-driven.
+
+Use it daily for your coffee, tea, water, or whatever fuels your work. Let the engraved logo be a conversation starter about why cybersecurity education shouldn&#39;t be a luxury good. Represent an organization doing it right: mission-focused, veteran-led, community-serving.
+
+CyberSmrt: Service-Disabled Veteran-Owned 501(c)(3)
+
+Not just merch. Not just a tumbler. A daily reminder that you&#39;re part of building something better—one student, one career, one secure system at a time.
+
+Founded 2024. Built to last. Just like this tumbler.',
   3500,
   3500,
   '{"White":["/assets/images/merch/690ff7fc386d9ee60c0f1840_white_1.jpg"],"Black":["/assets/images/merch/690ff7fc386d9ee60c0f1840_black_1.jpg"]}',
@@ -156,7 +256,47 @@ INSERT INTO products (
   77,
   99,
   'CyberSmrt "EST. 2024" Hoodie Collection',
-  'This isn&#39;t just comfortable apparel—it&#39;s wearable support for democratizing cybersecurity. Every purchase directly funds free training for veterans, underserved communities, and students building careers in one of the fastest-growing fields in tech. Features: Medium-weight 50/50 cotton-poly fleece (8 oz/yd²) Gradient purple-blue &quot;CYBERSMRT&quot; text &quot;EST. 2024&quot; foundational year marking Double-lined hood with color-matched drawstring Kangaroo front pocket (phone-and-hands',
+  'Clean branding. Comfortable fabric. Mission-driven purpose.
+
+A soft, mid-weight hoodie that wraps you in the CyberSmrt mission without screaming about it. Simple arched &quot;CYBERSMRT&quot; text in gradient purple-to-blue sits above &quot;EST. 2024&quot; in clean sans-serif—minimal branding that signals you&#39;re part of something building the future of cybersecurity education.
+
+The design speaks to understated confidence: not flashy merch, just quality apparel representing a nonprofit doing real work. Service-disabled veteran-owned. Focused on underserved communities. Building pathways to $70K-120K careers for people who wouldn&#39;t otherwise have access. The kind of organization worth repping.
+
+Available in five colorways:
+
+White - Classic, clean, works with everythingAsh - Soft gray for subtle sophisticationBlack - Timeless, professional, always appropriatePurple - Bold brand statement in our signature colorLight Pink - Soft, modern, breaks tech stereotypes
+
+The 50/50 cotton-poly fleece strikes perfect balance: cozy warmth without overheating, soft hand-feel that gets better with wear, durability that survives countless wash cycles between study sessions and security conferences. Double-lined hood with color-matched drawcord provides adjustable coverage. Roomy kangaroo pocket keeps hands warm and stores phones, notebooks, field notes from penetration tests.
+
+Wear it to:
+
+Classes and study sessions (student pride)Security conferences (nonprofit representation)Teaching gigs (approachable educator energy)Coffee shop remote work (comfortable productivity)Casual team meetings (relaxed professionalism)Anywhere you want comfort + quiet mission alignment
+
+This isn&#39;t just comfortable apparel—it&#39;s wearable support for democratizing cybersecurity. Every purchase directly funds free training for veterans, underserved communities, and students building careers in one of the fastest-growing fields in tech.
+
+Features:
+
+Medium-weight 50/50 cotton-poly fleece (8 oz/yd²)Gradient purple-blue &quot;CYBERSMRT&quot; text&quot;EST. 2024&quot; foundational year markingDouble-lined hood with color-matched drawstringKangaroo front pocket (phone-and-hands approved)Tubular seamless construction (no side seams)Ribbed cuffs and waistband for shape retentionTear-away label for comfortUnisex sizing (classic relaxed fit)
+
+Care: Machine wash cold, tumble dry medium, iron on low. No dry cleaning. (Simple care for people with more important things to focus on.)
+
+Perfect for:
+
+CyberSmrt students, alumni, and instructorsSupporters of veteran education initiativesAnyone building a more accessible cybersecurity industryPeople who value mission-driven organizationsSecurity professionals supporting workforce diversityEducators teaching the next generationAnyone who appreciates clean design and comfortable hoodies
+
+Clean typography, quality construction, mission-forward purpose. Professional enough for video calls (camera waist-up), comfortable enough for all-day wear, meaningful enough to represent something bigger than yourself.
+
+CyberSmrt: Service-Disabled Veteran-Owned 501(c)(3)
+
+Every hoodie sold supports:
+
+Free cybersecurity training for underserved communitiesScholarships for students who can&#39;t afford bootcampsCurriculum development for K-12 through professional levelsCareer placement support and mentorshipBuilding the diverse security workforce the industry desperately needs
+
+Not just merch. Mission wear.
+
+Wear it because it&#39;s comfortable. Wear it because the design is clean. Wear it because you believe everyone deserves access to cybersecurity careers, not just people born into privilege.
+
+Founded 2024. Building the future. One student at a time.',
   4500,
   4500,
   '{"White":["/assets/images/merch/690ff67875896d655507b3d5_white_1.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_2.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_3.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_4.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_5.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_6.jpg","/assets/images/merch/690ff67875896d655507b3d5_white_7.jpg"],"Black":["/assets/images/merch/690ff67875896d655507b3d5_black_1.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_2.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_3.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_4.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_5.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_6.jpg","/assets/images/merch/690ff67875896d655507b3d5_black_7.jpg"],"Purple":["/assets/images/merch/690ff67875896d655507b3d5_purple_1.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_2.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_3.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_4.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_5.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_6.jpg","/assets/images/merch/690ff67875896d655507b3d5_purple_7.jpg"],"Light Pink":["/assets/images/merch/690ff67875896d655507b3d5_light-pink_1.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_2.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_3.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_4.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_5.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_6.jpg","/assets/images/merch/690ff67875896d655507b3d5_light-pink_7.jpg"],"Ash":["/assets/images/merch/690ff67875896d655507b3d5_ash_1.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_2.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_3.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_4.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_5.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_6.jpg","/assets/images/merch/690ff67875896d655507b3d5_ash_7.jpg"]}',
@@ -180,7 +320,47 @@ INSERT INTO products (
   77,
   99,
   'CyberSmrt "Trust No One" Hoodie - Black',
-  'This medium-weight hoodie features our most uncompromising design: a shadowy figure in a fedora clutching a glowing laptop, surrounded by floating padlocks, scattered credentials, and digital debris—the visual language of zero trust meets film noir aesthetic. Trust No One. Encrypt Everything. rm -rf ./Witnesses. The artwork glows in electric teal against deep black—like neon signs in a dark alley, like terminal text on a midnight screen, like the phosphorescent glow of someone who&#39;s seen too',
+  'Zero trust architecture. Maximum paranoia. Premium comfort.
+
+Wrap yourself in the three commandments of security, rendered in electric-teal cyber-noir. This medium-weight hoodie features our most uncompromising design: a shadowy figure in a fedora clutching a glowing laptop, surrounded by floating padlocks, scattered credentials, and digital debris—the visual language of zero trust meets film noir aesthetic.
+
+Trust No One.
+
+Encrypt Everything.
+
+rm -rf ./Witnesses.
+
+The artwork glows in electric teal against deep black—like neon signs in a dark alley, like terminal text on a midnight screen, like the phosphorescent glow of someone who&#39;s seen too much and deleted the evidence. Padlocks orbit the figure (everything&#39;s locked down), sticky notes float past (credentials everywhere), digital fragments scatter (data in motion)—all surrounding someone practicing operational security at the highest level.
+
+This isn&#39;t just comfortable outerwear—it&#39;s a wearable manifesto for security professionals who take zero trust literally. The kind of hoodie that makes people ask &quot;what does rm -rf ./Witnesses mean?&quot; and then immediately wish they hadn&#39;t.
+
+The 50/50 cotton-poly blend strikes the perfect balance: warm enough for cold server rooms, breathable enough for all-day wear, durable enough to survive countless incident response cycles. Double-lined hood provides adjustable coverage for those deep-focus threat hunting sessions. Roomy kangaroo pocket stores phones, notebooks, encrypted drives, and whatever else you&#39;re keeping away from prying eyes.
+
+Wear it to:
+
+Security conferences (instant credibility)SOC shifts (maximum intimidation factor)Zero trust architecture design sessions (thematic consistency)Client sites where you&#39;re about to deliver bad news about their security postureAnywhere you want to look vaguely dangerous while being completely legitimateCoffee shops when you need people to leave you alone
+
+For security professionals who&#39;ve learned that paranoia and best practices are the same thing. Even the witnesses have to go.
+
+Features:
+
+Medium-weight 50/50 cotton-poly blend (8 oz/yd²)Electric-teal cyber-noir artwork (glows with ominous intent)Double-lined hood with color-matched drawstringKangaroo front pocket (operational security approved)Tubular seamless construction (no side seams)Ribbed cuffs and waistband for shape retentionUnisex sizing (classic relaxed fit)DTG-printed design (crisp detail, won&#39;t crack or peel)
+
+Care: Machine wash cold, tumble dry medium, iron on low. No dry cleaning. (And definitely no witnesses to how often you wear this.)
+
+Perfect for:
+
+Zero trust architects who mean itSecurity professionals with noir aesthetic sensibilitiesAnyone who&#39;s ever nuked ./Witnesses (metaphorically... we hope)Paranoid sysadmins (the best kind)Incident responders who&#39;ve learned to trust nothingPeople who encrypt their grocery listsProfessionals implementing least-privilege access in production AND their personal lives
+
+Black hoodie makes the teal artwork absolutely pop—high contrast, high impact, maximum visibility whether you&#39;re presenting threat models or just existing ominously in public spaces. Comfortable enough for 16-hour security audits, stylish enough for conference after-parties, paranoid enough for production deployments.
+
+Built for late-night log analysis, early-morning vulnerability assessments, conference networking, teaching zero trust principles, and the daily work of assuming everything is compromised until proven otherwise.
+
+Every purchase supports CyberSmrt&#39;s mission: Free cybersecurity education for veterans and underserved communities. Teaching the next generation that security isn&#39;t optional, trust isn&#39;t automatic, and encryption isn&#39;t negotiable.
+
+The artwork stays crisp. The paranoia stays sharp. The witnesses stay deleted.
+
+Service-Disabled Veteran-Owned 501(c)(3) | Building a more secure, more diverse security industry',
   4500,
   4500,
   '{"Black":["/assets/images/merch/690ff2f48ed2c2d2bb07f11d_black_1.jpg","/assets/images/merch/690ff2f48ed2c2d2bb07f11d_black_2.jpg","/assets/images/merch/690ff2f48ed2c2d2bb07f11d_black_3.jpg","/assets/images/merch/690ff2f48ed2c2d2bb07f11d_black_4.jpg"]}',
@@ -204,7 +384,35 @@ INSERT INTO products (
   77,
   99,
   'CyberSmrt Logo Hoodie',
-  'This cozy, medium-weight hoodie blends everyday functionality with minimalist tech aesthetic. Soft 50/50 cotton-poly fabric strikes the perfect balance—warm enough for chilly server rooms, breathable enough for all-day wear, durable enough to survive countless wash cycles between incidents. The CyberSmrt shield logo sits centered on the chest in gradient purple-to-blue—our signature brain-circuit design rendered in clean, modern lines. Subtle enough for professional settings, distinctive enough ',
+  'Clean code. Clean design. Maximum comfort.
+
+This cozy, medium-weight hoodie blends everyday functionality with minimalist tech aesthetic. Soft 50/50 cotton-poly fabric strikes the perfect balance—warm enough for chilly server rooms, breathable enough for all-day wear, durable enough to survive countless wash cycles between incidents.
+
+The CyberSmrt shield logo sits centered on the chest in gradient purple-to-blue—our signature brain-circuit design rendered in clean, modern lines. Subtle enough for professional settings, distinctive enough to signal you&#39;re part of the mission: democratizing cybersecurity education and serving underserved communities.
+
+The double-lined hood with color-matched drawcord provides adjustable coverage for focused work sessions, while the roomy kangaroo pouch keeps your hands warm during cold morning commutes or stores your phone during late-night debugging. Tubular knit construction means no side seams—just smooth, comfortable wear that moves with you.
+
+Wear it to:
+
+Security conferences (rep the nonprofit doing it right)Coding sprints and hackathons (comfort for long sessions)Coffee shop remote work (professional but relaxed)Teaching sessions (approachable educator vibes)Casual Fridays (tech-forward without trying too hard)Anywhere between &quot;just rolled out of bed&quot; and &quot;actual meeting&quot;
+
+This isn&#39;t merch—it&#39;s mission wear. Every purchase supports CyberSmrt&#39;s work providing free cybersecurity education to veterans, underserved communities, and students who wouldn&#39;t otherwise have access. You&#39;re not just buying a hoodie; you&#39;re funding scholarships, curriculum development, and pathways to $70K-120K cybersecurity careers.
+
+Features:
+
+Medium-weight 50/50 cotton-poly blend (8 oz/yd²)Double-lined hood with color-matched drawstringKangaroo front pocket (phone-and-hands sized)Tubular knit construction (seamless sides)Ribbed cuffs and waistband (shape retention)Unisex sizing (classic relaxed fit)DTG-printed logo (crisp detail, won&#39;t crack or peel)
+
+Care: Machine wash cold, tumble dry medium, iron on low if needed. No dry cleaning. (Basically: throw it in the wash and get back to work.)
+
+Perfect for:
+
+CyberSmrt students and alumniSecurity professionals supporting the missionNonprofit tech workers (solidarity!)Anyone building a more accessible cybersecurity industryPeople who appreciate clean design and comfortable hoodiesSupporters of veteran education and workforce development
+
+The gradient logo pops without being loud. Professional enough for client calls (camera waist-up), comfortable enough for 16-hour CTF marathons.
+
+Built for: Late-night study sessions. Early-morning vulnerability scans. Conference networking. Teaching moments. Coffee runs. Code reviews. The daily work of making cybersecurity accessible to everyone, not just the privileged few.
+
+CyberSmrt: Service-Disabled Veteran-Owned 501(c)(3) Providing cybersecurity education to underserved communities. Building the diverse security workforce the industry desperately needs. One hoodie, one student, one career at a time.',
   4500,
   4500,
   '{"White":["/assets/images/merch/690ff1c641ac722ee801224a_white_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_white_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_white_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_white_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_white_5.jpg"],"Sand":["/assets/images/merch/690ff1c641ac722ee801224a_sand_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_sand_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_sand_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_sand_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_sand_5.jpg"],"Navy":["/assets/images/merch/690ff1c641ac722ee801224a_navy_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_navy_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_navy_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_navy_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_navy_5.jpg"],"Charcoal":["/assets/images/merch/690ff1c641ac722ee801224a_charcoal_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_charcoal_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_charcoal_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_charcoal_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_charcoal_5.jpg"],"Black":["/assets/images/merch/690ff1c641ac722ee801224a_black_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_black_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_black_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_black_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_black_5.jpg"],"Heather Navy":["/assets/images/merch/690ff1c641ac722ee801224a_heather-navy_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-navy_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-navy_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-navy_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-navy_5.jpg"],"Purple":["/assets/images/merch/690ff1c641ac722ee801224a_purple_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_purple_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_purple_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_purple_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_purple_5.jpg"],"Heather Sport Dark Navy":["/assets/images/merch/690ff1c641ac722ee801224a_heather-sport-dark-navy_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-sport-dark-navy_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-sport-dark-navy_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-sport-dark-navy_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_heather-sport-dark-navy_5.jpg"],"Ash":["/assets/images/merch/690ff1c641ac722ee801224a_ash_1.jpg","/assets/images/merch/690ff1c641ac722ee801224a_ash_2.jpg","/assets/images/merch/690ff1c641ac722ee801224a_ash_3.jpg","/assets/images/merch/690ff1c641ac722ee801224a_ash_4.jpg","/assets/images/merch/690ff1c641ac722ee801224a_ash_5.jpg"]}',
@@ -228,7 +436,35 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "Your IoT Devices Are A Botnet" T-Shirt',
-  'Features: Dark fabric optimized for vibrant neon blue/red DTG artwork Medium-weight 100% cotton (5.3 oz/yd²) for comfort and durability Tubular seamless construction (no side seams) Reinforced shoulder tape for longevity Ribbed crew neck that maintains shape DTG/DTF printing for crisp, detailed comic-style artwork Tear-away label, Oeko-Tex certified (ethical production) Relaxed fit that lets the art take center stage Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry',
+  'Change my mind. (You can&#39;t.)
+
+Slide this tee on when you want to spark nervous laughter and uncomfortable truths. The graphic shows a dim, neon-lit kitchen populated by possessed smart devices—glowing red eyes, menacing grins, silently coordinating DDoS attacks while you sleep. Your coffee maker. Your smart fridge. That Roomba. All of them compromised, all of them waiting for commands from their C2 server.
+
+&quot;YOUR IOT DEVICES ARE A BOTNET&quot; sits at the top like an accusation. &quot;CHANGE MY MIND...&quot; anchors the bottom with a challenge nobody can win, because we all know it&#39;s true. Default passwords, unpatched firmware, exposed admin interfaces—your smart home is someone else&#39;s distributed computing platform.
+
+The artwork channels techno-horror comic vibes: electric blue shadows, ominous red LEDs, innocent coffee cup sitting among the digital uprising. Equal parts humor and existential dread about the Internet of Things nobody asked for but everyone bought anyway. The kind of image that makes security professionals nod grimly while smart home enthusiasts get defensive.
+
+Wear it to security conferences when you want instant credibility with the IoT research crowd, to hackathons when evangelizing network segmentation, or to Best Buy when you need to passive-aggressively judge people buying smart light bulbs. The kind of shirt that makes fellow security professionals laugh and makes everyone else ask uncomfortable questions about their Alexa.
+
+For security professionals who&#39;ve scanned a home network and seen the horrors. Port 23 telnet. Default admin/admin. Firmware from 2015. All participating in the next Mirai variant.
+
+Features:
+
+Dark fabric optimized for vibrant neon blue/red DTG artworkMedium-weight 100% cotton (5.3 oz/yd²) for comfort and durabilityTubular seamless construction (no side seams)Reinforced shoulder tape for longevityRibbed crew neck that maintains shapeDTG/DTF printing for crisp, detailed comic-style artworkTear-away label, Oeko-Tex certified (ethical production)Relaxed fit that lets the art take center stage
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Unlike your IoT devices, these care instructions won&#39;t get you DDoS&#39;d.)
+
+Perfect for:
+
+Security researchers who&#39;ve studied IoT vulnerabilitiesNetwork admins who&#39;ve seen the scanning trafficAnyone who&#39;s wiresharked their smart TVPenetration testers specializing in embedded devicesPeople who put IoT devices on isolated VLANs (the smart ones)Anyone who&#39;s witnessed the Mirai botnet aftermath
+
+Dark fabric makes the neon comic artwork pop—electric blues, sinister reds, that one coffee cup representing blissful ignorance. Sturdy cotton holds up through hackathons, security conferences, and long debates about whether convenience is worth the security tradeoff (it&#39;s not).
+
+The shirt&#39;s cut is relaxed and comfortable, perfect for long maker space sessions where you&#39;re actually securing IoT devices, or coffee-fueled conversations about why your toaster doesn&#39;t need internet connectivity.
+
+Your smart fridge is mining cryptocurrency. Your doorbell camera is part of a botnet. Your smart bulbs are scanning for vulnerabilities.
+
+Change my mind. (Narrator: They couldn&#39;t.)',
   2500,
   2500,
   '{"Black":["/assets/images/merch/690feda0386d9ee60c0f1583_black_1.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_black_2.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_black_3.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_black_4.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_black_5.jpg"],"Navy":["/assets/images/merch/690feda0386d9ee60c0f1583_navy_1.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_navy_2.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_navy_3.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_navy_4.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_navy_5.jpg"],"Heather Red":["/assets/images/merch/690feda0386d9ee60c0f1583_heather-red_1.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_heather-red_2.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_heather-red_3.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_heather-red_4.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_heather-red_5.jpg"],"Midnight":["/assets/images/merch/690feda0386d9ee60c0f1583_midnight_1.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_midnight_2.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_midnight_3.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_midnight_4.jpg","/assets/images/merch/690feda0386d9ee60c0f1583_midnight_5.jpg"]}',
@@ -252,7 +488,33 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "I Hack Things. Legally. Mostly..." T-Shirt',
-  'This black classic-fit tee carries a moody cyber-noir illustration in electric green—a shadowy figure in a fedora hunched over a glowing laptop, Matrix-style code cascading like digital rain. The kind of image that says &quot;penetration tester&quot; not &quot;movie villain,&quot; though the visual language intentionally blurs that line. &quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; glows at the bottom, perfectly capturing the ethical hacker&#39;s reality: authorized assessments, signed scope do',
+  'The ethical hacker&#39;s mantra, rendered in neon-green noir.
+
+This black classic-fit tee carries a moody cyber-noir illustration in electric green—a shadowy figure in a fedora hunched over a glowing laptop, Matrix-style code cascading like digital rain. The kind of image that says &quot;penetration tester&quot; not &quot;movie villain,&quot; though the visual language intentionally blurs that line.
+
+&quot;I HACK THINGS. LEGALLY. MOSTLY...&quot; glows at the bottom, perfectly capturing the ethical hacker&#39;s reality: authorized assessments, signed scope documents, and maybe that one time you tested something that was probably in scope. The &quot;mostly&quot; does a lot of heavy lifting here—legally speaking, professionally speaking, and comedically speaking.
+
+The artwork channels classic hacker aesthetic, a black hoodie, focused posture, cascading green code, laptop glow illuminating the face—but with enough self-awareness to signal you&#39;re on the right side of the law. Mostly. When the paperwork&#39;s in order.
+
+Wear it to security conferences when networking with fellow pentesters, to client sites when you want to make the IT team slightly nervous, or to coffee shops when embracing your &quot;mysterious stranger with a laptop&quot; energy. The kind of shirt that makes other security professionals laugh and makes HR slightly concerned.
+
+The neon-green illustration pops against deep black cotton—high contrast, high impact, perfect visibility in dimly lit SOCs or well-lit conference halls. Works equally well for actual late-night exploit development or just looking like you do that sort of thing.
+
+For penetration testers, bug bounty hunters, and authorized security researchers. The ones with signed paperwork. Mostly.
+
+Features:
+
+Black cotton optimized for vibrant neon-green DTG printingMedium-weight fabric (5.3 oz/yd²) for durability and comfortTubular seamless construction (no side seams)Ribbed crew neck that maintains shapeReinforced shoulder tape for longevityDual printing: DTF details plus DTG main artworkClassic relaxed fit for late-night sessions
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (We follow rules. Mostly.)
+
+Perfect for:
+
+Penetration testers with scoped engagementsBug bounty hunters (fully authorized)Red teamers (with ROE documentation)Security researchers (ethical ones)CTF competitors who sometimes blur linesAnyone who&#39;s said &quot;it&#39;s legal, I have permission... somewhere&quot;
+
+Soft, sturdy cotton holds the sharp neon artwork beautifully through long hours of authorized hacking, midnight debugging, or just looking mysteriously competent at coffee shops. The relaxed cut keeps you comfortable whether you&#39;re actually breaking into systems (legally) or just vibing with the aesthetic.
+
+Yes, I hack. Yes, it&#39;s authorized. Yes, I have the paperwork. ...Mostly.',
   2500,
   2500,
   '{"Charcoal":["/assets/images/merch/690fec48149edf1d8f067bec_charcoal_1.jpg","/assets/images/merch/690fec48149edf1d8f067bec_charcoal_2.jpg","/assets/images/merch/690fec48149edf1d8f067bec_charcoal_3.jpg","/assets/images/merch/690fec48149edf1d8f067bec_charcoal_4.jpg","/assets/images/merch/690fec48149edf1d8f067bec_charcoal_5.jpg","/assets/images/merch/690fec48149edf1d8f067bec_charcoal_6.jpg"],"Black":["/assets/images/merch/690fec48149edf1d8f067bec_black_1.jpg","/assets/images/merch/690fec48149edf1d8f067bec_black_2.jpg","/assets/images/merch/690fec48149edf1d8f067bec_black_3.jpg","/assets/images/merch/690fec48149edf1d8f067bec_black_4.jpg","/assets/images/merch/690fec48149edf1d8f067bec_black_5.jpg","/assets/images/merch/690fec48149edf1d8f067bec_black_6.jpg"],"Dark Heather":["/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_1.jpg","/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_2.jpg","/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_3.jpg","/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_4.jpg","/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_5.jpg","/assets/images/merch/690fec48149edf1d8f067bec_dark-heather_6.jpg"],"Military Green":["/assets/images/merch/690fec48149edf1d8f067bec_military-green_1.jpg","/assets/images/merch/690fec48149edf1d8f067bec_military-green_2.jpg","/assets/images/merch/690fec48149edf1d8f067bec_military-green_3.jpg","/assets/images/merch/690fec48149edf1d8f067bec_military-green_4.jpg","/assets/images/merch/690fec48149edf1d8f067bec_military-green_5.jpg","/assets/images/merch/690fec48149edf1d8f067bec_military-green_6.jpg"],"Navy":["/assets/images/merch/690fec48149edf1d8f067bec_navy_1.jpg","/assets/images/merch/690fec48149edf1d8f067bec_navy_2.jpg","/assets/images/merch/690fec48149edf1d8f067bec_navy_3.jpg","/assets/images/merch/690fec48149edf1d8f067bec_navy_4.jpg","/assets/images/merch/690fec48149edf1d8f067bec_navy_5.jpg","/assets/images/merch/690fec48149edf1d8f067bec_navy_6.jpg"]}',
@@ -276,7 +538,33 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "Compliance ≠ Security" T-Shirt',
-  'Features: Medium-weight 100% cotton for all-day comfort Tubular seamless construction (clean silhouette, no side seams) Reinforced shoulder tape and ribbed collar for durability Dual printing: DTF for sleeve/neck details, DTG for main vibrant artwork Tear-away label (because comfort matters) Oeko-Tex certified fabric (at least something&#39;s actually secure) Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Unlike compliance frameworks, these instruction',
+  'The uncomfortable truth, visualized in split-screen horror.
+
+A bold, conversation-starting tee that every security professional has lived. The front print contrasts cool blues with fiery orange-reds to tell the story of checkbox security versus actual threat response: on the left, a pristine compliance checklist with a confident thumbs-up; on the right, that same system actively melting down in a raging inferno.
+
+The split-screen design captures the gap between auditor-approved and adversary-proof. One side glows with the satisfaction of passed audits and completed requirements—neat checkmarks, organized documentation, regulatory happiness. The other side shows what compliance doesn&#39;t prevent: compromised systems, lateral movement, data exfiltration, and everything on fire while the thumbs-up remains blissfully unaware.
+
+&quot;Compliance ≠ Security&quot; sits at the top like a theorem. &quot;But sure, check that box&quot; anchors the bottom with perfect resignation—the phrase every security team has muttered during yet another compliance-driven meeting that ignores actual risk.
+
+Wear it to security conferences when you want instant credibility, to compliance audits when you&#39;re feeling bold, or to tech meetups when you need to find your people. The kind of shirt that makes CISOs nod knowingly, compliance officers defensive, and auditors uncomfortable.
+
+The vibrant retro-futuristic art style—cool geometric blues versus chaotic organic flames—makes the message land without being preachy. It&#39;s information security&#39;s most tired argument, rendered as wearable art.
+
+For security professionals tired of explaining the difference. Again. To the same people. Every quarter.
+
+Features:
+
+Medium-weight 100% cotton for all-day comfortTubular seamless construction (clean silhouette, no side seams)Reinforced shoulder tape and ribbed collar for durabilityDual printing: DTF for sleeve/neck details, DTG for main vibrant artworkTear-away label (because comfort matters)Oeko-Tex certified fabric (at least something&#39;s actually secure)
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Unlike compliance frameworks, these instructions actually keep things from falling apart.)
+
+Perfect for:
+
+Security architects explaining risk vs. compliancePentesters who find everything post-auditCISOs managing board expectationsAnyone who&#39;s passed an audit and still gotten breachedSecurity professionals with compliance PTSDPeople tired of &quot;we&#39;re compliant, so we&#39;re secure&quot; logic
+
+Medium-weight cotton holds the vibrant split-screen artwork beautifully—cool blues bleeding into hot oranges, order dissolving into chaos. Easy to layer under a hoodie during late-night incidents or wear solo when making uncomfortable points in meetings.
+
+Yes, you passed the audit. No, that doesn&#39;t mean you&#39;re secure. But sure, check that box.',
   2500,
   2500,
   '{"Charcoal":["/assets/images/merch/690feb1841ac722ee8012078_charcoal_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_charcoal_7.jpg"],"Black":["/assets/images/merch/690feb1841ac722ee8012078_black_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_black_7.jpg"],"Forest Green":["/assets/images/merch/690feb1841ac722ee8012078_forest-green_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_forest-green_7.jpg"],"Royal":["/assets/images/merch/690feb1841ac722ee8012078_royal_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_royal_7.jpg"],"Red":["/assets/images/merch/690feb1841ac722ee8012078_red_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_red_7.jpg"],"White":["/assets/images/merch/690feb1841ac722ee8012078_white_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_white_7.jpg"],"Gold":["/assets/images/merch/690feb1841ac722ee8012078_gold_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_gold_7.jpg"],"Heather Navy":["/assets/images/merch/690feb1841ac722ee8012078_heather-navy_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_heather-navy_7.jpg"],"Indigo Blue":["/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_indigo-blue_7.jpg"],"Antique Cherry Red":["/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_1.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_2.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_3.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_4.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_5.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_6.jpg","/assets/images/merch/690feb1841ac722ee8012078_antique-cherry-red_7.jpg"]}',
@@ -300,7 +588,31 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "Trust No One" T-Shirt',
-  'This black cotton tee carries a moody cyber-espionage illustration that feels like a midnight breach in neon. A shadowy figure in a fedora clutches a glowing laptop, surrounded by floating padlocks, scattered credentials, and digital debris—the visual language of zero trust architecture meets film noir aesthetic. The artwork&#39;s electric teal glow commands attention without shouting. It&#39;s for the security professional who knows paranoia isn&#39;t a bug, it&#39;s a feature—the kind of perso',
+  'The three commandments of security, rendered in electric teal noir.
+
+This black cotton tee carries a moody cyber-espionage illustration that feels like a midnight breach in neon. A shadowy figure in a fedora clutches a glowing laptop, surrounded by floating padlocks, scattered credentials, and digital debris—the visual language of zero trust architecture meets film noir aesthetic.
+
+The artwork&#39;s electric teal glow commands attention without shouting. It&#39;s for the security professional who knows paranoia isn&#39;t a bug, it&#39;s a feature—the kind of person who reads &quot;Trust No One. Encrypt Everything. rm -rf ./Witnesses&quot; not as edgy humor but as Tuesday&#39;s production runbook.
+
+Soft but structured, the shirt wears like a trusted companion during late-night incident response, security conference networking, or contemplative walks through datacenters. The scattered visual elements tell a story: padlocks (everything&#39;s locked down), sticky notes (credentials everywhere), digital fragments (data in motion)—all orbiting someone who&#39;s seen too much and deleted the evidence.
+
+Wear it layered under a hoodie during SOC shifts or alone with jeans at hacker meetups; it adds a quiet menace to whatever you do. The kind of shirt that makes people ask &quot;what does rm -rf ./Witnesses mean?&quot; and then immediately regret asking.
+
+For security professionals who take zero trust literally. Even the witnesses have to go.
+
+Features:
+
+Premium black cotton optimized for vibrant teal DTG printingTubular seamless construction (no side seams)Ribbed crew neck that maintains shape through countless wearsReinforced shoulder tape for durabilityClassic relaxed fit built for layering or standalone wearTear-away label for maximum comfort
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (And definitely no witnesses to how often you wear this.)
+
+Perfect for:
+
+Zero trust architects who mean itSecurity professionals with a noir aestheticAnyone who&#39;s ever nuked ./Witnesses (metaphorically... we hope)Paranoid sysadmins (the best kind)Incident responders who&#39;ve learned to trust nothingPeople who encrypt their grocery lists
+
+Lightweight yet durable, built to be lived in—from dim coffee shops to all-night breach investigations. This settles into your rotation and becomes one of those pieces you reach for without thinking, like muscle memory for chmod 000 or instinctively denying all inbound traffic.
+
+The artwork stays crisp. The paranoia stays sharp. The witnesses stay deleted.',
   2500,
   2500,
   '{"Black":["/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_1.jpg","/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_2.jpg","/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_3.jpg","/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_4.jpg","/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_5.jpg","/assets/images/merch/690fe9628ed2c2d2bb07ee96_black_6.jpg"]}',
@@ -324,7 +636,31 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "I Fix Your Mistakes For A Living" T-Shirt',
-  'This classic cotton tee carries a bold, retro-style print that speaks to incident responders and security professionals who clean up other people&#39;s messes. The graphic shows a weary sysadmin amid literal flames and server racks, coffee in hand, fixing what&#39;s broken with the cheeky declaration: &quot;I FIX YOUR MISTAKES FOR A LIVING.&quot; The vintage screen-print aesthetic—distressed edges, weathered colors, old-school typography—captures the timeless nature of the job. Different decade,',
+  'Vintage poster art for the modern firefighter. The digital kind.
+
+This classic cotton tee carries a bold, retro-style print that speaks to incident responders and security professionals who clean up other people&#39;s messes. The graphic shows a weary sysadmin amid literal flames and server racks, coffee in hand, fixing what&#39;s broken with the cheeky declaration: &quot;I FIX YOUR MISTAKES FOR A LIVING.&quot;
+
+The vintage screen-print aesthetic—distressed edges, weathered colors, old-school typography—captures the timeless nature of the job. Different decade, same problems: someone clicked the thing, deployed the code, opened the port, trusted the input. And now you&#39;re here at 2 AM with coffee going cold and production on fire.
+
+Wear it to the office after an all-night remediation, to security conferences when networking with fellow cleanup crew members, or on casual days when you want your wardrobe to reflect skill, exhaustion, and dry gallows humor. The comfortable crew neck and relaxed fit make it easy to layer under a hoodie during SOC shifts or wear solo while you ssh into yet another compromised server.
+
+The weathered artwork tells the story: flames (production down), server racks (infrastructure chaos), coffee mugs (fuel), scattered debris (the aftermath), and one tired professional doing what needs to be done. It&#39;s simultaneously a warning label and a resume.
+
+For security professionals whose job description is &quot;fix what broke.&quot; And what will break. And what&#39;s currently breaking.
+
+Features:
+
+Medium-weight 100% cotton (180 g/m²) for durability and comfortTubular seamless construction (no side seams)Ribbed crew neck that maintains shape through countless wearsReinforced shoulder tape for longevityVintage-style DTG/DTF printing with intentional distressed aestheticNatural color flecking adds lived-in character (like your career)
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (It&#39;s already been through enough, just like you.)
+
+Perfect for:
+
+Incident responders who&#39;ve seen some thingsSysadmins cleaning up developer &quot;optimizations&quot;Security analysts fixing what compliance missedAnyone whose morning standup starts with &quot;so, about last night...&quot;IT professionals tired of preventing preventable disastersPentesters who then have to help fix what they found
+
+The comfortable fit makes it easy to wear during long remediation sessions, makerspace debugging, or casual Fridays when you want to subtly remind management why you exist.
+
+You didn&#39;t start the fire. But you&#39;re the one who has to put it out. Again. For a living.',
   2500,
   2500,
   '{"Cardinal Red":["/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_cardinal-red_9.jpg"],"Black":["/assets/images/merch/690fe8ba2e33a251dc0f6442_black_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_black_9.jpg"],"Dark Heather":["/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_dark-heather_9.jpg"],"Yellow Haze":["/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_yellow-haze_9.jpg"],"White":["/assets/images/merch/690fe8ba2e33a251dc0f6442_white_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_white_9.jpg"],"Tweed":["/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_tweed_9.jpg"],"Heather Navy":["/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_1.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_2.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_3.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_4.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_5.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_6.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_7.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_8.jpg","/assets/images/merch/690fe8ba2e33a251dc0f6442_heather-navy_9.jpg"]}',
@@ -348,7 +684,19 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "Your EDR Missed It" T-Shirt',
-  'This classic crew tee features a vintage-style bullseye graphic—a grinning blue EDR agent riddled with arrows, sitting dead-center in red and white rings that spell out the truth every security analyst knows: &quot;YOUR EDR MISSED IT.&quot; The hand-drawn artwork carries the weathered charm of old maritime signage, but tells a distinctly modern security story—one of overconfident tooling, vendor promises that didn&#39;t quite pan out, and the gap between marketing dashboards and actual threat de',
+  'When your endpoint detection becomes a cheerful target practice dummy.
+
+Feel the sting of bypassed defenses and the uncomfortable silence after a detection gap. This classic crew tee features a vintage-style bullseye graphic—a grinning blue EDR agent riddled with arrows, sitting dead-center in red and white rings that spell out the truth every security analyst knows: &quot;YOUR EDR MISSED IT.&quot;
+
+The hand-drawn artwork carries the weathered charm of old maritime signage, but tells a distinctly modern security story—one of overconfident tooling, vendor promises that didn&#39;t quite pan out, and the gap between marketing dashboards and actual threat detection. Small details (scattered arrows, defensive posture, that too-happy smile) whisper of alert fatigue, false negatives, and the stubborn reality that no single tool catches everything.
+
+The square design sits centered on clean white cotton, brightening post-incident reviews and layering easily under a hoodie during war room sessions. Wear it to security conferences when you want knowing nods from fellow defenders, during tabletop exercises about detection gaps, or whenever you need to gently remind stakeholders that endpoint security isn&#39;t a silver bullet.
+
+For people who&#39;ve seen the logs. And the gaps in the logs.
+
+Features:
+
+Medium-weight 100% cotton (breathable, durable)Tubular seamless construction (no side seams)Ribbed crew neck that keeps its shapeReinforced shoulder tape for longevityDTG/DTF printing for detailed, vibrant artworkCare: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Unlike your EDR, these instructions actually work as advertised.)',
   2500,
   2500,
   '{"Charcoal":["/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_charcoal_8.jpg"],"Black":["/assets/images/merch/690fdc8357ca4ce0c7096060_black_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_black_8.jpg"],"Ice Grey":["/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_ice-grey_8.jpg"],"Sand":["/assets/images/merch/690fdc8357ca4ce0c7096060_sand_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sand_8.jpg"],"Red":["/assets/images/merch/690fdc8357ca4ce0c7096060_red_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_red_8.jpg"],"White":["/assets/images/merch/690fdc8357ca4ce0c7096060_white_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_white_8.jpg"],"Lime":["/assets/images/merch/690fdc8357ca4ce0c7096060_lime_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_lime_8.jpg"],"Heather Navy":["/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_heather-navy_8.jpg"],"Sunset":["/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_1.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_2.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_3.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_4.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_5.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_6.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_7.jpg","/assets/images/merch/690fdc8357ca4ce0c7096060_sunset_8.jpg"]}',
@@ -372,7 +720,23 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "I Know What You Did Last Session" T-Shirt',
-  'Features: Medium-weight 100% cotton (5.3 oz/yd²) for comfort and durability Tubular knit construction (seamless sides for cleaner look) Ribbed crew neck that maintains its shape Reinforced shoulder tape for longevity DTG/DTF printing for vibrant, detailed neon-green artwork Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Don&#39;t worry, we&#39;re not logging your laundry habits. Probably.) Perfect for: SOC analysts who&#39;ve seen some things in the lo',
+  'The logs don&#39;t lie. And neither does this ominous SOC analyst.
+
+A bold, eerie tee made for security professionals and threat hunters who live in the dark—literally and figuratively. The front graphic glows with Matrix-green code rain, a menacing skull looming over a shadowy figure at their workstation, and the warning every careless user dreads: &quot;I KNOW WHAT YOU DID LAST SESSION.&quot;
+
+Evokes late-night incident response, suspicious login attempts, and the thrill of catching someone red-handed in the audit logs. The neon-green glitch aesthetic channels both 90s hacker cinema and modern SIEM dashboards—that perfect blend of retro cyber-threat vibes and contemporary security operations reality.
+
+The classic crew neck and relaxed cut make it comfortable for long shifts in the SOC, casual meetups at security conferences, or just making your coworkers nervously laugh when you walk past their desk. Lightweight but sturdy cotton keeps the print crisp and the shirt wearable year-round—wear it while hunting through PCAPs, spectating a CTF tournament, or reminding people that incognito mode doesn&#39;t mean invisible.
+
+For defenders who see everything. Session logs, browsing history, failed sudo attempts—all of it.
+
+Features:
+
+Medium-weight 100% cotton (5.3 oz/yd²) for comfort and durabilityTubular knit construction (seamless sides for cleaner look)Ribbed crew neck that maintains its shapeReinforced shoulder tape for longevityDTG/DTF printing for vibrant, detailed neon-green artworkCare: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Don&#39;t worry, we&#39;re not logging your laundry habits. Probably.)
+
+Perfect for:
+
+SOC analysts who&#39;ve seen some things in the logsThreat hunters with access to everythingSecurity professionals with a taste for psychological warfareAnyone who&#39;s ever uttered &quot;I can see your browsing history&quot; and meant itCybersecurity folks who enjoy making end-users slightly uncomfortable',
   2500,
   2500,
   '{"Black":["/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_1.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_2.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_3.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_4.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_5.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_6.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_7.jpg","/assets/images/merch/690fdb6f72b3d1dfb70b89d1_black_8.jpg"]}',
@@ -396,7 +760,23 @@ INSERT INTO products (
   6,
   99,
   'CyberSmrt "Incident Response Plan" T-Shirt',
-  'Perfect for: Security analysts who&#39;ve lived through &quot;the incident&quot; IT professionals with PTSD from on-prem disasters Anyone whose incident response plan is &quot;prayer and cloud migration&quot; DevOps engineers who&#39;ve abandoned ship mid-crisis Tech conference networking (instant conversation starter) Clean white canvas, crisp DTG printing, deadpan delivery. No side seams, ribbed collar that keeps its shape, and shoulder tape that prevents stretching—because your shirt shouldn&',
+  'When the fire&#39;s already burning, there&#39;s really only one solution.
+
+A soft, breathable tee featuring our four-panel &quot;My incident response plan?&quot; comic—because sometimes the most honest answer to a cybersecurity disaster is &quot;just migrate to the cloud.&quot; Minimalist black line artwork tells the story we&#39;ve all lived: computer on fire, moment of panic, sudden realization, problem solved (kind of).
+
+The lightweight 100% cotton feels broken-in from day one, with a classic crew neck and relaxed fit that works under a hoodie during late-night troubleshooting sessions or solo at the coffee shop between incident calls. It&#39;s tech humor for people who&#39;ve actually been there—the kind of shirt that gets a knowing nod from fellow security pros and a confused smile from everyone else.
+
+Perfect for:
+
+Security analysts who&#39;ve lived through &quot;the incident&quot;IT professionals with PTSD from on-prem disastersAnyone whose incident response plan is &quot;prayer and cloud migration&quot;DevOps engineers who&#39;ve abandoned ship mid-crisisTech conference networking (instant conversation starter)
+
+Clean white canvas, crisp DTG printing, deadpan delivery. No side seams, ribbed collar that keeps its shape, and shoulder tape that prevents stretching—because your shirt shouldn&#39;t fall apart even if your infrastructure did.
+
+Features:
+
+Medium-weight 100% cotton (5.3 oz/yd²)Tubular knit construction (seamless sides)Durable ribbed crew neckDTG/DTF printing for sharp, detailed graphicsPre-shrunk for consistent fit
+
+Care: Machine wash cold, tumble dry low. No chlorine bleach, no ironing, no dry cleaning. (Just like your incident response plan: keep it simple.)',
   2500,
   2500,
   '{"White":["/assets/images/merch/690fcef9044f38019f0b5453_white_1.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_2.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_3.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_4.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_5.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_6.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_7.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_8.jpg","/assets/images/merch/690fcef9044f38019f0b5453_white_9.jpg"]}',
@@ -420,7 +800,19 @@ INSERT INTO products (
   12,
   99,
   'CyberSmrt Logo T-Shirt',
-  'This premium unisex jersey tee combines exceptional comfort with CyberSmrt&#39;s mission of making cyber awareness accessible to everyone. Made from 100% Airlume combed and ring-spun cotton, it offers a lightweight feel perfect for classroom sessions, tech conferences, community outreach events, or everyday wear. The classic crew neckline and retail fit make it versatile for any setting—whether you&#39;re teaching students, attending industry events, or showing your support for underserved commu',
+  'Wear your commitment to cybersecurity education with pride. This premium unisex jersey tee combines exceptional comfort with CyberSmrt&#39;s mission of making cyber awareness accessible to everyone. Made from 100% Airlume combed and ring-spun cotton, it offers a lightweight feel perfect for classroom sessions, tech conferences, community outreach events, or everyday wear.
+
+The classic crew neckline and retail fit make it versatile for any setting—whether you&#39;re teaching students, attending industry events, or showing your support for underserved communities gaining access to cybersecurity training. Ideal for Cybersecurity Awareness Month (October), tech enthusiasts, educators, veterans, nonprofit supporters, and anyone passionate about closing the digital divide through cyber education.
+
+Every shirt represents CyberSmrt&#39;s 501(c)(3) mission: empowering K-12 students, nonprofits, and small businesses with the cybersecurity knowledge they need to stay safe online. Perfect for volunteer events, fundraisers, or as a meaningful gift that supports accessible tech education for all.
+
+Product features
+
+Constructed with side seams for enhanced shape retention and supportFeatures a ribbed knit collar for exceptional elasticity and shape retentionIncludes shoulder tape for added stabilization and durabilityUtilizes advanced printing techniques for vibrant and crisp designsMade from 100% breathable cotton, perfect for layering and all-day comfortEach purchase supports CyberSmrt&#39;s cybersecurity education programs
+
+Care instructions
+
+Machine wash: cold (max 30C or 90F)Non-chlorine: bleach as neededTumble dry: low heatIron, steam or dry: medium heatDo not dryclean',
   3000,
   3000,
   '{"Team Purple":["/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_1.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_2.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_3.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_4.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_5.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_6.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_team-purple_7.jpg"],"White":["/assets/images/merch/690e93e52e33a251dc0f1694_white_1.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_2.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_3.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_4.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_5.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_6.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_white_7.jpg"],"Black":["/assets/images/merch/690e93e52e33a251dc0f1694_black_1.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_2.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_3.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_4.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_5.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_6.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_black_7.jpg"],"Heather Prism Lilac":["/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_1.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_2.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_3.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_4.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_5.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_6.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_heather-prism-lilac_7.jpg"],"Ash":["/assets/images/merch/690e93e52e33a251dc0f1694_ash_1.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_2.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_3.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_4.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_5.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_6.jpg","/assets/images/merch/690e93e52e33a251dc0f1694_ash_7.jpg"]}',
@@ -444,7 +836,31 @@ INSERT INTO products (
   39,
   99,
   'CyberSmrt Tank Top - Sun''s Out, Firewall''s Up',
-  'This tank top features a funny play on the popular saying ''Sun''s out, Guns out'' with a geeky twist as ''Sun''s out, Firewall''s up''. Perfect for computer enthusiasts who enjoy humor in their wardrobe. Ideal for casual wear during the summer season or for tech-related events and gatherings. Product features - Side seams for structural support - Self fabric binding for a clean look - Made from 100% Airlume combed and ring-spun cotton - Light fabric for a comfortable fit - Retail fit for a styl',
+  'This tank top features a funny play on the popular saying ''Sun''s out, Guns out'' with a geeky twist as ''Sun''s out, Firewall''s up''. Perfect for computer enthusiasts who enjoy humor in their wardrobe. Ideal for casual wear during the summer season or for tech-related events and gatherings.
+
+Product features
+
+- Side seams for structural support
+
+- Self fabric binding for a clean look
+
+- Made from 100% Airlume combed and ring-spun cotton
+
+- Light fabric for a comfortable fit
+
+- Retail fit for a stylish look
+
+Care instructions
+
+- Machine wash: warm (max 40C or 105F)
+
+- Non-chlorine: bleach as needed
+
+- Tumble dry: medium
+
+- Iron, steam or dry: medium heat
+
+- Do not dryclean',
   3000,
   3000,
   '{"Black":["/assets/images/merch/690d4f4727f2dde9090a5396_black_1.jpg"],"White":["/assets/images/merch/690d4f4727f2dde9090a5396_white_1.jpg"],"Navy":["/assets/images/merch/690d4f4727f2dde9090a5396_navy_1.jpg"],"Red":["/assets/images/merch/690d4f4727f2dde9090a5396_red_1.jpg"],"Leaf":["/assets/images/merch/690d4f4727f2dde9090a5396_leaf_1.jpg"],"Kelly":["/assets/images/merch/690d4f4727f2dde9090a5396_kelly_1.jpg"],"Athletic Heather":["/assets/images/merch/690d4f4727f2dde9090a5396_athletic-heather_1.jpg"],"Dark Grey":["/assets/images/merch/690d4f4727f2dde9090a5396_dark-grey_1.jpg"],"True Royal":["/assets/images/merch/690d4f4727f2dde9090a5396_true-royal_1.jpg"]}',
@@ -468,7 +884,17 @@ INSERT INTO products (
   1402,
   99,
   'CyberSmrt Polo Shirt',
-  'This classic men&#39;s piqué polo combines professional style with comfort, perfect for cybersecurity conferences, nonprofit events, teaching sessions, or casual wear. Whether you&#39;re mentoring students, attending board meetings, or enjoying weekend activities, this polo lets you proudly support accessible cybersecurity education for underserved communities. Made from soft, breathable fabric with a timeless design featuring a welt knit collar and ribbed sleeve bands, this versatile shirt work',
+  'Represent CyberSmrt&#39;s mission while looking sharp. This classic men&#39;s piqué polo combines professional style with comfort, perfect for cybersecurity conferences, nonprofit events, teaching sessions, or casual wear. Whether you&#39;re mentoring students, attending board meetings, or enjoying weekend activities, this polo lets you proudly support accessible cybersecurity education for underserved communities.
+
+Made from soft, breathable fabric with a timeless design featuring a welt knit collar and ribbed sleeve bands, this versatile shirt works for any occasion. It&#39;s ideal for educators, cybersecurity professionals, veterans, nonprofit supporters, and anyone passionate about making cyber education accessible to all. A meaningful gift that combines style with purpose—every purchase supports CyberSmrt&#39;s 501(c)(3) mission of empowering K-12 students, nonprofits, and small businesses through cybersecurity training.
+
+Product features
+
+100% cotton composition for solid colors, ensuring comfort and breathabilityRibbed sleeve bands for a snug and comfortable fitFeatures a 3-button placket with durable pearlized buttonsDouble-needle hem for increased durability and longevityPiqué fabric offers a textured appearance while remaining lightweightCyberSmrt branding supporting cybersecurity education for all
+
+Care instructions
+
+Machine wash: cold (max 30C or 90F)Non-chlorine: bleach as neededTumble dry: low heatDo not ironDo not dryclean',
   3500,
   3500,
   '{"Black":["/assets/images/merch/690d4d4027f2dde9090a533a_black_1.jpg","/assets/images/merch/690d4d4027f2dde9090a533a_black_2.jpg","/assets/images/merch/690d4d4027f2dde9090a533a_black_3.jpg"],"White":["/assets/images/merch/690d4d4027f2dde9090a533a_white_1.jpg","/assets/images/merch/690d4d4027f2dde9090a533a_white_2.jpg","/assets/images/merch/690d4d4027f2dde9090a533a_white_3.jpg"]}',
@@ -492,7 +918,23 @@ INSERT INTO products (
   400,
   99,
   'CyberSmrt Logo Sticker',
-  'Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions! Product f',
+  'Transform your everyday items with these vibrant kiss-cut stickers! Perfect for personalizing laptops, journals, windows, or any smooth surface, these stickers bring a burst of color and personality to your life. Ideal for creative souls and anyone looking to spruce up their space, they make a fantastic gift for artists and DIY enthusiasts alike. Celebrate special occasions like birthdays or holidays with unique, tailored stickers that reflect your style. Relish in the joy of decorating your surroundings with a product designed for lasting impressions!
+
+Product features
+
+- Glossy paper finish for a scratch-resistant surface.
+
+- Durable vinyl with strong adhesive for long-lasting application.
+
+- Vibrant colors printed with eco-friendly inks for eye-catching designs.
+
+- Available in multiple sizes with both white and transparent options.
+
+- Quick and easy application without bubbles for a polished look.
+
+Care instructions
+
+- Use a soft, clean and dry cloth to gently brush any dust or dirt off from the center of the sticker outwards.',
   400,
   400,
   '{"White":["/assets/images/merch/690d4d35dd669cae270d8538_white_1.jpg","/assets/images/merch/690d4d35dd669cae270d8538_white_2.jpg","/assets/images/merch/690d4d35dd669cae270d8538_white_3.jpg"]}',
