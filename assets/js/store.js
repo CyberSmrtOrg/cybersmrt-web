@@ -278,7 +278,7 @@ const Store = {
       let line = lines[i];
 
       // Check if this line is a section header (short line followed by concatenated items)
-      const isHeader = line.match(/^(Product features?|Care instructions?|Specifications?|Details?|Features?|Materials?|Dimensions?|Sizes?|Colors?|About|Description|Perfect for|Wear it to)$/i);
+      const isHeader = line.match(/^(Product features?|Care instructions?|Specifications?|Details?|Features?|Materials?|Dimensions?|Sizes?|Colors?|About|Description|Perfect for|Wear it to):?$/i);
 
       if (isHeader) {
         // Close any open list
