@@ -1553,14 +1553,8 @@ document.addEventListener('click', (e) => {
 })(); // End of language selector IIFE
 
 /**
- * Logout Function
+ * Logout Function - Now handled by auth.js
+ * The logout function is defined in /assets/js/auth.js
+ * DO NOT redefine it here as it will override the proper implementation
  */
-window.logout = function() {
-  // Clear auth tokens
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-
-  // Redirect to home
-  window.location.href = '/';
-};
 </script>
