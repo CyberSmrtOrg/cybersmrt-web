@@ -1133,11 +1133,76 @@
             sandboxFrame.src = `/tools/qr_proxy?url=${encodedURL}`;
             sandboxSection.classList.add('show');
             sandboxSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Detect if iframe fails to load due to X-Frame-Options
+            setTimeout(() => {
+                try {
+                    // Try to access the iframe content - will throw if blocked
+                    const iframeDoc = sandboxFrame.contentDocument || sandboxFrame.contentWindow.document;
+                    if (!iframeDoc || iframeDoc.location.href === 'about:blank') {
+                        showFrameBlockedMessage();
+                    }
+                } catch (e) {
+                    // Cross-origin or frame blocked - show helpful message
+                    if (e.name === 'SecurityError' || e.message.includes('frame')) {
+                        showFrameBlockedMessage();
+                    }
+                }
+            }, 2000);
         });
+
+        function showFrameBlockedMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                background: rgba(239,68,68,0.1);
+                border: 2px solid rgba(239,68,68,0.4);
+                border-radius: 10px;
+                padding: 1.5rem;
+                margin-top: 1rem;
+                color: #fca5a5;
+            `;
+            messageDiv.innerHTML = `
+                <h4 style="color: #ef4444; margin-bottom: 0.75rem;">
+                    ⚠️ Preview Blocked
+                </h4>
+                <p style="margin-bottom: 0.5rem;">
+                    This website cannot be displayed in the preview frame because it has security headers
+                    that prevent it from being embedded (X-Frame-Options: DENY/SAMEORIGIN).
+                </p>
+                <p style="margin-bottom: 0.5rem;">
+                    <strong>This is actually a good security practice</strong> - it protects against clickjacking attacks.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <strong>To visit this site safely:</strong>
+                </p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Check the security analysis above first</li>
+                    <li>If it looks safe, copy the URL and open it in a new tab</li>
+                    <li>Never enter personal information unless you trust the site</li>
+                </ul>
+                <div style="margin-top: 1rem; text-align: center;">
+                    <a href="${escapeHtml(currentURL)}" target="_blank" rel="noopener noreferrer"
+                       style="display: inline-block; padding: 0.75rem 1.5rem; background: #667eea;
+                              color: white; text-decoration: none; border-radius: 8px; font-weight: 600;"
+                       onclick="return confirm('You are about to visit:\\n\\n${escapeHtml(currentURL)}\\n\\nMake sure you reviewed the security analysis above. Continue?')">
+                        🔗 Open in New Tab (Use Caution)
+                    </a>
+                </div>
+            `;
+
+            // Insert after the iframe
+            if (!document.getElementById('frame-blocked-message')) {
+                messageDiv.id = 'frame-blocked-message';
+                sandboxFrame.parentNode.insertBefore(messageDiv, sandboxFrame.nextSibling);
+            }
+        }
 
         closePreview.addEventListener('click', () => {
             sandboxFrame.src = 'about:blank';
             sandboxSection.classList.remove('show');
+            // Remove the blocked message if it exists
+            const blockedMsg = document.getElementById('frame-blocked-message');
+            if (blockedMsg) blockedMsg.remove();
         });
     </script>
 </body>
