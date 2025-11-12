@@ -1,13 +1,14 @@
 {
   "version": 1,
-  "description": "Route store API requests to cybersmrt-store-api worker",
+  "description": "Route API requests to Cloudflare Workers",
   "include": [
     "/store/api/*",
     "/store/webhooks/*",
     "/store/checkout/*",
     "/store/products",
     "/store/products/*",
-    "/store/printify/*"
+    "/store/printify/*",
+    "/tools/qr_proxy*"
   ],
   "exclude": []
 }

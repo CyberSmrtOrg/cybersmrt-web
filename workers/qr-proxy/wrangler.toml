@@ -11,7 +11,7 @@ workers_dev = false
 
 # Production route
 [[routes]]
-pattern = "cybersmrt.org/tools/qr_proxy*"
+pattern = "*cybersmrt.org/tools/qr_proxy*"
 zone_name = "cybersmrt.org"
 
 # KV namespace for blocked domains AND rate limiting
