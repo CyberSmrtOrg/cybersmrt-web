@@ -1336,5 +1336,196 @@
             if (blockedMsg) blockedMsg.remove();
         });
     </script>
+
+    <!-- Camera Permission Education Modal -->
+    <div id="cameraPermissionModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; padding: 1rem; overflow-y: auto;">
+        <div style="max-width: 800px; margin: 2rem auto; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 2px solid #667eea; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📸</div>
+                <h2 style="color: #667eea; font-size: 1.8rem; margin-bottom: 0.5rem;">Camera Permission Required</h2>
+                <p style="color: #cbd5e1; font-size: 1.1rem;">Before we request camera access, let's understand what this means for your privacy and security.</p>
+            </div>
+
+            <!-- What We Need -->
+            <div style="background: rgba(102,126,234,0.1); border-left: 4px solid #667eea; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem; font-size: 1.3rem;">🎯 What We Need Access To:</h3>
+                <p style="color: #e2e8f0; line-height: 1.6; margin-bottom: 0.75rem;">
+                    We're requesting permission to use your device's camera to scan QR codes in real-time.
+                </p>
+                <ul style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                    <li><strong>Camera only</strong> - We don't need or request microphone access</li>
+                    <li><strong>Temporary access</strong> - Only while actively scanning</li>
+                    <li><strong>Local processing</strong> - QR codes are decoded on your device, not sent to our servers</li>
+                    <li><strong>No recording</strong> - We don't record, store, or transmit camera footage</li>
+                </ul>
+            </div>
+
+            <!-- Why This Matters -->
+            <div style="background: rgba(245,158,11,0.1); border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h3 style="color: #f59e0b; margin-bottom: 1rem; font-size: 1.3rem;">⚠️ Why Browser Permissions Matter:</h3>
+                <p style="color: #e2e8f0; line-height: 1.6; margin-bottom: 1rem;">
+                    Browser permissions are your <strong>first line of defense</strong> against malicious websites. When a site requests camera access, it could:
+                </p>
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                    <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">🚨 Potential Risks if Granted to Malicious Sites:</p>
+                    <ul style="color: #cbd5e1; line-height: 1.6; margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Spy on you</strong> - Record video/photos without your knowledge</li>
+                        <li><strong>Steal sensitive info</strong> - Capture documents, credit cards, or private moments</li>
+                        <li><strong>Track your location</strong> - Use background objects to identify where you are</li>
+                        <li><strong>Profile you</strong> - Build behavioral patterns from camera access timestamps</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(16,185,129,0.15); padding: 1rem; border-radius: 6px;">
+                    <p style="color: #10b981; font-weight: 600; margin-bottom: 0.5rem;">✅ Best Practices:</p>
+                    <ul style="color: #cbd5e1; line-height: 1.6; margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Only grant to trusted sites</strong> - Check the URL carefully before approving</li>
+                        <li><strong>Revoke when done</strong> - Don't leave permissions active indefinitely</li>
+                        <li><strong>Watch for suspicious requests</strong> - Question why a site needs camera/mic access</li>
+                        <li><strong>Use temporary permissions</strong> - Some browsers let you grant one-time access</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- How to Revoke -->
+            <div style="background: rgba(102,126,234,0.1); border-left: 4px solid #667eea; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem; font-size: 1.3rem;">🔒 How to Revoke Camera Permission After Use:</h3>
+                <p style="color: #e2e8f0; margin-bottom: 1rem; line-height: 1.6;">
+                    <strong>We strongly recommend</strong> revoking camera access when you're done scanning. Here's how:
+                </p>
+
+                <!-- Chrome Instructions -->
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🌐 Chrome / Edge / Brave:</p>
+                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                        <li>Click the <strong>🔒 padlock icon</strong> or <strong>ⓘ site information icon</strong> in the address bar</li>
+                        <li>Click <strong>"Permissions"</strong> or find <strong>"Camera"</strong> in the dropdown</li>
+                        <li>Change camera permission to <strong>"Block"</strong> or <strong>"Ask (default)"</strong></li>
+                        <li>Or go to: <code style="background: rgba(0,0,0,0.4); padding: 0.2rem 0.5rem; border-radius: 3px;">chrome://settings/content/camera</code></li>
+                    </ol>
+                </div>
+
+                <!-- Firefox Instructions -->
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🦊 Firefox:</p>
+                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                        <li>Click the <strong>🔒 padlock icon</strong> in the address bar</li>
+                        <li>Click <strong>"Connection secure" → "More information"</strong></li>
+                        <li>Go to <strong>"Permissions"</strong> tab</li>
+                        <li>Find <strong>"Use the Camera"</strong> and click <strong>"Remove Permission"</strong></li>
+                    </ol>
+                </div>
+
+                <!-- Safari Instructions -->
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🧭 Safari:</p>
+                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                        <li>Go to <strong>Safari → Settings → Websites → Camera</strong></li>
+                        <li>Find <strong>cybersmrt.org</strong> in the list</li>
+                        <li>Change to <strong>"Deny"</strong> or <strong>"Ask"</strong></li>
+                    </ol>
+                </div>
+
+                <!-- Mobile Instructions -->
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
+                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">📱 Mobile (iOS/Android):</p>
+                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                        <li><strong>iOS:</strong> Settings → Safari → Camera → Ask or Deny</li>
+                        <li><strong>Android Chrome:</strong> Settings → Site settings → Camera → Find site and block</li>
+                        <li>Or tap the <strong>🔒 padlock/ⓘ icon</strong> in the browser address bar</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Privacy Commitment -->
+            <div style="background: rgba(16,185,129,0.1); border-left: 4px solid #10b981; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <h3 style="color: #10b981; margin-bottom: 1rem; font-size: 1.3rem;">🛡️ Our Privacy Commitment:</h3>
+                <ul style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
+                    <li><strong>100% client-side processing</strong> - QR codes are decoded in your browser using JavaScript</li>
+                    <li><strong>Zero data collection</strong> - We never see, store, or transmit your camera feed</li>
+                    <li><strong>Open source approach</strong> - Our code is transparent and auditable</li>
+                    <li><strong>Automatic cleanup</strong> - Camera stream stops immediately when you close the scanner</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <button id="grantCameraBtn" style="flex: 1; min-width: 200px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1rem 2rem; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(16,185,129,0.3);">
+                    ✅ I Understand - Grant Camera Access
+                </button>
+                <button id="denyCameraBtn" style="flex: 1; min-width: 200px; background: rgba(239,68,68,0.2); color: #ef4444; padding: 1rem 2rem; border: 2px solid #ef4444; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    ❌ Cancel - Use Image Upload Instead
+                </button>
+            </div>
+
+            <p style="color: #888; text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                💡 <strong>Tip:</strong> You can always switch to the "Upload Image" tab to scan QR codes without granting camera permission.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Camera Permission Modal Logic
+        const cameraPermissionModal = document.getElementById('cameraPermissionModal');
+        const grantCameraBtn = document.getElementById('grantCameraBtn');
+        const denyCameraBtn = document.getElementById('denyCameraBtn');
+
+        // Show modal when clicking Start Camera
+        const originalStartCameraHandler = startBtn.onclick;
+        startBtn.onclick = null; // Remove the original handler
+        startBtn.addEventListener('click', () => {
+            cameraPermissionModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+
+        // Handle grant permission
+        grantCameraBtn.addEventListener('click', async () => {
+            cameraPermissionModal.style.display = 'none';
+            document.body.style.overflow = '';
+
+            // Now actually request camera access
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = stream;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                scanning = true;
+                requestAnimationFrame(tick);
+            } catch (err) {
+                let errorMessage = 'Camera access denied or not available.';
+
+                if (err.name === 'NotAllowedError') {
+                    errorMessage = '❌ Camera permission denied.\n\nYou blocked camera access. To enable it:\n1. Click the 🔒 or ⓘ icon in your address bar\n2. Find "Camera" permissions\n3. Change to "Allow" and refresh the page\n\nOr use the "Upload Image" tab instead!';
+                } else if (err.name === 'NotFoundError') {
+                    errorMessage = '📸 No camera found.\n\nYour device doesn\'t have a camera or it\'s not detected.\n\nPlease use the "Upload Image" tab to scan QR codes.';
+                } else if (err.name === 'NotReadableError') {
+                    errorMessage = '⚠️ Camera is already in use.\n\nAnother app or tab might be using your camera.\n\nClose other camera apps and try again, or use "Upload Image" tab.';
+                }
+
+                alert(errorMessage + '\n\nError details: ' + err.message);
+            }
+        });
+
+        // Handle deny permission
+        denyCameraBtn.addEventListener('click', () => {
+            cameraPermissionModal.style.display = 'none';
+            document.body.style.overflow = '';
+
+            // Switch to upload tab
+            tabBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-mode="upload"]').classList.add('active');
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById('upload-section').classList.add('active');
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && cameraPermissionModal.style.display === 'block') {
+                denyCameraBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
