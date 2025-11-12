@@ -1158,42 +1158,77 @@
                 border: 2px solid rgba(239,68,68,0.4);
                 border-radius: 10px;
                 padding: 1.5rem;
-                margin-top: 1rem;
-                color: #fca5a5;
+                margin-bottom: 1rem;
+                color: #cbd5e1;
             `;
             messageDiv.innerHTML = `
-                <h4 style="color: #ef4444; margin-bottom: 0.75rem;">
-                    ⚠️ Preview Blocked
+                <h4 style="color: #ef4444; margin-bottom: 1rem; font-size: 1.2rem;">
+                    🛡️ Preview Blocked - This is Good Security!
                 </h4>
-                <p style="margin-bottom: 0.5rem;">
-                    This website cannot be displayed in the preview frame because it has security headers
-                    that prevent it from being embedded (X-Frame-Options: DENY/SAMEORIGIN).
-                </p>
-                <p style="margin-bottom: 0.5rem;">
-                    <strong>This is actually a good security practice</strong> - it protects against clickjacking attacks.
-                </p>
-                <p style="margin-top: 1rem;">
-                    <strong>To visit this site safely:</strong>
-                </p>
-                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                    <li>Check the security analysis above first</li>
-                    <li>If it looks safe, copy the URL and open it in a new tab</li>
-                    <li>Never enter personal information unless you trust the site</li>
-                </ul>
+
+                <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p style="margin-bottom: 0.75rem; color: #e2e8f0; font-weight: 600;">
+                        Why can't we show this preview?
+                    </p>
+                    <p style="color: #cbd5e1; line-height: 1.6;">
+                        This website has security headers (<code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 3px;">X-Frame-Options</code>)
+                        that tell your browser "Don't let this page be embedded inside another page." This prevents <strong>clickjacking attacks</strong>.
+                    </p>
+                </div>
+
+                <div style="background: rgba(16,185,129,0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #10b981;">
+                    <p style="margin-bottom: 0.75rem; color: #10b981; font-weight: 600;">
+                        💡 What's Clickjacking?
+                    </p>
+                    <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 0.75rem;">
+                        Imagine a scammer creates a fake website that tricks you into clicking buttons on a hidden banking site underneath.
+                        You <em>think</em> you're clicking "See cute cat videos," but you're actually clicking "Transfer $1000" on your bank's site that's invisibly layered below.
+                    </p>
+                    <p style="color: #cbd5e1; line-height: 1.6;">
+                        <strong>X-Frame-Options</strong> blocks this by saying "You can only interact with my site directly, not through someone else's page."
+                    </p>
+                </div>
+
+                <div style="background: rgba(102,126,234,0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #667eea;">
+                    <p style="margin-bottom: 0.75rem; color: #667eea; font-weight: 600;">
+                        📚 Other Security Concepts You're Seeing Here:
+                    </p>
+                    <ul style="margin-left: 1.5rem; color: #cbd5e1; line-height: 1.8;">
+                        <li><strong>Sandboxing:</strong> We load sites in a restricted container that blocks JavaScript and forms - like putting them in a glass box where you can look but nothing can escape.</li>
+                        <li><strong>Content Security Policy (CSP):</strong> Rules that control what resources a webpage can load, preventing malicious scripts from running.</li>
+                        <li><strong>CORS (Cross-Origin Resource Sharing):</strong> Browser rules that prevent websites from making unauthorized requests to other domains.</li>
+                    </ul>
+                </div>
+
+                <div style="background: rgba(245,158,11,0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #f59e0b;">
+                    <p style="margin-bottom: 0.75rem; color: #f59e0b; font-weight: 600;">
+                        ⚠️ To Visit This Site Safely:
+                    </p>
+                    <ol style="margin-left: 1.5rem; color: #cbd5e1; line-height: 1.8;">
+                        <li><strong>Check the security analysis above</strong> - Look at the threat score and VirusTotal results</li>
+                        <li><strong>Verify the URL looks legitimate</strong> - Watch for misspellings or weird characters</li>
+                        <li><strong>If it looks safe, open in a new tab</strong> - Never enter passwords on sites you reached via QR code without double-checking</li>
+                        <li><strong>When in doubt, don't visit</strong> - It's always safer to type the URL directly if you know what site you're trying to reach</li>
+                    </ol>
+                </div>
+
                 <div style="margin-top: 1rem; text-align: center;">
                     <a href="${escapeHtml(currentURL)}" target="_blank" rel="noopener noreferrer"
                        style="display: inline-block; padding: 0.75rem 1.5rem; background: #667eea;
-                              color: white; text-decoration: none; border-radius: 8px; font-weight: 600;"
-                       onclick="return confirm('You are about to visit:\\n\\n${escapeHtml(currentURL)}\\n\\nMake sure you reviewed the security analysis above. Continue?')">
-                        🔗 Open in New Tab (Use Caution)
+                              color: white; text-decoration: none; border-radius: 8px; font-weight: 600;
+                              transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"
+                       onmouseover="this.style.background='#5568d3'; this.style.transform='translateY(-2px)'"
+                       onmouseout="this.style.background='#667eea'; this.style.transform='translateY(0)'"
+                       onclick="return confirm('⚠️ SECURITY CHECK\\n\\nYou are about to visit:\\n${escapeHtml(currentURL)}\\n\\nHave you:\\n✓ Reviewed the security analysis above?\\n✓ Verified the URL looks legitimate?\\n✓ Confirmed this is the site you intended to visit?\\n\\nContinue?')">
+                        🔗 Open in New Tab (I've Reviewed the Security Analysis)
                     </a>
                 </div>
             `;
 
-            // Insert after the iframe
+            // Insert BEFORE the iframe (above it)
             if (!document.getElementById('frame-blocked-message')) {
                 messageDiv.id = 'frame-blocked-message';
-                sandboxFrame.parentNode.insertBefore(messageDiv, sandboxFrame.nextSibling);
+                sandboxFrame.parentNode.insertBefore(messageDiv, sandboxFrame);
             }
         }
 
