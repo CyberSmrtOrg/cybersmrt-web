@@ -1470,20 +1470,41 @@
         const grantCameraBtn = document.getElementById('grantCameraBtn');
         const denyCameraBtn = document.getElementById('denyCameraBtn');
 
+        // Check if Permissions API is available
+        async function checkCameraPermission() {
+            if (!navigator.permissions) {
+                return 'prompt'; // Permissions API not available, assume we need to prompt
+            }
+
+            try {
+                const result = await navigator.permissions.query({ name: 'camera' });
+                return result.state; // 'granted', 'denied', or 'prompt'
+            } catch (err) {
+                console.warn('Permissions API query failed:', err);
+                return 'prompt'; // Fallback to prompt
+            }
+        }
+
         // Show modal when clicking Start Camera
-        const originalStartCameraHandler = startBtn.onclick;
-        startBtn.onclick = null; // Remove the original handler
-        startBtn.addEventListener('click', () => {
-            cameraPermissionModal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        startBtn.addEventListener('click', async () => {
+            // Check current permission status
+            const permissionState = await checkCameraPermission();
+
+            if (permissionState === 'granted') {
+                // Permission already granted, start camera directly
+                startCamera();
+            } else if (permissionState === 'denied') {
+                // Permission already denied, show help message
+                alert('❌ Camera permission is blocked.\n\nTo enable camera access:\n1. Click the 🔒 or ⓘ icon in your address bar\n2. Find "Camera" permissions\n3. Change to "Allow"\n4. Refresh the page and try again\n\nOr use the "Upload Image" tab instead!');
+            } else {
+                // Permission not yet decided, show educational modal
+                cameraPermissionModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
         });
 
-        // Handle grant permission
-        grantCameraBtn.addEventListener('click', async () => {
-            cameraPermissionModal.style.display = 'none';
-            document.body.style.overflow = '';
-
-            // Now actually request camera access
+        // Function to actually start the camera
+        async function startCamera() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: 'environment' }
@@ -1506,6 +1527,15 @@
 
                 alert(errorMessage + '\n\nError details: ' + err.message);
             }
+        }
+
+        // Handle grant permission button
+        grantCameraBtn.addEventListener('click', () => {
+            cameraPermissionModal.style.display = 'none';
+            document.body.style.overflow = '';
+
+            // Now request camera access (browser's native prompt will appear)
+            startCamera();
         });
 
         // Handle deny permission
