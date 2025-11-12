@@ -178,6 +178,10 @@ async function handleProxy(request, env, corsHeaders) {
     }, 403, corsHeaders);
   }
 
+  // === URL UNSHORTENING ===
+  // Follow redirects to reveal the final destination
+  const redirectChain = await unshortenURL(targetURL);
+
   // Log request
   await logRequest(request, targetURL, securityChecks, env);
 
@@ -186,7 +190,13 @@ async function handleProxy(request, env, corsHeaders) {
   if (analysisOnly) {
     return jsonResponse({
       url: targetURL,
-      security: securityChecks,
+      finalUrl: redirectChain.finalUrl,
+      redirectChain: redirectChain.chain,
+      isShortened: redirectChain.isShortened,
+      security: {
+        ...securityChecks,
+        breakdown: generateThreatBreakdown(securityChecks)
+      },
       blocked: false
     }, 200, corsHeaders);
   }
@@ -339,6 +349,63 @@ async function resolveDNS(hostname) {
   } catch (error) {
     console.error('DNS resolution error:', error);
     return null;
+  }
+}
+
+/**
+ * Unshorten URL by following redirects
+ * Returns the full redirect chain and final destination
+ */
+async function unshortenURL(startUrl) {
+  const chain = [startUrl];
+  let currentUrl = startUrl;
+  const maxRedirects = 10; // Prevent infinite loops
+  let redirectCount = 0;
+
+  try {
+    while (redirectCount < maxRedirects) {
+      const response = await fetch(currentUrl, {
+        method: 'HEAD',
+        redirect: 'manual',
+        headers: {
+          'User-Agent': 'CyberSmrt-QR-Scanner/2.1 (+https://cybersmrt.org)'
+        },
+        cf: {
+          timeout: 5000 // 5 second timeout for HEAD requests
+        }
+      });
+
+      // Check if it's a redirect
+      if (response.status >= 300 && response.status < 400) {
+        const location = response.headers.get('location');
+        if (!location) break;
+
+        // Resolve relative URLs
+        currentUrl = new URL(location, currentUrl).href;
+        chain.push(currentUrl);
+        redirectCount++;
+      } else {
+        // Not a redirect, we've reached the final destination
+        break;
+      }
+    }
+
+    return {
+      finalUrl: currentUrl,
+      chain: chain,
+      isShortened: chain.length > 1,
+      redirectCount: chain.length - 1
+    };
+  } catch (error) {
+    console.error('URL unshortening failed:', error);
+    // Return original URL if unshortening fails
+    return {
+      finalUrl: startUrl,
+      chain: [startUrl],
+      isShortened: false,
+      redirectCount: 0,
+      error: error.message
+    };
   }
 }
 
@@ -630,6 +697,77 @@ function analyzeHeuristics(parsedURL) {
   }
 
   return { score, checks };
+}
+
+/**
+ * Generate human-readable breakdown of threat score
+ */
+function generateThreatBreakdown(securityChecks) {
+  const breakdown = {
+    totalScore: securityChecks.threatScore,
+    level: securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.HIGH ? 'HIGH' :
+           securityChecks.threatScore > SECURITY_CONFIG.THREAT_THRESHOLDS.MEDIUM ? 'MEDIUM' : 'LOW',
+    components: [],
+    summary: ''
+  };
+
+  // Add VirusTotal results if available
+  if (securityChecks.threatIntel && securityChecks.threatIntel.malicious > 0) {
+    breakdown.components.push({
+      factor: 'VirusTotal Detections',
+      score: securityChecks.threatIntel.malicious * SECURITY_CONFIG.THREAT_SCORES.MALICIOUS_DETECTION,
+      details: `${securityChecks.threatIntel.malicious} security vendors flagged this URL`
+    });
+  }
+
+  // Add each check from the heuristic analysis
+  securityChecks.checks.forEach(check => {
+    let score = 0;
+    let factor = '';
+
+    // Map check names to their scores
+    if (check.name === 'TLD Check') {
+      score = SECURITY_CONFIG.THREAT_SCORES.SUSPICIOUS_TLD;
+      factor = 'Suspicious TLD';
+    } else if (check.name === 'Keyword Analysis') {
+      const keywordCount = check.details.split(':')[1]?.split(',').length || 1;
+      score = keywordCount * SECURITY_CONFIG.THREAT_SCORES.PHISHING_KEYWORD;
+      factor = 'Phishing Keywords';
+    } else if (check.name === 'Domain Type' && check.details.includes('IP address')) {
+      score = SECURITY_CONFIG.THREAT_SCORES.IP_ADDRESS;
+      factor = 'IP Address Usage';
+    } else if (check.name === 'Domain Structure') {
+      score = SECURITY_CONFIG.THREAT_SCORES.EXCESSIVE_HYPHENS;
+      factor = 'Excessive Hyphens';
+    } else if (check.name === 'Domain Length') {
+      score = SECURITY_CONFIG.THREAT_SCORES.LONG_DOMAIN;
+      factor = 'Long Domain Name';
+    } else if (check.name === 'URL Shortener') {
+      score = SECURITY_CONFIG.THREAT_SCORES.URL_SHORTENER;
+      factor = 'URL Shortener Detected';
+    }
+
+    if (score > 0) {
+      breakdown.components.push({
+        factor: factor,
+        score: score,
+        details: check.details
+      });
+    }
+  });
+
+  // Generate summary
+  if (breakdown.totalScore === 0) {
+    breakdown.summary = 'No suspicious patterns detected. This URL appears safe.';
+  } else if (breakdown.level === 'LOW') {
+    breakdown.summary = 'Minor concerns detected. The URL has some suspicious characteristics but is likely safe.';
+  } else if (breakdown.level === 'MEDIUM') {
+    breakdown.summary = 'Moderate risk detected. Exercise caution when visiting this URL.';
+  } else {
+    breakdown.summary = 'High risk detected. This URL shows multiple red flags and may be malicious.';
+  }
+
+  return breakdown;
 }
 
 /**
