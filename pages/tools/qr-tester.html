@@ -1018,11 +1018,6 @@
             // Display original URL
             qrData.textContent = url;
 
-            // Show redirect chain if URL was shortened
-            if (isShortened && redirectChain && redirectChain.length > 1) {
-                displayRedirectChain(redirectChain);
-            }
-
             const score = security.threatScore;
             let icon, title, subtitle;
 
@@ -1050,6 +1045,11 @@
 
             // Display threat intelligence
             displayThreatIntelligence(security);
+
+            // Show redirect chain AFTER threat intelligence (so it doesn't get overwritten)
+            if (isShortened && redirectChain && redirectChain.length > 1) {
+                displayRedirectChain(redirectChain);
+            }
 
             // Show preview button for URLs
             if (url.startsWith('http')) {
