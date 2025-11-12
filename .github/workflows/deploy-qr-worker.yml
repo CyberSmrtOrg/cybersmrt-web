@@ -24,12 +24,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'workers/qr-proxy'
           command: deploy
-          secrets: |
-            VIRUSTOTAL_API_KEY
-            ADMIN_TOKEN
-        env:
-          VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
 
       - name: Health check
         run: |
