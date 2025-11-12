@@ -1085,12 +1085,21 @@
                 if (security.breakdown.components.length > 0) {
                     security.breakdown.components.forEach(comp => {
                         html += `
-                            <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.5rem;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem; border-left: 3px solid #f59e0b;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                                     <strong style="color: #f59e0b;">${escapeHtml(comp.factor)}</strong>
-                                    <span style="color: ${color}; font-weight: 600;">+${comp.score}</span>
+                                    <span style="color: ${color}; font-weight: 600; font-size: 1.1rem;">+${comp.score}</span>
                                 </div>
-                                <p style="color: #b0b0b0; font-size: 0.85rem; margin: 0;">${escapeHtml(comp.details)}</p>
+                                <p style="color: #e2e8f0; font-size: 0.85rem; margin: 0 0 0.5rem 0; font-weight: 500;">
+                                    ${escapeHtml(comp.details)}
+                                </p>
+                                ${comp.explanation ? `
+                                    <div style="background: rgba(102,126,234,0.15); padding: 0.6rem; border-radius: 4px; margin-top: 0.5rem;">
+                                        <p style="color: #cbd5e1; font-size: 0.8rem; margin: 0; line-height: 1.5;">
+                                            <strong style="color: #a5b4fc;">💡 Why this matters:</strong> ${escapeHtml(comp.explanation)}
+                                        </p>
+                                    </div>
+                                ` : ''}
                             </div>
                         `;
                     });

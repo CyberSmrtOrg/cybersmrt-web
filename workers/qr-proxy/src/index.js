@@ -716,7 +716,8 @@ function generateThreatBreakdown(securityChecks) {
     breakdown.components.push({
       factor: 'VirusTotal Detections',
       score: securityChecks.threatIntel.malicious * SECURITY_CONFIG.THREAT_SCORES.MALICIOUS_DETECTION,
-      details: `${securityChecks.threatIntel.malicious} security vendors flagged this URL`
+      details: `${securityChecks.threatIntel.malicious} security vendors flagged this URL`,
+      explanation: 'VirusTotal scans URLs against 90+ antivirus engines and security databases. Even 1-2 detections can indicate suspicious activity, though false positives do occur for new or uncommon sites.'
     });
   }
 
@@ -724,34 +725,42 @@ function generateThreatBreakdown(securityChecks) {
   securityChecks.checks.forEach(check => {
     let score = 0;
     let factor = '';
+    let explanation = '';
 
-    // Map check names to their scores
+    // Map check names to their scores and explanations
     if (check.name === 'TLD Check') {
       score = SECURITY_CONFIG.THREAT_SCORES.SUSPICIOUS_TLD;
       factor = 'Suspicious TLD';
+      explanation = 'Free or commonly-abused domain extensions (like .tk, .ml, .xyz) are often used by scammers because they\'re easy to register anonymously and cost nothing.';
     } else if (check.name === 'Keyword Analysis') {
       const keywordCount = check.details.split(':')[1]?.split(',').length || 1;
       score = keywordCount * SECURITY_CONFIG.THREAT_SCORES.PHISHING_KEYWORD;
       factor = 'Phishing Keywords';
+      explanation = 'Words like "login," "verify," "urgent," and "password" are commonly used in phishing attacks to create panic and trick users into entering credentials on fake sites.';
     } else if (check.name === 'Domain Type' && check.details.includes('IP address')) {
       score = SECURITY_CONFIG.THREAT_SCORES.IP_ADDRESS;
       factor = 'IP Address Usage';
+      explanation = 'Legitimate websites use domain names (like google.com), not raw IP addresses. Using an IP address directly is a red flag that often indicates a temporary or malicious server.';
     } else if (check.name === 'Domain Structure') {
       score = SECURITY_CONFIG.THREAT_SCORES.EXCESSIVE_HYPHENS;
       factor = 'Excessive Hyphens';
+      explanation = 'Many hyphens in a domain name can indicate typosquatting (like "pay-pal-secure-login.com"). Attackers use this to create domains that look similar to legitimate brands.';
     } else if (check.name === 'Domain Length') {
       score = SECURITY_CONFIG.THREAT_SCORES.LONG_DOMAIN;
       factor = 'Long Domain Name';
+      explanation = 'Unusually long domain names are sometimes used to hide the real domain or make it harder to verify legitimacy at a glance.';
     } else if (check.name === 'URL Shortener') {
       score = SECURITY_CONFIG.THREAT_SCORES.URL_SHORTENER;
       factor = 'URL Shortener Detected';
+      explanation = 'URL shorteners hide the final destination, making it impossible to verify where the link leads without clicking. This is a common technique in phishing campaigns.';
     }
 
     if (score > 0) {
       breakdown.components.push({
         factor: factor,
         score: score,
-        details: check.details
+        details: check.details,
+        explanation: explanation
       });
     }
   });
