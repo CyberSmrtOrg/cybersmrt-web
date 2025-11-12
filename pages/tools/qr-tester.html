@@ -1009,6 +1009,12 @@
         function displayResults(data) {
             const { url, finalUrl, redirectChain, isShortened, security } = data;
 
+            // Update currentURL to final destination if URL was shortened
+            if (finalUrl && finalUrl !== url) {
+                currentURL = finalUrl;
+                console.log('🔗 URL was shortened. Updated currentURL to final destination:', finalUrl);
+            }
+
             // Update header
             const statusIcon = document.getElementById('statusIcon');
             const statusTitle = document.getElementById('statusTitle');
