@@ -225,7 +225,7 @@ async function handleProxy(request, env, corsHeaders) {
         'X-Target-URL': targetURL,
         'X-Threat-Score': securityChecks.threatScore.toString(),
         'Content-Security-Policy': "default-src 'self'; script-src 'none'; form-action 'none';",
-        'X-Frame-Options': 'SAMEORIGIN',
+        // X-Frame-Options removed - we WANT this content to be frameable in our preview iframe
         'X-Content-Type-Options': 'nosniff',
         'Referrer-Policy': 'no-referrer',
         'Cache-Control': 'no-store, no-cache, must-revalidate',
