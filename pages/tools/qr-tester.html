@@ -185,6 +185,50 @@
             display: none;
         }
 
+        .scanning-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 3px solid #667eea;
+            border-radius: 20px;
+            pointer-events: none;
+            animation: scan-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scan-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+                border-color: #667eea;
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+                border-color: #764ba2;
+            }
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            animation: scan-line 2s linear infinite;
+        }
+
+        @keyframes scan-line {
+            0% {
+                top: calc(50% - 90px);
+            }
+            100% {
+                top: calc(50% + 90px);
+            }
+        }
+
         .camera-controls {
             display: flex;
             gap: 1rem;
@@ -508,10 +552,15 @@
 
             <!-- Camera Scanner -->
             <div class="scanner-section active" id="camera-section">
-                <div class="camera-container">
+                <div class="camera-container" id="cameraContainer">
                     <video id="video" autoplay playsinline></video>
                     <canvas id="canvas"></canvas>
+                    <div id="scanningIndicator" style="display: none;">
+                        <div class="scanning-indicator"></div>
+                        <div class="scan-line"></div>
+                    </div>
                 </div>
+                <p id="scanStatus" style="text-align: center; margin-top: 1rem; color: #667eea; font-weight: 600; min-height: 24px;"></p>
                 <div class="camera-controls">
                     <button class="btn btn-primary" id="startCamera">Start Camera</button>
                     <button class="btn btn-secondary" id="stopCamera" disabled>Stop Camera</button>
@@ -705,6 +754,12 @@
                 scanning = false;
                 startBtn.disabled = false;
                 stopBtn.disabled = true;
+
+                // Hide scanning indicators
+                const scanningIndicator = document.getElementById('scanningIndicator');
+                const scanStatus = document.getElementById('scanStatus');
+                if (scanningIndicator) scanningIndicator.style.display = 'none';
+                if (scanStatus) scanStatus.textContent = '';
             }
         }
 
@@ -714,6 +769,15 @@
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
+
+                // Debug logging (only log every 60 frames to avoid spam)
+                if (!window.frameCount) window.frameCount = 0;
+                window.frameCount++;
+
+                if (window.frameCount % 60 === 0) {
+                    console.log(`[QR Scanner] Frame ${window.frameCount}: Video dimensions: ${canvas.width}x${canvas.height}`);
+                }
+
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -722,15 +786,29 @@
                     code = jsQR(imageData.data, imageData.width, imageData.height, {
                         inversionAttempts: "attemptBoth"
                     });
+
+                    if (window.frameCount % 60 === 0) {
+                        console.log('[QR Scanner] jsQR detection attempted, result:', code ? 'QR code found!' : 'No QR code detected');
+                    }
                 } else {
                     console.warn('jsQR library not available; cannot scan camera frame');
                 }
 
                 if (code) {
+                    console.log('[QR Scanner] ✅ QR Code detected:', code.data);
+                    const scanStatus = document.getElementById('scanStatus');
+                    if (scanStatus) scanStatus.textContent = '✅ QR Code detected! Analyzing...';
+
                     scanning = false;
                     stopCameraStream();
                     analyzeURL(code.data);
                     return;
+                }
+            } else {
+                // Log when video is not ready
+                if (!window.videoNotReadyLogged) {
+                    console.log('[QR Scanner] Waiting for video to be ready... readyState:', video.readyState);
+                    window.videoNotReadyLogged = true;
                 }
             }
 
@@ -1506,6 +1584,11 @@
         // Function to actually start the camera
         async function startCamera() {
             try {
+                const scanStatus = document.getElementById('scanStatus');
+                const scanningIndicator = document.getElementById('scanningIndicator');
+
+                scanStatus.textContent = '📷 Starting camera...';
+
                 stream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: 'environment' }
                 });
@@ -1513,6 +1596,11 @@
                 startBtn.disabled = true;
                 stopBtn.disabled = false;
                 scanning = true;
+
+                // Show scanning indicator
+                scanningIndicator.style.display = 'block';
+                scanStatus.textContent = '🔍 Scanning for QR codes... Hold steady and ensure good lighting';
+
                 requestAnimationFrame(tick);
             } catch (err) {
                 let errorMessage = 'Camera access denied or not available.';
@@ -1526,6 +1614,7 @@
                 }
 
                 alert(errorMessage + '\n\nError details: ' + err.message);
+                document.getElementById('scanStatus').textContent = '';
             }
         }
 
