@@ -6,6 +6,12 @@
 /assets/js/*.js
   Content-Type: application/javascript
 
+# QR Proxy - NO X-Frame-Options (we want proxied content to be frameable)
+/tools/qr_proxy*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Cache-Control: no-store, no-cache, must-revalidate
+
 # Security headers for all pages
 /*
   X-Frame-Options: SAMEORIGIN
