@@ -74,7 +74,7 @@ export default {
       'Access-Control-Allow-Headers': 'Content-Type',
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'no-referrer',
-      'X-Frame-Options': 'DENY',
+      // X-Frame-Options removed - we WANT proxied content to be frameable for preview
     };
 
     // Handle CORS preflight
