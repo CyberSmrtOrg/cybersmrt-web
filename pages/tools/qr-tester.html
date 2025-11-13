@@ -1308,21 +1308,9 @@
             sandboxSection.classList.add('show');
             sandboxSection.scrollIntoView({ behavior: 'smooth' });
 
-            // Detect if iframe fails to load due to X-Frame-Options
-            setTimeout(() => {
-                try {
-                    // Try to access the iframe content - will throw if blocked
-                    const iframeDoc = sandboxFrame.contentDocument || sandboxFrame.contentWindow.document;
-                    if (!iframeDoc || iframeDoc.location.href === 'about:blank') {
-                        showFrameBlockedMessage();
-                    }
-                } catch (e) {
-                    // Cross-origin or frame blocked - show helpful message
-                    if (e.name === 'SecurityError' || e.message.includes('frame')) {
-                        showFrameBlockedMessage();
-                    }
-                }
-            }, 2000);
+            // Note: We removed X-Frame-Options detection because our proxy intentionally allows framing.
+            // The iframe will load successfully, but we can't access its content due to cross-origin restrictions.
+            // This is expected behavior - the preview works, but browser security prevents us from inspecting it.
         });
 
         function showFrameBlockedMessage() {

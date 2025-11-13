@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh workflow:*)"
+      "Bash(npx wrangler deploy:*)",
+      "Bash(gh run list:*)",
+      "Bash(for i in {1..6})",
+      "Bash(do echo \"Test $i:\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
