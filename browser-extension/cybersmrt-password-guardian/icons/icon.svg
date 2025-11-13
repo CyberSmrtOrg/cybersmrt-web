@@ -1,0 +1,51 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield background -->
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Shield shape -->
+  <path d="M 64 10
+           L 100 25
+           C 100 25, 105 55, 105 70
+           C 105 95, 64 115, 64 115
+           C 64 115, 23 95, 23 70
+           C 23 55, 28 25, 28 25
+           Z"
+        fill="url(#shieldGradient)"
+        stroke="#ffffff"
+        stroke-width="3"/>
+
+  <!-- Lock icon -->
+  <g transform="translate(64, 60)">
+    <!-- Lock body -->
+    <rect x="-12" y="0" width="24" height="20" rx="3" fill="#ffffff"/>
+
+    <!-- Lock shackle -->
+    <path d="M -8 0
+             L -8 -10
+             C -8 -15, -4 -18, 0 -18
+             C 4 -18, 8 -15, 8 -10
+             L 8 0"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="3"
+          stroke-linecap="round"/>
+
+    <!-- Keyhole -->
+    <circle cx="0" cy="8" r="3" fill="#667eea"/>
+    <rect x="-1" y="10" width="2" height="5" fill="#667eea"/>
+  </g>
+
+  <!-- Small checkmark badge -->
+  <circle cx="90" cy="35" r="12" fill="#22c55e" stroke="#ffffff" stroke-width="2"/>
+  <path d="M 85 35 L 88 38 L 95 31"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
