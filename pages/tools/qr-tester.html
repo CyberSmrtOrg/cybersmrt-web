@@ -1469,49 +1469,68 @@
             <div style="background: rgba(102,126,234,0.1); border-left: 4px solid #667eea; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
                 <h3 style="color: #667eea; margin-bottom: 1rem; font-size: 1.3rem;">🔒 How to Revoke Camera Permission After Use:</h3>
                 <p style="color: #e2e8f0; margin-bottom: 1rem; line-height: 1.6;">
-                    <strong>We strongly recommend</strong> revoking camera access when you're done scanning. Here's how:
+                    <strong>We strongly recommend</strong> revoking camera access when you're done scanning. Select your platform:
                 </p>
 
-                <!-- Chrome Instructions -->
-                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
-                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🌐 Chrome / Edge / Brave:</p>
-                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
-                        <li>Click the <strong>🔒 padlock icon</strong> or <strong>ⓘ site information icon</strong> in the address bar</li>
-                        <li>Click <strong>"Permissions"</strong> or find <strong>"Camera"</strong> in the dropdown</li>
-                        <li>Change camera permission to <strong>"Block"</strong> or <strong>"Ask (default)"</strong></li>
-                        <li>Or go to: <code style="background: rgba(0,0,0,0.4); padding: 0.2rem 0.5rem; border-radius: 3px;">chrome://settings/content/camera</code></li>
-                    </ol>
+                <!-- Tab Buttons -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <button class="perm-tab-btn active" data-tab="chrome" style="flex: 1; min-width: 120px; background: rgba(102,126,234,0.3); color: #667eea; border: 2px solid #667eea; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        🌐 Chrome/Edge
+                    </button>
+                    <button class="perm-tab-btn" data-tab="firefox" style="flex: 1; min-width: 120px; background: rgba(0,0,0,0.3); color: #cbd5e1; border: 2px solid transparent; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        🦊 Firefox
+                    </button>
+                    <button class="perm-tab-btn" data-tab="safari" style="flex: 1; min-width: 120px; background: rgba(0,0,0,0.3); color: #cbd5e1; border: 2px solid transparent; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        🧭 Safari
+                    </button>
+                    <button class="perm-tab-btn" data-tab="mobile" style="flex: 1; min-width: 120px; background: rgba(0,0,0,0.3); color: #cbd5e1; border: 2px solid transparent; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        📱 Mobile
+                    </button>
                 </div>
 
-                <!-- Firefox Instructions -->
-                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
-                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🦊 Firefox:</p>
-                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
-                        <li>Click the <strong>🔒 padlock icon</strong> in the address bar</li>
-                        <li>Click <strong>"Connection secure" → "More information"</strong></li>
-                        <li>Go to <strong>"Permissions"</strong> tab</li>
-                        <li>Find <strong>"Use the Camera"</strong> and click <strong>"Remove Permission"</strong></li>
-                    </ol>
-                </div>
+                <!-- Tab Content -->
+                <div id="perm-tab-content">
+                    <!-- Chrome/Edge Instructions -->
+                    <div class="perm-tab-panel active" data-panel="chrome" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🌐 Chrome / Edge / Brave:</p>
+                        <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0;">
+                            <li>Click the <strong>🔒 padlock icon</strong> or <strong>ⓘ site information icon</strong> in the address bar</li>
+                            <li>Click <strong>"Permissions"</strong> or find <strong>"Camera"</strong> in the dropdown</li>
+                            <li>Change camera permission to <strong>"Block"</strong> or <strong>"Ask (default)"</strong></li>
+                            <li>Or go to: <code style="background: rgba(0,0,0,0.4); padding: 0.2rem 0.5rem; border-radius: 3px;">chrome://settings/content/camera</code></li>
+                        </ol>
+                    </div>
 
-                <!-- Safari Instructions -->
-                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
-                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🧭 Safari:</p>
-                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
-                        <li>Go to <strong>Safari → Settings → Websites → Camera</strong></li>
-                        <li>Find <strong>cybersmrt.org</strong> in the list</li>
-                        <li>Change to <strong>"Deny"</strong> or <strong>"Ask"</strong></li>
-                    </ol>
-                </div>
+                    <!-- Firefox Instructions -->
+                    <div class="perm-tab-panel" data-panel="firefox" style="display: none; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🦊 Firefox:</p>
+                        <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0;">
+                            <li>Click the <strong>🔒 padlock icon</strong> in the address bar</li>
+                            <li>Click <strong>"Connection secure" → "More information"</strong></li>
+                            <li>Go to <strong>"Permissions"</strong> tab</li>
+                            <li>Find <strong>"Use the Camera"</strong> and click <strong>"Remove Permission"</strong></li>
+                        </ol>
+                    </div>
 
-                <!-- Mobile Instructions -->
-                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
-                    <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">📱 Mobile (iOS/Android):</p>
-                    <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem;">
-                        <li><strong>iOS:</strong> Settings → Safari → Camera → Ask or Deny</li>
-                        <li><strong>Android Chrome:</strong> Settings → Site settings → Camera → Find site and block</li>
-                        <li>Or tap the <strong>🔒 padlock/ⓘ icon</strong> in the browser address bar</li>
-                    </ol>
+                    <!-- Safari Instructions -->
+                    <div class="perm-tab-panel" data-panel="safari" style="display: none; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">🧭 Safari:</p>
+                        <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0;">
+                            <li>Go to <strong>Safari → Settings → Websites → Camera</strong></li>
+                            <li>Find <strong>cybersmrt.org</strong> in the list</li>
+                            <li>Change to <strong>"Deny"</strong> or <strong>"Ask"</strong></li>
+                        </ol>
+                    </div>
+
+                    <!-- Mobile Instructions -->
+                    <div class="perm-tab-panel" data-panel="mobile" style="display: none; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 6px;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 0.75rem;">📱 Mobile (iOS/Android):</p>
+                        <ol style="color: #cbd5e1; line-height: 1.8; margin-left: 1.5rem; margin-bottom: 0;">
+                            <li><strong>iOS:</strong> Settings → Safari → Camera → Ask or Deny</li>
+                            <li><strong>Android Chrome:</strong> Settings → Site settings → Camera → Find site and block</li>
+                            <li>Or tap the <strong>🔒 padlock/ⓘ icon</strong> in the browser address bar</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
 
@@ -1644,6 +1663,42 @@
             if (e.key === 'Escape' && cameraPermissionModal.style.display === 'block') {
                 denyCameraBtn.click();
             }
+        });
+
+        // Permission tab switching
+        const permTabBtns = document.querySelectorAll('.perm-tab-btn');
+        const permTabPanels = document.querySelectorAll('.perm-tab-panel');
+
+        permTabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+
+                // Update button styles
+                permTabBtns.forEach(b => {
+                    if (b.getAttribute('data-tab') === targetTab) {
+                        b.style.background = 'rgba(102,126,234,0.3)';
+                        b.style.color = '#667eea';
+                        b.style.borderColor = '#667eea';
+                        b.classList.add('active');
+                    } else {
+                        b.style.background = 'rgba(0,0,0,0.3)';
+                        b.style.color = '#cbd5e1';
+                        b.style.borderColor = 'transparent';
+                        b.classList.remove('active');
+                    }
+                });
+
+                // Show corresponding panel
+                permTabPanels.forEach(panel => {
+                    if (panel.getAttribute('data-panel') === targetTab) {
+                        panel.style.display = 'block';
+                        panel.classList.add('active');
+                    } else {
+                        panel.style.display = 'none';
+                        panel.classList.remove('active');
+                    }
+                });
+            });
         });
     </script>
 </body>
